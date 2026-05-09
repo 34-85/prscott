@@ -11,12 +11,10 @@ Seedream, Kling, Minimax Hailuo, Veo, etc.) over a single hosted endpoint.
 
 ### Use it with Claude Code
 
-1. Open this repo in Claude Code. On first use you'll be prompted to approve
-   the project-scoped MCP server.
-2. Run `/mcp` and authenticate the `higgsfield` server through your
-   Higgsfield account (OAuth — no API keys to manage).
-3. Ask Claude to generate an image or video, e.g. *"Generate a 4K product
-   shot of a matte-black espresso machine on a marble counter."*
+See [`SETUP.md`](./SETUP.md) for the full local-CLI walkthrough. Short
+version: open this repo in the local `claude` CLI (web sessions can't OAuth),
+approve the project's MCP server, run `/mcp` → authenticate `higgsfield`,
+then ask Claude to generate an image or video.
 
 ### Install at user scope instead
 
