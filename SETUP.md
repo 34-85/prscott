@@ -48,8 +48,16 @@ OAuth-based MCP servers. Workarounds:
 
 Once authenticated locally, ask Claude:
 
-> Generate a 4-second 720p test clip with Hailuo: a single espresso shot
-> pulling into a white cup, soft window light. Cheapest model, lowest
+> Generate a 4-second 720p test clip with Seedance 2.0: a single espresso
+> shot pulling into a white cup, soft window light. Cheap model, low
 > resolution — just verifying the integration works.
 
-Hailuo + 720p + 4s is the cheapest combo and burns minimal credits.
+### Model notes
+
+- **Seedance 2.0** — used as the smoke-test default. Reliable and cheap.
+- **MiniMax Hailuo** — had issues during initial integration testing
+  (May 2026); prefer Seedance for cheap iteration until that's confirmed
+  fixed.
+- **Kling 3.0 / Veo 3.1** — reserve for hero renders once you're happy
+  with the shot composition on a cheaper model. Veo for lip-sync, Kling
+  for multi-shot sequences.
