@@ -206,11 +206,11 @@ BUL([
  "Use the CSV to drop the whole list into a spreadsheet or Airtable and track outreach, status, and run dates.",
 ])
 
-# Flagship section
-flagship=[(b,p2,a,an,s,c,f) for cat,rows in DATA.items() for (b,p2,a,an,s,c,f) in rows if f]
+# Flagship section — compact index only (no duplicate rows; full detail lives in the category tables)
+flagship=[(b,p2,cat) for cat,rows in DATA.items() for (b,p2,a,an,s,c,f) in rows if f]
 H("★ Flagship-ready: start with these",1,color=GOLD)
-P("The cleanest origin stories with the best human hooks and high confidence — ideal for the first run of features and the monthly long-form profile.")
-maker_table(flagship)
+P("The cleanest origin stories with the best human hooks and high confidence — ideal for the first run of features and the monthly long-form profile. Each is marked ★ in its category table below (full detail there); this is just the shortlist.")
+BUL([f"{b} — {p2}  ·  {cat}" for (b,p2,cat) in flagship])
 
 # Category sections
 for cat,rows in DATA.items():
