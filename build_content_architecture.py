@@ -181,6 +181,22 @@ H("The principle: no commodity content",1)
 P("The free incumbent owns the commodity lane — the generic event calendar, weather, traffic, national headlines, paid 'best-of' lists. **We run none of it.** Every section in this architecture is a point of view only the Scout has, which is the reason a membership is worth paying for. The portfolio runs on three layers — **Discovery** (acquisition), **Relationship** (retention), and a **Premium** layer — and each section throws off a product, an event, or a membership perk, so the content *is* the reader-funded business model.")
 FIG(f"{ASSETS}/fig_portfolio.png","Figure 1. The content portfolio in three layers, every one feeding the ad-free model.",8.6)
 
+H("Editorial standards — The Once Rule & the Nerd's veto",1)
+P("These are non-negotiable, because repetition and filler make independent editorial look like advertising or automation — the two things that would destroy the brand's whole premise and the founder's personal credibility.")
+def _bul(items,size=10):
+    for it in items:
+        p=doc.add_paragraph(style="List Bullet"); p.paragraph_format.space_after=Pt(3)
+        for i,ch in enumerate(it.split("**")):
+            if not ch: continue
+            r=p.add_run(ch); r.font.size=Pt(size)
+            if i%2==1: r.font.bold=True
+_bul([
+ "**The Once Rule.** A business or location appears **once per issue — never twice.** Across a month, **no more than twice, and twice is rare** — reserved for genuine news (a closing, then later a reopening) and always from a *fresh* angle, never a repeat. Recurring *threads* are welcome; recurring *mentions of the same name* are not.",
+ "**Freshness across issues.** Each issue's cast of businesses should be distinct from the last issue's. If a place was the Hidden Gem last week, it is not the 'now open' note this week.",
+ "**The Nerd's veto.** The research layer does more than check facts — it **kills copy that reads forced, lazy, padded, or 'paid-for,' and anything that smells like AI slop** (recycled names, generic filler, the same story told twice). If it wouldn't survive a sharp local reader's eye, it doesn't run.",
+ "**The test before publish:** would a skeptical Chattanoogan think this was written by a person who actually went there — or by a machine padding a template? Only the first ships.",
+])
+
 H("The section catalog",1)
 TABLE(["Section","Layer","Frequency","The point of view","Primary monetization"],
       CATALOG, widths=[1.9,1.4,1.25,3.1,2.6], fontsize=8.4,
