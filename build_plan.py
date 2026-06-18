@@ -780,6 +780,28 @@ add_table(["Line item", "Year 2 — base", "Year 2 — engine", "Year 3 — base
 add_figure(f"{ASSETS}/fig_engine.png",
            "Figure 5b. The engine's two clearest effects — lower content cost and a stronger membership intel perk — lift owner's draw in Years 2–3.")
 
+add_heading("4.6 Scout Insights — a fourth, walled revenue line (at scale)", 2)
+add_para(
+    "Beyond the three reader-funded pillars, a fourth line emerges once the audience is large and "
+    "well-profiled: **Scout Insights**, a permission-based local research practice. It monetizes the "
+    "brand's scarcest asset — a trusted, engaged, demographically-profiled local audience — by selling "
+    "**aggregate insight, never identities** (no PII; opt-in; aggregate-only; walled from editorial; "
+    "strictly apolitical). It is fully consistent with the no-advertising promise: companies buy "
+    "research, not the reader's attention.", align="just")
+add_para(
+    "**Depth before monetization.** It begins as contest-based onboarding micro-surveys that collect "
+    "consented, first-party profile data (age, neighborhood, life stage, interests) — which sharpen "
+    "content, products, and events *immediately*, before a dollar of external revenue. The dataset "
+    "deepens into an opt-in 'Scout Insiders' panel; house research ('The Scenic City Index') then "
+    "establishes authority and B2B thought leadership; and only afterward do custom and sponsored "
+    "panels open. (Full detail in the Scout Insights spec.)")
+add_para(
+    "**Contribution (illustrative, deliberately back-loaded):** roughly **$0 external in Year 1** — "
+    "the early payoff is internal, in better-targeted content, products, and events that lift "
+    "conversion and retention — then on the order of **$5–20K in Year 2** and **$25–60K in Year 3** as "
+    "the Index and custom studies mature. This is additive to the figures in Sections 4.5 and 9, and "
+    "comes alongside the larger, unbookable payoff of local authority and brand.")
+
 # ============================ PRODUCT STRATEGY ============================
 add_heading("5. Product & Editorial Strategy", 1)
 add_heading("5.1 The weekly Scout", 2)
