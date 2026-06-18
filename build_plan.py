@@ -70,6 +70,14 @@ members_eoy = [350, 850, 1700]
 opex = [10500, 34100, 83500]
 owner_draw = [t - o for t, o in zip(total_rev, opex)]  # 20.5k, 81.9k, 196.5k
 
+# Discovery-engine-adjusted (illustrative upside for Years 2-3; Year 1 held at base)
+eng_membership = [membership[0], 60000, 135000]   # +intel-perk lift to conversion/retention
+eng_events     = [events[0], 44000, 115000]       # easier, better-sourced events
+eng_products   = [products[0], 24000, 60000]
+eng_total      = [m+e+p for m, e, p in zip(eng_membership, eng_events, eng_products)]
+eng_opex       = [opex[0], 30000, 76000]          # lower content/sourcing cost
+eng_draw       = [t - o for t, o in zip(eng_total, eng_opex)]
+
 # ----------------------------------------------------------------------------
 # CHART 1 — Market funnel (TAM / SAM / SOM)
 # ----------------------------------------------------------------------------
@@ -250,8 +258,26 @@ def chart_newsdecline():
     fig.savefig(f"{ASSETS}/fig_newsdecline.png", bbox_inches="tight")
     plt.close(fig)
 
+def chart_engine():
+    fig, ax = plt.subplots(figsize=(7.2, 4.3))
+    cats = ["Y2\nRevenue", "Y3\nRevenue", "Y2 Owner's\ndraw", "Y3 Owner's\ndraw"]
+    base = [total_rev[1], total_rev[2], owner_draw[1], owner_draw[2]]
+    eng  = [eng_total[1], eng_total[2], eng_draw[1], eng_draw[2]]
+    x = np.arange(len(cats)); w = 0.38
+    ax.bar(x-w/2, base, w, color="#"+SLATE, label="Base plan (conservative)")
+    ax.bar(x+w/2, eng, w, color="#"+TEAL, label="Discovery-engine adjusted")
+    for xi, (b, e) in enumerate(zip(base, eng)):
+        ax.text(xi-w/2, b+4000, usd(b), ha="center", fontsize=7.5, color="#"+NAVY)
+        ax.text(xi+w/2, e+4000, usd(e), ha="center", fontsize=7.5, color="#"+NAVY, fontweight="bold")
+    ax.set_xticks(x); ax.set_xticklabels(cats)
+    ax.yaxis.set_major_formatter(FuncFormatter(usd)); ax.set_ylim(0, max(eng)*1.18)
+    ax.set_title("The Engine's Effect: Lower Cost, Stronger Membership")
+    ax.legend(frameon=False, loc="upper left")
+    fig.tight_layout(); fig.savefig(f"{ASSETS}/fig_engine.png", bbox_inches="tight"); plt.close(fig)
+
 for fn in (chart_funnel, chart_revenue_stack, chart_mix, chart_audience,
-           chart_comparables, chart_events_share, chart_pnl, chart_newsdecline):
+           chart_comparables, chart_events_share, chart_pnl, chart_newsdecline,
+           chart_engine):
     fn()
 print("charts done")
 
@@ -463,7 +489,9 @@ add_para(
     "full-time income), and **~$280K in Year 3** (a full-time founder salary plus a small "
     "contractor team and reinvestment). By Year 3 revenue is diversified across membership (~43%), "
     "events (~38%), and products (~19%) — the multi-stream structure that research repeatedly ties "
-    "to local-media sustainability. Startup capital required is modest: roughly **$5,000**.",
+    "to local-media sustainability. Startup capital required is modest: roughly **$5,000**. These are "
+    "deliberately conservative base-case figures; the proprietary **discovery engine** (Section 4.5) "
+    "improves the Year-2/3 outlook by cutting content cost and lifting membership.",
     align="just")
 add_figure(f"{ASSETS}/fig_revenue_stack.png",
            "Figure 1. Projected three-year revenue, built entirely from members, products, and events — no sponsorship.")
@@ -696,6 +724,62 @@ add_table(["Operator", "Market", "Subscribers", "Est. revenue", "Model / notes"]
 add_figure(f"{ASSETS}/fig_comparables.png",
            "Figure 5. Revenue vs. list size for comparable operators. Reader-funded models (orange) extract far more value per subscriber than ad models.")
 
+add_heading("4.5 The Discovery Engine — the asset that powers it all", 2)
+add_para(
+    "Brief Scout Media is not merely a newsletter that scouts; it is a **local discovery engine** "
+    "that happens to publish a newsletter. The company systematically mines public signals — the "
+    "county's weekly new-business licenses, a satellite-town beat from LaFayette to Cleveland to the "
+    "Sequatchie Valley, the maker markets and the food incubator — and uses AI to find and "
+    "pre-research candidates, with a human always verifying, visiting, building the relationship, and "
+    "writing the story. The newsletter is the most visible **output** of the engine, not the whole "
+    "business.", align="just")
+add_para("**The revenue model does not change** — Brief Scout Media stays reader-funded (membership "
+         "+ products + events, no advertising). But the engine upgrades three things:")
+add_bullets([
+    "**A deeper moat.** The promise becomes structural, not rhetorical: *we find the people building "
+    "this city before anyone else, and we tell the truth about them.* Proprietary discovery is a "
+    "fourth moat layer on top of trust, taste, and community — and the no-ads stance keeps it credible.",
+    "**A lower content cost.** The expensive part of local media — finding and vetting what's worth "
+    "covering — is largely automated, so a solo founder or tiny team can sustain newsroom-depth "
+    "coverage. This makes the Year-1 'default-alive' economics safer and makes new verticals and new "
+    "markets far cheaper to launch: the engine is the reusable asset carried into a food edition or a "
+    "second city.",
+    "**A self-feeding flywheel.** Events, products, and partner leads fall *out* of the pipeline "
+    "rather than being separate lifts — Meet-the-Maker nights, a food-incubator showcase, maker "
+    "guides, and a warm list of every new business the week it opens (celebrated editorially for "
+    "free; the business-partner program kept walled and separate).",
+])
+add_para(
+    "**A new membership perk.** The engine creates value that didn't exist before and that members "
+    "will pay for: **first word on new openings** — the Scout's 'Just Licensed / Coming Soon' intel, "
+    "delivered to members before the city knows. A concrete, unique reason to upgrade that lifts both "
+    "conversion and retention.")
+add_para(
+    "**The one rule.** The engine *sources*; humans *own the trust*. AI finds and pre-vets; a real "
+    "person verifies, visits, and writes in the Scout's voice. The moment it reads like an automated "
+    "directory, the moat collapses — so the engine stays an internal weapon, never the product.")
+add_para(
+    "**Engine-adjusted outlook (Years 2–3).** Holding Year 1 as the conservative base case, the "
+    "engine's two clearest effects — lower content/sourcing cost and the membership intel perk — "
+    "improve the later years (with events and products also easier to source). The figures below are "
+    "illustrative upside, not a replacement for the conservative base model in Section 9; notably, the "
+    f"engine-adjusted Year-3 total (~{usd(eng_total[2])}) lands close to the focused-model estimate in "
+    "Addendum 2.", align="just")
+eng_rows = [
+    ["Membership", usd(membership[1]), usd(eng_membership[1]), usd(membership[2]), usd(eng_membership[2])],
+    ["Events", usd(events[1]), usd(eng_events[1]), usd(events[2]), usd(eng_events[2])],
+    ["Products & commerce", usd(products[1]), usd(eng_products[1]), usd(products[2]), usd(eng_products[2])],
+    ["Total revenue", usd(total_rev[1]), usd(eng_total[1]), usd(total_rev[2]), usd(eng_total[2])],
+    ["Operating expenses", usd(opex[1]), usd(eng_opex[1]), usd(opex[2]), usd(eng_opex[2])],
+    ["Owner's draw / profit", usd(owner_draw[1]), usd(eng_draw[1]), usd(owner_draw[2]), usd(eng_draw[2])],
+]
+add_table(["Line item", "Year 2 — base", "Year 2 — engine", "Year 3 — base", "Year 3 — engine"],
+          eng_rows, widths=[2.2, 1.3, 1.3, 1.3, 1.3], fontsize=9.5, first_col_bold=True,
+          caption="Table 4b. Discovery-engine-adjusted outlook (illustrative). Year 1 unchanged; "
+                  "Section 9 remains the conservative base case.")
+add_figure(f"{ASSETS}/fig_engine.png",
+           "Figure 5b. The engine's two clearest effects — lower content cost and a stronger membership intel perk — lift owner's draw in Years 2–3.")
+
 # ============================ PRODUCT STRATEGY ============================
 add_heading("5. Product & Editorial Strategy", 1)
 add_heading("5.1 The weekly Scout", 2)
@@ -709,8 +793,9 @@ add_heading("5.2 Membership tiers", 2)
 tiers = [
     ["Free", "$0", "Weekly Scout newsletter; public event listings",
      "Top-of-funnel; builds the list and the habit"],
-    ["Member", "$8/mo or $80/yr", "Members-only deep dives & archives; member event pricing; "
-     "Scout Card discounts; community access", "Core reader-revenue tier"],
+    ["Member", "$8/mo or $80/yr", "Members-only deep dives & archives; first word on new openings "
+     "(the Scout's 'Just Licensed' intel); member event pricing; Scout Card discounts; community access",
+     "Core reader-revenue tier"],
     ["Founding Member", "$150/yr", "All Member benefits + signature merch, name recognition, "
      "free annual signature-event ticket", "Higher ARPU; superfans who fund the mission"],
 ]
@@ -888,7 +973,9 @@ add_para(
     "Year 2 approaches a full-time income (~$82K) as membership compounds and events scale. Year 3 "
     "supports a full founder salary plus a part-time contractor team (already inside operating "
     "expenses) with profit to reinvest — roughly the ~18-month-to-profit arc 6AM City reports for "
-    "new markets, achieved here without advertising.")
+    "new markets, achieved here without advertising. An **engine-adjusted view** (Section 4.5) raises "
+    f"Year-2 owner's draw toward ~{usd(eng_draw[1])} and Year-3 toward ~{usd(eng_draw[2])} as content "
+    "costs fall and the membership intel perk lifts conversion.")
 add_figure(f"{ASSETS}/fig_pnl.png",
            "Figure 8. Revenue, operating expenses, and owner's draw. The founder crosses a full-time income line during Year 2.")
 
