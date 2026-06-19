@@ -130,7 +130,7 @@ The data business and the media business are designed to compound each other:
 - **Upstream returns:** brand + data royalties to APPA (steady, even pre-profit) plus after-tax dividends once profitable.
 - **Discipline:** capital released on stage-gate milestones; AI test markets are deliberately cheap options so failures are inexpensive and winners are obvious before they're funded.
 
-**Indicative venture-level shape (consolidated, illustrative — firmed up in the business-unit plans):**
+**Indicative venture-level shape (consolidated, illustrative — superseded by the bottoms-up §C roll-up, which governs):**
 
 | ($M) | Year 1 | Year 2 | Year 3 |
 |---|---:|---:|---:|
@@ -460,3 +460,78 @@ ARR and recognized revenue; member conversion rate to paid; **Core→Pro+AI atta
 3. **Feeds on and feeds Pets of [City]:** consumes PoC's first-party consumer data; supplies PoC's market-selection and ad-targeting intelligence.
 4. **Defends NPOS's authority** against commercial data vendors before they erode it — first-mover advantage compounds.
 5. **Sharpens advocacy:** the same data quantifies the pet economy, pet-friendly-housing demand, and independent-retail impact that strengthen APPA's policy positions.
+
+---
+
+# §C — Consolidated APPA Ventures Financial Roll-Up
+
+*One board-level view of the whole subsidiary: combines the §A (Pet Intelligence) and §B (Pets of [City]) P&Ls, adds shared-platform synergy and Ventures corporate overhead, and models the intra-family royalty + dividend flows to APPA, total capital required, and the cash-positive crossover. Illustrative planning model — it is more granular and **more conservative (especially on dividend timing) than the indicative envelope in §8, which it supersedes.***
+
+## C.1 Consolidated revenue
+
+| ($000) | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| Pet Intelligence (§A) | 800 | 2,500 | 4,500 |
+| Pets of [City] (§B) | 400 | 1,300 | 3,100 |
+| **Total Ventures revenue** | **1,200** | **3,800** | **7,600** |
+
+## C.2 Consolidated P&L
+
+| ($000) | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| **Revenue** | **1,200** | **3,800** | **7,600** |
+| Business-unit direct & operating costs (§A + §B) | (1,920) | (4,175) | (6,840) |
+| Shared-platform synergy savings* | 150 | 300 | 450 |
+| Ventures corporate overhead (CEO office, finance, legal/data-rights, HR, board) | (300) | (400) | (500) |
+| One-time build / launch (§A) | (500) | (150) | — |
+| **Operating result (before royalty & tax)** | **(1,370)** | **(625)** | **710** |
+| Brand + data royalty to APPA (~4% of revenue) | (50) | (150) | (300) |
+| **Pre-tax income** | **(1,420)** | **(775)** | **410** |
+| Corporate income tax (~21%, on positive income) | — | — | (86) |
+| **Net income** | **(1,420)** | **(775)** | **324** |
+
+\*Running both businesses on one shared platform (data/AI infra, central ad sales, content-ops, customer success) costs less than the sum of two standalones — the synergy benefit of housing them together in Ventures.
+
+## C.3 Flows to APPA (the parent's return)
+
+| ($000) | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| Brand + data royalty (received regardless of Ventures profit) | 50 | 150 | 300 |
+| Dividend from net income (begins once profitable, tax-free to APPA) | — | — | ~300 |
+| **Total cash to APPA** | **50** | **150** | **~600** |
+| **Plus strategic value** | *member retention · proprietary data · advocacy-as-profit · first-ever B2C reach* | | |
+
+The royalty flows to APPA **even in Ventures' loss years** (it's a license payment, not a profit share); dividends begin once Ventures is profitable (Year 3 here), and are **tax-free to APPA** as the parent.
+
+## C.4 Capital required & cash-positive crossover
+
+| ($000) | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| Operating cash flow (before royalty; royalty recycles within the APPA family) | (1,370) | (625) | +710 |
+| **Cumulative funding need** | **(1,370)** | **(1,995)** | **(1,285)** |
+
+- **Peak capital from APPA reserves ≈ $2.0M**, reached at the end of Year 2; Year 3 is operating cash-positive and begins repaying/dividending.
+- Add formation/seed (~$0.3–0.5M) and a contingency buffer → **plan for ~$2.0–2.5M of committed capital** for these two businesses.
+- Because the royalty is an **intra-family transfer** (Ventures → APPA's own pocket), the **net capital the APPA family actually puts at risk ≈ the cumulative operating deficit ≈ ~$2.0M.**
+- **Fully funded from APPA's ~$16.7M net assets / ~$30.2M total assets** — no external capital required. (The broader $3.5–6.0M startup envelope in the main strategy also covers certification, the foundation, and affinity lines beyond these two businesses.)
+- Optional: partner co-investment *into a business-unit LLC* can reduce APPA's cash exposure further, without ceding parent control.
+
+## C.5 What the model says
+
+- **Pet Intelligence is the near-term economic engine** (profit-positive by Year 3 at ~65% gross margin); **Pets of [City] is the strategic, longer-payback bet** (still in market-rollout investment in Year 3, with the high-margin steady state arriving market-by-market past ~36 months).
+- The blended subsidiary turns **operating cash-positive in Year 3**, with **dividends to APPA beginning in Year 3** and scaling materially in **Years 4–5** as PoC markets mature and Pet Intelligence compounds.
+- This is intentionally **more conservative than the §8 indicative envelope** — fuller cost loading and a realistic PoC ramp push the larger dividends out to Years 4–5 rather than Year 3.
+
+## C.6 Key sensitivities
+
+| Variable | Effect |
+|---|---|
+| **Pet Intelligence conversion + AI attach** | Biggest swing on near-term profit; upside (>$6M PI by Y3) turns Ventures pre-tax positive in **Year 2** |
+| **PoC market pacing & graduation rate** | Faster staffing lifts revenue but deepens early investment; slower preserves cash |
+| **Partner economics (rev-share / platform fees)** | Each 5 pts of data-platform rev-share ≈ ±$0.2–0.3M in Year 3 |
+| **Royalty rate to APPA** | Transfers value between the two entities; nets out within the APPA family |
+| **Upside / downside band** | Upside: dividends ~$1M+ by Year 3. Downside (conversion ~30% lower, slower PoC): operating breakeven slips to **Year 4**, peak capital ~$2.7M |
+
+## C.7 Reconciliation to §8
+
+The §8 "indicative venture-level shape" (revenue ~$1.2M / $3.5M / $6.5M; pre-tax (0.8)/0.3/2.0; dividend —/0.2/1.6) was a top-down placeholder. **§C is the bottoms-up build and governs from here:** revenue is slightly higher (~$1.2M / $3.8M / $7.6M) because both business plans firmed up, but profitability and dividends are **more conservative** (pre-tax (1.4)/(0.8)/0.4; dividend —/—/~0.3) due to fuller cost loading and a realistic PoC investment curve. The larger upstreaming to APPA is a Years 4–5 event, not Year 3.
