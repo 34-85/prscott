@@ -726,3 +726,50 @@ Even in the MVP, architect for this upside:
 
 ## Caveats
 This is the **bull/north-star case**, not the committed plan. It assumes a multi-year, well-executed climb to 50 markets; real data/consent infrastructure; a sales motion beyond local editors (Ventures shared platform + partners); and disciplined privacy compliance. ARPU may compress on ads at scale but expand on panel/card/data; the ~$45 blend is kept deliberately mid-range.
+
+## §B-Upside — 5-Year / 50-Market Financial Projection & Enterprise Value
+
+> **Aggressive North-Star path** to 50 markets × 25,000 subs (1.25M subscribers) by Year 5 — *distinct from, and more capital-intensive than, the conservative §C/§D base* (which models a ~20-market path on ~$3M). Illustrative; big assumptions; see caveats.
+
+### Market & subscriber ramp
+
+| | Y1 | Y2 | Y3 | Y4 | Y5 |
+|---|---:|---:|---:|---:|---:|
+| Markets live | 7 | 15 | 25 | 38 | 50 |
+| Avg subscribers/market | 5,000 | 8,000 | 12,000 | 18,000 | 25,000 |
+| **Total subscribers** | 35K | 120K | 300K | 684K | **1.25M** |
+| Blended ARPU ($/sub/yr) | $12 | $18 | $26 | $36 | **$45** |
+
+*ARPU climbs as platform streams (panel, lead-gen, discount card, product JV, events) layer onto the base ad model with scale.*
+
+### 5-year P&L (illustrative, $M)
+
+| ($M) | Y1 | Y2 | Y3 | Y4 | Y5 |
+|---|---:|---:|---:|---:|---:|
+| **Revenue** | 0.4 | 2.2 | 7.8 | 24.6 | **56.3** |
+| Operating expenses | 3.5 | 5.5 | 9.5 | 21.0 | 41.0 |
+| **EBITDA** | (3.1) | (3.3) | (1.7) | 3.6 | **15.3** |
+| EBITDA margin | — | — | — | 15% | **~27%** |
+| **Net income** (after D&A + ~21% tax) | (3.1) | (3.3) | (1.7) | 2.5 | **~11.3** |
+
+- **Turns EBITDA-positive in Year 4**; Year-5 net income ~$11M.
+- **Cumulative capital to fund the climb ≈ $8–12M** (peak cumulative burn through Y3–Y4) — **materially more than the §D base's ~$3M**, because this funds a far faster, larger rollout. Likely sourced from APPA reserves **plus partner / outside growth capital at the Pets-of-City LLC level** (the structure already allows this — cf. 6AM City raising from Tegna), which would dilute APPA's stake but de-risk the cash.
+
+### Enterprise value (end of Year 5)
+
+A platform that is part **recurring data/panel/subscription** (higher multiple) and part **media/events/product** (lower multiple), still growing fast:
+
+| Method | Basis | Multiple | EV |
+|---|---|---|---|
+| Revenue multiple | ~$56M | 3–5× (recurring/data-weighted, high growth) | **~$170–280M** |
+| EBITDA multiple | ~$15M | 12–18× | **~$185–275M** |
+| **Blended estimate** | | | **~$200–250M** (range ~$150–300M) |
+
+Plus a potential **strategic premium for the 1.25M opted-in pet-owner panel + intent data** — a one-of-a-kind first-party asset a strategic acquirer (a Chewy/Mars/NielsenIQ/insurer-type) might pay up for, beyond pure financial multiples.
+
+### Combined Ventures note
+
+The panel makes **Pet Intelligence** dramatically more valuable too (proprietary first-party data → premium SaaS). If PI is also at scale (~$15–25M revenue, high-margin, 5–8× revenue ≈ ~$75–200M), **combined APPA Ventures EV could plausibly reach ~$300–450M** — accruing to APPA (less any partner equity). For an organization with ~$17.5M revenue and ~$16.7M net assets today, that is a transformational asset built from a ~$145–169K MVP.
+
+### Caveats
+This is the **bull/North-Star case**, not a forecast: it assumes successful execution to 50 markets, ARPU climbing to ~$45 (requires the panel/card/lead-gen/JV streams all working), ~27% mature margins, and **$8–12M of growth capital**. Multiples are illustrative and cycle-dependent. The conservative, board-ready numbers remain §C/§D; this shows the size of the prize if the platform thesis is proven (which is exactly what the MVP and the staged build are designed to test before this capital is committed).
