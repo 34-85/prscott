@@ -18,7 +18,7 @@ from pathlib import Path
 import pandas as pd
 
 from . import demo as demo_mod
-from . import impute, pipeline
+from . import crosswalk, impute, personas, pipeline, validation
 from .data_sources import DataUnavailable, load_acs_zcta_features, load_reference_data
 
 
@@ -68,6 +68,34 @@ def cmd_data(_args) -> int:
     return 0
 
 
+def cmd_validate(args) -> int:
+    """Cross-validated calibration report -- run on demo or real data."""
+    if args.demo:
+        ref, features, persona_df = demo_mod.make_demo()
+        dist = personas.aggregate_to_zip_distribution(
+            personas.load_personas(_write_tmp(persona_df))
+        )
+    else:
+        ref = load_reference_data()
+        features = pd.read_csv(args.features, dtype={"zip": str}) if args.features else load_acs_zcta_features()
+        features["zip"] = features["zip"].astype(str).str.zfill(5)
+        dist = personas.aggregate_to_zip_distribution(personas.load_personas(args.personas))
+    z2m = crosswalk.build_zip_to_msa(ref)
+    z2m = z2m[z2m["zip"].isin(set(features["zip"]))]
+    report = validation.backtest(features, dist, z2m, config=impute.ImputeConfig(k=args.k))
+    print(report)
+    return 0
+
+
+def _write_tmp(df: pd.DataFrame) -> str:
+    import tempfile
+    fd, path = tempfile.mkstemp(suffix=".csv")
+    import os
+    os.close(fd)
+    df.to_csv(path, index=False)
+    return path
+
+
 def cmd_run(args) -> int:
     try:
         ref = load_reference_data()
@@ -98,6 +126,13 @@ def main(argv=None) -> int:
 
     pdd = sub.add_parser("data", help="fetch + cache real HUD/Census reference data")
     pdd.set_defaults(func=cmd_data)
+
+    pv = sub.add_parser("validate", help="cross-validated calibration report")
+    pv.add_argument("--demo", action="store_true", help="validate on bundled synthetic data")
+    pv.add_argument("--personas", default=None)
+    pv.add_argument("--features", default=None)
+    pv.add_argument("--k", type=int, default=10)
+    pv.set_defaults(func=cmd_validate)
 
     pr = sub.add_parser("run", help="real run on your persona file")
     pr.add_argument("--personas", required=True)

@@ -27,6 +27,7 @@ def run_pipeline(
     ref: ReferenceData,
     features: pd.DataFrame,
     config: impute.ImputeConfig | None = None,
+    data_vintage: str | None = None,
 ) -> PipelineOutput:
     # Stage 1: ZIP -> Metro MSA (dominant assign).
     z2m = crosswalk.build_zip_to_msa(ref)
@@ -41,7 +42,7 @@ def run_pipeline(
     z2m_feat = z2m[z2m["zip"].isin(feat_zips)].copy()
 
     # Stage 3: impute every ZIP that has a feature vector.
-    result = impute.impute_personas(features, dist, z2m_feat, config=config)
+    result = impute.impute_personas(features, dist, z2m_feat, config=config, data_vintage=data_vintage)
 
     enriched = result.assignments.merge(
         dist.groupby("zip")["persona"].apply(lambda s: ", ".join(sorted(set(s)))).rename("observed_personas"),

@@ -29,6 +29,10 @@ OBSERVED = "observed"
 IMPUTED = "imputed_similar"
 EXTRAPOLATED = "extrapolated_baseline"
 
+# Bump when the imputation logic changes in a way that alters outputs. Stamped
+# onto every row so a delivered file can always be traced to the method here.
+METHODOLOGY_VERSION = "1.0.0"
+
 
 @dataclass
 class ImputeConfig:
@@ -70,6 +74,7 @@ def impute_personas(
     observed_dist: pd.DataFrame,
     zip_to_msa: pd.DataFrame,
     config: ImputeConfig | None = None,
+    data_vintage: str | None = None,
 ) -> ImputeResult:
     """Produce a persona estimate for *every* ZIP that has a feature vector.
 
@@ -80,6 +85,12 @@ def impute_personas(
     zip_to_msa : Stage-1 ZIP -> Metro MSA frame.
     """
     config = config or ImputeConfig()
+    # Ensure the observed frame carries its MSA (baselines need it); derive from
+    # the crosswalk if the caller didn't pre-join it.
+    if "msa_cbsa" not in observed_dist.columns:
+        observed_dist = observed_dist.merge(
+            zip_to_msa[["zip", "msa_cbsa"]], on="zip", how="left"
+        )
     cols = config.feature_cols or [
         c for c in features.columns if c != "zip" and pd.api.types.is_numeric_dtype(features[c])
     ]
@@ -118,28 +129,34 @@ def impute_personas(
         msa = msa_map.get(z)
         if z in observed_set:
             persona, share = _top(obs_dist_map[z])
-            records.append((z, persona, round(min(1.0, 0.5 + share / 2), 4), OBSERVED, msa))
+            records.append((z, persona, round(min(1.0, 0.5 + share / 2), 4), OBSERVED, msa, ""))
             continue
 
         dist, idx = nn_pred.kneighbors(X[i : i + 1])
         dist, idx = dist[0], idx[0]
         nearest = dist[0]
         if nearest <= threshold:
-            persona, conf = _weighted_vote(dist, idx, observed_zips, obs_dist_map, threshold)
-            records.append((z, persona, round(conf, 4), IMPUTED, msa))
+            persona, conf, evidence = _weighted_vote(dist, idx, observed_zips, obs_dist_map, threshold)
+            records.append((z, persona, round(conf, 4), IMPUTED, msa, evidence))
         else:
             base = baselines.get(msa) or baselines["__national__"]
             persona, share = _top(base)
             # Confidence decays with how far beyond the cutoff we are.
             conf = round(float(0.25 * threshold / max(nearest, 1e-9)) * max(share, 0.0), 4)
-            records.append((z, persona, min(conf, 0.25), EXTRAPOLATED, msa))
+            evidence = f"baseline:{'msa:' + msa if msa in baselines else 'national'}"
+            records.append((z, persona, min(conf, 0.25), EXTRAPOLATED, msa, evidence))
 
     assignments = pd.DataFrame(
-        records, columns=["zip", "persona", "confidence", "provenance", "msa_cbsa"]
+        records,
+        columns=["zip", "persona", "confidence", "provenance", "msa_cbsa", "evidence"],
     )
     assignments = assignments.merge(
         zip_to_msa[["zip", "msa_title", "in_metro"]], on="zip", how="left"
     )
+    # Lineage stamps -- so every row can be audited back to method + data vintage.
+    assignments["methodology_version"] = METHODOLOGY_VERSION
+    assignments["data_vintage"] = data_vintage or "unspecified"
+    assignments["model_params"] = f"k={k};sim_pct={config.similarity_percentile}"
     return ImputeResult(assignments=assignments, threshold=threshold, baselines=baselines)
 
 
@@ -166,7 +183,12 @@ def _weighted_vote(dist, idx, observed_zips, obs_dist_map, threshold):
     persona, share = _top(blended)
     proximity = float(np.clip(threshold / (dist.mean() + 1e-9), 0.0, 1.0))
     confidence = 0.4 + 0.6 * share * proximity  # imputed tier: 0.4 .. 1.0
-    return persona, min(confidence, 0.99)
+    # Lineage: the look-alike observed ZIPs (and proximity weights) behind this.
+    top = sorted(zip(idx, weights), key=lambda t: -t[1])[:3]
+    evidence = "neighbors:" + ",".join(
+        f"{observed_zips[j]}:{w / weights.sum():.2f}" for j, w in top
+    )
+    return persona, min(confidence, 0.99), evidence
 
 
 def summarize(result: ImputeResult) -> pd.DataFrame:
@@ -182,4 +204,4 @@ def summarize(result: ImputeResult) -> pd.DataFrame:
 
 
 __all__ = ["ImputeConfig", "ImputeResult", "impute_personas", "summarize",
-           "OBSERVED", "IMPUTED", "EXTRAPOLATED"]
+           "OBSERVED", "IMPUTED", "EXTRAPOLATED", "METHODOLOGY_VERSION"]

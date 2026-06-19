@@ -4,7 +4,7 @@ Run: python -m pytest tests/  (or: python tests/test_pipeline.py)
 """
 import pandas as pd
 
-from zip_msa_personas import crosswalk, demo, impute, personas, pipeline
+from zip_msa_personas import crosswalk, demo, impute, personas, pipeline, validation
 from zip_msa_personas.data_sources import ReferenceData
 
 
@@ -84,6 +84,49 @@ def test_full_pipeline_labels_every_zip_with_three_tiers():
     assert means[impute.OBSERVED] >= means[impute.IMPUTED] >= means[impute.EXTRAPOLATED]
     # Confidence is always a probability.
     assert out.enriched["confidence"].between(0, 1).all()
+
+
+def test_output_carries_lineage_stamps():
+    ref, features, persona_df = demo.make_demo(seed=3)
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".csv")
+    os.close(fd)
+    persona_df.to_csv(path, index=False)
+    out = pipeline.run_pipeline(path, ref, features, data_vintage="ACS2022;HUD2023Q4")
+    os.remove(path)
+    for col in ["methodology_version", "data_vintage", "model_params", "evidence"]:
+        assert col in out.enriched.columns
+    assert (out.enriched["data_vintage"] == "ACS2022;HUD2023Q4").all()
+    # Imputed rows cite their look-alike neighbor ZIPs.
+    imp = out.enriched[out.enriched["provenance"] == impute.IMPUTED]
+    assert imp["evidence"].str.startswith("neighbors:").all()
+
+
+def test_backtest_confidence_is_roughly_calibrated():
+    ref, features, persona_df = demo.make_demo(seed=5)
+    dist = personas.aggregate_to_zip_distribution(_df_to_dist(persona_df))
+    z2m = crosswalk.build_zip_to_msa(ref)
+    z2m = z2m[z2m["zip"].isin(set(features["zip"]))]
+    report = validation.backtest(features, dist, z2m, n_splits=4)
+    # Calibration error should be modest, and the disclosed tier should be the
+    # least accurate of the tiers it produced.
+    assert report.calibration_error < 0.25
+    assert 0.0 <= report.overall_accuracy <= 1.0
+    tiers = report.by_tier.set_index("provenance")["accuracy"].to_dict()
+    if impute.EXTRAPOLATED in tiers and impute.IMPUTED in tiers:
+        assert tiers[impute.EXTRAPOLATED] <= tiers[impute.IMPUTED] + 1e-9
+
+
+def _df_to_dist(persona_df):
+    import pandas as pd
+    raw = pd.DataFrame(
+        {
+            "zip": persona_df["zip"].astype(str).str.zfill(5),
+            "persona": persona_df["persona"],
+            "weight": persona_df.get("count", 1.0),
+        }
+    )
+    return raw
 
 
 if __name__ == "__main__":

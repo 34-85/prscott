@@ -62,6 +62,34 @@ only an allowlist of hosts — if those two are blocked, run locally or add them
 to the egress policy. Everything except `data`/`run`'s live fetch works offline,
 and you can always supply your own `--features` CSV.
 
+## Validation — is the confidence trustworthy?
+
+The estimate is only sellable if its confidence is *calibrated*. The backtest
+hides observed ZIPs, predicts them through the production path, and reports
+empirical accuracy per confidence band:
+
+```bash
+python -m zip_msa_personas validate --demo          # on synthetic data
+python -m zip_msa_personas validate --personas your.csv   # on real data
+```
+
+You want (a) a low calibration error, (b) accuracy that rises with confidence,
+and (c) `imputed_similar` beating `extrapolated_baseline`. On the bundled demo
+all three hold.
+
+## Lineage — every row is auditable
+
+Each output row is stamped with `methodology_version`, `data_vintage`,
+`model_params`, and `evidence` — for an estimate, the actual look-alike ZIPs (or
+baseline) that produced it. This is what lets you answer a customer's "where did
+this number come from?"
+
+## Commercial path
+
+See [`ROADMAP.md`](./ROADMAP.md). Short version: first-party personas + public-
+domain Census/HUD means **no redistribution constraints**. Recommended sequence
+is **file delivery → API → self-serve**, all over this same core library.
+
 ## Layout
 
 ```
