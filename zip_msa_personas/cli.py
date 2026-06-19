@@ -18,7 +18,7 @@ from pathlib import Path
 import pandas as pd
 
 from . import demo as demo_mod
-from . import crosswalk, impute, personas, pipeline, validation
+from . import crosswalk, impute, personas, pipeline, rights, validation
 from .data_sources import DataUnavailable, load_acs_zcta_features, load_reference_data
 
 
@@ -65,6 +65,18 @@ def cmd_data(_args) -> int:
     print(f"Cached ZIP->CBSA crosswalk: {len(ref.zip_cbsa)} rows")
     print(f"Cached CBSA metadata: {len(ref.cbsa_meta)} CBSAs")
     print(f"Cached ACS ZCTA features: {len(feats)} ZCTAs")
+    return 0
+
+
+def cmd_export(args) -> int:
+    """Strip non-resellable fields and write a deliverable + rights manifest."""
+    df = pd.read_csv(args.input, dtype=str)
+    manifest = rights.export_deliverable(df, args.out, include_internal=args.include_internal)
+    print(f"Deliverable -> {args.out}")
+    print(f"Manifest    -> {Path(args.out).with_suffix('.manifest.json')}")
+    print(f"Included {len(manifest.included)} fields; excluded {len(manifest.excluded)}: {manifest.excluded or 'none'}")
+    if manifest.excluded and not args.include_internal:
+        print("Excluded fields came from internal-only (licensed) sources -- correct for a sellable file.")
     return 0
 
 
@@ -126,6 +138,12 @@ def main(argv=None) -> int:
 
     pdd = sub.add_parser("data", help="fetch + cache real HUD/Census reference data")
     pdd.set_defaults(func=cmd_data)
+
+    pe = sub.add_parser("export", help="write a sellable file (resellable fields only) + manifest")
+    pe.add_argument("--input", required=True, help="enriched CSV from run/demo")
+    pe.add_argument("--out", default="deliverable.csv")
+    pe.add_argument("--include-internal", action="store_true", help="INTERNAL USE ONLY: keep licensed fields")
+    pe.set_defaults(func=cmd_export)
 
     pv = sub.add_parser("validate", help="cross-validated calibration report")
     pv.add_argument("--demo", action="store_true", help="validate on bundled synthetic data")

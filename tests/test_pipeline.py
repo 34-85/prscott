@@ -4,7 +4,7 @@ Run: python -m pytest tests/  (or: python tests/test_pipeline.py)
 """
 import pandas as pd
 
-from zip_msa_personas import crosswalk, demo, impute, personas, pipeline, validation
+from zip_msa_personas import crosswalk, demo, impute, personas, pipeline, rights, validation
 from zip_msa_personas.data_sources import ReferenceData
 
 
@@ -115,6 +115,46 @@ def test_backtest_confidence_is_roughly_calibrated():
     tiers = report.by_tier.set_index("provenance")["accuracy"].to_dict()
     if impute.EXTRAPOLATED in tiers and impute.IMPUTED in tiers:
         assert tiers[impute.EXTRAPOLATED] <= tiers[impute.IMPUTED] + 1e-9
+
+
+def test_export_strips_licensed_fields_by_default():
+    import tempfile, os
+    df = pd.DataFrame(
+        {
+            "zip": ["07030"],
+            "persona": ["Pet Enthusiasts"],
+            "confidence": [0.8],
+            "methodology_version": ["1.0.0"],
+            "data_vintage": ["ACS2022"],
+            "mosaic_group": ["G12"],  # licensed / internal-only
+        }
+    )
+    fd, path = tempfile.mkstemp(suffix=".csv")
+    os.close(fd)
+    manifest = rights.export_deliverable(df, path)
+    out = pd.read_csv(path)
+    assert "mosaic_group" not in out.columns       # stripped by construction
+    assert "persona" in out.columns                # first-party kept
+    assert "mosaic_group" in manifest.excluded
+    os.remove(path)
+    os.remove(str(__import__("pathlib").Path(path).with_suffix(".manifest.json")))
+
+
+def test_unknown_fields_fail_safe_to_internal():
+    # Anything not in the registry is treated as non-resellable.
+    assert rights.field_license("some_unregistered_column") == rights.INTERNAL
+    assert rights.field_license("persona") == rights.RESELLABLE
+    assert rights.field_license("mosaic_group") == rights.INTERNAL
+
+
+def test_concordance_detects_alignment():
+    # Perfect alignment -> high mutual information.
+    a = pd.DataFrame({"zip": ["1", "2", "3", "4"], "persona": ["A", "A", "B", "B"]})
+    ext = pd.DataFrame({"zip": ["1", "2", "3", "4"], "mosaic": ["X", "X", "Y", "Y"]})
+    rep = validation.concordance(a, ext)
+    assert rep.n_overlap == 4
+    assert rep.normalized_mutual_info > 0.9
+    assert rep.adjusted_rand > 0.9
 
 
 def _df_to_dist(persona_df):

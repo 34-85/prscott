@@ -16,6 +16,7 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score
 
 from . import impute, personas
 
@@ -107,4 +108,54 @@ def backtest(
     )
 
 
-__all__ = ["CalibrationReport", "backtest"]
+@dataclass
+class ConcordanceReport:
+    """How strongly our personas align with an external segmentation (e.g. Mosaic).
+
+    Used as an *internal confirmation* signal -- it measures agreement without
+    redistributing the external labels, so it respects an internal-only license.
+    """
+
+    n_overlap: int
+    normalized_mutual_info: float   # 0 (independent) .. 1 (perfectly aligned)
+    adjusted_rand: float            # ~0 (chance) .. 1 (identical partitions)
+    crosstab: pd.DataFrame
+
+    def __str__(self) -> str:
+        return (
+            f"Concordance over {self.n_overlap} ZIPs present in both sources\n"
+            f"Normalized mutual information: {self.normalized_mutual_info:.3f}\n"
+            f"Adjusted Rand index:           {self.adjusted_rand:.3f}\n"
+            "(higher = our personas are independently corroborated by the external "
+            "segmentation; this stays internal -- no external labels are redistributed)"
+        )
+
+
+def concordance(assignments: pd.DataFrame, external: pd.DataFrame) -> ConcordanceReport:
+    """Compare our persona labels to an external per-ZIP segmentation.
+
+    Parameters
+    ----------
+    assignments : pipeline output with columns ['zip', 'persona'].
+    external : DataFrame with ['zip', external_label_col]; the second column is
+        treated as the external segment (e.g. a Mosaic group). Only ZIPs present
+        in both are compared.
+    """
+    label_col = [c for c in external.columns if c != "zip"][0]
+    merged = assignments[["zip", "persona"]].merge(
+        external[["zip", label_col]].rename(columns={label_col: "external"}),
+        on="zip",
+    ).dropna()
+    if merged.empty:
+        raise ValueError("No overlapping ZIPs between our output and the external segmentation.")
+    ours = merged["persona"].astype("category").cat.codes
+    theirs = merged["external"].astype("category").cat.codes
+    return ConcordanceReport(
+        n_overlap=len(merged),
+        normalized_mutual_info=float(normalized_mutual_info_score(ours, theirs)),
+        adjusted_rand=float(adjusted_rand_score(ours, theirs)),
+        crosstab=pd.crosstab(merged["persona"], merged["external"]),
+    )
+
+
+__all__ = ["CalibrationReport", "backtest", "ConcordanceReport", "concordance"]

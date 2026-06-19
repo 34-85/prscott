@@ -84,11 +84,26 @@ Each output row is stamped with `methodology_version`, `data_vintage`,
 baseline) that produced it. This is what lets you answer a customer's "where did
 this number come from?"
 
+## Rights-safe delivery
+
+Licensed sources (e.g. Experian Mosaic) must never leak into a sellable file.
+`rights.py` tags every field by license class and the export strips anything
+non-resellable by construction, writing a rights manifest alongside:
+
+```bash
+python -m zip_msa_personas export --input enriched_zips.csv --out deliverable.csv
+```
+
+Mosaic, if used, stays an **internal confirmation** signal via
+`validation.concordance` (measures persona↔Mosaic alignment without
+redistributing Mosaic labels) — never an enrichment field in the output.
+
 ## Commercial path
 
-See [`ROADMAP.md`](./ROADMAP.md). Short version: first-party personas + public-
-domain Census/HUD means **no redistribution constraints**. Recommended sequence
-is **file delivery → API → self-serve**, all over this same core library.
+See [`ROADMAP.md`](./ROADMAP.md). Short version: first-party pet-owner personas +
+public-domain Census/HUD means **no redistribution constraints**. Recommended
+sequence is **file delivery → opportunity scoring → API → self-serve**, all over
+this same core library.
 
 ## Layout
 

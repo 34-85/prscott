@@ -3,10 +3,30 @@
 Turning the ZIP→MSA→persona engine into a product. The core library stays the
 same across every phase; each phase wraps it in more surface area.
 
-## Position
-- **Persona data:** first-party. **Reference data:** Census + HUD (public domain).
-- **Consequence:** no third-party redistribution constraints — the scored output
-  is yours to sell. Keep lineage clean so provenance is always provable.
+## Product
+Geo-located **pet-owner personas**: a proprietary pet-owner segmentation,
+enriched with the APPA National Pet Owners Survey (longitudinal since 1998),
+mapped to every ZIP/MSA in the country. Buyers — pet **brands**, **retailers**,
+and **veterinarians** — use it to position products, stores, clinics, and
+services where the persona↔offer product-market fit is strongest.
+
+## Data sources & rights (enforced in `rights.py`)
+| Source | Class | Notes |
+|---|---|---|
+| Proprietary pet-owner segmentation | **Resellable** | First-party IP. |
+| APPA National Pet Owners Survey | **Resellable (derived)** | Confirm license permits commercial *derivative* products; raw APPA fields are not redistributable. |
+| Census ACS, HUD, OMB delineation | **Resellable** | Public domain. |
+| Experian Mosaic | **Internal only** | Validation/confirmation ONLY. No Mosaic-derived field enters a deliverable without a written redistribution/syndication license. Not legal advice — have counsel read the "derivative works" + "redistribution" clauses. |
+
+`export_deliverable` strips internal-only fields by construction and writes a
+rights manifest, so a licensed source can never leak into a sellable file by
+accident. Unknown fields fail safe to internal-only.
+
+## Mosaic as confirmation (not enrichment)
+`validation.concordance` measures how strongly our personas align with an
+external segmentation (NMI / adjusted Rand) over shared ZIPs — a credibility
+signal ("independently corroborated by Experian Mosaic") that keeps Mosaic
+internal and redistributes none of its labels.
 
 ## The product is the *estimate*, not the lookup
 Stages 1–2 (ZIP→MSA, the join) are commodity. Stage 3 (estimating empty ZIPs)
@@ -22,15 +42,27 @@ Run national scoring per engagement; deliver a lineage-tagged CSV/Parquet.
 - Build: hardened batch runner over all ~33k ZCTAs, pinned data vintages,
   calibration report shipped alongside every delivery.
 
-### Phase 2 — API / SaaS
+### Phase 2 — Opportunity scoring (the real revenue driver)
+A scoring layer *on top* of persona-by-ZIP. Given a client's target personas
+(e.g. a premium-food brand's high-spend pet owners, or a vet chain's segments),
+rank ZIPs / MSAs / trade areas by **persona↔offer fit**:
+- Inputs: client's target persona weights + (optionally) their store/clinic
+  footprint and category sales.
+- Output: ranked locations with fit score, addressable persona counts, and
+  whitespace ("strong fit, no presence") — what a brand or vet actually pays for.
+- Build: a `opportunity.py` module that takes target-persona weights and the
+  enriched ZIP table and returns scored geographies; confidence carries through
+  from the persona layer so estimated ZIPs are flagged.
+
+### Phase 3 — API / SaaS
 Same engine behind an endpoint (single ZIP + batch). Add when customers want
 on-demand lookups in their own apps.
 - Build: API layer, results store keyed by (zip, methodology_version,
   data_vintage), auth, rate limits, scheduled re-scoring on new data vintages.
 
-### Phase 3 — Self-serve / dashboard
+### Phase 4 — Self-serve / dashboard
 Only if the market pulls you there. Upload personas → get scored file + a
-calibration/coverage report.
+calibration/coverage report + opportunity maps.
 
 ## Engineering backlog (priority order)
 1. **Calibration hardening** — isotonic/Platt scaling so confidence is a true
