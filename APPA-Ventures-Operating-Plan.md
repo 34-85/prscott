@@ -666,3 +666,59 @@ The fuller cost base moves Year 3 from the §C surplus to **~breakeven at the op
 - **Phasing:** new roles assumed to start mid-period on average; Year-1/2 cost below year-end run-rate accordingly.
 - **Partner-leveraged model** keeps internal engineering lean (platforms largely operated by partners); a full build-alone path would add ~$1–2M of internal tech headcount and push breakeven later.
 - **Editors are commission-weighted and PT-to-FT**, so their cost scales with the revenue they generate.
+
+---
+
+# §B-Upside — North-Star Scenario: PoC as a "Just-in-Time Pet-Ownership Platform"
+
+> **Blue-sky / upside case — NOT the §C/§D base.** This is the north-star vision if Pets of [City] reaches scale (50 markets × 25,000 subs = 1.25M opted-in pet owners). It reframes PoC from a local-media business into a **proprietary pet-owner data + intent platform** monetized across the full ownership lifecycle. Numbers are illustrative.
+
+## The reframe
+
+At scale, the subscriber base isn't the product — **the opted-in, profiled, longitudinal pet-owner panel and the just-in-time intent are the product.** 1.25M engaged pet owners is a research panel orders of magnitude larger than NPOS and unmatched by any commercial data vendor, and the platform intercepts the highest-value lifecycle moments (getting a pet, new-owner onboarding, moving/housing, health/longevity, loss/re-adoption) where vet/insurance/food/brand lifetime relationships are formed.
+
+## Full revenue-stream stack (mature platform, illustrative ARPU)
+
+| Revenue stream | $/subscriber/yr | Notes |
+|---|---:|---|
+| Advertising & sponsorship (intent-targeted) | $12 | Now priced on intent, not just reach |
+| Research / panel | $6 | Surveys, trackers, concept tests sold to brands; feeds Pet Intelligence |
+| High-intent lead-gen | $8 | Insurance/vet/food/housing at lifecycle moments (insurance penetration only ~3.9% = huge runway) |
+| **Events** | $4 | Local adoption days/yappy hours/mini-expos at 50-market scale **+ flagship regional pet festivals** (sponsorship + tickets + vendor booths) |
+| **Product JV sales** | $4 | Co-branded/private-label products & **new-owner starter kits** via JV with member brands / a for-profit partner (margin or profit-share) |
+| **Citywide Pet Discount Card** | $5 | Consumer subscription + participating-business network fees (see spotlight) |
+| Commerce / affiliate / marketplace take | $3 | Transaction take + affiliate |
+| Data products | $3 | Aggregate insights → Pet Intelligence enterprise |
+| **Blended ARPU** | **~$45** (range $35–55) | vs. ~$8–13 for a basic newsletter — the intent + panel + card/JV/events layers ~3–5× per-sub value |
+
+## At the two scales
+
+| | 50,000 subs (10 × 5,000) | 1,250,000 subs (50 × 25,000) |
+|---|---|---|
+| Blended ARPU ~$35–55 | **~$1.75M – $2.75M/yr** | **~$44M – $69M/yr** |
+| What it is | Proof of the platform model; usable regional panel | A national pet-owner intent + data platform rivaling APPA's entire current revenue — started from a $145K MVP |
+
+## Spotlights on the three additions
+
+**Events (at scale).** Local recurring events across 50 markets, plus optional **flagship regional consumer pet festivals** (ticketed + sponsored + vendor booths). Events also recruit panel members, generate first-party data, build community, and deepen sponsor relationships — revenue *and* fuel for the flywheel.
+
+**Product JV sales.** A natural fit with the for-profit-JV structure (Ventures + a for-profit partner or member brands): sell **co-branded/private-label products** and curated **new-owner starter kits** to a high-intent audience at the exact acquisition moment. Revenue = product margin or JV profit-share. The new-puppy/kitten starter kit is the killer just-in-time product.
+
+**Citywide Pet Discount Card (the sleeper).** A local pet "AAA/Costco card" — discounts at participating vets, groomers, boarders, trainers, independent retailers, and pet-friendly restaurants.
+- **Revenue:** consumer subscription (~$25/yr; even 20–30% attach on 1.25M subs ≈ **$6–9M**) **+** participating-business network fees (thousands of local businesses × ~$300–1,000/yr ≈ several $M).
+- **Why it's strategic beyond revenue:** (1) drives **measurable foot traffic** to local pet businesses — the killer proof-of-value for advertisers/directory; (2) generates **transaction/redemption data** (who buys what, where) that supercharges the panel and Pet Intelligence; (3) **advances the mission** by funneling spend to independent retail, vets, and shelters; (4) deepens consumer **retention** (a paid card = sticky relationship).
+
+## The compounding prize (PoC + Pet Intelligence)
+
+The 1.25M-person panel + card transaction data makes **Pet Intelligence the unrivaled, first-party pet-data authority** — something Packaged Facts/NielsenIQ structurally cannot match — while Pet Intelligence's analytics make PoC's ad/lead-gen/card smarter and higher-priced. The two become one **data-and-intent flywheel**: the closest thing the pet industry has to a Chewy-scale first-party asset, owned by the industry's association-affiliated venture.
+
+## Build-from-day-one requirements (so the option is preserved)
+
+Even in the MVP, architect for this upside:
+- **Explicit opt-in / consent** for panel participation and lead-gen (CCPA-class compliance) from the first market.
+- **Data architecture** that captures profile + behavioral + (later) card-redemption data cleanly.
+- **Discount-card and JV optionality** designed into the platform and the participating-business directory.
+- Editorial/no-vet-advice guardrails unchanged.
+
+## Caveats
+This is the **bull/north-star case**, not the committed plan. It assumes a multi-year, well-executed climb to 50 markets; real data/consent infrastructure; a sales motion beyond local editors (Ventures shared platform + partners); and disciplined privacy compliance. ARPU may compress on ads at scale but expand on panel/card/data; the ~$45 blend is kept deliberately mid-range.
