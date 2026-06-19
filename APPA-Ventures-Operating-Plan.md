@@ -35,7 +35,7 @@ These are deliberately paired: one is B2B data, one is B2C audience, and **each 
 | **Why a C-corp** | Creates real tax separation: pays corporate income tax, then remits after-tax profit to APPA as **tax-free dividends**; lets losses in one business offset gains in another; keeps unrelated-business activity out of the (c)(6) so it never threatens the exemption. (A pass-through LLC would flow income straight back to APPA and create UBIT — the wrong vehicle for this purpose.) |
 | **Business units** | Each line is a **subsidiary LLC under Ventures** — e.g., *Pet Intelligence LLC*, *Pets of City Media LLC*. This isolates risk, enables clean partner equity/JV at the business-unit level, and keeps the parent insulated. |
 | **Joint ventures** | Any JV with a for-profit partner (a local-media engine, a data partner) is held **through Ventures, not by APPA directly** — converting what would be UBIT into taxable-subsidiary income that flows up as dividends, and shielding APPA's exemption. |
-| **Arm's-length agreements with APPA** | (1) **Brand license** — APPA licenses its name/marks to Ventures for a royalty; (2) **Data license** — NPOS and other proprietary data licensed to Ventures on defined terms (including AI/derived-use rights); (3) **Shared-services agreement** — Ventures pays APPA (or vice-versa) for shared staff/space at fair value; (4) **IP assignment** — product IP built in Ventures stays in Ventures. All documented, fair-valued, board-approved. |
+| **Arm's-length agreements with APPA** | (1) **Brand license** — APPA licenses its name/marks to Ventures for a royalty; (2) **Data license** — NPOS and other proprietary data licensed to Ventures on defined terms (including AI/derived-use rights); (3) **Shared-services agreement** — Ventures pays APPA at fair value for shared services, **including the finance/accounting function delivered by APPA's existing team in Stamford, CT** (Ventures keeps its own **separate books** under that function); (4) **IP assignment** — product IP built in Ventures stays in Ventures. All documented, fair-valued, board-approved. |
 
 **Financial flows (how money moves):** Ventures earns revenue → covers its own costs → pays APPA a **brand + data royalty** (deductible to Ventures; income to APPA) → pays **corporate tax** on remaining profit → distributes **after-tax dividends** to APPA (tax-free to the parent). APPA seeds Ventures with capital from reserves as **equity and/or an intercompany loan**.
 
@@ -45,7 +45,7 @@ These are deliberately paired: one is B2B data, one is B2C audience, and **each 
 
 The structure only protects APPA's exemption if Ventures is **genuinely separate yet ultimately controlled** by APPA for mission and brand.
 
-- **Separate Ventures board** — a majority appointed by/accountable to APPA, plus **independent directors with commercial/operator experience** (media, data/SaaS, ad-tech) and, where relevant, partner representation. Independent governance and arm's-length dealing are the documented requirements for shielding the parent.
+- **Separate Ventures board — 7 directors: 4 nominated from the existing APPA Board of Directors + 3 independents from partner / technology / AI fields (explicitly *not* from the pet industry).** The 4/7 APPA majority keeps the parent in clear control of mission, brand, and reserved matters (protecting the exemption); the 3 independents bring **commercial/operator expertise** (data/SaaS, AI, media, ad-tech, partnerships) *and*, by being non-pet, **avoid member conflicts of interest** and add outside-in perspective. Independent governance and arm's-length dealing are the documented requirements for shielding the parent. *(The CEO — who also serves as APPA's CEO — leads management and reports to this board; whether the CEO also holds a board seat is a detail to set, but the 4 independent-of-management APPA directors + 3 independents provide healthy oversight of the dual role.)*
 - **APPA retains control via reserved matters** — brand use and standards, mission alignment, data rights, major capital commitments, new business lines, and any action contrary to APPA advocacy positions require APPA approval.
 - **Management** — a **Ventures CEO/President** (the strategy's proposed Chief Commercial/Data Officer is the natural first hire) leads day-to-day, reporting to the Ventures board. Business-unit GMs run each LLC.
 - **Mission & brand guardrails (a written charter).** Ventures may not: publish veterinary/medical advice; take positions contrary to APPA advocacy; or use the APPA brand off-standard. Ventures must: promote pet ownership, independent retail, member brands, vets (services only), shelters, and pet-inclusive housing in line with APPA policy.
@@ -66,7 +66,7 @@ One set of capabilities is built once and reused across every business unit — 
 | **Ad / sponsorship sales** (national member-brand sales + local SMB sales playbook) | Pets of City (local + national); Pet Intelligence (enterprise/sponsorship) |
 | **Content & AI-ops** (AI generation + human/editorial review, brand-safety guardrails) | Pets of City (newsletters/events); Pet Intelligence (auto-briefs) |
 | **Member & customer success** (health-score, retention, billing/subscriptions) | Both — and shared with APPA membership |
-| **Finance, legal, data-rights, HR** | Whole portfolio |
+| **Finance/accounting (provided by APPA's Stamford team, via shared-services fee), plus legal, data-rights, HR** | Whole portfolio |
 
 ### 4.2 Portfolio stage-gates
 
@@ -552,7 +552,7 @@ Base salaries in $000. "OTE" = on-target earnings (base + commission) for revenu
 |---|---:|---:|---:|---:|
 | **Corporate / Shared** | | | | |
 | President, APPA Ventures | 250 | 1 | 1 | 1 |
-| VP Finance & Operations | 165 | — | 1 | 1 |
+| ~~VP Finance & Operations~~ → **finance provided by APPA/Stamford** (shared-services fee, not an FTE) | — | — | — | — |
 | Operations & People Coordinator | 80 | — | — | 1 |
 | **Pet Intelligence (§A)** | | | | |
 | GM, Pet Intelligence | 190 | 1 | 1 | 1 |
@@ -568,9 +568,11 @@ Base salaries in $000. "OTE" = on-target earnings (base + commission) for revenu
 | Content & Editorial Ops Lead | 120 | 1 | 1 | 1 |
 | Audience Growth Manager | 110 | — | — | 1 |
 | Community Editors — blended PT/FT (OTE)* | 58 | 2 | 8 | 16 |
-| **Total FTE (year-end)** | | **9** | **20** | **35** |
+| **Total FTE (year-end)** | | **9** | **19** | **34** |
 
 \*Community editors are deliberately **commission-weighted and start part-time**, converting to full-time as a market's revenue supports it (per §B). The blended $58K reflects that PT/FT/commission mix. Legal/data-rights counsel is **outsourced** in Year 1 (in professional services, D.3) and only partially internalized later.
+
+**Finance is provided by APPA's Stamford team** under the shared-services agreement (not a Ventures FTE). This **removes the VP Finance & Operations hire** and instead adds a **finance shared-services fee to APPA of ~$60–90K/yr (from Year 2)** in non-personnel (D.3). Net effect: personnel cost falls by ~$165K base (~$215K loaded) in Years 2–3, partly offset by the fee — a **modestly favorable** change that sits within the model's illustrative ranges, so the **headline ~$3.0M ask and the cash flow are unchanged** (slightly more conservative now). Year-end FTE accordingly: **9 / 19 / 34.**
 
 ## D.2 Personnel cost summary (with 30% benefits)
 
