@@ -535,3 +535,118 @@ The royalty flows to APPA **even in Ventures' loss years** (it's a license payme
 ## C.7 Reconciliation to §8
 
 The §8 "indicative venture-level shape" (revenue ~$1.2M / $3.5M / $6.5M; pre-tax (0.8)/0.3/2.0; dividend —/0.2/1.6) was a top-down placeholder. **§C is the bottoms-up build and governs from here:** revenue is slightly higher (~$1.2M / $3.8M / $7.6M) because both business plans firmed up, but profitability and dividends are **more conservative** (pre-tax (1.4)/(0.8)/0.4; dividend —/—/~0.3) due to fuller cost loading and a realistic PoC investment curve. The larger upstreaming to APPA is a Years 4–5 event, not Year 3.
+
+> **Note (added with §D):** The **line-itemed expense & personnel build in §D refines §C upward.** With a fully-staffed org chart, total operating expense is higher, **Year 3 lands at ~breakeven (not +$0.7M)**, the **operating cash-positive crossover moves to Year 4**, and the **capital ask refines from ~$2.3M to ~$3.0M.** §D governs the budget and the ask; §C's revenue build still holds. This is the expected result of replacing a top-down estimate with a bottoms-up budget.
+
+---
+
+# §D — Detailed Expense & Personnel Projections
+
+*The bottoms-up budget backing the capital request. This section line-items every expense and details headcount by person/title/salary with a 30% benefits load. **It refines the top-down §C and the investment summary:** fully-costed, total OpEx is higher, Year 3 is ~breakeven, the cash-positive crossover is Year 4, and the capital ask is **~$3.0M staged**. All figures illustrative planning estimates; salaries are US-market midpoints to be validated against compensation benchmarks at hire.*
+
+## D.1 Personnel plan (headcount by person, title, base salary)
+
+Base salaries in $000. "OTE" = on-target earnings (base + commission) for revenue roles. Headcount shown is **year-end FTE**; Year-1/2 budgeted cost is phased for mid-year hiring (see D.2). A **30% benefits load** applies to all salaries/wages (D.2).
+
+| Function / Title | Base ($000) | Y1 | Y2 | Y3 |
+|---|---:|---:|---:|---:|
+| **Corporate / Shared** | | | | |
+| President, APPA Ventures | 250 | 1 | 1 | 1 |
+| VP Finance & Operations | 165 | — | 1 | 1 |
+| Operations & People Coordinator | 80 | — | — | 1 |
+| **Pet Intelligence (§A)** | | | | |
+| GM, Pet Intelligence | 190 | 1 | 1 | 1 |
+| Product & Data Lead | 160 | 1 | 1 | 1 |
+| Data Scientist / Analyst | 125 | 1 | 2 | 3 |
+| Data Partnerships Manager | 140 | — | 1 | 1 |
+| Customer Success Manager | 100 | 1 | 1 | 2 |
+| Account Executive (OTE) | 120 | — | 1 | 3 |
+| Marketing Manager | 110 | — | — | 1 |
+| **Pets of [City] (§B)** | | | | |
+| GM / Publisher | 180 | 1 | 1 | 1 |
+| National Ad Sales Lead (OTE) | 150 | — | 1 | 1 |
+| Content & Editorial Ops Lead | 120 | 1 | 1 | 1 |
+| Audience Growth Manager | 110 | — | — | 1 |
+| Community Editors — blended PT/FT (OTE)* | 58 | 2 | 8 | 16 |
+| **Total FTE (year-end)** | | **9** | **20** | **35** |
+
+\*Community editors are deliberately **commission-weighted and start part-time**, converting to full-time as a market's revenue supports it (per §B). The blended $58K reflects that PT/FT/commission mix. Legal/data-rights counsel is **outsourced** in Year 1 (in professional services, D.3) and only partially internalized later.
+
+## D.2 Personnel cost summary (with 30% benefits)
+
+| ($000) | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| Salaries & wages (base + commission, **phased** for hire dates) | 1,131 | 2,038 | 3,346 |
+| Benefits & payroll taxes (**30%**) | 339 | 612 | 1,004 |
+| **Total personnel cost** | **1,470** | **2,650** | **4,350** |
+| *Memo: year-end FTE* | *9* | *20* | *35* |
+| *Memo: fully-staffed run-rate at year-end (loaded)* | *~1,610* | *~2,980* | *~4,570* |
+
+Year-1 and Year-2 budgeted cost is **below the year-end run-rate** because hiring phases in across each year (new roles assumed to start, on average, mid-period). Year 3 approaches full run-rate.
+
+## D.3 Non-personnel expense line items
+
+| ($000) | Year 1 | Year 2 | Year 3 | Notes |
+|---|---:|---:|---:|---|
+| Data licensing (retail POS / consumer panels) | 100 | 350 | 550 | Owned NPOS ≈ $0; POS layered from Y2 |
+| Platform partner fees & revenue-share (PI data + PoC media) | 200 | 575 | 1,050 | BOT/partner model; scales with revenue |
+| Technology, cloud & AI/LLM compute & software | 140 | 260 | 440 | Hosting, vector store, LLM tokens, SaaS tooling |
+| Subscriber acquisition & marketing programs | 320 | 470 | 700 | PoC paid media (CAC <$1.50) + PI marketing |
+| Local events (PoC) | 30 | 120 | 250 | Adoption days, yappy hours, mini-expos |
+| Professional services (legal, data-rights, audit, formation) | 250 | 120 | 100 | Higher Y1 for entity formation & contracts |
+| Office, travel, insurance & G&A | 100 | 130 | 200 | Lean; largely remote |
+| **Total non-personnel** | **1,140** | **2,025** | **3,290** | |
+
+## D.4 Total operating expense & result (revised, bottoms-up)
+
+| ($000) | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| Total personnel (D.2) | 1,470 | 2,650 | 4,350 |
+| Total non-personnel (D.3) | 1,140 | 2,025 | 3,290 |
+| **Total operating expense** | **2,610** | **4,675** | **7,640** |
+| Revenue (per §C) | 1,200 | 3,800 | 7,600 |
+| **Operating result (before royalty & tax)** | **(1,410)** | **(875)** | **(40)** |
+| Brand + data royalty to APPA (~4%) | (50) | (150) | (300) |
+| Income tax | — | — | — |
+| **Net income** | **(1,460)** | **(1,025)** | **(340)** |
+
+The fuller cost base moves Year 3 from the §C surplus to **~breakeven at the operating line**, with net income still modestly negative after the royalty — i.e., **dividends begin in Year 4**, not Year 3.
+
+## D.5 Revised capital requirement & cash flow
+
+| ($000) | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| Beginning cash | 0 | 140 | 115 |
+| **Capital contribution from APPA** | 1,600 | 1,000 | 350 |
+| Operating cash flow (before royalty/tax) | (1,410) | (875) | (40) |
+| Royalty to APPA | (50) | (150) | (300) |
+| Dividend to APPA | — | — | — |
+| **Ending cash** | **140** | **115** | **125** |
+| *Cumulative capital from APPA* | *1,600* | *2,600* | *2,950* |
+
+- **Revised capital ask ≈ $3.0M, staged** ($1.6M / $1.0M / $0.35M), fully drawn by Year 3.
+- **Operating cash-positive in Year 4** (Year 3 ≈ breakeven); **dividends begin Year 4.**
+- **Net capital at risk ≈ ~$2.3M** (the royalty recycles within the APPA family); gross committed ~$3.0M including operating buffer.
+- **Still fully funded from APPA's ~$16.7M net assets** with wide margin, and within the main strategy's $3.5–6.0M startup envelope.
+- Optional partner co-investment into a business-unit LLC would reduce APPA's cash exposure below $3.0M.
+
+## D.6 Reconciliation: what changed from §C / the investment summary
+
+| Item | §C / Investment Summary (top-down) | §D (bottoms-up) |
+|---|---|---|
+| Total OpEx (Y1/Y2/Y3) | 2,570 / 4,425 / 6,890 | **2,610 / 4,675 / 7,640** |
+| Year-3 operating result | +710 | **~(40) — breakeven** |
+| Operating cash-positive | Year 3 | **Year 4** |
+| First dividend to APPA | Year 3 | **Year 4** |
+| Capital ask (committed) | ~$2.3M | **~$3.0M** |
+| Peak capital / net at risk | $2.3M / ~$2.0M | $2.95M / **~$2.3M** |
+
+**Why it moved:** the top-down model under-counted fully-loaded headcount (35 FTE by Year 3, incl. 16 community editors) and the 30% benefits load. Revenue is unchanged. The investment case is intact — a capped, reserve-funded investment with strong strategic returns — but the **honest ask is ~$3.0M with a Year-4 cash-positive crossover.** **§D governs the budget and the ask.**
+
+## D.7 Key budget assumptions
+
+- **Benefits load: 30%** of base/commission (health, retirement, payroll taxes) — per direction.
+- **Salaries:** US-market midpoints; revenue roles shown at OTE (base + commission); validate against a compensation survey at hire.
+- **Phasing:** new roles assumed to start mid-period on average; Year-1/2 cost below year-end run-rate accordingly.
+- **Partner-leveraged model** keeps internal engineering lean (platforms largely operated by partners); a full build-alone path would add ~$1–2M of internal tech headcount and push breakeven later.
+- **Editors are commission-weighted and PT-to-FT**, so their cost scales with the revenue they generate.
