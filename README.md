@@ -2,6 +2,18 @@
 
 General GitHub repo.
 
+## ZIP → MSA → Persona pipeline
+
+Match ZIP codes to metro areas, attach persona data, and estimate personas for
+empty ZIPs — every estimate labeled `observed` / `imputed_similar` /
+`extrapolated_baseline` with a confidence score. See
+[`zip_msa_personas/README.md`](./zip_msa_personas/README.md).
+
+```bash
+pip install -r requirements.txt
+python -m zip_msa_personas demo        # end-to-end on synthetic data, no network
+```
+
 ## Higgsfield MCP integration
 
 This repo ships a project-scoped [`.mcp.json`](./.mcp.json) that registers the
