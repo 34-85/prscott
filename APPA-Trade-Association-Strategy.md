@@ -222,13 +222,70 @@ Five product pillars, each mapped to revenue growth, diversification, and indust
 
 ### Pillar 1 — APPA Pet Intelligence (data & insights platform) — *the flagship growth bet*
 
-Transform NPOS from a biennial report into a **year-round, tiered data subscription platform** — the IHA/SEMA model, adapted to pet:
+Transform NPOS from a periodic report into a **year-round, tiered, AI-enabled data subscription platform** — the IHA/SEMA model, adapted to pet and modernized with AI:
 
 - **APPA Pet Intelligence Pro** — annual subscription: live dashboards, the full NPOS, quarterly trackers, category/channel sizing, and consumer purchase-intent waves.
 - **Tiered access** — Basic (members), Pro (members premium / non-members), Enterprise (custom cuts, API access, seat-based) — mirroring SEMA Data's seat model.
 - **Partner for the data APPA doesn't own:** license retail **POS data from NielsenIQ or Circana** and consumer panels (à la IHA's Morning Consult/Springboard partners) to combine APPA's proprietary survey with point-of-sale truth — a combination no commercial vendor can replicate.
 - **Custom & syndicated research** services for members and brands.
 - **Impact:** establishes APPA as *the* definitive pet-data authority, neutralizing Packaged Facts/Euromonitor encroachment.
+
+### Pillar 1 deep-dive — the AI data platform, build economics & the engagement flywheel
+
+This is the flagship initiative because it is a **dual-purpose asset**: the highest-margin new revenue line *and* the strongest lever on dues retention. It deserves separate treatment.
+
+#### A. Why AI — and what the AI actually is
+
+The opportunity is real and time-sensitive, but the **AI is the interface and accelerant, not the product. The moat is APPA's proprietary data** — the National Pet Owners Survey back to 1988, Global Pet Expo exhibitor/new-product data, and (via partners) retail POS. Generic AI tools will confidently hallucinate pet-market answers; APPA can deliver *verified, grounded, citable* ones. If APPA does not productize its data with a modern AI interface, third parties will approximate it and erode NPOS's authority — so first-mover advantage compounds.
+
+The right monetization is a **tiered "core data subscription + AI co-pilot add-on,"** which raises average revenue per account without re-selling the base (the prevailing way SaaS is monetizing GenAI today):
+
+| Layer | What it is | Monetization |
+|---|---|---|
+| Core data (Pet Intelligence) | Dashboards, NPOS, trackers, category/channel sizing | Base subscription (member / non-member tiers) |
+| **AI co-pilot add-on** | Natural-language analyst over APPA's data: *"How is Gen-Z cat-ownership spending trending vs. two years ago?"* → grounded answer with charts + sources; auto-generated category/competitor briefs; trend/early-signal detection; forecasting | **Premium add-on / per-seat upsell** (expansion revenue) |
+| Enterprise | API access; custom analysis on a brand's own + APPA data; white-glove | Highest ARPU |
+
+**Four cautions that decide success or failure:** (1) **grounded/RAG architecture, never generative guessing** — on quantitative data, hallucination is fatal to trust; answers must be retrieved from source data and cite it; (2) **data rights** — POS/panel partner data generally cannot be fed into shared AI without specific contract language, so negotiate AI/derived-use rights up front; (3) **IP + tax** — house the platform and data assets in the for-profit subsidiary (APPA Ventures); (4) **build on existing LLM APIs + RAG**, do not train a model from scratch.
+
+#### B. Anticipated cost to develop — build alone vs. with a partner
+
+The platform has four cost components: **data engineering/warehouse**, **application layer** (dashboards, auth, subscription billing, member portal), **AI layer** (RAG pipeline, vector store, LLM integration, guardrails, evaluation), and **recurring run costs** (data licensing, cloud, LLM tokens, maintenance, member-success staff). The single largest *recurring* item is third-party **data licensing** (POS/panel), not the AI itself.
+
+| | **Build alone (in-house)** | **Build with a partner** |
+|---|---|---|
+| Year-1 cash to APPA | **~$1.8M – $3.0M** | **~$0.5M – $1.0M** |
+| Ongoing annual run-rate (to APPA) | **~$1.5M – $2.5M** | **~$0.4M – $0.8M fees + revenue share (typically 20–50% to partner)** |
+| Time to a credible v1 | 12–18 months | **6–9 months** |
+| Long-run margin capture | Highest | Shared with partner |
+| IP / data ownership | Full | **Must be negotiated** (keep data + brand) |
+| Execution risk | **High** — APPA has no in-house data-product/AI/ML muscle today | Lower — partner brings talent + infrastructure |
+| Control of roadmap | Full | Shared |
+
+**Build-alone composition (Year-1):** a small product/eng pod of ~5–7 (product lead, 2–3 data/ML engineers, 2 full-stack, designer) at loaded cost ≈ $1.0–1.5M; platform/AI build (in-house + specialist contractors) ≈ $0.5–0.9M; data licensing ≈ $0.2–0.5M/yr; cloud + LLM tokens ≈ $0.05–0.15M/yr (scales with usage); design/UX ≈ $0.1–0.2M. Ongoing run-rate stays at $1.5–2.5M because you carry the team *and* the data-licensing line every year.
+
+**Partner archetypes (lower APPA cash, faster, shared economics):**
+- **Build-Operate-Transfer (BOT) tech/data-product studio** — partner builds and runs v1; APPA owns data + brand and can in-source later. *Best fit for APPA.*
+- **Data partner (NielsenIQ / Circana / Packaged Facts)** — contributes POS/market data + analytics infrastructure on a revenue-share.
+- **JV with a for-profit** (via APPA Ventures) — partner contributes platform/talent/capital, APPA contributes proprietary data + brand + 1,200-member distribution; equity/profit split. APPA's contribution (data + audience) is genuinely scarce, which strengthens its negotiating position on splits and data rights.
+
+**Recommendation: a hybrid "partner to launch, retain ownership, optionally in-source."** Use a BOT/JV partner to reach a v1 in ~6–9 months at ~$0.5–1.0M of APPA cash (vs. 12–18 months and ~$2–3M to go it alone), while contractually **retaining ownership of the data and brand** and preserving the right to bring the platform in-house once revenue and internal capability justify it. This matches the operating plan's "Partner + Build" stance and is what the §7 model assumes (the $1.5–2.5M "Pet Intelligence" startup line covers the partner-launch cash plus internal product leadership and data onboarding; a full build-alone path would push that line toward the top of the range and slow the revenue ramp by ~6–12 months).
+
+#### C. The engagement → retention flywheel (why this is also a dues-retention play)
+
+Engagement is the **leading indicator of retention**, and retention — not acquisition — is what sustains the dues base that funds APPA's mission and reinvestment. The logic:
+
+- A member who only appears at Global Pet Expo has a *once-a-year* relationship and is the **highest churn risk**. Every additional product actively used (data, AI co-pilot, certification, awards, community, education) raises switching costs. **Multi-product members renew at materially higher rates than single-product members.**
+- The AI data platform is APPA's **most powerful retention engine**, not just a revenue line: a member who logs in weekly to ask the AI a question has a *daily-utility* relationship with APPA. Login/query frequency is a **measurable** signal that predicts renewal — turning retention from a hope into something management can act on.
+- This is why diversified peers built year-round digital layers (IHA Connect 365, SEMA Data): to defeat the "why renew between shows?" question.
+
+**What to put in place:**
+- A per-account **member health score** (logins, products used, AI queries, event participation, advocacy touches) feeding a **member-success function** — proactive outreach to at-risk accounts *before* renewal, SaaS-style.
+- **Careful tiering so monetization doesn't cannibalize engagement:** keep enough value inside base membership (some data, community, a limited AI allowance) that the relationship stays sticky, with the premium AI co-pilot as the upsell. Over-gating lifts short-term revenue but depresses engagement and, ultimately, retention.
+
+**The flywheel:** engagement → retention → stable dues → funds reinvestment in show / research / pet-ownership growth → more member value → more engagement. AI personalization accelerates the loop by surfacing the right insight to the right member at the right time.
+
+**Retention KPIs to instrument from day one:** dues renewal rate (overall and by health-score band), platform monthly active members, AI queries per active account, multi-product adoption rate (% of members using ≥2 paid products), net revenue retention on the data subscription, and % of at-risk accounts recovered. These belong alongside the §7 revenue assumptions: the data-platform revenue ramp and the dues-retention rate are linked variables, and the health-score system is what de-risks both.
 
 ### Pillar 2 — Trade show & events expansion
 
@@ -381,6 +438,8 @@ This is the highest-value, highest-sensitivity decision. The OPEI precedent (ins
 ### 7.4 Key sensitivities & risks
 
 - **Data-platform adoption** is the swing variable — model assumes APPA converts a meaningful share of its 1,200+ members + non-member brands to paid subscriptions (benchmarked to IHA/SEMA conversion). Downside if pricing/value is mis-set; upside if POS-data partnership makes it indispensable.
+- **Build-alone vs. partner (§5.1 deep-dive)** changes both the startup line and the ramp: a partner/BOT launch keeps Year-1 cash near ~$0.5–1.0M and reaches v1 in ~6–9 months (the path the model assumes), while a full in-house build pushes the "Pet Intelligence" startup line toward the top of its range (~$2–3M), carries a higher ongoing run-rate, and delays the revenue ramp ~6–12 months — at the benefit of fuller long-run margin and IP control.
+- **Dues retention is a linked variable, not a constant** — the data-platform ramp and the dues-renewal rate move together. The member health-score / member-success system is the mechanism that protects the dues base as new paid tiers are introduced; under-investing in it risks trading new subscription revenue for dues attrition.
 - **PIDA / Expo relationship** — keep the diversification program independent of the Expo restructuring so neither blocks the other.
 - **Execution capacity** — requires senior commercial/data leadership APPA does not currently have; the CCO/CDO hire is the gating dependency.
 - **UBIT/structure compliance** — disciplined separation of APPA Ventures is essential; budget for ongoing tax/legal counsel.
