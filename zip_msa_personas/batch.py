@@ -86,9 +86,12 @@ def run_national(
     features: pd.DataFrame,
     config: impute.ImputeConfig | None = None,
     data_vintage: str | None = None,
+    calibrator=None,
 ) -> tuple[pipeline.PipelineOutput, CoverageReport]:
     """Score every feature-bearing ZIP and produce a coverage report."""
-    out = pipeline.run_pipeline(persona_path, ref, features, config=config, data_vintage=data_vintage)
+    out = pipeline.run_pipeline(
+        persona_path, ref, features, config=config, data_vintage=data_vintage, calibrator=calibrator
+    )
     return out, coverage_report(out.enriched)
 
 

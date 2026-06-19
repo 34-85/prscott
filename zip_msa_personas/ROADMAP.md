@@ -71,8 +71,11 @@ Only if the market pulls you there. Upload personas → get scored file + a
 calibration/coverage report + opportunity maps.
 
 ## Engineering backlog (priority order)
-1. **Calibration hardening** — isotonic/Platt scaling so confidence is a true
-   probability; per-MSA and per-persona calibration curves.
+1. **Calibration hardening** — ✅ isotonic calibration shipped (`calibration.py`):
+   raw confidence → true probability, fit on held-out backtest predictions,
+   honest held-out ECE reporting, portable JSON calibrator, applied to estimates
+   only (observed left as ground truth). *Remaining:* per-MSA / per-persona
+   calibration curves once real data volume supports segment-level fitting.
 2. **Coverage reporting** — % of national ZIPs in each provenance tier, so a
    customer sees how much is observed vs modeled vs disclosed-extrapolated.
 3. **Data-vintage pinning + refresh job** — never silently float ACS/HUD; stamp

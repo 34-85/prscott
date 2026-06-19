@@ -65,6 +65,8 @@ FIELD_SOURCE: dict[str, str] = {
     "persona": "proprietary_segmentation",
     "observed_personas": "proprietary_segmentation",
     "confidence": "derived_model",
+    "confidence_raw": "derived_model",
+    "confidence_calibrated": "derived_model",
     "provenance": "derived_model",
     "evidence": "derived_model",
     "methodology_version": "derived_model",

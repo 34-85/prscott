@@ -20,7 +20,7 @@ import pandas as pd
 import json
 
 from . import demo as demo_mod
-from . import batch, crosswalk, impute, opportunity, personas, pipeline, rights, validation
+from . import batch, calibration, crosswalk, impute, opportunity, personas, pipeline, rights, validation
 from .data_sources import DataUnavailable, load_acs_zcta_features, load_reference_data
 
 
@@ -86,7 +86,10 @@ def cmd_national(args) -> int:
         features["zip"] = features["zip"].astype(str).str.zfill(5)
         ppath = args.personas
         vintage = args.data_vintage
-    out, cov = batch.run_national(ppath, ref, features, config=impute.ImputeConfig(k=args.k), data_vintage=vintage)
+    calib = calibration.Calibrator.load(args.calibrator) if args.calibrator else None
+    out, cov = batch.run_national(
+        ppath, ref, features, config=impute.ImputeConfig(k=args.k), data_vintage=vintage, calibrator=calib
+    )
     out.enriched.to_csv(args.out, index=False)
     cov_dir = Path(args.out).with_suffix("")
     cov.write(f"{cov_dir}_coverage")
@@ -136,13 +139,10 @@ def cmd_export(args) -> int:
     return 0
 
 
-def cmd_validate(args) -> int:
-    """Cross-validated calibration report -- run on demo or real data."""
+def _load_backtest_inputs(args):
     if args.demo:
         ref, features, persona_df = demo_mod.make_demo()
-        dist = personas.aggregate_to_zip_distribution(
-            personas.load_personas(_write_tmp(persona_df))
-        )
+        dist = personas.aggregate_to_zip_distribution(personas.load_personas(_write_tmp(persona_df)))
     else:
         ref = load_reference_data()
         features = pd.read_csv(args.features, dtype={"zip": str}) if args.features else load_acs_zcta_features()
@@ -150,8 +150,31 @@ def cmd_validate(args) -> int:
         dist = personas.aggregate_to_zip_distribution(personas.load_personas(args.personas))
     z2m = crosswalk.build_zip_to_msa(ref)
     z2m = z2m[z2m["zip"].isin(set(features["zip"]))]
+    return features, dist, z2m
+
+
+def cmd_validate(args) -> int:
+    """Cross-validated calibration report -- run on demo or real data."""
+    features, dist, z2m = _load_backtest_inputs(args)
     report = validation.backtest(features, dist, z2m, config=impute.ImputeConfig(k=args.k))
     print(report)
+    return 0
+
+
+def cmd_calibrate(args) -> int:
+    """Fit an isotonic calibrator so confidence becomes a true probability."""
+    features, dist, z2m = _load_backtest_inputs(args)
+    report = validation.backtest(features, dist, z2m, config=impute.ImputeConfig(k=args.k))
+    metrics = calibration.evaluate_calibration(report.predictions)   # honest held-out estimate
+    calib = calibration.fit_calibrator(report.predictions)           # production: fit on all data
+    calib.save(args.out)
+    scope = "held-out test" if metrics["held_out"] else "in-sample (too little data to hold out)"
+    print(f"Isotonic calibration. ECE measured on {metrics['n']} {scope} predictions:")
+    print(f"  ECE: {metrics['ece_before']:.4f} -> {metrics['ece_after']:.4f} (lower is better)")
+    print(f"  Improvement: {metrics['ece_before'] - metrics['ece_after']:+.4f}")
+    print(f"Production calibrator fit on all {calib.n_train} estimated predictions.")
+    print(f"Saved calibrator -> {args.out}")
+    print("Apply it with:  run/national --calibrator " + args.out)
     return 0
 
 
@@ -176,7 +199,10 @@ def cmd_run(args) -> int:
         else load_acs_zcta_features()
     )
     features["zip"] = features["zip"].astype(str).str.zfill(5)
-    out = pipeline.run_pipeline(args.personas, ref, features, config=impute.ImputeConfig(k=args.k))
+    calib = calibration.Calibrator.load(args.calibrator) if args.calibrator else None
+    out = pipeline.run_pipeline(
+        args.personas, ref, features, config=impute.ImputeConfig(k=args.k), calibrator=calib
+    )
     out.enriched.to_csv(args.out, index=False)
     _print_summary(out)
     print(f"\nWrote {len(out.enriched)} enriched ZIP rows -> {args.out}")
@@ -201,6 +227,7 @@ def main(argv=None) -> int:
     pn.add_argument("--features", default=None)
     pn.add_argument("--data-vintage", default=None, help="e.g. NPOS2024;ACS2022;HUD2023Q4")
     pn.add_argument("--out", default="enriched_national.csv")
+    pn.add_argument("--calibrator", default=None, help="calibrator.json from `calibrate`")
     pn.add_argument("--k", type=int, default=10)
     pn.set_defaults(func=cmd_national)
 
@@ -231,10 +258,19 @@ def main(argv=None) -> int:
     pv.add_argument("--k", type=int, default=10)
     pv.set_defaults(func=cmd_validate)
 
+    pcal = sub.add_parser("calibrate", help="fit an isotonic confidence calibrator")
+    pcal.add_argument("--demo", action="store_true")
+    pcal.add_argument("--personas", default=None)
+    pcal.add_argument("--features", default=None)
+    pcal.add_argument("--k", type=int, default=10)
+    pcal.add_argument("--out", default="calibrator.json")
+    pcal.set_defaults(func=cmd_calibrate)
+
     pr = sub.add_parser("run", help="real run on your persona file")
     pr.add_argument("--personas", required=True)
     pr.add_argument("--features", default=None, help="ZIP feature CSV (default: cached ACS)")
     pr.add_argument("--out", default="enriched_zips.csv")
+    pr.add_argument("--calibrator", default=None, help="calibrator.json from `calibrate`")
     pr.add_argument("--k", type=int, default=10)
     pr.set_defaults(func=cmd_run)
 

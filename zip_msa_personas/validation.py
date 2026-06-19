@@ -28,6 +28,7 @@ class CalibrationReport:
     overall_accuracy: float
     calibration_error: float    # weighted mean |confidence - accuracy| across bands
     n_evaluated: int
+    predictions: pd.DataFrame = None  # raw per-ZIP: confidence, correct, provenance
 
     def __str__(self) -> str:
         return (
@@ -105,6 +106,7 @@ def backtest(
         overall_accuracy=float(evald["correct"].mean()),
         calibration_error=cal_err,
         n_evaluated=len(evald),
+        predictions=evald[["zip", "confidence", "correct", "provenance"]],
     )
 
 

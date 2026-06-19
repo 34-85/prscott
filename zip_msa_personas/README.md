@@ -77,6 +77,24 @@ You want (a) a low calibration error, (b) accuracy that rises with confidence,
 and (c) `imputed_similar` beating `extrapolated_baseline`. On the bundled demo
 all three hold.
 
+### Calibrated confidence (so 0.80 *means* 80%)
+
+`calibrate` fits an isotonic map from raw confidence to empirical accuracy on the
+backtest's held-out predictions, reports the **held-out** ECE improvement, and
+saves a portable calibrator. Apply it on `run`/`national` and `confidence`
+becomes a true probability (raw kept in `confidence_raw`; observed rows, being
+ground truth, are left untouched).
+
+```bash
+python -m zip_msa_personas calibrate --demo --out calibrator.json
+python -m zip_msa_personas national  --demo --calibrator calibrator.json --out enriched.csv
+```
+
+Note: calibration needs sample size. On the tiny demo it's roughly neutral (the
+heuristic is already decent and 20-ish held-out points are noisy); on real
+national NPOS data with thousands of observed ZIPs it has the data to both help
+and to measure the gain reliably.
+
 ## Lineage — every row is auditable
 
 Each output row is stamped with `methodology_version`, `data_vintage`,
@@ -138,6 +156,7 @@ zip_msa_personas/
   crosswalk.py     # Stage 1: ZIP -> Metro MSA (dominant assign)
   personas.py      # Stage 2: load + aggregate your persona file
   impute.py        # Stage 3: similarity imputation + disclosed extrapolation
+  calibration.py   # isotonic confidence calibration (confidence -> true probability)
   pipeline.py      # orchestration
   batch.py         # national scoring + coverage report
   opportunity.py   # persona <-> offer <-> location fit scoring

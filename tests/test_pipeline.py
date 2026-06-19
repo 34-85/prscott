@@ -4,8 +4,10 @@ Run: python -m pytest tests/  (or: python tests/test_pipeline.py)
 """
 import pandas as pd
 
+import numpy as np
+
 from zip_msa_personas import (
-    batch, crosswalk, demo, impute, opportunity, personas, pipeline, rights, validation,
+    batch, calibration, crosswalk, demo, impute, opportunity, personas, pipeline, rights, validation,
 )
 from zip_msa_personas.data_sources import ReferenceData
 
@@ -204,6 +206,51 @@ def test_opportunity_whitespace_excludes_footprint():
     up_zips = enriched[enriched["persona"] == "Urban Professionals"]["zip"].tolist()
     res = opportunity.score_opportunity(enriched, targets, sizes=features, footprint_zips=up_zips)
     assert res.zip_scores["whitespace"].sum() == 0
+
+
+def _miscalibrated_predictions(n=400, seed=0):
+    # Model claims high confidence (~0.75 avg) but is right only ~50% -- badly
+    # miscalibrated, so a working calibrator must reduce ECE substantially.
+    rng = np.random.default_rng(seed)
+    conf = rng.uniform(0.5, 1.0, n)
+    correct = (rng.random(n) < 0.5).astype(int)
+    return pd.DataFrame(
+        {
+            "zip": [str(i).zfill(5) for i in range(n)],
+            "confidence": conf,
+            "correct": correct,
+            "provenance": impute.IMPUTED,
+        }
+    )
+
+
+def test_calibration_reduces_ece_on_miscalibrated_data():
+    preds = _miscalibrated_predictions()
+    cal = calibration.fit_calibrator(preds)
+    before = calibration.expected_calibration_error(preds["confidence"], preds["correct"])
+    after = calibration.expected_calibration_error(cal.transform(preds["confidence"]), preds["correct"])
+    assert after < before
+    assert after < 0.1   # near-perfectly calibrated to the ~0.5 base rate
+
+
+def test_calibrator_is_monotonic_bounded_and_roundtrips():
+    preds = _miscalibrated_predictions(seed=1)
+    cal = calibration.fit_calibrator(preds)
+    grid = np.linspace(0, 1, 50)
+    out = cal.transform(grid)
+    assert (out >= 0).all() and (out <= 1).all()
+    assert (np.diff(out) >= -1e-9).all()           # non-decreasing
+    reloaded = calibration.Calibrator.from_json(cal.to_json())
+    assert np.allclose(reloaded.transform(grid), out)
+
+
+def test_apply_calibration_preserves_observed_and_adds_raw():
+    enriched, _ = _demo_enriched()
+    cal = calibration.fit_calibrator(_miscalibrated_predictions(seed=2))
+    out = calibration.apply_calibration(enriched, cal)
+    assert "confidence_raw" in out.columns
+    obs = out[out["provenance"] == impute.OBSERVED]
+    assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
 
 
 def _df_to_dist(persona_df):
