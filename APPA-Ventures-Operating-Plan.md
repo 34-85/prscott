@@ -244,10 +244,14 @@ Each line simultaneously earns revenue **and** advances an APPA priority:
 | **Paid directory listings + lead-gen** | Vets, groomers, boarders, walkers, **independent retailers** | Independent retail & vet access (services, no advice) |
 | **Pet-friendly housing listings/sponsorships** | Property managers, apartments, brokers | **Pet-inclusive housing** advocacy |
 | **Shelter/adoption sponsorships** | Member brands sponsoring adoption features | **Driving pet ownership**; shelter support |
-| **Local events** | Sponsors + tickets | Community engagement; PAL activation |
+| **Local events** | Sponsors + tickets + vendor booths | Community engagement; PAL activation |
+| **Product JV sales** | Co-branded/private-label + **new-owner starter kits** (member-brand JV) | Member-brand revenue; new-owner support |
+| **Citywide Pet Discount Card** | Consumer subscriptions + participating-business network fees | Drives spend to independent retail/vets/shelters; foot-traffic proof; engagement |
 | **Classifieds / deals** | Local + national | Ownership lifestyle; member offers |
 
 National member-brand inventory is **sold centrally** and allocated across markets (premium, scalable); local inventory is sold by the market editor + central sales support + **self-serve directory** (so revenue isn't fully gated by editor capacity).
+
+> **Scale-up streams:** at scale these compound into a **research panel, high-intent lead-gen, expanded events, product JV, and the discount card** — the just-in-time platform model. Full ARPU build and the 50K→1.25M-subscriber economics are in the **§B-Upside (North-Star)** appendix; an early version of the card/event/JV + panel opt-in is tested in the MVP plan.
 
 ## B.6 Per-market unit economics (illustrative)
 
