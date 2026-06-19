@@ -287,6 +287,46 @@ Engagement is the **leading indicator of retention**, and retention — not acqu
 
 **Retention KPIs to instrument from day one:** dues renewal rate (overall and by health-score band), platform monthly active members, AI queries per active account, multi-product adoption rate (% of members using ≥2 paid products), net revenue retention on the data subscription, and % of at-risk accounts recovered. These belong alongside the §7 revenue assumptions: the data-platform revenue ramp and the dues-retention rate are linked variables, and the health-score system is what de-risks both.
 
+#### D. Bottoms-up pricing & revenue model
+
+The §7 P&L carried the data line as a benchmarked estimate ($0.8M → $2.5M → $4.5M). Below is a bottoms-up build that produces the same totals from explicit price points and adoption — so the number is defensible, and the levers (price, conversion, mix) are visible. **All figures are illustrative planning assumptions and should be validated with member willingness-to-pay research before pricing is set.**
+
+**Addressable market:** ~1,200 member companies, plus an estimated ~2,000 addressable non-member organizations (pet brands, retailers, suppliers, investors/PE, and agencies that buy pet-market data). Members are converted first and at higher rates (existing trust + bundling); non-members pay roughly 2× for the same tier.
+
+**Three-tier annual pricing (list):**
+
+| Tier | What's included | Member | Non-member |
+|---|---|---|---:|---:|
+| **Core** (Pet Intelligence) | Dashboards, NPOS, trackers, category/channel sizing | $3,500 | $7,500 |
+| **Pro + AI** | Core + AI co-pilot (primary seat), purchase-intent waves, briefs | $9,000 | $15,000 |
+| **Enterprise** | API access, custom analysis, multi-seat, on a brand's own + APPA data | blended **~$40,000** | blended **~$40,000** |
+
+**Adoption ramp (paying accounts at year-end):**
+
+| | Y1 | Y2 | Y3 |
+|---|---:|---:|---:|
+| Core — members | 150 | 260 | 380 |
+| Core — non-members | 30 | 60 | 100 |
+| Pro+AI — members | 25 | 60 | 110 |
+| Pro+AI — non-members | 10 | 30 | 50 |
+| Enterprise | 3 | 8 | 15 |
+
+**Resulting revenue (reconciles to §7):**
+
+| ($000) | Y1 | Y2 | Y3 |
+|---|---:|---:|---:|
+| Core (member + non-member) | 750 | 1,360 | 2,080 |
+| Pro + AI | 375 | 990 | 1,740 |
+| Enterprise | 120 | 320 | 600 |
+| **Exit ARR (run-rate)** | **1,245** | **2,670** | **4,420** |
+| **Recognized revenue (ramped)** | **~800** | **~2,500** | **~4,500** |
+
+Year 1 recognized revenue is below exit-ARR because of a mid-year launch (partial-year recognition); by Year 3 recognized revenue ≈ ARR, plus modest custom-research one-offs. The exit-ARR of ~$4.4M shows continued momentum into Year 4.
+
+**Reasonableness check.** Year-3 implies ~41% of members on a paid data tier (495 of 1,200) and only ~8% non-member penetration (160 of ~2,000) — member adoption is meaningful but not universal (consistent with IHA/SEMA, where data is valued by a large but not total share of members), and the non-member runway is deliberately conservative, leaving upside. Blended member ARPU rises over time as Core accounts upgrade to Pro+AI — the **add-on AI tier is the ARPU expansion engine**, not just new logos.
+
+**The levers that move this model:** (1) **member conversion rate** to any paid tier — the single biggest driver; (2) **Core→Pro+AI upgrade rate** — the AI add-on's attach rate sets ARPU expansion; (3) **net revenue retention** (target >100% via seat/tier expansion); (4) **price realization** (list vs. effective after member bundling/discounts). A downside case (conversion ~30% lower, AI attach halved) lands the data line nearer $0.5M/$1.6M/$3.0M; an upside case (strong AI attach + faster non-member adoption) pushes it past $6M by Year 3.
+
 ### Pillar 2 — Trade show & events expansion
 
 - **Resolve the Global Pet Expo economics** with PIDA (see §6 — the defining strategic decision).
