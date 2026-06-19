@@ -12,6 +12,7 @@ No single source defines "best pilot city," so the shortlist blends:
 4. **Market size & advertiser base** — metro population and pet-business density (the local-SMB + member-brand ad pool).
 5. **Texas advantage** — ~91% of TX rentals accept pets (among the highest nationally), aiding the housing-content angle in Austin / San Antonio / Dallas. *(Source: Michelson Found Animals)*
 6. **Competitive whitespace** — no dominant incumbent pet-local newsletter.
+7. **Local talent / editor availability** — markets where a capable community editor is already identified can graduate from AI-test to staffed **faster and at lower risk**, since staffing is the real constraint (§B). A practical, high-value signal.
 
 ## The shortlist
 
@@ -34,23 +35,23 @@ No single source defines "best pilot city," so the shortlist blends:
 | **New Orleans, LA** | top-100 | ✅ Yes | — | Certified; distinctive market |
 | **Scottsdale, AZ** | **#1** | ❌ No (Phoenix/Tempe/Tucson are) | — | #1 ad base, but **not certified** — consider Phoenix metro instead |
 | **Portland, OR** | #5 | ❌ No | — | Strong WalletHub only |
-| **Orlando, FL** | #7 | ❌ No | — | Strong WalletHub only |
+| **Orlando, FL** ⭐ | #7 | ❌ No | — | **Local talent available** (faster path to staffed) + strong WalletHub |
 | **Cincinnati, OH** | #3 | ❌ No | — | Strong WalletHub only |
 | **St. Louis, MO** | #6 | ❌ No (St. Charles/KC are) | — | Strong WalletHub only |
 | **Flagstaff, AZ** | — | ✅ Yes (2024) | — | Small; cheap AI-test option |
 | **Columbia, SC** | — | ✅ Yes | — | Small-market test |
 
-⭐ = direction-specified inclusions (pet-deposit programs).
+⭐ = direction-specified inclusions (Denver/San Antonio = pet-deposit programs; Orlando = available local talent).
 **Other large BCFP-certified metros for the pipeline:** Memphis, Philadelphia, Miami, Washington DC, Louisville, Tucson, Richmond, Savannah, Oakland, Jersey City, Cleveland, St. Petersburg, Baltimore, Tempe, Reno, Spokane.
 
 ## Recommended pilot waves
 
-**Wave 1 — launch first (double-signal + mission hooks), 6 AI test markets:**
-**Austin, Tampa, Las Vegas, Nashville** (all WalletHub-ranked **and** BCFP-certified) **+ Denver, San Antonio** (the pet-deposit-program mission hooks).
-Rationale: four metros with the strongest combined pet-friendliness signal and deep advertiser bases, plus the two deposit-program cities (both confirmed live) that hand us a differentiated, recurring housing/advocacy storyline.
+**Wave 1 — launch first (double-signal + mission hooks + local talent), 7 AI test markets:**
+**Austin, Tampa, Las Vegas, Nashville** (all WalletHub-ranked **and** BCFP-certified) **+ Denver, San Antonio** (confirmed pet-deposit-program mission hooks) **+ Orlando** (available local talent → faster, lower-risk path to a staffed market).
+Rationale: four metros with the strongest combined pet-friendliness signal and deep advertiser bases; the two deposit-program cities that hand us a differentiated housing/advocacy storyline; and Orlando, where an identified editor shortens the AI-test→staffed timeline. Orlando is WalletHub #7 (strong) though not BCFP-certified — the local-talent advantage outweighs the missing certification.
 
-**Wave 2 — fast-follow pipeline, ~9 markets:**
-Dallas, Houston, Charlotte, Salt Lake City, Kansas City, New Orleans (all certified), Phoenix (certified; Scottsdale-metro alternative to the uncertified #1), plus high-WalletHub-but-uncertified options to test (Portland, Orlando), and cheap small-market certified tests (Flagstaff, Columbia SC).
+**Wave 2 — fast-follow pipeline, ~8 markets:**
+Dallas, Houston, Charlotte, Salt Lake City, Kansas City, New Orleans (all certified), Phoenix (certified; Scottsdale-metro alternative to the uncertified #1), plus a high-WalletHub-but-uncertified option to test (Portland), and cheap small-market certified tests (Flagstaff, Columbia SC).
 
 This comfortably reaches the ~15 Year-1 AI test markets in the §B plan, with graduation to staffed editors gated on engagement + advertiser demand (not assumption).
 
