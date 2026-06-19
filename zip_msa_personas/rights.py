@@ -45,8 +45,8 @@ SOURCES: dict[str, DataSource] = {
     ),
     "appa_npos": DataSource(
         "appa_npos", RESELLABLE,
-        "APPA National Pet Owners Survey -- DERIVED personas only; confirm license "
-        "permits commercial derivative use. Raw APPA fields are NOT redistributable.",
+        "APPA National Pet Owners Survey -- FIRST-PARTY data owned by APPA "
+        "(publisher of the NPOS since 1998). Fully resellable; no third-party terms.",
     ),
     "derived_model": DataSource("derived_model", RESELLABLE, "Outputs of this pipeline's model"),
     "experian_mosaic": DataSource(

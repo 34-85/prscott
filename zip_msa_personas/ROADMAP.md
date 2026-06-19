@@ -4,19 +4,23 @@ Turning the ZIP→MSA→persona engine into a product. The core library stays th
 same across every phase; each phase wraps it in more surface area.
 
 ## Product
-Geo-located **pet-owner personas**: a proprietary pet-owner segmentation,
-enriched with the APPA National Pet Owners Survey (longitudinal since 1998),
-mapped to every ZIP/MSA in the country. Buyers — pet **brands**, **retailers**,
-and **veterinarians** — use it to position products, stores, clinics, and
-services where the persona↔offer product-market fit is strongest.
+Built and owned by **APPA**. Geo-located **pet-owner personas**: APPA's
+proprietary pet-owner segmentation, grounded in the **APPA National Pet Owners
+Survey (NPOS)** — APPA's own longitudinal industry benchmark running since 1998
+— mapped to every ZIP/MSA in the country. Buyers — pet **brands**, **retailers**,
+and **veterinarians** (largely APPA's own ecosystem) — use it to position
+products, stores, clinics, and services where persona↔offer fit is strongest.
+
+The moat: nobody else owns 25+ years of authoritative pet-ownership data. This
+isn't reselling someone's data — it's APPA productizing the canonical source.
 
 ## Data sources & rights (enforced in `rights.py`)
 | Source | Class | Notes |
 |---|---|---|
-| Proprietary pet-owner segmentation | **Resellable** | First-party IP. |
-| APPA National Pet Owners Survey | **Resellable (derived)** | Confirm license permits commercial *derivative* products; raw APPA fields are not redistributable. |
+| APPA pet-owner segmentation | **Resellable** | First-party IP (owned). |
+| APPA National Pet Owners Survey (NPOS) | **Resellable** | First-party — APPA's own data, published since 1998. No third-party terms. |
 | Census ACS, HUD, OMB delineation | **Resellable** | Public domain. |
-| Experian Mosaic | **Internal only** | Validation/confirmation ONLY. No Mosaic-derived field enters a deliverable without a written redistribution/syndication license. Not legal advice — have counsel read the "derivative works" + "redistribution" clauses. |
+| Experian Mosaic | **Internal only** | Optional. Validation/confirmation ONLY. No Mosaic-derived field enters a deliverable without a written redistribution/syndication license. Not legal advice — have counsel read the "derivative works" + "redistribution" clauses. |
 
 `export_deliverable` strips internal-only fields by construction and writes a
 rights manifest, so a licensed source can never leak into a sellable file by
