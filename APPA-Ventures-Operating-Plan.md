@@ -169,8 +169,8 @@ Year 1 is a funded build year; the portfolio turns profit-positive by Year 2–3
 
 With the venture operating model agreed, the next deliverables are the **two business-unit plans**, built to slot into this document:
 
-- **§A — APPA Pet Intelligence business plan** (product, the 3-tier pricing/revenue model already drafted, build-vs-partner cost, GTM, team, P&L). *— pending.*
-- **§B — "Pets of [City]" business plan** — ✓ **built below.**
+- **§A — APPA Pet Intelligence business plan** — ✓ **built below (§A).**
+- **§B — "Pets of [City]" business plan** — ✓ **built below (§B).**
 
 ---
 
@@ -321,3 +321,142 @@ Subscribers and growth rate per market; open/click engagement; **CAC and LTV**; 
 3. **Feeds Pet Intelligence** proprietary local/consumer data no competitor can match.
 4. **A new member-brand benefit** — local-to-national consumer advertising — strengthening membership value and retention.
 5. **Generates the local economic evidence** (pet-friendly housing demand, independent-retail impact) that makes APPA's advocacy against retail-sale bans and for pet-inclusive housing more persuasive.
+
+---
+
+# §A — APPA Pet Intelligence Business Plan
+
+*The anchor business unit of APPA Ventures: an AI-enabled pet-market data subscription platform (B2B). This plan folds in the 3-tier pricing/revenue model and the build-vs-partner analysis from the main strategy, and adds a standalone P&L.*
+
+## A.1 Concept & value proposition
+
+**APPA Pet Intelligence is a year-round, AI-enabled data subscription platform** that turns APPA's flagship research (the National Pet Owners Survey and industry statistics) from a periodic report into a **live, queryable, always-on intelligence product** — the IHA *State of the Industry* / SEMA Data model, adapted to pet and modernized with an AI analyst.
+
+- **For members & brands:** the definitive, trusted source for pet-market sizing, consumer behavior, category/channel trends, and purchase intent — accessible via dashboards and a natural-language AI co-pilot, with answers grounded in APPA's data and cited.
+- **For APPA:** the **highest-margin new revenue line** and, equally important, the **strongest lever on dues retention** — it converts an annual-show relationship into a daily-utility one.
+- **Core principle:** *the AI is the interface and accelerant; the moat is APPA's proprietary data.* Generic AI tools will confidently hallucinate pet-market answers; APPA delivers verified, grounded, citable ones.
+
+## A.2 Market & competitive landscape
+
+- **Demand:** a ~$152B industry (growing to a projected ~$165B by 2026) whose brands, retailers, investors, and suppliers buy market data continuously. APPA's NPOS is already the most-cited US pet consumer dataset.
+- **Addressable buyers:** ~1,200 APPA member companies (warm, trusting base) + ~2,000 addressable non-members (pet brands, retailers, suppliers, investors/PE, agencies).
+- **Competitors:** Packaged Facts, Euromonitor, NielsenIQ/Circana (POS), Mintel, Morgan Stanley. **APPA's defensible wedge:** the *combination* of (a) **owned, longitudinal survey data back to 1988**, (b) **licensed retail POS** (via partner), (c) **first-party consumer data from Pets of [City]**, and (d) **member trust + an AI interface** — a stack no single competitor replicates.
+
+## A.3 The product
+
+| Layer | Capability |
+|---|---|
+| **Data foundation** | NPOS (owned), industry spending statistics (owned), licensed retail POS (partner), purchase-intent/consumer panels (partner), first-party PoC consumer/local data |
+| **Platform** | Live dashboards; category/channel/segment sizing; trackers; self-serve data exploration; export & **API** |
+| **AI co-pilot** | Natural-language analyst grounded in APPA data ("How is Gen-Z cat-ownership spending trending vs. two years ago?") → answer + charts + **source citations**; auto-generated category/competitor briefs; trend/early-signal detection; forecasting |
+| **Services** | Custom & syndicated research for members and brands |
+
+**Architecture guardrails:** **retrieval-grounded (RAG), never generative guessing** on quantitative data — answers retrieved from source data and cited; built on existing LLM APIs (no model training from scratch); all data assets and IP held in *Pet Intelligence LLC* under Ventures.
+
+## A.4 Data strategy & moat
+
+- **Start from owned assets (zero incremental data cost):** APPA already owns NPOS and the industry statistics — Pet Intelligence v1 launches on owned data, so there is no data-licensing dependency to *start*.
+- **Layer partner data as revenue supports it:** add retail **POS (NielsenIQ/Circana)** and consumer panels in Year 2 to combine survey + point-of-sale truth — the differentiator.
+- **Critical: negotiate AI/derived-use rights up front.** Partner POS/panel data generally cannot be fed into shared AI without specific contract language. This is the single most important commercial term.
+- **Compounding edge:** Pets of [City] first-party consumer/local data flows back in over time — proprietary signal competitors can't buy.
+
+## A.5 Pricing & packaging (3-tier)
+
+*All figures illustrative; validate with member willingness-to-pay research. Non-members pay ~2× for the same tier.*
+
+| Tier | Includes | Member | Non-member |
+|---|---|---:|---:|
+| **Core** (Pet Intelligence) | Dashboards, NPOS, trackers, category/channel sizing | $3,500 | $7,500 |
+| **Pro + AI** | Core + AI co-pilot (primary seat), purchase-intent waves, briefs | $9,000 | $15,000 |
+| **Enterprise** | API, custom analysis, multi-seat, brand-data blend | blended **~$40,000** | blended **~$40,000** |
+
+**Packaging lever:** consider bundling **Core into Premium/Elite membership** to drive adoption and **retention** (shifts some revenue to dues but deepens stickiness), selling **Pro+AI and Enterprise as upsell** — the AI tier is the ARPU-expansion engine.
+
+## A.6 Revenue model (bottoms-up)
+
+**Adoption ramp (paying accounts, year-end):**
+
+| | Y1 | Y2 | Y3 |
+|---|---:|---:|---:|
+| Core — members | 150 | 260 | 380 |
+| Core — non-members | 30 | 60 | 100 |
+| Pro+AI — members | 25 | 60 | 110 |
+| Pro+AI — non-members | 10 | 30 | 50 |
+| Enterprise | 3 | 8 | 15 |
+
+**Resulting revenue:**
+
+| ($000) | Y1 | Y2 | Y3 |
+|---|---:|---:|---:|
+| Core | 750 | 1,360 | 2,080 |
+| Pro + AI | 375 | 990 | 1,740 |
+| Enterprise | 120 | 320 | 600 |
+| **Exit ARR** | **1,245** | **2,670** | **4,420** |
+| **Recognized revenue** | **~800** | **~2,500** | **~4,500** |
+
+Year-3 implies ~41% of members on a paid tier (495 of 1,200) and only ~8% non-member penetration (160 of ~2,000) — meaningful but not heroic, with non-member upside left on the table. **Levers:** member conversion rate (biggest), Core→Pro+AI attach (ARPU), net revenue retention (>100% target), price realization. Downside case ≈ $0.5M/$1.6M/$3.0M; upside (strong AI attach + faster non-member adoption) > $6M by Year 3.
+
+## A.7 Build vs. partner & cost to develop
+
+| | **Build alone** | **Partner / BOT (recommended)** |
+|---|---:|---:|
+| Year-1 cash | ~$1.8–3.0M | **~$0.5–1.0M** |
+| Ongoing run-rate | ~$1.5–2.5M | ~$0.4–0.8M fees + rev-share (20–50% to partner) |
+| Time to v1 | 12–18 mo | **6–9 mo** |
+| Margin / IP | Highest / full | Shared / negotiate |
+| Execution risk | High (no in-house AI/data muscle) | Lower |
+
+**Recommendation: partner to launch, retain data + brand ownership, optionally in-source later.** Reach v1 in ~6–9 months at ~$0.5–1.0M of cash (vs. 12–18 months / ~$2–3M solo), keeping the data and brand and the right to bring it in-house once revenue and capability justify it. (Note: the *single largest recurring cost is third-party data licensing*, not the AI itself — and APPA's owned NPOS lets v1 launch with that line near zero.)
+
+## A.8 Go-to-market
+
+- **Land-and-expand from the warm base:** convert existing NPOS buyers + members first (Core), then upsell Pro+AI, then pursue non-members and Enterprise.
+- **Bundle Core into premium membership** to seed adoption + retention; meter the AI co-pilot so base members get a taste and upgrade.
+- **Launch sequence:** v1 (owned data + dashboards + limited AI) → Year 2 add POS/panel data, purchase-intent waves, Enterprise/API.
+- **Demand engine:** Global Pet Expo as the launch/demo venue; member-success integration; inside sales + customer success motion.
+
+## A.9 Team & org
+
+- **Shared with Ventures platform:** data/AI infrastructure, ML engineering, central finance/legal/data-rights.
+- **Dedicated:** product lead (GM), data scientists/analysts, AI/ML engineer, **data-partnerships manager** (POS/panel deals + AI rights), inside sales, **customer success / member-success** (owns retention + health score).
+- Lean, leveraging the shared platform; scales with subscriber count.
+
+## A.10 Three-year P&L (standalone, illustrative — partner/BOT path)
+
+| ($000) | Y1 | Y2 | Y3 |
+|---|---:|---:|---:|
+| **Revenue (recognized)** | **800** | **2,500** | **4,500** |
+| COGS — data licensing (POS/panel, ramps; owned NPOS ≈ $0) | 100 | 350 | 550 |
+| COGS — partner platform fee / rev-share | 120 | 375 | 700 |
+| COGS — cloud + LLM/AI compute | 80 | 180 | 320 |
+| **Gross profit** | **500** | **1,595** | **2,930** |
+| *Gross margin* | *63%* | *64%* | *65%* |
+| Product / data / engineering | 450 | 800 | 1,150 |
+| Sales & customer success | 250 | 500 | 800 |
+| Marketing | 120 | 220 | 320 |
+| One-time build / launch (partner) | 500 | 150 | — |
+| **EBITDA / (investment)** | **(820)** | **(75)** | **~660** |
+
+**Reading it:** a funded build in Year 1 (~$0.8M investment), roughly breakeven in Year 2, and **profit-positive (~$0.66M) by Year 3** at ~65% gross margin — the **near-term profit engine** of Ventures (vs. Pets of [City], the longer-payback, higher-strategic-value bet). Under a full build-alone path, Year-1 investment widens to ~$1.5–2.0M and breakeven slips ~6–12 months, in exchange for fuller long-run margin and IP control.
+
+## A.11 KPIs
+
+ARR and recognized revenue; member conversion rate to paid; **Core→Pro+AI attach rate**; net revenue retention (>100% target); **platform MAU and AI queries per active account**; gross margin; CAC/payback; logo and seat expansion; and the **dues-retention lift** among platform-active members (the retention thesis).
+
+## A.12 Risks & guardrails
+
+| Risk | Mitigation |
+|---|---|
+| **AI hallucination on quantitative data** | Retrieval-grounded architecture; cite sources; human spot-checks; never free-generate numbers |
+| **Data-rights for AI** (partner data) | Negotiate AI/derived-use rights up front; launch v1 on owned NPOS to avoid dependency |
+| **Member "should be free" expectation** | Careful tiering — keep value in base membership; price the premium AI/Enterprise tiers as upsell |
+| **Conversion shortfall** | Land-and-expand from warm NPOS base; bundle Core into membership; downside case modeled |
+| **Partner dependency / cost** | BOT with in-source option; multi-source data strategy; retain brand + data ownership |
+
+## A.13 Synergy & strategic payoff
+
+1. **Highest-margin Ventures line** and the near-term profit engine (~65% gross margin).
+2. **The retention flywheel:** platform-active members renew at higher rates — protecting the dues base that funds APPA's mission.
+3. **Feeds on and feeds Pets of [City]:** consumes PoC's first-party consumer data; supplies PoC's market-selection and ad-targeting intelligence.
+4. **Defends NPOS's authority** against commercial data vendors before they erode it — first-mover advantage compounds.
+5. **Sharpens advocacy:** the same data quantifies the pet economy, pet-friendly-housing demand, and independent-retail impact that strengthen APPA's policy positions.
