@@ -14,7 +14,9 @@
 
 1. **Generate diversified, higher-margin revenue** for APPA — remitted upstream as tax-free dividends — reducing the association's concentration in the trade show and periodic research.
 2. **Advance APPA's mission commercially** — turning category-building and advocacy (growing pet ownership, pet-inclusive housing, opposing retail pet-sale bans, supporting independent retail, vets, shelters, and member brands) **from expense lines into self-sustaining, profitable businesses.**
-3. **Deepen member engagement and retention** — every Ventures product gives members another reason to log in, advertise, subscribe, and renew.
+3. **Complement (not replace) core member engagement** — Ventures products give members another reason to engage commercially, while APPA's **core 365 content/engagement platform and ASTM certification programs remain in the association** as the primary member-engagement and retention levers (see scope boundary, §5).
+
+> **Scope boundary (important):** APPA Ventures is **intentionally separated** from APPA's core mission programs. **ASTM certification and the year-round "365" content/engagement platform are core APPA programs** (already being pursued) and **stay in the 501(c)(6)** — they are *not* Ventures businesses. Ventures houses only the commercial businesses (Pet Intelligence, Pets of [City], affinity/data monetization). Full IN/OUT list in §5.
 
 **The defining idea.** APPA today *spends* money to advocate and to promote pet ownership. APPA Ventures flips the model: it builds businesses whose **commercial mechanics are the advocacy** — a hyper-local media network that makes money by promoting pet-inclusive housing, independent retailers, member brands, vets (services, never medical advice), and local shelters, while generating proprietary consumer data that powers APPA's AI/data platform. Advocacy becomes a **profit center and a distribution channel**, not a cost.
 
@@ -80,16 +82,28 @@ A frequently overlooked benefit of the subsidiary: Ventures can offer **market/c
 
 ---
 
-## 5. The portfolio at launch
+## 5. The portfolio at launch — and the boundary with core APPA
+
+### What APPA Ventures contains (the commercial businesses)
 
 | Business unit | Type | Role | Detailed plan |
 |---|---|---|---|
-| **APPA Pet Intelligence** | B2B data/AI SaaS | Anchor, nearer-term revenue & retention engine | *To be built — appended §A* |
-| **Pets of [City]** | B2C local media network | Audience, consumer data, advocacy-as-profit channel | *To be built — appended §B* |
-| *(Future)* Affinity & marketplace | B2B services | Insurance/shipping/payments/credit; B2B marketplace | Later phase |
-| *(Future)* Education academy | B2B/B2C | Certifications/courses | Later phase |
+| **APPA Pet Intelligence** | B2B data/AI SaaS | Anchor, nearer-term commercial revenue (complements core engagement) | §A (appended) |
+| **Pets of [City]** | B2C local media network | Audience, consumer data, advocacy-as-profit channel | §B (appended) |
+| *(Future)* Affinity & B2B marketplace | B2B services | Insurance/shipping/payments/credit; B2B commercial marketplace | Later phase |
+| *(Future)* Professional education/courses | B2B/B2C | Paid commercial training (distinct from ASTM certification — see below) | Later phase |
 
-This document defines the *company*; the two anchor business plans are the next deliverables and will slot in as §A and §B.
+### What stays in CORE APPA (intentionally NOT in Ventures)
+
+APPA Ventures is **deliberately separated** from APPA's core mission programs. The following remain in the 501(c)(6) and are **not** Ventures businesses:
+
+- **ASTM certification(s)** — a core APPA program (currently being pursued); standards/certification stays with the association.
+- **The "365" year-round content & engagement platform** — a core APPA program (currently being pursued) to drive **member engagement and dues retention**. This is APPA's primary engagement engine; Ventures' Pet Intelligence is a *commercial* data product that complements, but does not replace or absorb, it.
+- **Advocacy & government affairs**, **Global Pet Expo**, **membership/dues**, **NPOS as a member benefit**, and the **APPA Foundation / Pets Add Life**.
+
+**Why the line matters:** keeping certification and the 365 engagement platform in core APPA (a) protects them as mission/member-value programs, (b) keeps APPA's primary engagement/retention levers inside the association, and (c) reinforces the clean separation that protects the (c)(6) exemption. Where useful, core programs and Ventures can **interface at arm's length** (e.g., Ventures data informing core content, or core audiences aware of Ventures products) under the same documented agreements — but ownership and P&L are separate.
+
+This document defines the *company*; the two anchor business plans are appended as §A and §B.
 
 ---
 

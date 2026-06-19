@@ -202,9 +202,9 @@ The most commercial activities (data sales to non-members, advertising networks,
 |---|---|---|---|
 | 1 | Own/optimize the flagship show's economics | **Long-term partnership with PIDA** (APPA already books most Expo revenue and the partnership *funds* PIDA) | Not a value-extraction gap — the partnership is deliberate industry infrastructure. Opportunity is to **grow the event franchise** (new formats/summits) while preserving the partnership, plus deliberate reinvestment in show quality. |
 | 2 | Productize data into recurring, tiered subscriptions | NPOS is a periodic **report/dataset**, sold ad hoc | Largest growth gap. The pet industry is *richer in data demand* than housewares — yet IHA, SEMA, PPAI, and even The Vision Council out-productize APPA. A year-round **"Pet Intelligence" subscription platform** is the single biggest opportunity. |
-| 3 | Own a standard / certification | **None** | White space. No "Certified by APPA" trustmark for safety, quality, or sustainability — despite acute industry need (PURR Act, sustainability, supply-chain trust). |
+| 3 | Own a standard / certification | **Underway — ASTM certification** (core APPA program) | Being addressed in core APPA; opportunity to extend toward a "Certified by APPA" trustmark (safety, quality, sustainability) given the regulatory wave (PURR Act, FDA/AAFCO). |
 | 4 | Awards program | New-Products Showcase only (at Expo) | Underdeveloped vs. sofi/TOTY/gia as a standalone, sponsor-funded, year-round PR engine. |
-| 5 | Year-round digital layer | Limited | No Connect 365-style marketplace/directory monetizing the 1,200+ members and their buyers between Expos. |
+| 5 | Year-round digital layer | **Underway — "365" content/engagement platform** (core APPA program) | Being addressed in core APPA to drive engagement/retention; a *separate, commercial* B2B marketplace could sit in Ventures. |
 | 6 | (c)(3) foundation for consumer growth + tax-deductible funds | PAL + HABRI sponsorship, **no APPA-controlled (c)(3)** | APPA can't currently receive tax-deductible gifts or foundation grants. A controlled APPA Foundation would scale PAL and unlock new funding. |
 | 7 | Affinity / licensing / business services | Minimal | Zero capture of insurance, shipping, payments, credit, lending, and media-network royalties across a $152B industry's supply base. |
 | 8 | Advocacy + economic-impact PR | Strong stats; advocacy partly outsourced to Pet Advocacy Network | Impact stats are excellent; the advocacy/PR *platform* could be owned more fully and monetized via sponsorship. |
@@ -276,7 +276,7 @@ The platform has four cost components: **data engineering/warehouse**, **applica
 Engagement is the **leading indicator of retention**, and retention — not acquisition — is what sustains the dues base that funds APPA's mission and reinvestment. The logic:
 
 - A member who only appears at Global Pet Expo has a *once-a-year* relationship and is the **highest churn risk**. Every additional product actively used (data, AI co-pilot, certification, awards, community, education) raises switching costs. **Multi-product members renew at materially higher rates than single-product members.**
-- The AI data platform is APPA's **most powerful retention engine**, not just a revenue line: a member who logs in weekly to ask the AI a question has a *daily-utility* relationship with APPA. Login/query frequency is a **measurable** signal that predicts renewal — turning retention from a hope into something management can act on.
+- The AI data platform is a **powerful retention complement** (not a replacement for APPA's core "365" content/engagement platform, which remains the primary engagement program in the association): a member who logs in weekly to ask the AI a question has a *daily-utility* relationship with APPA. Login/query frequency is a **measurable** signal that predicts renewal — turning retention from a hope into something management can act on.
 - This is why diversified peers built year-round digital layers (IHA Connect 365, SEMA Data): to defeat the "why renew between shows?" question.
 
 **What to put in place:**
@@ -333,10 +333,12 @@ Year 1 recognized revenue is below exit-ARR because of a mid-year launch (partia
 - **Add year-round, higher-margin event formats** that don't cannibalize the Expo: a **Pet Industry Leadership Summit** (C-suite, paid + sponsored), topical conferences (sustainability, **pet tech**, DTC/e-commerce, pet health/insurance), buyer-seller **matchmaking** programs, and **digital/hybrid** events.
 - **Impact:** captures the fast-growing pet-tech/DTC/insurance sub-sectors APPA's traditional membership underweights.
 
-### Pillar 3 — Standards, certification & trustmarks
+### Pillar 3 — Standards, certification & trustmarks *(CORE APPA program)*
 
-- Launch a **"Certified by APPA" trustmark** program — start with the highest-trust-deficit areas: **product safety/quality** and **sustainability** (recyclable packaging, alt-protein claims), with a credible standards partner (NSF, UL, or the Pet Sustainability Coalition).
-- **Revenue:** certification/audit fees + annual trustmark licensing royalty.
+> **Scope note:** Certification is a **core APPA program, not an APPA Ventures business.** APPA is **already pursuing ASTM certification(s)**; standards/certification stays in the 501(c)(6) as a mission/member-value program.
+
+- Build on the **ASTM certification** work underway, potentially extending toward a **"Certified by APPA" trustmark** in high-trust-deficit areas (product safety/quality, sustainability) with a credible standards partner (NSF, UL, or the Pet Sustainability Coalition).
+- **Revenue:** certification/audit fees + (if pursued) trustmark licensing — retained by **core APPA**.
 - **Impact:** positions APPA at the center of the looming regulatory wave (PURR Act, FDA/AAFCO reform) and gives consumers/retailers a reason to value APPA membership.
 
 ### Pillar 4 — Industry impact engine & the APPA Foundation
@@ -345,13 +347,15 @@ Year 1 recognized revenue is below exit-ARR because of a mid-year launch (partia
 - **Own the economic-impact narrative:** upgrade the periodic, co-funded MSU pet-sector study (which put the sector at **$260.5B in total economic contribution**) into an **annual, APPA-branded "Economic Impact of the US Pet Industry"** study (jobs, wages, tax, $152B+ spending footprint) — the anchor PR/advocacy asset, sponsor-funded.
 - **Expand awards** into a standalone, sponsor-funded **Pet Products Awards** program (sofi/gia model).
 
-### Pillar 5 — Commercial services & affinity (via a for-profit subsidiary)
+### Pillar 5 — Commercial services & affinity (via APPA Ventures, the for-profit subsidiary)
+
+> **Scope note:** These are the **commercial** lines that sit in **APPA Ventures**. They are distinct from APPA's **core "365" content/engagement platform**, which is a **core APPA program** (already being pursued) for member engagement/dues retention and stays in the 501(c)(6). A commercial *B2B marketplace* is different from the core *member-engagement content platform* — keep the two separate.
 
 - **Affinity programs** (partner-delivered, royalty/rev-share): pet-business insurance, shipping/logistics, payments, **trade credit reporting** (Housewares Credit Group model), lending, and HR/benefits for the supply base.
-- **Media & advertising network:** monetize APPA's audience (newsletters, dashboards, directory) with a sponsorship/ad sales program.
-- **Connect 365-style marketplace/directory:** a year-round B2B platform connecting the 1,200+ members with buyers — lead-gen and listing revenue.
-- **Education academy:** paid certifications/courses for pet-industry professionals.
-- Most of these are **unrelated business income** and should sit in the taxable subsidiary (§6).
+- **Media & advertising network:** monetize Ventures' audience (Pets of [City], dashboards, directory) with a sponsorship/ad-sales program.
+- **B2B commercial marketplace/directory:** a year-round B2B lead-gen/listing platform connecting suppliers with buyers — *separate from the core member-engagement 365 platform.*
+- **Professional education/courses:** paid commercial training (distinct from APPA's core ASTM certification, which stays in the association).
+- Most of these are **unrelated business income** and sit in the taxable subsidiary (§6).
 
 ### 5.1 Target revenue mix at Year 3
 
