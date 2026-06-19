@@ -8,7 +8,7 @@ No single source defines "best pilot city," so the shortlist blends:
 
 1. **Pet-friendliness ranking** — WalletHub *Most Pet-Friendly Cities (2025/2026)*, which scores the 100 largest US cities on 23 metrics (vet costs, pet businesses per capita, walkability, share of rentals allowing pets). *(Source: WalletHub)*
 2. **Better Cities for Pets™ certification** — Mars Petcare's program (100+ certified cities). A pet-friendliness signal. **The full certified-city list is now confirmed** (see Appendix). Notably, several high-WalletHub cities are **not** certified (Denver, San Antonio, Scottsdale, Portland, Orlando, Cincinnati, St. Louis), while many large metros **are** (Houston, Phoenix, Charlotte, Memphis, Kansas City, New Orleans, Philadelphia, Miami, Washington DC, Salt Lake City, Louisville, Tucson, Richmond, Savannah, Oakland, Cleveland). *(Source: Mars Petcare / Better Cities for Pets)*
-3. **Mission/advocacy hook** — cities with **municipal pet-deposit assistance programs**, which give the newsletter a differentiated, recurring housing/advocacy story (and align with APPA's pet-inclusive-housing goal). *(Denver — live; San Antonio — proposed.)*
+3. **Mission/advocacy hook** — cities with **municipal pet-deposit assistance programs**, which give the newsletter a differentiated, recurring housing/advocacy story (and align with APPA's pet-inclusive-housing goal). *(Denver and San Antonio — both confirmed live.)*
 4. **Market size & advertiser base** — metro population and pet-business density (the local-SMB + member-brand ad pool).
 5. **Texas advantage** — ~91% of TX rentals accept pets (among the highest nationally), aiding the housing-content angle in Austin / San Antonio / Dallas. *(Source: Michelson Found Animals)*
 6. **Competitive whitespace** — no dominant incumbent pet-local newsletter.
@@ -25,7 +25,7 @@ No single source defines "best pilot city," so the shortlist blends:
 | **Nashville, TN** | top-100 | ✅ Yes | — | **Double signal**; fast-growing, ad-rich |
 | **Dallas, TX** | top-100 | ✅ Yes (first 25) | — | **Double signal**; TX housing advantage |
 | **Denver, CO** ⭐ | top-tier | ❌ No | **Yes — live** ($300 pilot, District 10; Denver Animal Shelter + CEDP) | **Mission hook** |
-| **San Antonio, TX** ⭐ | top-100 | ❌ No | **Proposed** (adopt/foster from ACS or partners) | **Mission hook**; *confirm status* |
+| **San Antonio, TX** ⭐ | top-100 | ❌ No | **Yes — confirmed** (adopt/foster from ACS or partners) | **Mission hook** |
 | **Houston, TX** | top-100 | ✅ Yes | — | Large certified TX market |
 | **Phoenix, AZ** | high | ✅ Yes | — | Large certified market (Scottsdale alt) |
 | **Charlotte, NC** | top-100 | ✅ Yes | — | Large certified, growing |
@@ -47,7 +47,7 @@ No single source defines "best pilot city," so the shortlist blends:
 
 **Wave 1 — launch first (double-signal + mission hooks), 6 AI test markets:**
 **Austin, Tampa, Las Vegas, Nashville** (all WalletHub-ranked **and** BCFP-certified) **+ Denver, San Antonio** (the pet-deposit-program mission hooks).
-Rationale: four metros with the strongest combined pet-friendliness signal and deep advertiser bases, plus the two deposit-program cities that hand us a differentiated, recurring housing/advocacy storyline (Denver live; San Antonio pending confirmation).
+Rationale: four metros with the strongest combined pet-friendliness signal and deep advertiser bases, plus the two deposit-program cities (both confirmed live) that hand us a differentiated, recurring housing/advocacy storyline.
 
 **Wave 2 — fast-follow pipeline, ~9 markets:**
 Dallas, Houston, Charlotte, Salt Lake City, Kansas City, New Orleans (all certified), Phoenix (certified; Scottsdale-metro alternative to the uncertified #1), plus high-WalletHub-but-uncertified options to test (Portland, Orlando), and cheap small-market certified tests (Flagstaff, Columbia SC).
@@ -58,13 +58,13 @@ This comfortably reaches the ~15 Year-1 AI test markets in the §B plan, with gr
 
 Both cities make the **pet-inclusive-housing** focus concrete and local:
 - **Denver (live):** a pilot paying **$300 pet deposits** to help renters keep pets and reduce shelter surrenders, run by the **Denver Animal Shelter** with the Community Economic Defense Project (also offering spay/neuter, vaccines, microchipping to enrollees). A natural recurring story, and a model to cover for other cities. *(Sources: City & County of Denver; CBS Colorado; Denverite)*
-- **San Antonio (proposed):** an **income-based pet-deposit assistance** proposal for renters who **adopt or foster from Animal Care Services or partner shelters**, aimed at removing adoption barriers and freeing shelter space. **Status: proposed (2024) — confirm whether enacted before publishing as current.** *(Sources: TPR; KSAT; Community Impact)*
+- **San Antonio (confirmed live):** an **income-based pet-deposit assistance** program for renters who **adopt or foster from Animal Care Services or partner shelters**, aimed at removing adoption barriers and freeing shelter space. *(Confirmed live per APPA; originally proposed 2024 — sources: TPR; KSAT; Community Impact.)*
 
 These programs are exactly the kind of advocacy APPA can amplify — and, through Pets of [City], **monetize around** (pet-friendly housing listings, adoption features) rather than spend against.
 
 ## Caveats / to verify before committing
 1. **Better Cities for Pets full certified list now confirmed** (see Appendix). Key implication: **Denver, San Antonio, and Scottsdale are NOT certified** — Denver and San Antonio stay in on their pet-deposit mission hooks; for the Scottsdale (#1 WalletHub) opportunity, **Phoenix or Tempe/Tucson** offer a certified alternative in the same region.
-2. **San Antonio pet-deposit program may still be proposed** — confirm current status with District 2 / Animal Care Services.
+2. **San Antonio pet-deposit program — confirmed live** (per APPA). Capture current program specifics (eligibility, amount, partner shelters) for accurate content.
 3. **Denver program is District-10-scoped and pilot-sized** — frame accurately (not citywide).
 4. **WalletHub ranks the 100 largest cities** — small high-pet-friendliness markets (Flagstaff, Columbia) won't appear there; they're cheap AI-test options, not primary ad markets.
 5. Final ranking should run through **Pet Intelligence** (pet-owning density, pet-business density, housing tension, member-brand priorities, competitive whitespace) before staffing decisions.
