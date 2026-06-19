@@ -169,7 +169,155 @@ Year 1 is a funded build year; the portfolio turns profit-positive by Year 2–3
 
 With the venture operating model agreed, the next deliverables are the **two business-unit plans**, built to slot into this document:
 
-- **§A — APPA Pet Intelligence business plan** (product, the 3-tier pricing/revenue model already drafted, build-vs-partner cost, GTM, team, P&L).
-- **§B — "Pets of [City]" business plan** (the AI-test-market → staffed-editor model, per-market unit economics, advocacy-to-profit monetization, partner-vs-build, rollout map, P&L).
+- **§A — APPA Pet Intelligence business plan** (product, the 3-tier pricing/revenue model already drafted, build-vs-partner cost, GTM, team, P&L). *— pending.*
+- **§B — "Pets of [City]" business plan** — ✓ **built below.**
 
-*Say the word and I'll build §A and §B next.*
+---
+
+# §B — "Pets of [City]" (PoC) Business Plan
+
+*Working title "Pets of [City]" / "PoC" is a placeholder pending a stronger consumer brand (naming directions in §B.13). Built as a business unit of APPA Ventures, per the operating model above.*
+
+## B.1 Concept & value proposition
+
+**PoC is a network of hyper-local, AI-assisted consumer media properties for pet owners** — a free weekly email newsletter at its core, wrapped with a curated local **pet-business directory**, **adoptable-pet** features, **pet-friendly housing** listings, and **community events** — one property per metro, modeled on the validated 6AM City / Good Daily playbook but focused exclusively on the pet owner.
+
+- **For pet owners:** the trusted local guide to everything pet in their city — where to go, who to use, what's happening, who to adopt, where to live with a pet.
+- **For local pet businesses** (vets, groomers, boarders, walkers, trainers, independent retailers): an affordable, highly-targeted way to reach engaged local pet owners.
+- **For APPA member brands:** a national-to-local consumer advertising channel APPA has never been able to offer.
+- **For APPA's mission:** the delivery mechanism that turns advocacy (pet-inclusive housing, independent retail, growing ownership, shelters, vet access) into a **profitable** activity.
+
+**Why now:** 6AM City reaches ~1.5M people across 31 markets and runs newsletters at **~70% margin within 36 months** (CAC <$1, LTV >$25); in 2025 it **acquired Good Daily's 350+ AI-generated local newsletters** — validating the exact "AI-first, staff the winners" model. No one owns the **pet** vertical of this — today it's fragmented regional players (Pet Junction, CityDog). It's open white space.
+
+## B.2 Market & audience
+
+- **National TAM:** ~66–70% of US households own a pet; the pet economy is ~$152B and growing.
+- **Addressable markets:** 6AM identified ~150 US metros viable for general local newsletters. A pet-only product addresses a *subset* of each metro's households but with **higher affinity**. Realistic per-market subscriber ceiling: **~10,000–25,000 engaged subscribers** at maturity (vs. ~50,000 for a general 6AM market) — smaller audience, higher engagement and ad yield per subscriber.
+- **The advertiser base is the hidden strength:** a typical metro has dozens–hundreds of vets, groomers, boarders, walkers, trainers, and independent pet stores, plus pet-friendly apartments/property managers and pet-welcoming restaurants/breweries — a deep, under-served **local-SMB ad and directory base**, augmented by national member-brand demand sold centrally.
+
+## B.3 The product
+
+| Component | Description | Cadence |
+|---|---|---|
+| **Local newsletter** | Curated local pet news, events, openings, deals, adoptable pets, pet-friendly spots | Weekly (scaling to 2–3×/week in mature markets) |
+| **Pet-business directory** | Searchable local listings: vets, groomers, boarders, walkers, trainers, independent retail — free basic + paid featured/lead-gen | Always-on (web) |
+| **Adoptable pets / shelter spotlight** | Local shelter & rescue partnerships; "adoptable pets of [city]" | Weekly feature |
+| **Pet-friendly housing** | Listings/sponsorships from pet-welcoming apartments & property managers | Always-on + newsletter |
+| **Local events** | Adoption days, "yappy hours," mini-expos, member-brand activations | 2–6 / year per staffed market |
+| **Deals & new products** | Local offers + member-brand national offers; new-product spotlights (ties to Global Pet Expo) | Recurring |
+
+**Content guardrail (non-negotiable):** **no veterinary or medical advice** (YMYL risk). Content covers *services, places, events, adoption, housing, products* — never diagnosis or treatment guidance. AI-drafted content passes human/editorial review and brand-safety screening before send.
+
+## B.4 The staged operating model: AI test markets → staffed editors
+
+This is the capital-efficient core of the plan — cheap options, fund the winners.
+
+**Stage 1 — AI test market (a low-cost option).** Spin up a market that is **largely AI-generated** (content aggregation/curation + drafting, human-reviewed), seeded with light paid acquisition. Goal: prove **subscriber growth, engagement (open/click), and inbound advertiser demand.** Cost is a few thousand dollars/market — failures are cheap.
+
+**Stage 2 — Graduation (earned, not assumed).** A market graduates when it clears a **dual threshold: ~8,000–12,000 engaged subscribers *and* demonstrated local ad/directory demand.** Subscriber count alone is not enough — local *sales* potential is the gating test, because local sales is the real constraint.
+
+**Stage 3 — Staffed market.** Hire a **PT → FT community editor** (the 6AM "Cityzen" model) who writes/curates, **sells local sponsorships and directory listings, and runs events.** Compensation blends modest base + commission, so cost scales with revenue.
+
+**Stage 4 — Mature market.** ~15,000–25,000 subscribers; multiple recurring sponsors; a populated paid directory; 2–6 events/year; trending toward the 6AM-style high-margin steady state.
+
+## B.5 Monetization — the advocacy-to-profit revenue lines
+
+Each line simultaneously earns revenue **and** advances an APPA priority:
+
+| Revenue line | Buyer | Advances APPA priority |
+|---|---|---|
+| **Newsletter sponsorships / content ads** | Local SMBs + national member brands | Member-brand channel; local business support |
+| **Paid directory listings + lead-gen** | Vets, groomers, boarders, walkers, **independent retailers** | Independent retail & vet access (services, no advice) |
+| **Pet-friendly housing listings/sponsorships** | Property managers, apartments, brokers | **Pet-inclusive housing** advocacy |
+| **Shelter/adoption sponsorships** | Member brands sponsoring adoption features | **Driving pet ownership**; shelter support |
+| **Local events** | Sponsors + tickets | Community engagement; PAL activation |
+| **Classifieds / deals** | Local + national | Ownership lifestyle; member offers |
+
+National member-brand inventory is **sold centrally** and allocated across markets (premium, scalable); local inventory is sold by the market editor + central sales support + **self-serve directory** (so revenue isn't fully gated by editor capacity).
+
+## B.6 Per-market unit economics (illustrative)
+
+| Per market, annual | **AI test market** | **Staffed — ramping** | **Staffed — mature** |
+|---|---:|---:|---:|
+| Subscribers | 3,000–8,000 | 10,000–15,000 | 15,000–25,000 |
+| Revenue | $5–30K | $80–150K | ~$200K+ |
+| Direct costs (editor, events, content, ESP) | $5–15K | $50–90K | ~$100K |
+| Paid subscriber acquisition | light | moderate | maintenance |
+| **Contribution** | ~breakeven (an option) | modestly positive | **~$100K (~50% margin)** |
+
+The attractive engine underneath: **CAC under ~$1–1.50 and LTV well above $25** (6AM-benchmarked; pet affinity supports it), so each subscriber added is value-accretive even while the portfolio is in build mode.
+
+## B.7 Build vs. partner
+
+| | Build (in-house) | **Partner / license platform (recommended)** |
+|---|---|---|
+| Tech: newsletter engine, AI content pipeline, ad-ops, directory | Build from scratch — slow, costly, off-competency | **License/partner** a proven engine (6AM City / Good Daily-type platform) — live in months |
+| Local + national ad sales | Build | APPA brings **national member-brand demand**; partner/co-build local sales ops |
+| Pet vertical, data, advocacy hooks, shelter/vet/retail relationships | APPA's edge | APPA's edge — the scarce contribution |
+| Time to first markets | 12–18 mo | **~3–6 mo** |
+| Economics | Full margin, full risk | Shared (rev-share/JV), much lower risk |
+
+**Recommendation: Build-Operate-Transfer / JV with a local-newsletter platform.** Partner contributes the media/AI/ad-tech engine; **APPA Ventures contributes the pet vertical, member-brand ad demand, Pet Intelligence data, and the advocacy/shelter/vet/retail relationships** — and retains the brand, the consumer data, and the option to in-source later. APPA's contribution (a built-in national advertiser base + data + mission distribution) is genuinely scarce, which strengthens the deal terms. Held in *Pets of City Media LLC* under Ventures (partner equity at the unit level, parent insulated).
+
+## B.8 Market selection (powered by Pet Intelligence)
+
+Pet Intelligence ranks and sequences metros — the data business literally chooses the media business's markets:
+
+- **Pet-owning household density** and spending
+- **Local pet-business density** (ad/directory supply)
+- **Pet-friendly housing tension** (advocacy + listings demand)
+- **Member-brand priority markets**
+- **Competitive whitespace** (weak incumbents / Facebook-group-only)
+- **Advocacy hot spots** (markets debating retail-sale bans or housing rules — where PoC adds both revenue and advocacy value)
+
+Sequence into **high-affinity, high-density, pet-friendly metros first**, then expand by archetype.
+
+## B.9 Rollout map & portfolio P&L (illustrative)
+
+| | Year 1 | Year 2 | Year 3 |
+|---|---:|---:|---:|
+| AI test markets (cumulative) | 15 | 35 | 60 |
+| Staffed markets | 2–3 | ~9 | ~20 |
+| **Revenue ($000)** | **~400** | **~1,300** | **~3,100** |
+| Editor & local direct costs | 150 | 600 | 1,400 |
+| Central platform & shared services* | 450 | 800 | 1,100 |
+| Paid subscriber acquisition | 200 | 350 | 500 |
+| **Total costs ($000)** | **800** | **1,750** | **3,000** |
+| **Contribution / (investment) ($000)** | **(400)** | **(450)** | **~100** |
+
+\*Shared with the broader Ventures platform (AI/data, central ad sales, content-ops) — true standalone cost would be higher; this reflects the synergy benefit of running PoC inside Ventures alongside Pet Intelligence.
+
+**Honest framing:** PoC is the **longer-payback, higher-strategic-value** business — a portfolio in build mode is investment-negative in Years 1–2 and approaches breakeven around Year 3, with the high-margin steady state arriving market-by-market as each ages past ~36 months (per the 6AM curve). It is balanced by **Pet Intelligence as the nearer-term profit engine.** The strategic returns (consumer data, advocacy-as-profit, B2C reach, member-brand channel) accrue well before the line turns cash-positive.
+
+## B.10 Team & org
+
+- **Central (shared with Ventures):** GM/Publisher, head of national ad sales, AI/content-ops lead, data/market-selection (from Pet Intelligence), subscriber-growth/performance marketing, partner-platform liaison.
+- **Per staffed market:** one community editor (PT→FT, base + commission) selling/writing/running events, supported by central sales and self-serve directory tools.
+- **Lean by design:** AI + shared services keep headcount low until markets earn staffing.
+
+## B.11 KPIs
+
+Subscribers and growth rate per market; open/click engagement; **CAC and LTV**; markets graduated from test→staffed; sponsors and directory listings per market; revenue and contribution per market; national member-brand revenue; events run + sponsorship yield; and **mission metrics** (pet-friendly units listed, independent retailers featured, shelter adoptions promoted) for advocacy reporting.
+
+## B.12 Risks & mitigations
+
+| Risk | Mitigation |
+|---|---|
+| **Local SMB sales doesn't scale without people** (editor capacity) | Self-serve directory/listings; packaged ad products; central sales support; national member-brand inventory sold centrally |
+| **Free competition** (Facebook groups, Nextdoor) | Win on curation + trusted directory + events + adoption/housing utility, not just feed content |
+| **AI content quality / YMYL (vet advice)** | Hard guardrail: no medical advice; human/editorial review; brand-safety screening |
+| **Subscriber churn / cadence fatigue** | Weekly cadence in a niche; quality over volume; engagement-driven |
+| **Market-selection errors** | Pet Intelligence data + cheap AI test markets de-risk before any staffing spend |
+| **Brand/reputation on APPA name** | Charter guardrails; consumer brand can sit slightly apart from the APPA master brand |
+
+## B.13 Naming (placeholder → brand)
+
+"Pets of [City]" works as a placeholder but is generic. Directions to explore (trademark/URL check required): a coined ownable name (e.g., *PetLocal*, *Pawmark*, *Fetch [City]*, *Petropolis*, *LeashLocal*, *Barkboard*), or an APPA-endorsed descriptor (*"[City] Pet Scene," "Pet [City]"*). Recommend a distinct consumer brand, **"powered by APPA,"** so it carries APPA credibility without over-tying the master brand to AI-generated local content.
+
+## B.14 Strategic payoff (why PoC matters beyond its P&L)
+
+1. **Turns advocacy into profit** — housing, independent retail, shelters, vets, member brands all promoted *through a business that pays for itself.*
+2. **Gives APPA a B2C audience** for the first time — a direct channel for **Pets Add Life** and consumer engagement.
+3. **Feeds Pet Intelligence** proprietary local/consumer data no competitor can match.
+4. **A new member-brand benefit** — local-to-national consumer advertising — strengthening membership value and retention.
+5. **Generates the local economic evidence** (pet-friendly housing demand, independent-retail impact) that makes APPA's advocacy against retail-sale bans and for pet-inclusive housing more persuasive.
