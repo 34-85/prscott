@@ -181,16 +181,18 @@ The most commercial activities (data sales to non-members, advertising networks,
 - **Drivers:** humanization, premiumization/fresh food (Freshpet and The Farmer's Dog each >$1B), e-commerce (Chewy ~$3.1B/qtr, ~84% Autoship; online ~$28.8B), pet tech, **pet insurance** (>$5.2B premium, **only ~3.9% penetration** — large runway), sustainability/alt-protein, DTC & private label.
 - **Competitive landscape:** **WPA's SuperZoo** (Las Vegas, 22,000+ attendees) directly competes with Global Pet Expo; **PIDA** co-owns the Expo; **Pet Food Institute** and **Pet Advocacy Network** own the food-policy and lobbying lanes; and APPA's NPOS competes for data authority with **Packaged Facts, Euromonitor, NielsenIQ, Mintel, and Morgan Stanley**.
 
-**The competitive wake-up call — APPA vs. WPA.** APPA's direct trade-show rival, the World Pet Association, is a near-identical-size (c)(6) ($16.1M revenue) — but it is dramatically more profitable and better capitalized:
+**Two different philosophies — APPA vs. WPA.** APPA's direct trade-show rival, the World Pet Association, is a near-identical-size (c)(6) ($16.1M revenue) — but the two organizations run on fundamentally different operating models, and the headline margin gap reflects *strategy, not efficiency*:
 
 | Metric (FY2024) | APPA | WPA (SuperZoo) |
 |---|---:|---:|
 | Total revenue | $17.5M | $16.1M |
-| Operating surplus | ~$1.0M | **~$4.6M** |
-| Operating margin | **~6%** | **~29%** |
-| Net assets / reserves | $16.7M | **$22.1M** |
+| Operating surplus | ~$1.0M | ~$4.6M |
+| Operating margin | ~6% | ~29% |
+| Net assets / reserves | $16.7M | $22.1M |
 
-WPA wholly owns its flagship show and runs it at a ~29% margin, throwing off ~$4.6M/year that compounds its war chest (and funds "WPA Good Works," which has given $15M+ over 15 years from SuperZoo proceeds). APPA, with a *larger* show that it shares 50/50, converts far less to surplus. Closing this efficiency-and-ownership gap is as important as adding new revenue lines.
+**These numbers must be read correctly.** WPA is **focused on driving profitability** — it wholly owns SuperZoo and runs it at a ~29% margin, building reserves (and funding "WPA Good Works," $15M+ over 15 years). APPA runs a **deliberately lower-margin, higher-reinvestment model**: it plows surplus back into **continuous Global Pet Expo improvements, the National Pet Owners Survey and other research, and category-growth work that encourages pet ownership** (Pets Add Life, HABRI). Critically, **Global Pet Expo is a long-term partnership that funds PIDA** — APPA's share of the show effectively sustains PIDA, which would not exist today without it — and *both* organizations reinvest heavily back into the industry. APPA's thinner margin is therefore largely a *choice* in service of its mission, not a performance gap to be "fixed" by imitating WPA.
+
+**The strategic implication is the opposite of cost-cutting:** the goal is to *diversify and grow APPA's revenue base* so it has **more** to reinvest in the show, research, and pet ownership — not to squeeze the existing model for margin. New, higher-margin lines (data subscriptions, certification, affinity) are what give a reinvestment-oriented association the capacity to do more for the industry. WPA's economics are useful as a *benchmark of what a pet-show P&L can yield*, not as a model APPA should copy.
 
 ---
 
@@ -198,7 +200,7 @@ WPA wholly owns its flagship show and runs it at a ~29% margin, throwing off ~$4
 
 | # | Best practice | APPA today | Gap / opportunity |
 |---|---|---|---|
-| 1 | Own the flagship show's economics | **50/50 with PIDA** | APPA captures only half the economics of its single largest asset. OPEI precedent: insourcing doubled revenue. **Highest-stakes question.** |
+| 1 | Own/optimize the flagship show's economics | **Long-term partnership with PIDA** (APPA already books most Expo revenue and the partnership *funds* PIDA) | Not a value-extraction gap — the partnership is deliberate industry infrastructure. Opportunity is to **grow the event franchise** (new formats/summits) while preserving the partnership, plus deliberate reinvestment in show quality. |
 | 2 | Productize data into recurring, tiered subscriptions | NPOS is a periodic **report/dataset**, sold ad hoc | Largest growth gap. The pet industry is *richer in data demand* than housewares — yet IHA, SEMA, PPAI, and even The Vision Council out-productize APPA. A year-round **"Pet Intelligence" subscription platform** is the single biggest opportunity. |
 | 3 | Own a standard / certification | **None** | White space. No "Certified by APPA" trustmark for safety, quality, or sustainability — despite acute industry need (PURR Act, sustainability, supply-chain trust). |
 | 4 | Awards program | New-Products Showcase only (at Expo) | Underdeveloped vs. sofi/TOTY/gia as a standalone, sponsor-funded, year-round PR engine. |
@@ -274,15 +276,15 @@ Transform NPOS from a biennial report into a **year-round, tiered data subscript
 
 This is the highest-value, highest-sensitivity decision. The OPEI precedent (insourcing its co-owned show ≈ doubled its revenue) shows the prize; the OIA precedent (dependency on a show it didn't control) shows the risk.
 
-**An important nuance specific to APPA:** PIDA — APPA's 50/50 Expo partner — reports only **~$2.0M in total revenue**, while APPA's program-service line is ~$15.8M. This strongly implies that **APPA already books the large majority of Global Pet Expo's reportable revenue on its own 990** (the show is not a symmetric split on paper). So unlike OPEI, the prize here is *not* a revenue-doubling — it is **margin and profit-share optimization** (recall the ~6% vs. ~29% margin gap vs. WPA) plus a **governance vehicle to grow the event franchise**. Right-sizing expectations matters: the diversification pillars (§5), not the Expo restructuring, are the primary growth engine. Three options, in order of APPA preference:
+**An important nuance specific to APPA — and a relationship to protect.** PIDA reports only **~$2.0M in total revenue** while APPA's program-service line is ~$15.8M, which means **APPA already books the large majority of Global Pet Expo's reportable revenue.** But this is *by design, not by accident*: Global Pet Expo is a **long-term partnership in which APPA's stewardship of the show effectively funds PIDA — which would not exist today without it.** Both organizations reinvest their proceeds back into the industry. So the OPEI "insource the show and double revenue" analogy **does not apply**, and "buying out PIDA" should not be treated as a value-extraction opportunity — the partnership is a deliberate piece of industry infrastructure. The realistic prize is **growing the event franchise and modestly optimizing economics within a preserved partnership**, while the **diversification pillars (§5) — not Expo restructuring — remain the primary growth engine.** Three options, framed accordingly:
 
 | Option | Description | Pros | Cons |
 |---|---|---|---|
-| **A. Status quo, optimize** | Keep 50/50; grow show profit jointly; add APPA-only adjacent events | No disruption; preserves PIDA relationship | Caps APPA's upside on its biggest asset |
-| **B. Joint for-profit show entity** | APPA + PIDA contribute the Expo into a **jointly-owned for-profit LLC** with professional management, expanded events, and clear profit distributions | Professionalizes & grows the asset; clean economics; platform for new shows; both parties win | Requires renegotiation; governance complexity |
-| **C. Consolidate ownership** | APPA acquires PIDA's share (or merges show operations) | Full economic capture (OPEI outcome) | Capital-intensive; relationship risk; PIDA may decline |
+| **A. Status quo, optimize** | Keep the partnership; grow show value jointly; add APPA-only adjacent events | No disruption; preserves the PIDA relationship that the partnership sustains | Leaves the event franchise's growth potential partly untapped |
+| **B. Joint for-profit show entity** | APPA + PIDA contribute the Expo into a **jointly-owned for-profit LLC** with professional management, expanded events, and clear distributions — **preserving the partnership and PIDA's funding** | Professionalizes & grows the asset; clean economics; platform for new shows; both parties continue to benefit | Requires renegotiation; governance complexity |
+| **C. Consolidate ownership** | APPA acquires PIDA's share / merges operations | Full economic capture (OPEI outcome) | **Runs counter to the long-term partnership that sustains PIDA; not recommended on stewardship grounds** unless PIDA itself initiates it |
 
-**Recommendation:** Pursue **B (a jointly-owned for-profit show company)** as the realistic value-maximizing path, with **A as the fallback** and **C explored opportunistically.** B captures most of the economic upside, creates a vehicle for the new event formats in Pillar 2, and is far more achievable than buying out a co-owner. *This decision should be modeled separately and is treated conservatively (status-quo economics) in the §7 financials so the diversification case stands on its own.*
+**Recommendation:** Pursue **B (a jointly-owned for-profit show company)** as the value-maximizing path that *keeps the partnership intact*, with **A as the fallback.** **Option C is not recommended** — dismantling a partnership that deliberately funds PIDA would undercut industry infrastructure APPA has long supported. B grows the franchise and creates a vehicle for the new event formats in Pillar 2 while preserving PIDA's role. *This decision is treated conservatively (status-quo economics) in the §7 financials, so the diversification case stands on its own regardless of the Expo path chosen.*
 
 ### 6.2 Build / buy / partner by initiative
 
@@ -388,7 +390,7 @@ This is the highest-value, highest-sensitivity decision. The OPEI precedent (ins
 
 ## 8. Recommendation in one paragraph
 
-APPA is a financially healthy, growing association ($17.5M revenue, $16.7M net assets) that is **structurally under-diversified** for the size and dynamism of its $152B+ industry — roughly 90% of revenue sits in a half-owned trade show and a biennial report. The mid-size peers it should emulate (IHA, OPEI, NCA) prove that a corporate-membership (c)(6) at APPA's scale can build recurring data subscriptions, certification, affinity services, a consumer-growth foundation, and expanded events into a balanced portfolio. The single biggest move is **productizing pet data into a year-round subscription platform**, housed in a **wholly-owned taxable subsidiary**, funded from existing reserves; the single most valuable structural question is **the economics of Global Pet Expo with PIDA**, where the OPEI precedent suggests substantial upside. Executed over three years, this path can grow revenue ~67% to ~$29M, cut single-line concentration below 45%, lift non-show revenue past 30%, and make APPA the indispensable data, standards, and category-growth authority of the pet industry — all without external capital.
+APPA is a financially healthy, growing association ($17.5M revenue, $16.7M net assets) that is **structurally under-diversified** for the size and dynamism of its $152B+ industry — roughly 90% of revenue sits in a trade show and a periodic research report. The mid-size peers it should emulate (IHA, OPEI, NCA) prove that a corporate-membership (c)(6) at APPA's scale can build recurring data subscriptions, certification, affinity services, a consumer-growth foundation, and expanded events into a balanced portfolio. The single biggest move is **productizing pet data into a year-round subscription platform**, housed in a **wholly-owned taxable subsidiary**, funded from existing reserves. Importantly, APPA's comparatively thin operating margin is a *deliberate reinvestment choice* — surplus flows back into the show, research, and pet-ownership growth, and Global Pet Expo's structure intentionally sustains its long-term partner PIDA — so the strategy is **not** to chase WPA-style margins or unwind the PIDA partnership, but to **build new higher-margin lines that give APPA more capacity to reinvest in the industry.** Executed over three years, this path can grow revenue ~67% to ~$29M, cut single-line concentration below 45%, lift non-show revenue past 30%, and make APPA the indispensable data, standards, and category-growth authority of the pet industry — all without external capital.
 
 ---
 
