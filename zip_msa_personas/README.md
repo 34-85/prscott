@@ -84,6 +84,31 @@ Each output row is stamped with `methodology_version`, `data_vintage`,
 baseline) that produced it. This is what lets you answer a customer's "where did
 this number come from?"
 
+## National scoring + coverage
+
+Score the full ZCTA universe and report how much of the country is observed vs
+modeled vs disclosed-extrapolated — nationally, by metro/non-metro, and per MSA:
+
+```bash
+python -m zip_msa_personas national --demo --out enriched_national.csv
+# real: --personas your.csv --data-vintage "NPOS2024;ACS2022;HUD2023Q4"
+```
+
+## Opportunity scoring (persona ↔ offer ↔ location fit)
+
+Rank ZIPs/MSAs by fit to a client's target personas, sized by addressable
+population, with whitespace (strong fit, no presence) flagged. Estimate-aware:
+opportunity built on modeled ZIPs is discounted by confidence and the
+observed-vs-estimated split is reported.
+
+```bash
+python -m zip_msa_personas opportunity --demo --enriched enriched_national.csv \
+    --out opportunity_zips.csv
+# real: --targets targets.json  --sizes zip_features.csv  --footprint stores.csv
+```
+
+`targets.json` is just `{"Affluent Empty-Nesters": 1.0, "Urban Professionals": 0.8}`.
+
 ## Rights-safe delivery
 
 Licensed sources (e.g. Experian Mosaic) must never leak into a sellable file.
@@ -114,7 +139,11 @@ zip_msa_personas/
   personas.py      # Stage 2: load + aggregate your persona file
   impute.py        # Stage 3: similarity imputation + disclosed extrapolation
   pipeline.py      # orchestration
-  cli.py           # demo / data / run
+  batch.py         # national scoring + coverage report
+  opportunity.py   # persona <-> offer <-> location fit scoring
+  validation.py    # backtest/calibration + external concordance (Mosaic)
+  rights.py        # license tagging + rights-safe export
+  cli.py           # demo / data / run / national / coverage / opportunity / validate / export
   demo.py          # synthetic fixtures for the offline demo
 tests/test_pipeline.py
 data/demo/         # sample persona + feature CSVs

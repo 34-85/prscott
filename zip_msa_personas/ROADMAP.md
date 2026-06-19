@@ -39,24 +39,26 @@ is the only sellable asset, and only if its confidence is **calibrated**. The
 
 ## Phases
 
-### Phase 1 — File / data delivery  ← start here
+### Phase 1 — File / data delivery  ← start here  ✅ engine built
 Run national scoring per engagement; deliver a lineage-tagged CSV/Parquet.
 - Near-zero infra; validates that estimates are good *and* valued before
   platform spend.
-- Build: hardened batch runner over all ~33k ZCTAs, pinned data vintages,
-  calibration report shipped alongside every delivery.
+- Built: `batch.run_national` scores all feature-bearing ZIPs and emits a
+  coverage report (observed/modeled/extrapolated, nationally + by metro + per
+  MSA); calibration report (`validate`) and rights-safe export ship alongside.
+- Remaining: pin data vintages on real NPOS/ACS/HUD; Parquet output option.
 
-### Phase 2 — Opportunity scoring (the real revenue driver)
+### Phase 2 — Opportunity scoring  ✅ engine built
 A scoring layer *on top* of persona-by-ZIP. Given a client's target personas
 (e.g. a premium-food brand's high-spend pet owners, or a vet chain's segments),
 rank ZIPs / MSAs / trade areas by **persona↔offer fit**:
 - Inputs: client's target persona weights + (optionally) their store/clinic
   footprint and category sales.
-- Output: ranked locations with fit score, addressable persona counts, and
+- Output: ranked locations with fit score, addressable opportunity, and
   whitespace ("strong fit, no presence") — what a brand or vet actually pays for.
-- Build: a `opportunity.py` module that takes target-persona weights and the
-  enriched ZIP table and returns scored geographies; confidence carries through
-  from the persona layer so estimated ZIPs are flagged.
+- Built: `opportunity.score_opportunity` — estimate-aware (fit x confidence x
+  size), reports observed-vs-estimated addressable split, flags whitespace.
+- Remaining: trade-area (drive-time) rollups; category-sales weighting.
 
 ### Phase 3 — API / SaaS
 Same engine behind an endpoint (single ZIP + batch). Add when customers want

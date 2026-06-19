@@ -17,8 +17,10 @@ from pathlib import Path
 
 import pandas as pd
 
+import json
+
 from . import demo as demo_mod
-from . import crosswalk, impute, personas, pipeline, rights, validation
+from . import batch, crosswalk, impute, opportunity, personas, pipeline, rights, validation
 from .data_sources import DataUnavailable, load_acs_zcta_features, load_reference_data
 
 
@@ -65,6 +67,60 @@ def cmd_data(_args) -> int:
     print(f"Cached ZIP->CBSA crosswalk: {len(ref.zip_cbsa)} rows")
     print(f"Cached CBSA metadata: {len(ref.cbsa_meta)} CBSAs")
     print(f"Cached ACS ZCTA features: {len(feats)} ZCTAs")
+    return 0
+
+
+def cmd_national(args) -> int:
+    """Score the full ZCTA universe and write enriched output + coverage report."""
+    if args.demo:
+        ref, features, persona_df = demo_mod.make_demo()
+        ppath = _write_tmp(persona_df)
+        vintage = "DEMO"
+    else:
+        try:
+            ref = load_reference_data()
+        except DataUnavailable as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 2
+        features = pd.read_csv(args.features, dtype={"zip": str}) if args.features else load_acs_zcta_features()
+        features["zip"] = features["zip"].astype(str).str.zfill(5)
+        ppath = args.personas
+        vintage = args.data_vintage
+    out, cov = batch.run_national(ppath, ref, features, config=impute.ImputeConfig(k=args.k), data_vintage=vintage)
+    out.enriched.to_csv(args.out, index=False)
+    cov_dir = Path(args.out).with_suffix("")
+    cov.write(f"{cov_dir}_coverage")
+    print(cov)
+    print(f"\nWrote {len(out.enriched)} enriched ZIP rows -> {args.out}")
+    print(f"Coverage CSVs -> {cov_dir}_coverage/")
+    return 0
+
+
+def cmd_coverage(args) -> int:
+    enriched = pd.read_csv(args.input, dtype={"zip": str})
+    print(batch.coverage_report(enriched))
+    return 0
+
+
+def cmd_opportunity(args) -> int:
+    """Rank ZIPs/MSAs by persona<->offer fit for a client's target personas."""
+    enriched = pd.read_csv(args.enriched, dtype={"zip": str})
+    if args.demo and not args.targets:
+        # A premium pet brand targeting affluent + urban segments.
+        targets = {"Affluent Empty-Nesters": 1.0, "Urban Professionals": 0.8}
+        sizes = demo_mod.make_demo()[1]
+    else:
+        targets = json.loads(Path(args.targets).read_text()) if args.targets else json.loads(args.targets_inline)
+        sizes = pd.read_csv(args.sizes, dtype={"zip": str}) if args.sizes else None
+    footprint = None
+    if args.footprint:
+        footprint = pd.read_csv(args.footprint, dtype={"zip": str})["zip"].tolist()
+    result = opportunity.score_opportunity(enriched, targets, sizes=sizes, footprint_zips=footprint)
+    result.zip_scores.to_csv(args.out, index=False)
+    print(result)
+    ws = int(result.zip_scores["whitespace"].sum())
+    print(f"\nWhitespace ZIPs (strong fit, not in footprint): {ws}")
+    print(f"Wrote per-ZIP opportunity scores -> {args.out}")
     return 0
 
 
@@ -138,6 +194,29 @@ def main(argv=None) -> int:
 
     pdd = sub.add_parser("data", help="fetch + cache real HUD/Census reference data")
     pdd.set_defaults(func=cmd_data)
+
+    pn = sub.add_parser("national", help="score all ZCTAs + coverage report")
+    pn.add_argument("--demo", action="store_true")
+    pn.add_argument("--personas", default=None)
+    pn.add_argument("--features", default=None)
+    pn.add_argument("--data-vintage", default=None, help="e.g. NPOS2024;ACS2022;HUD2023Q4")
+    pn.add_argument("--out", default="enriched_national.csv")
+    pn.add_argument("--k", type=int, default=10)
+    pn.set_defaults(func=cmd_national)
+
+    pc = sub.add_parser("coverage", help="coverage report from an enriched CSV")
+    pc.add_argument("--input", required=True)
+    pc.set_defaults(func=cmd_coverage)
+
+    po = sub.add_parser("opportunity", help="rank ZIPs/MSAs by persona<->offer fit")
+    po.add_argument("--enriched", required=True, help="enriched CSV from national/run/demo")
+    po.add_argument("--targets", default=None, help="JSON file: {persona: weight}")
+    po.add_argument("--targets-inline", default=None, help="inline JSON: '{\"Persona\": 1.0}'")
+    po.add_argument("--sizes", default=None, help="CSV [zip, population] for addressable sizing")
+    po.add_argument("--footprint", default=None, help="CSV [zip] of client's current locations")
+    po.add_argument("--demo", action="store_true")
+    po.add_argument("--out", default="opportunity_zips.csv")
+    po.set_defaults(func=cmd_opportunity)
 
     pe = sub.add_parser("export", help="write a sellable file (resellable fields only) + manifest")
     pe.add_argument("--input", required=True, help="enriched CSV from run/demo")

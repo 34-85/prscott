@@ -4,8 +4,21 @@ Run: python -m pytest tests/  (or: python tests/test_pipeline.py)
 """
 import pandas as pd
 
-from zip_msa_personas import crosswalk, demo, impute, personas, pipeline, rights, validation
+from zip_msa_personas import (
+    batch, crosswalk, demo, impute, opportunity, personas, pipeline, rights, validation,
+)
 from zip_msa_personas.data_sources import ReferenceData
+
+
+def _demo_enriched(seed=2):
+    import tempfile, os
+    ref, features, persona_df = demo.make_demo(seed=seed)
+    fd, path = tempfile.mkstemp(suffix=".csv")
+    os.close(fd)
+    persona_df.to_csv(path, index=False)
+    out = pipeline.run_pipeline(path, ref, features)
+    os.remove(path)
+    return out.enriched, features
 
 
 def test_dominant_assign_picks_highest_ratio():
@@ -155,6 +168,42 @@ def test_concordance_detects_alignment():
     assert rep.n_overlap == 4
     assert rep.normalized_mutual_info > 0.9
     assert rep.adjusted_rand > 0.9
+
+
+def test_coverage_report_sums_to_total():
+    enriched, _ = _demo_enriched()
+    cov = batch.coverage_report(enriched)
+    assert cov.total_zips == len(enriched)
+    assert cov.by_provenance["zips"].sum() == cov.total_zips
+    assert abs(cov.by_provenance["pct"].sum() - 1.0) < 1e-9
+    # Per-MSA observed+estimated percentages are complementary.
+    assert ((cov.by_msa["pct_observed"] + cov.by_msa["pct_estimated"] - 1.0).abs() < 1e-9).all()
+
+
+def test_opportunity_scoring_ranks_and_discounts_estimates():
+    enriched, features = _demo_enriched()
+    targets = {"Affluent Empty-Nesters": 1.0, "Urban Professionals": 0.8}
+    res = opportunity.score_opportunity(enriched, targets, sizes=features)
+    # Weights normalized to sum 1.
+    assert abs(sum(res.target_personas.values()) - 1.0) < 1e-9
+    # Score is fit * confidence, so never exceeds fit.
+    assert (res.zip_scores["opportunity_score"] <= res.zip_scores["fit"] + 1e-9).all()
+    # A non-target persona contributes zero fit.
+    non_target = res.zip_scores[~res.zip_scores["persona"].isin(targets)]
+    if not non_target.empty:
+        assert (non_target["fit"] == 0).all()
+    # MSAs ranked by addressable, descending.
+    add = res.msa_scores["total_addressable"].tolist()
+    assert add == sorted(add, reverse=True)
+
+
+def test_opportunity_whitespace_excludes_footprint():
+    enriched, features = _demo_enriched()
+    targets = {"Urban Professionals": 1.0}
+    # Put every Urban Professional ZIP in the footprint -> no whitespace.
+    up_zips = enriched[enriched["persona"] == "Urban Professionals"]["zip"].tolist()
+    res = opportunity.score_opportunity(enriched, targets, sizes=features, footprint_zips=up_zips)
+    assert res.zip_scores["whitespace"].sum() == 0
 
 
 def _df_to_dist(persona_df):
