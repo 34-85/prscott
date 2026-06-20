@@ -183,6 +183,27 @@ This ARPU expansion — not subscriber count alone — is what makes the unit ec
 ### 8.3 The structural fixes (why this won't be CityDog)
 **Regional pooling** (one ad sale across a cluster), a **shared platform** (not per-city overhead), **national member-brand demand** filling local inventory, **AI-assisted/human-edited owned content**, and an optional **Macaroni-KID-style licensing layer** (operators keep local upside; Ventures takes a platform fee + national-ad share). *(Full detail: Pilot-City Selection.)*
 
+### 8.4 Eventual national footprint — 10 regions × 10 markets (2M subscribers)
+
+The terminal vision: **10 regions × 10 markets × ~20,000 subscribers = 200,000 per region = ~2.0M opted-in pet owners nationally.** Built region-by-region on the "win-a-region-then-replicate" playbook; every market screened by the right-size + pet-bought-in + vet-relationship + whitespace criteria, with **combo editions** for adjacent affluent suburbs.
+
+| Region | Illustrative 10-market set (screened before commit) | Launch window |
+|---|---|---|
+| **Southeast** | Chattanooga (HQ), Brentwood/Franklin, Columbia SC, Raleigh, Asheville, Charleston, Greenville, Knoxville, Huntsville, Savannah | Yr 0–3 |
+| **Midwest** | Kansas City, Omaha, Wichita, Lincoln, Des Moines, Springfield MO, Cedar Rapids, Fort Wayne, Dayton, Bloomington IN | Yr 2–4 |
+| **Texas** | San Antonio, Waco, Austin, Fort Worth, New Braunfels/San Marcos, Lubbock, Amarillo, College Station, Corpus Christi, El Paso | Yr 2–4 |
+| **Southwest** | Tucson, Albuquerque, Scottsdale/Tempe, Santa Fe, Colorado Springs, Fort Collins, Reno, Henderson, Boulder, St. George | Yr 4–6 |
+| **Florida** | Sarasota, Naples, Fort Myers/Cape Coral, Daytona Beach, Lakeland, Gainesville, Tallahassee, Pensacola, Ocala, Port St. Lucie | Yr 4–6 |
+| **Pacific NW** | Boise, Spokane, Tacoma, Vancouver WA, Bend, Eugene, Salem, Olympia, Bellingham, Coeur d'Alene | Yr 5–7 |
+| **Mid-Atlantic** | Richmond, Virginia Beach, Frederick MD, Lancaster PA, Harrisburg, Annapolis, Roanoke, Charlottesville, Wilmington DE, Allentown | Yr 5–7 |
+| **Upper Midwest** | Madison, Green Bay, Duluth, Fargo, Sioux Falls, Rochester MN, Appleton, Grand Rapids, Ann Arbor, Eau Claire | Yr 6–8 |
+| **Northeast** | Portland ME, Manchester NH, Burlington VT, Providence, Worcester, Albany, Hartford, Stamford/Fairfield, Syracuse, Portsmouth | Yr 6–8 |
+| **California** | Sacramento, Fresno, Santa Barbara, San Luis Obispo, Santa Rosa, Temecula, Palm Springs, Ventura/Oxnard, Modesto, Bakersfield | Yr 7–9 |
+
+*Markets are illustrative candidates. **Mega-metros (LA/SF/NYC/Chicago/Houston) are deliberately excluded as local editions** per the right-size principle — used instead as regional advertiser hubs. Each region targets ~10 right-size markets and ~200K subscribers at maturity.*
+
+**Sequencing logic.** Prove the **Southeast** first (test → ~10 markets), then activate the already-seeded **Midwest** and **Texas** regions, then radiate outward ~**2 regions per year** after Year 4. Full national maturity (100 markets, 2M subs) is an **~8–10-year horizon**; the 5-year North-Star (50 markets) is the midpoint waypoint en route.
+
 ---
 
 ## 9. Financial projections
@@ -335,6 +356,23 @@ PoC crosses to **quarter-positive in Y3 Q3** and finishes Year 3 at a positive r
 - **Peak cumulative capital ≈ $1.1M** (end of Year 2), then PoC self-funds — consistent with the ~$1.0–1.2M PoC investment cited in §9.2, **within** the Ventures ~$3.0M envelope.
 - **No PoC capital draw in Year 3** (operations cover costs); first cash to APPA (royalty/dividend) flows at the Ventures level from Year 4 (§C/§D).
 - North-Star pursuit (§9.4) replaces this schedule with a steeper ramp requiring **~$8–12M** growth capital and peak cumulative burn through Years 3–4.
+
+### 9.8 Terminal-state economics — full national scale (10 regions / 100 markets / 2M subscribers)
+
+Long-range and illustrative. The **3-year base case** (§9.2) is the near-term plan; the **5-year North-Star** (§9.4, 50 markets) is the midpoint waypoint; the table below is the **fully executed national footprint** (§8.4).
+
+| Horizon | Regions live | Markets (cum) | Subscribers (cum) | Blended ARPU | Revenue |
+|---|--:|--:|--:|--:|--:|
+| Year 3 (base case) | SE + MW/TX starting | ~30 | ~0.35M | ~$26 | ~$9M |
+| Year 5 (North-Star waypoint) | ~4 | ~50 | ~1.14M | ~$45 | ~$51M |
+| Year 7 | ~7 | ~75 | ~1.55M | ~$45 | ~$70M |
+| **Year 9–10 (terminal)** | **10** | **100** | **~2.0M** | **~$45** | **~$90M** |
+
+At terminal scale — **2.0M subs × ~$45 blended ARPU** (range $35–55 → **~$70–110M revenue**):
+- EBITDA at a mature **~28–30%** margin ≈ **~$25–33M/yr**.
+- Indicative enterprise value: revenue **3–5×** → ~$270–450M; EBITDA **12–18×** (on ~$27M) → ~$300–490M → **blended ~$300–450M for PoC alone** (before Pet Intelligence; combined Ventures higher).
+- **Capital:** the build is self-funding region-by-region once early regions mature; the gating constraint is **growth capital to launch regions ahead of maturity (~$8–12M+ cumulative through the high-growth years)**, not terminal economics.
+- **Assumes** ~63% market-graduation survivorship (attempt more than 100 to land 100 viable) and ARPU maturation via the full 8-line stack — **not ad revenue alone.**
 
 ---
 

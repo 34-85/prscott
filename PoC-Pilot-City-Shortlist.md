@@ -43,15 +43,32 @@ The MVP launches **four Southeast markets** — a coherent first region with sha
 
 ## Regional expansion (post-MVP) — "~10 cities = a region"
 
-Prove the core → fill out the **Southeast region to ~10 cities** → replicate the playbook to new regions. Each region is built for **shared ops, regional advertisers/sponsors, and drive-time management**.
+Prove the core → fill out the **Southeast region to ~10 cities** → replicate the playbook region-by-region. Each region is built for **shared ops, regional advertisers/sponsors, and drive-time management**.
+
+**Near-term (the first three regions):**
 
 | Region | Start / build-out |
 |---|---|
-| **Southeast (~10)** | Core 4 (Chattanooga, Brentwood/Franklin, Columbia, Raleigh) **+ Asheville, Charleston, Greenville + 3 more TBD** (candidates: Knoxville, Huntsville, Savannah, Charlotte-area, Wilmington, Athens GA, Mount Pleasant SC) |
+| **Southeast (~10)** | Core 4 (Chattanooga, Brentwood/Franklin, Columbia, Raleigh) **+ Asheville, Charleston, Greenville + 3 more** (Knoxville, Huntsville, Savannah) |
 | **Midwest (test region, start 3)** | **Kansas City, Omaha, Wichita** |
 | **Texas (start 3)** | **San Antonio** (vet ✓ + live pet-deposit/housing test), **Waco, Austin** |
 
-*San Antonio carries its vet relationship + pet-deposit/housing test into the Texas region as that region's anchor.*
+**Eventual national footprint — 10 regions × 10 markets × ~20K subs = ~2.0M subscribers** (~200K/region). ~8–10-year horizon; mega-metros excluded as local editions (used as regional ad hubs); markets illustrative, screened by right-size + pet-buy-in + vet relationship + whitespace.
+
+| Region | Illustrative 10-market set | Window |
+|---|---|---|
+| **Southeast** | Chattanooga, Brentwood/Franklin, Columbia SC, Raleigh, Asheville, Charleston, Greenville, Knoxville, Huntsville, Savannah | Yr 0–3 |
+| **Midwest** | Kansas City, Omaha, Wichita, Lincoln, Des Moines, Springfield MO, Cedar Rapids, Fort Wayne, Dayton, Bloomington IN | Yr 2–4 |
+| **Texas** | San Antonio, Waco, Austin, Fort Worth, New Braunfels/San Marcos, Lubbock, Amarillo, College Station, Corpus Christi, El Paso | Yr 2–4 |
+| **Southwest** | Tucson, Albuquerque, Scottsdale/Tempe, Santa Fe, Colorado Springs, Fort Collins, Reno, Henderson, Boulder, St. George | Yr 4–6 |
+| **Florida** | Sarasota, Naples, Fort Myers/Cape Coral, Daytona Beach, Lakeland, Gainesville, Tallahassee, Pensacola, Ocala, Port St. Lucie | Yr 4–6 |
+| **Pacific NW** | Boise, Spokane, Tacoma, Vancouver WA, Bend, Eugene, Salem, Olympia, Bellingham, Coeur d'Alene | Yr 5–7 |
+| **Mid-Atlantic** | Richmond, Virginia Beach, Frederick MD, Lancaster PA, Harrisburg, Annapolis, Roanoke, Charlottesville, Wilmington DE, Allentown | Yr 5–7 |
+| **Upper Midwest** | Madison, Green Bay, Duluth, Fargo, Sioux Falls, Rochester MN, Appleton, Grand Rapids, Ann Arbor, Eau Claire | Yr 6–8 |
+| **Northeast** | Portland ME, Manchester NH, Burlington VT, Providence, Worcester, Albany, Hartford, Stamford/Fairfield, Syracuse, Portsmouth | Yr 6–8 |
+| **California** | Sacramento, Fresno, Santa Barbara, San Luis Obispo, Santa Rosa, Temecula, Palm Springs, Ventura/Oxnard, Modesto, Bakersfield | Yr 7–9 |
+
+*San Antonio carries its vet relationship + pet-deposit/housing test into the Texas region as that region's anchor. Terminal-state economics (2M subs): see Business Plan §9.8.*
 
 ---
 
