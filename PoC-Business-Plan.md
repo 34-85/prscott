@@ -8,7 +8,7 @@
 
 ## 1. Executive summary
 
-**What it is.** Pets of [City] is a network of **hyper-local pet platforms** — a free weekly email newsletter as the funnel, wrapped with a local pet-business **directory**, **adoptable-pet** features, **pet-friendly housing** listings, **community events**, a **citywide pet discount card**, and a consent-based **first-party data panel**. One property per metro, modeled on the validated 6AM City / Good Daily local-newsletter playbook but focused exclusively on the pet owner. **It is not a media business; it is a local pet *utility + community + data* business, with the newsletter as the funnel.**
+**What it is.** Pets of [City] is a network of **hyper-local pet platforms** — a free weekly email newsletter as the funnel, wrapped with a local pet-business **directory**, **adoptable-pet** features, **pet-friendly housing** listings, **community events**, a **citywide pet discount card**, a consent-based **first-party data panel**, and **Instagram/TikTok** social channels (including **TikTok Shop live selling** for member brands). One property per metro, modeled on the validated 6AM City / Good Daily local-newsletter playbook but focused exclusively on the pet owner. **It is not a media business; it is a local pet *utility + community + data* business, with the newsletter as the funnel.**
 
 **Why it matters (the Rosetta Stone).** APPA already invests **~$2.5M/year** in mission work — reversing the decline in veterinary visits, pet-inclusive housing, independent-retailer support, advocacy for live animal sales in retail, Pets in the Classroom/HABRI, and member-brand connection — all of which depend on **local community and connectivity** that APPA has no channel to deliver. PoC is that channel. It converts advocacy **from an expense into a profit center**: every dollar of mission impact also builds a revenue line, and every revenue line advances the mission.
 
@@ -52,6 +52,7 @@ APPA spends ~$2.5M/year advancing pet ownership and the pet-care industry, **wit
 - **Community events** — adoption days, "yappy hours," mini-expos; the algorithm-immune retention flywheel.
 - **Citywide pet discount card** — recurring membership (Costco/AAA model), anchored on a high-value **wellness-visit** discount.
 - **First-party data panel** — consent-based pet-owner profiles (breed, spend, food brand, vet/insurance status, life-stage) feeding **Pet Intelligence** — the crown-jewel asset.
+- **Social channels (Instagram + TikTok)** — local short-form content as a discovery/acquisition funnel into owned email/SMS, plus **TikTok Shop live-selling** of member-brand products (social commerce).
 
 ### 3.2 Strategic framing (from the competitive analysis)
 Content is the **hook**; the **directory + card + panel + events + transactions are the moat.** Cede national service content to Daily Paws / Chewy / Kinship; win on **local truth, community, utility, and first-party data** they cannot localize. Own direct relationships (email/SMS/app/IRL) — never rented reach.
@@ -160,6 +161,20 @@ A basic newsletter earns ~$8–13/subscriber/year. The full stack lifts **blende
 | | 12 | 6 | 8 | 4 | 4 | 5 | 3 | 3 | **~45** |
 
 The sponsorship line is **intent-targeted, curated member-brand sponsorship — not commodity CPM** (§3.2). This ARPU expansion — not subscriber count alone — is what makes the unit economics and the North-Star work, and it holds **without** programmatic advertising.
+
+### 7.2 Social presence & social commerce (Instagram, TikTok, TikTok Shop)
+
+**Why it's necessary.** Pet discovery, community, and increasingly *purchase* now happen on **Instagram (Reels) and TikTok**; a local pet brand without a social presence is invisible to the next generation of owners — and social is the **lowest-cost top-of-funnel** for subscriber acquisition.
+
+**Two roles:**
+1. **Acquisition + community (top of funnel).** Local short-form content (adoptable pets, local spots, events, vet-wellness tips) drives discovery → convert followers into **owned email/SMS subscribers and panel opt-ins.** *Discipline (the Dodo lesson): social is rented reach — use it to acquire, but own the relationship.* Run **multi-platform** (IG + TikTok + YouTube Shorts) to avoid single-platform dependency.
+2. **Social commerce — TikTok Shop live selling.** Our trusted local audience + events muscle + community is an ideal engine for **live shopping**: produce **TikTok Shop live-selling events** for member-brand pet products to an engaged, local, high-intent audience — online and tied to IRL events (adoption days, expos).
+
+**The enterprise opportunity (member-brand partners).** Offer **enterprise member-brand partners** a turnkey **live-selling channel**: PoC supplies the audience, hosts/creators, local activation, and production; the brand supplies product. Revenue via **commission/affiliate take on GMV + a production/service fee + live-event sponsorship.** It directly advances the **member-brand-local-connection** mission, feeds the **product-JV** line, and generates **first-party purchase-intent data** for the panel / Pet Intelligence.
+
+**Revenue model & fit.** Primarily **commerce/affiliate take on GMV** (expands the §7.1 commerce line) + **turnkey service/production fees** from enterprise partners + **event sponsorship**; capital-light (creator/UGC + existing events). Consistent with the no-CPM principle — this is organic content + commerce, not commodity ad inventory. *(Paid social may still be used for subscriber **acquisition**, per §9; that is buying reach to grow owned audience, distinct from selling CPM in our product.)*
+
+**Risks & guardrails.** Algorithm volatility and **US TikTok regulatory/ownership uncertainty** — mitigate by (a) always converting social audiences to **owned** channels, (b) staying **multi-platform** (IG Shopping / YouTube / TikTok), and (c) treating live-selling commerce as **incremental upside, not a core dependency.** Maintain brand safety and FTC disclosure on creator content.
 
 ---
 
@@ -413,6 +428,7 @@ PoC is a business unit of **APPA Ventures**, a wholly-owned **C-corp** with a **
 | **Privacy/consent (CCPA-class)** | Consent + transparency built in from day one; clean data separation |
 | **AI-content trust backlash** | Disclose AI; human-edit; owned/licensed content; never fabricate localness |
 | **Platform/deliverability dependency** | Own email/SMS/app/IRL relationships; diversify channels |
+| **Social-platform dependency / TikTok regulatory risk** | Convert social audiences to owned channels; run multi-platform (IG/YouTube/TikTok); treat live-selling commerce as incremental upside, not core |
 | **Governance optics (shared CEO)** | Independent board majority on conflicts; arm's-length agreements |
 
 ---
