@@ -28,26 +28,30 @@
 | Competitive whitespace | ×1 | No dominant local pet newsletter/community |
 | Talent / editor availability | ×1 | Identified community editor → faster, lower-risk launch |
 
-## ✅ Confirmed pilot footprint (founder direction)
+## ✅ Confirmed MVP core (4 markets, 5 months)
 
-Six markets, grouped by region. **Warm vet relationships (×3) confirmed in Chattanooga, Raleigh, San Antonio**; founder to source vet intros in Brentwood, Greenville, Columbia.
+The MVP launches **four Southeast markets** — a coherent first region with shared regional advertisers/ops. **(San Antonio moves out of the MVP into the Texas expansion region — see below.)**
 
-| Market | Region group | Vet relationship | Right-size | Role |
+| Market | Region | Vet relationship | Right-size | Role |
 |---|---|---|---|---|
-| **Chattanooga, TN** ⭐HQ | Tennessee | ✅ warm | ✅ in zone | HQ + cluster anchor + lead market |
-| **Brentwood, TN** | Tennessee (Williamson Co.) | ⏳ to source | ✅ in zone | Affluent combo edition + **pet-industry HQ hub** (see below) |
-| **Greenville, SC** | Carolinas | ⏳ to source | ✅ in zone | Carolinas sub-cluster |
-| **Columbia, SC** | Carolinas | ⏳ to source | ✅ in zone | Carolinas sub-cluster |
-| **Raleigh, NC** | Carolinas | ✅ warm | ⚠️ ~1.5M (above zone) | NC anchor; neighborhood-level focus to stay local |
-| **San Antonio, TX** | Texas | ✅ warm | ⚠️ ~2.6M (above zone) | Housing/pet-deposit + vet-wellness **vertical test**; Texas-cluster seed |
+| **Chattanooga, TN** ⭐HQ | Southeast | ✅ warm | ✅ in zone | HQ + lead market + platform-seed (card/event/JV) |
+| **Brentwood/Franklin, TN** | SE (Williamson Co.) | ⏳ to source | ✅ in zone | Affluent + **pet-industry HQ hub** (Mars Petcare, Tractor Supply — see below) |
+| **Columbia, SC** | SE (Carolinas) | ⏳ to source | ✅ in zone | Carolinas; BCFP-certified |
+| **Raleigh, NC** | SE (Carolinas) | ✅ warm | ⚠️ ~1.5M (above zone) | NC anchor; neighborhood-level focus to stay local |
 
-**Right-size caveat:** Raleigh and San Antonio exceed the ~150K–800K sweet spot. Accepted because warm vet relationships (×3) + strong pet markets outweigh size — but mitigate "too big to be local" with **neighborhood-level editorial focus**, and run **SA as a vertical test**, not a pure local edition.
+**Vet pipeline:** warm in **Chattanooga + Raleigh**; **source warm vet intros in Columbia + Brentwood/Franklin ahead of launch** (de-risks the vet-wellness KPI in all four). **Right-size:** three are in-zone; **Raleigh** (~1.5M) is the lone exception — mitigate with **neighborhood-level editorial focus**.
 
-**MVP sequencing (budget-aware).** The MVP is scoped at **3 markets / ~$175K**, so:
-- **Recommended MVP core (3) = the vet-relationship cities: Chattanooga, Raleigh, San Antonio.** Launch where the headline **vet-wellness KPI** + lead-gen pipeline are most de-risked, across three region types (TN HQ, Carolinas, Texas housing).
-- **Fast-follow (3) = cluster density: Greenville, Columbia, Brentwood**, as vet intros are secured (builds the Carolinas/TN regional pool).
-- *Alternative:* launch all six at once (~$275–325K; needs 2–3 editors, not one).
-- *Tradeoff:* the vet-first core spans three regions (less shared-ops density) but proves the **hardest, most differentiating thing — the vet-wellness engine — first**; cluster efficiency compounds in the fast-follow + replication waves.
+## Regional expansion (post-MVP) — "~10 cities = a region"
+
+Prove the core → fill out the **Southeast region to ~10 cities** → replicate the playbook to new regions. Each region is built for **shared ops, regional advertisers/sponsors, and drive-time management**.
+
+| Region | Start / build-out |
+|---|---|
+| **Southeast (~10)** | Core 4 (Chattanooga, Brentwood/Franklin, Columbia, Raleigh) **+ Asheville, Charleston, Greenville + 3 more TBD** (candidates: Knoxville, Huntsville, Savannah, Charlotte-area, Wilmington, Athens GA, Mount Pleasant SC) |
+| **Midwest (test region, start 3)** | **Kansas City, Omaha, Wichita** |
+| **Texas (start 3)** | **San Antonio** (vet ✓ + live pet-deposit/housing test), **Waco, Austin** |
+
+*San Antonio carries its vet relationship + pet-deposit/housing test into the Texas region as that region's anchor.*
 
 ---
 
@@ -64,7 +68,7 @@ Six markets, grouped by region. **Warm vet relationships (×3) confirmed in Chat
 | **Greenville, SC** | ~550K (county) | ~2:30 | Booming, walkable downtown, strong whitespace |
 | **Franklin/Brentwood, TN** (combo) | ~250K (Williamson Co.) | ~2:00 | **Both BCFP-certified**; among the wealthiest/highest-pet-spend US communities; premium vets + boutique retail |
 
-Pick **4–5** of these for the MVP. The cluster gives us: regional density to **prove the cluster-scaling thesis**, mid-size local authenticity, HQ leverage, and a regional advertiser/sponsor pool (regional vet groups, Southeastern pet chains, regional insurers). Supporting signal: several nearby towns are **Better Cities for Pets™ certified** (Franklin, Brentwood, Hendersonville, Columbia TN; Madison AL; Mount Pleasant/North Charleston SC; Savannah/Lavonia GA) — a pipeline for cluster expansion. *(Note: BCFP isn't gating here; Asheville/Greenville/Knoxville/Chattanooga aren't on its list, but their mid-size pet-culture signal is strong.)*
+*(This ring was the candidate pool; the **core 4** were drawn from it, and the rest — Knoxville, Huntsville, Asheville — feed **Southeast expansion** toward ~10.)* The cluster gives us: regional density to **prove the cluster-scaling thesis**, mid-size local authenticity, HQ leverage, and a regional advertiser/sponsor pool (regional vet groups, Southeastern pet chains, regional insurers). Supporting signal: several nearby towns are **Better Cities for Pets™ certified** (Franklin, Brentwood, Hendersonville, Columbia TN; Madison AL; Mount Pleasant/North Charleston SC; Savannah/Lavonia GA) — a pipeline for cluster expansion. *(Note: BCFP isn't gating here; Asheville/Greenville/Knoxville/Chattanooga aren't on its list, but their mid-size pet-culture signal is strong.)*
 
 **Carolinas sub-cluster (right-size + BCFP-certified):** **Columbia, SC** (~140K city / ~840K metro, **BCFP-certified**) is a clean add — it pairs with **Greenville** (~1.5 hrs) and **Asheville** (~2.5 hrs) to form a tight Carolinas sub-group, extending the Southeast footprint without breaking the right-size rule.
 
@@ -73,25 +77,25 @@ Instead of the ~2M Nashville metro (too big to be local), run a combined **Pets 
 
 **🏢 The strategic kicker — Williamson County is a pet-industry corporate HQ hub.** This is a *flagship-grade* reason to launch here: **Mars Petcare** (North America HQ, Franklin) and **Tractor Supply** (HQ, Brentwood) are headquartered right in the combo market, and **Dollar General** (HQ, Goodlettsville) sits in the same Nashville metro — all major pet-category players. Launching here puts Pets of [City] **in the backyard of marquee member brands and retailers**: warm proximity for **member-brand sponsorships, product-JVs, data partnerships, and exec relationships**, a deep local talent pool of pet-industry professionals, and a built-in "show, don't tell" demo market for the very brands APPA represents. It directly advances the **member-brand-local-connection** mission initiative.
 
-**Certified-but-large — defer:**
-- **Kansas City, MO** — **BCFP-certified** but **~2.2M metro** and Midwest (outside the Southeast cluster). Best slotted as the **anchor of a future Midwest cluster** in the replication wave, not this pilot.
+**Kansas City, MO** — **BCFP-certified**; anchors the **Midwest test region** (with Omaha + Wichita) in expansion, not the SE core.
 
-## San Antonio — keep, but as a *housing/pet-deposit vertical test*, not a local-community play
+## The Texas region (expansion) — anchored by San Antonio
 
-San Antonio remains valuable for the reasons we agreed (live **pet-deposit** program + Texas's ~91% pet-friendly rentals) — **and now a confirmed warm vet relationship**, which adds a strong **vet-wellness** angle (clinic intros for the discount-card wellness anchor + lead-gen) on top of the housing test. **But at ~2.6M metro it violates the right-size principle.** Recommendation: run SA as a **parallel monetization-vertical test** — prove the **pet-inclusive-housing / pet-deposit / insurance** engine where the program is live — rather than as a hyper-local edition. It then becomes the **seed of a future Texas Hill Country cluster** (San Marcos, New Braunfels/Cibolo — both BCFP-certified — between Austin and SA) when we replicate the regional playbook. *(Alternative if you'd rather keep the pilot single-region: defer SA to that later Texas wave.)*
+San Antonio anchors the **Texas region** in the expansion wave (start: **San Antonio, Waco, Austin**). It carries real assets: a live **pet-deposit** program + Texas's ~91% pet-friendly rentals (the **housing** test) **and a confirmed warm vet relationship** (the **vet-wellness** angle — clinic intros for the discount-card wellness anchor + lead-gen). At ~2.6M metro it's run with **neighborhood-level focus / as a housing+vet vertical**, not a generic citywide edition. Hill Country combo candidates (San Marcos, New Braunfels/Cibolo — both BCFP-certified) extend the region.
 
 ## The replication thesis (how regional scales)
 
-Win the **Southeast cluster** from Chattanooga (incl. a **Carolinas** sub-group: Greenville, Asheville, Columbia SC) → codify the playbook → replicate to the **next region's mid-size pet belt**: a **Texas Hill Country** cluster (seeded by SA), a **Mountain West** cluster (Boise, Colorado Springs, Bend, Fort Collins — top pet-ownership + mid-size), and a **Midwest** cluster (anchored by **Kansas City**, certified). Regional clusters, not a national patchwork.
+Win the **Southeast region** from Chattanooga (core 4 → ~10, incl. a **Carolinas** sub-group: Greenville, Asheville, Columbia, Charleston) → codify the playbook → replicate region-by-region: **Midwest** (Kansas City, Omaha, Wichita) and **Texas** (San Antonio, Waco, Austin). **~10 cities = a region**; regional clusters, not a national patchwork.
 
 ## Open items / status
 
-1. ✅ **Footprint confirmed (6):** Chattanooga, Brentwood, Greenville, Columbia, Raleigh, San Antonio.
-2. ✅ **Vet relationships:** warm in **Chattanooga, Raleigh, San Antonio**; founder to source intros in **Brentwood, Greenville, Columbia**.
-3. ✅ **Chattanooga** confirmed as HQ + lead launch market.
+1. ✅ **MVP core confirmed (4, 5 months):** Chattanooga, Brentwood/Franklin, Columbia, Raleigh.
+2. ✅ **Expansion regions mapped:** Southeast (~10), Midwest (KC/Omaha/Wichita), Texas (San Antonio/Waco/Austin).
+3. ✅ **Chattanooga** confirmed as HQ + lead launch market + platform-seed.
 4. ✅ **Nashville area** resolved as the **Franklin/Brentwood combo** (right-size, certified, affluent, **+ pet-industry HQ hub**).
-5. ✅ **San Antonio** confirmed as the housing/pet-deposit + vet-wellness **vertical test** (Texas-cluster seed).
-6. ⏳ **MVP scope decision (the remaining call):** launch the **vet-first core 3** (Chattanooga, Raleigh, San Antonio) at ~$175K with Greenville/Columbia/Brentwood as fast-follow — **or** all six at once (~$275–325K, 2–3 editors)?
+5. ✅ **San Antonio** repositioned from MVP into the **Texas region anchor**.
+6. ⏳ **Vet intros to source** for the core: **Columbia + Brentwood/Franklin** (Chattanooga + Raleigh already warm).
+7. ⏳ **Budget:** 4 core markets ≈ **~$200K** over 5 months (up from the 3-market ~$175K). Confirm.
 
 ---
 

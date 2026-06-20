@@ -16,29 +16,28 @@ Don't build the company to find out if the model works — test the things that 
 | H4 | **Operations & quality** — AI-assisted + human-reviewed weekly content is good, factual, and cheap (no YMYL issues), and one editor can run a market | Tests the unit model and the §B guardrails |
 | H5 | **Platform-seed signals** — early appetite for the §B-Upside streams: a **citywide pet discount card** (consumers buy / businesses join), a **sponsored event**, a **product-JV "new-owner starter kit"**, and **panel opt-in** consent rates | Proves (cheaply) whether the just-in-time platform upside is real before betting on it |
 
-## 2. Scope — 3 MVP markets (each tests a different rationale)
+## 2. Scope — 4 MVP core markets (a coherent Southeast region)
 
-Keep it to **three markets** to learn fast without overspending.
+The MVP launches the **confirmed core 4** — all Southeast, for shared regional advertisers/ops — over 5 months. *(Full footprint & expansion regions: **[PoC-Pilot-City-Shortlist.md → Confirmed MVP core](./PoC-Pilot-City-Shortlist.md)**.)*
 
-> **⚠️ Markets confirmed — trio below superseded.** Per current direction, the footprint is a **Chattanooga-anchored Southeast/Carolinas cluster**: **Chattanooga (HQ), Brentwood/Franklin, Greenville, Columbia, Raleigh + San Antonio** (housing/vet vertical test). Warm **vet relationships in Chattanooga, Raleigh, San Antonio**. **Recommended MVP core (3) = those vet cities** (most de-risk the vet-wellness KPI); **fast-follow = Greenville, Columbia, Brentwood**. **Chattanooga (HQ)** takes Orlando's lead-market/platform-seed role. See **[PoC-Pilot-City-Shortlist.md → Confirmed footprint](./PoC-Pilot-City-Shortlist.md)**. *(Final 3-vs-6 scope/budget pending; Austin/Orlando/Denver table below kept only until the swap is executed.)*
-
-| Market *(superseded — see callout)* | Original MVP rationale |
+| Market | Why this one for the MVP |
 |---|---|
-| **Austin** | Sample edition already built → fastest to publish; tests pure AI-assisted market |
-| **Orlando** | **Local talent identified** → tests the staffed-editor + local-ad-sales motion (the real revenue test). **Also the "platform-seed" market**: runs the lightweight discount-card, event, and product-JV tests (H5) | 
-| **Denver** | **Confirmed pet-deposit program** → tests the mission-as-content / housing-advocacy angle in an affluent, engaged market |
+| **Chattanooga, TN** ⭐HQ | **Headquarters + lead market** → in-person ops, founder presence, **warm vet relationship**. Also the **platform-seed** market: runs the discount-card, event, and product-JV tests (H5) |
+| **Brentwood/Franklin, TN** | Affluent, highest-pet-spend Williamson County + **pet-industry HQ hub** (Mars Petcare, Tractor Supply) → tests the **member-brand-connection** motion (combo edition) |
+| **Columbia, SC** | BCFP-certified, right-size Carolinas market → tests a pure mid-size local edition |
+| **Raleigh, NC** | **Warm vet relationship** + strong NC pet market → tests the vet-wellness engine; run with **neighborhood-level focus** (above the right-size zone) |
 
-*(San Antonio + the rest of the pipeline follow post-incorporation. Three markets is enough to validate all five hypotheses.)*
+**Vet pipeline:** Chattanooga + Raleigh already warm; **source warm vet intros in Columbia + Brentwood/Franklin before launch**. *(San Antonio moves to the **Texas** expansion region; Midwest = KC/Omaha/Wichita.)*
 
-**Across all three markets:** bake **panel opt-in / consent** (CCPA-class) into the subscribe flow from day one — cheap now, and it preserves the §B-Upside data option (a weak choice to engineer it in later). Concentrate the discount-card / event / JV tests in **Orlando** to keep the pilot lean.
+**Across all four markets:** bake **panel opt-in / consent** (CCPA-class) into the subscribe flow from day one — cheap now, and it preserves the §B-Upside data option (a weak choice to engineer it in later). Concentrate the discount-card / event / JV tests in **Chattanooga (HQ)** to keep the pilot lean.
 
 ## 3. Timeline (~5 months)
 
 | Phase | Weeks | Activities | Output |
 |---|---|---|---|
-| **0 · Setup** | 1–3 | Pick placeholder brand; stand up newsletter platform (e.g., beehiiv/Substack-class) + analytics; build content templates & AI-assisted workflow with human review; **build subscribe flow with panel opt-in / consent**; 3-market content calendars; advertiser target lists; metrics dashboard | Ready to publish; consent baked in |
-| **1 · Soft launch** | 4–7 | Begin **weekly** sends in all 3 markets; start paid subscriber acquisition; seed via shelters/partners/social; **track panel opt-in rate** | First subscribers + baseline engagement + opt-in data |
-| **2 · Grow & monetize** | 8–16 | Scale acquisition. **Test the high-margin lines (H3):** place a **pet-insurance affiliate/lead-gen** unit (esp. to new adopters) and measure leads; pitch **operator-side pet-friendly housing** to ~3–5 local property managers; sign **paid directory/pay-per-lead** with vets/groomers; pitch ≥1 member-brand national sponsor. **Orlando platform-seed tests (H5):** basic **citywide pet discount card** (~10–20 businesses, Costco/AAA-style fee + redemption tracking), **one sponsored community event**, and a **product-JV new-owner starter kit** | High-margin-line validation + advertiser + H5 signals |
+| **0 · Setup** | 1–3 | Pick placeholder brand; stand up newsletter platform (e.g., beehiiv/Substack-class) + analytics; build content templates & AI-assisted workflow with human review; **build subscribe flow with panel opt-in / consent**; 4-market content calendars; advertiser + **vet** target lists (incl. sourcing Columbia/Brentwood vet intros); metrics dashboard | Ready to publish; consent baked in |
+| **1 · Soft launch** | 4–7 | Begin **weekly** sends in all 4 markets; start paid subscriber acquisition; seed via shelters/vets/partners/social; **track panel opt-in rate** | First subscribers + baseline engagement + opt-in data |
+| **2 · Grow & monetize** | 8–16 | Scale acquisition. **Test the high-margin lines (H3):** place a **pet-insurance affiliate/lead-gen** unit (esp. to new adopters) and measure leads; pitch **operator-side pet-friendly housing** to ~3–5 local property managers; sign **paid directory/pay-per-lead** with vets/groomers; pitch ≥1 member-brand national sponsor (warm via the Williamson County HQ hub). **Chattanooga (HQ) platform-seed tests (H5):** basic **citywide pet discount card** (~10–20 businesses, Costco/AAA-style fee + **wellness-visit anchor** + redemption tracking), **one sponsored community event**, and a **product-JV new-owner starter kit** | High-margin-line validation + advertiser + H5 signals |
 | **3 · Measure & decide** | 17–22 | Analyze vs. go/no-go thresholds; write board decision memo | **Go/no-go** on incorporating Ventures + committing ~$3M |
 
 ## 4. Success metrics & go/no-go thresholds
@@ -57,39 +56,40 @@ Measured per market by end of pilot (~month 5). Benchmarks anchored to 6AM City 
 | **Insurance lead-gen (high-margin line)** | **Measurable insurance leads/clicks** at a viable effective payout (benchmark $25–152/policy) | Validates the top-margin line (H3) |
 | **Operator-side housing** | **≥ 2–3 property managers** express paid interest in pet-housing placement/tools | Validates housing monetization + advocacy (H3) |
 | **Content quality** | **Zero factual/YMYL incidents** | Guardrails hold (H4) |
-| **Editor capacity (Orlando)** | One editor sustains weekly content **+** sells local sponsors | Unit model works (H4) |
+| **Editor capacity (Chattanooga)** | One editor sustains weekly content **+** sells local sponsors | Unit model works (H4) |
+| **Vet-wellness (Chattanooga/Raleigh)** | Wellness-visit redemptions/bookings driven via card + trackable offers; ≥5–10 participating vets | **Mission KPI** — the vet-visit engine (de-risked by warm relationships) |
 | **Panel opt-in (all markets)** | **≥ 25–40% of subscribers opt in** to research panel | Validates the upside data asset (H5) |
-| **Discount card (Orlando)** | **≥ 10–20 participating businesses** + meaningful consumer sign-ups + first redemptions | Card demand + foot-traffic proof (H5) |
-| **Event (Orlando)** | One event runs at **≥ breakeven** with ≥1 paying sponsor | Event-revenue signal (H5) |
-| **Product JV (Orlando)** | Starter-kit pilot sells with ≥1 member-brand partner | Product-JV signal (H5) |
+| **Discount card (Chattanooga)** | **≥ 10–20 participating businesses** + meaningful consumer sign-ups + first redemptions | Card demand + foot-traffic proof (H5) |
+| **Event (Chattanooga)** | One event runs at **≥ breakeven** with ≥1 paying sponsor | Event-revenue signal (H5) |
+| **Product JV (Chattanooga)** | Starter-kit pilot sells with ≥1 member-brand partner | Product-JV signal (H5) |
 
-**Decision rule:** **GO** to incorporate + fund if **≥2 of 3 markets** clear the subscriber + engagement thresholds **and** monetization is validated in **≥1 market** (ideally Orlando) — including signal on **≥1 high-margin line (insurance lead-gen, operator-side housing, or paid lead-gen)**, not ads alone. H5 platform-seed results (card/event/JV/panel) are **upside evidence** that strengthen the case and inform sequencing but are **not gating**. Otherwise iterate or stop — cheaply.
+**Decision rule:** **GO** to incorporate + fund if **≥3 of 4 markets** clear the subscriber + engagement thresholds **and** monetization is validated in **≥1 market** (ideally Chattanooga) — including signal on **≥1 high-margin line (insurance lead-gen, operator-side housing, or paid lead-gen)**, not ads alone. H5 platform-seed results (card/event/JV/panel) are **upside evidence** that strengthen the case and inform sequencing but are **not gating**. Otherwise iterate or stop — cheaply.
 
-## 5. Budget (~$175K, 3 markets + Orlando platform-seed + high-margin-line tests, 5 months)
+## 5. Budget (~$200K, 4 core markets + Chattanooga platform-seed + high-margin-line tests, 5 months)
 
 | Line item | Allocation |
 |---|---|
-| Paid subscriber acquisition (3 markets) | $45,000 |
-| Local editor (Orlando, part-time) + content contributors (Austin/Denver) | $35,000 |
+| Paid subscriber acquisition (4 markets) | $58,000 |
+| Local editor (Chattanooga HQ, part-time) + content contributors (Brentwood/Franklin, Columbia, Raleigh) | $45,000 |
 | Newsletter platform, AI content tooling, analytics/CRM | $10,000 |
 | **Panel opt-in / consent + data capture (CCPA-class) build** | $8,000 |
-| **Discount-card pilot (Orlando): tooling, merchant onboarding, simple redemption tracking** | $9,000 |
+| **Discount-card pilot (Chattanooga): tooling, merchant onboarding, wellness-visit anchor, redemption tracking** | $9,000 |
 | Brand placeholder, landing page & email templates (design) | $10,000 |
 | Project lead (fractional PM / existing APPA staff time) | $20,000 |
-| One sponsored community event (Orlando) + **product-JV starter-kit pilot** | $10,000 |
+| One sponsored community event (Chattanooga) + **product-JV starter-kit pilot** | $10,000 |
 | **High-margin-line tests** (insurance affiliate/lead-gen setup, operator-side housing outreach, pay-per-lead tooling) | $5,000 |
 | Legal/advisory (sponsorship terms, **consent/privacy**, JV/affiliate terms; no entity) | $7,000 |
-| Contingency (~10%) | $16,000 |
-| **Total** | **~$175,000** |
+| Contingency (~10%) | $18,000 |
+| **Total** | **~$200,000** |
 
-**Leaner alternative (~$95K):** 2 markets (Orlando + Austin), heavier AI / lighter paid acquisition, **keep only Orlando's discount-card + consent tests** (drop event/JV) — slower learning but lowest cash while still touching the upside.
+**Leaner alternative (~$110K):** 2 markets (Chattanooga + Columbia), heavier AI / lighter paid acquisition, **keep only Chattanooga's discount-card + consent tests** (drop event/JV) — slower learning but lowest cash while still touching the upside.
 **Funding:** an operating-budget line item / board-approved pilot, **well under any threshold requiring entity formation** — and a rounding error against the ~$3M it de-risks.
 
 ## 6. Team (lean, mostly contract)
 
 - **Project lead** — existing APPA staffer or fractional PM; owns the pilot and the decision memo.
-- **Orlando community editor (PT)** — the identified local talent; runs Orlando and helps codify the playbook.
-- **Content/AI contractor** — AI-assisted drafting + **human/editorial fact-check** across all 3 markets.
+- **Chattanooga community editor (PT)** — HQ-market editor; runs Chattanooga and helps codify the playbook (Raleigh/Columbia/Brentwood-Franklin run AI-assisted with local contributors).
+- **Content/AI contractor** — AI-assisted drafting + **human/editorial fact-check** across all 4 markets.
 - **Freelance designer** — brand placeholder, templates, landing page.
 - **Performance-marketing contractor/agency** — paid acquisition.
 - **Advisor (optional)** — a local-newsletter/media operator for guidance.
@@ -103,4 +103,4 @@ Measured per market by end of pilot (~month 5). Benchmarks anchored to 6AM City 
 
 ## 8. What the MVP de-risks → the decision it feeds
 
-A successful pilot converts the §D investment case from projection to evidence: real CAC, real open/click rates, real advertiser willingness-to-pay, and a working editor unit. **And the H5 platform-seed tests (discount card, event, product JV, panel opt-in) give early read on the §B-Upside** — turning the just-in-time-platform vision from speculation into measured signal, and informing what to build first. That is exactly what the board needs to confidently **(a) incorporate APPA Ventures, (b) commit the staged ~$3M, and (c) scale to the full Wave-1 seven markets — with a data-rich, multi-stream roadmap.** A weak pilot saves APPA ~$3M and a year — the entire point of doing it first.
+A successful pilot converts the §D investment case from projection to evidence: real CAC, real open/click rates, real advertiser willingness-to-pay, and a working editor unit. **And the H5 platform-seed tests (discount card, event, product JV, panel opt-in) give early read on the §B-Upside** — turning the just-in-time-platform vision from speculation into measured signal, and informing what to build first. That is exactly what the board needs to confidently **(a) incorporate APPA Ventures, (b) commit the staged ~$3M, and (c) scale via **regional expansion** — fill out the Southeast region (~10 cities) then replicate to the Midwest and Texas regions — with a data-rich, multi-stream roadmap.** A weak pilot saves APPA ~$3M and a year — the entire point of doing it first.
