@@ -111,6 +111,8 @@ This document defines the *company*; the two anchor business plans are appended 
 
 This is the strategic heart of APPA Ventures: each APPA advocacy/mission priority is mapped to a **commercial mechanic** that *funds itself* while advancing the cause — primarily delivered through Pets of [City], reinforced by Pet Intelligence data.
 
+> **The "why" in one line:** APPA already invests **~$2.5M/year** in mission work that depends on local community/connectivity — independent-retailer support, pet-inclusive housing, **Pets in the Classroom**, **HABRI**, and advocacy for live animal sales in retail (being banned community-by-community) — but has **no local delivery channel.** PoC is that channel: it **amplifies, measures (via first-party data), mobilizes, and partly funds** those initiatives, and connects member-brand products to people locally. Full rationale: **[PoC-Strategic-Rationale-Why.md](./PoC-Strategic-Rationale-Why.md).**
+
 | APPA priority (today an expense) | Commercial mechanic in Ventures | Revenue | Mission outcome | Data generated |
 |---|---|---|---|---|
 | **Pet-inclusive housing** | Pet-friendly **housing/apartment listings & sponsorships** (property managers, brokers pay to list pet-welcoming units) | Listing/sponsorship fees | Expands visible pet-friendly housing supply; gives APPA hard local data to advocate | Inventory & demand for pet-inclusive housing by market |

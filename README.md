@@ -37,6 +37,10 @@ A working set of strategy, business-plan, and research documents for the America
 
 ---
 
+## Strategic rationale ("the why")
+
+- **[PoC-Strategic-Rationale-Why.md](./PoC-Strategic-Rationale-Why.md)** — why PoC matters: the local force-multiplier for APPA's ~$2.5M/year of mission investment (independent retail, pet-inclusive housing, Pets in the Classroom, HABRI, live-animal-sales advocacy) + the member-brand local connection.
+
 ## Decisions / structure
 
 - **[APPA-Ventures-HQ-Chattanooga.md](./APPA-Ventures-HQ-Chattanooga.md)** — pros/cons of headquartering APPA Ventures in Chattanooga, TN.
