@@ -48,6 +48,7 @@ Measured per market by end of pilot (~month 5). Benchmarks anchored to 6AM City 
 | **Open rate** | **≥ 40%** | Strong for local newsletters (H2) |
 | **Click rate** | **≥ 3%** | Real engagement (H2) |
 | **Unsubscribe / send** | **< 0.5%** | Content-market fit |
+| **Engagement durability** | **Open rate holds (no steep decay) over the pilot** | Early read on **content fatigue** (the structural newsletter risk, §B.12a) |
 | **Advertiser validation** | **≥ 2–3 paid pilot sponsors or signed LOIs/market; ≥1 member-brand national sponsor interested** | Monetization proof (H3) |
 | **Content quality** | **Zero factual/YMYL incidents** | Guardrails hold (H4) |
 | **Editor capacity (Orlando)** | One editor sustains weekly content **+** sells local sponsors | Unit model works (H4) |
