@@ -271,6 +271,71 @@ Combined with Pet Intelligence at scale (~$15–25M revenue, 5–8×), **combine
 - Content fatigue is the structural risk; mitigated by utility/transaction layers + cohort instrumentation (§11).
 - Base case shares the platform with Pet Intelligence (synergy savings ~$150–450K/yr at the Ventures level).
 
+### 9.7 Detailed cash-flow schedule
+
+All figures $000. PoC standalone (pre-royalty); capital draws shown are PoC's share within APPA Ventures' staged ~$3.0M ($1.6M / $1.0M / $0.35M), which also funds Pet Intelligence.
+
+**(a) Test phase — monthly (Months 1–5, ~$200K, no entity).** Revenue treated as ~$0 (monetization tests are signal, not material cash).
+
+| Month | Cash outflow | Cumulative |
+|---|--:|--:|
+| M1 | 34 | (34) |
+| M2 | 39 | (73) |
+| M3 | 38 | (111) |
+| M4 | 45 | (156) |
+| M5 | 44 | (200) |
+
+Peak test-phase cash need = **$200K**, funded by an APPA operating-budget line.
+
+**(b) Year 1 base rollout — monthly operating cash flow** (post-incorporation). Revenue ramps as markets launch and graduate; central platform is front-loaded for setup; net turns cash-positive in M12.
+
+| Month | Revenue | Editor & local | Central platform | Acquisition | Total cost | Net CF | Cumulative |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| M1 | 5 | 8 | 45 | 10 | 63 | (58) | (58) |
+| M2 | 8 | 8 | 42 | 12 | 62 | (54) | (112) |
+| M3 | 12 | 10 | 40 | 14 | 64 | (52) | (164) |
+| M4 | 15 | 10 | 38 | 15 | 63 | (48) | (212) |
+| M5 | 20 | 12 | 38 | 16 | 66 | (46) | (258) |
+| M6 | 25 | 12 | 37 | 17 | 66 | (41) | (299) |
+| M7 | 30 | 13 | 37 | 18 | 68 | (38) | (337) |
+| M8 | 38 | 13 | 36 | 18 | 67 | (29) | (366) |
+| M9 | 45 | 14 | 36 | 19 | 69 | (24) | (390) |
+| M10 | 55 | 15 | 35 | 20 | 70 | (15) | (405) |
+| M11 | 68 | 17 | 35 | 20 | 72 | (4) | (409) |
+| M12 | 79 | 18 | 31 | 21 | 70 | 9 | (400) |
+| **Total** | **400** | **150** | **450** | **200** | **800** | **(400)** | — |
+
+Peak intra-year cash need ≈ **$409K** (M11); monthly burn narrows from ~$58K (M1) to cash-positive by M12 as ARPU and graduated markets compound.
+
+**(c) Years 2–3 — quarterly operating cash flow.**
+
+| Quarter | Revenue | Total cost | Net CF | Cumulative (from Y2 start) |
+|---|--:|--:|--:|--:|
+| Y2 Q1 | 250 | 460 | (210) | (210) |
+| Y2 Q2 | 300 | 440 | (140) | (350) |
+| Y2 Q3 | 350 | 430 | (80) | (430) |
+| Y2 Q4 | 400 | 420 | (20) | (450) |
+| Y3 Q1 | 650 | 780 | (130) | (580) |
+| Y3 Q2 | 740 | 760 | (20) | (600) |
+| Y3 Q3 | 820 | 740 | 80 | (520) |
+| Y3 Q4 | 890 | 720 | 170 | (350) |
+
+PoC crosses to **quarter-positive in Y3 Q3** and finishes Year 3 at a positive run-rate.
+
+**(d) Consolidated funding & crossover (test + 3-year).**
+
+| ($000) | Test (Yr 0) | Year 1 | Year 2 | Year 3 |
+|---|--:|--:|--:|--:|
+| Beginning cash | 0 | 30 | 40 | 50 |
+| Capital contribution (PoC share) | 230 | 410 | 460 | 0 |
+| Operating cash flow | (200) | (400) | (450) | 100 |
+| **Ending cash** | **30** | **40** | **50** | **150** |
+| **Cumulative capital drawn** | 230 | 640 | 1,100 | 1,100 |
+
+- **Peak cumulative capital ≈ $1.1M** (end of Year 2), then PoC self-funds — consistent with the ~$1.0–1.2M PoC investment cited in §9.2, **within** the Ventures ~$3.0M envelope.
+- **No PoC capital draw in Year 3** (operations cover costs); first cash to APPA (royalty/dividend) flows at the Ventures level from Year 4 (§C/§D).
+- North-Star pursuit (§9.4) replaces this schedule with a steeper ramp requiring **~$8–12M** growth capital and peak cumulative burn through Years 3–4.
+
 ---
 
 ## 10. Operating model, organization & governance
