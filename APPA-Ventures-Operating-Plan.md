@@ -203,11 +203,11 @@ With the venture operating model agreed, the next deliverables are the **two bus
 - **For APPA member brands:** a national-to-local consumer advertising channel APPA has never been able to offer.
 - **For APPA's mission:** the delivery mechanism that turns advocacy (pet-inclusive housing, independent retail, growing ownership, shelters, vet access) into a **profitable** activity.
 
-**Why now:** 6AM City reaches ~1.5M people across 31 markets and runs newsletters at **~70% margin within 36 months** (CAC <$1, LTV >$25); in 2025 it **acquired Good Daily's 350+ AI-generated local newsletters** — validating the "AI-first, staff the winners" model. No one owns the **pet** vertical of this — today it's fragmented regional players (Pet Junction, CityDog). It's open white space.
+**Why now:** 6AM City reaches ~1.5M people across 31 markets and runs newsletters at **~70% margin within 36 months** (CAC <$1, LTV >$25); in 2025 it **acquired Good Daily's 350+ AI-generated local newsletters** — validating the "AI-first, staff the winners" model. No one owns the **newsletter + community + data** model in the **pet** vertical — today it's a website/ad-model incumbent (**CityDog**, ~20 digital metros, 20+ yrs, but poor UX + intrusive programmatic ads) and fragmented regional players (Pet Junction). The *model* we'd run is open white space.
 
 > **Strategic framing (per the Competitive Analysis & SWOT).** PoC is **not a media business — it is a local pet utility + community + data business, with the newsletter as the *funnel*.** This is the decisive lesson from the landscape: every thriving "pet media" property is really a loyalty/commerce/data engine (Pets at Home, Boqii, Chewy, BringFido), and *every* pure local-pet-media play has consolidated or died (CityDog 18→4 editions; Tails 14→1; Bay Woof→nonprofit) because a single metro's pet-ad pool can't fund per-city content. Three implications baked into this plan:
 > 1. **Cede national content; win local.** Daily Paws/Chewy/Kinship own national "how-to/best-of" content (and it's being eroded by AI search). PoC wins on **local truth, community, IRL, utility, and first-party data they cannot localize** — never on commodity content.
-> 2. **Fix the CityDog failure mode with structure** — regional pooling + a shared platform + AI-assisted/human-edited content + **APPA's national member-brand ad demand** (the unfair advantage no pure-play had: it fills local inventory that a thin local ad pool can't). See B.6a.
+> 2. **Fix the per-city failure mode with structure — and out-compete CityDog** — regional pooling + a shared platform + AI-assisted/human-edited content + **APPA's national member-brand ad demand** (the unfair advantage no pure-play had: it fills local inventory that a thin local ad pool can't), plus right-size markets, endemic/no-CPM monetization, and better UX than the incumbent. See B.6a.
 > 3. **Monetize the durable, high-margin lines first** (insurance lead-gen, operator-side housing, the data panel), with advertising as a *complement*, not the core. See B.5.
 
 ## B.2 Market & audience
@@ -268,7 +268,7 @@ Lead with the durable, high-margin lines; treat advertising as a *complement*, n
 
 **The discount card, done right (Costco/AAA — *not* Groupon):** the **recurring membership fee is the revenue; the discount is the retention hook.** **Anchor it on a high-value wellness-vet-visit discount** — which simultaneously drives the card's value *and* helps reverse the industry's declining-vet-visit problem (mission + margin in one mechanic); add grooming/retail. Sell merchants **net-new customers + foot-traffic data** (ClassPass framing), *not* margin erosion; collect **upfront** (passport model); **track redemptions** to prove ROI and prevent merchant churn. Avoid the deep-discount + high-take death spiral that sank Groupon.
 
-**Why advertising is Tier 3:** a pet audience is only ~10–25% of a metro, so per-city ad revenue is thin (the CityDog failure). **APPA's national member-brand demand — sold centrally and allocated across regionally-pooled markets (B.6a)** — is what makes even the ad line viable; but the durable margin lives in Tier 1.
+**Why advertising is Tier 3:** a pet audience is only ~10–25% of a metro, so per-city ad revenue is thin (the per-city print failure; CityDog's digital survival leans on intrusive commodity ads we reject). **APPA's national member-brand demand — sold centrally and allocated across regionally-pooled markets (B.6a)** — is what makes even the ad line viable; but the durable margin lives in Tier 1.
 
 > **Scale-up streams:** at scale these compound into a **research panel, high-intent lead-gen, expanded events, product JV, and the discount card** — the just-in-time platform model. Full ARPU build and the 50K→1.25M-subscriber economics are in the **§B-Upside (North-Star)** appendix; an early version of the card/event/JV + panel opt-in is tested in the MVP plan.
 
@@ -284,17 +284,17 @@ Lead with the durable, high-margin lines; treat advertising as a *complement*, n
 
 The attractive engine underneath: **CAC under ~$1–1.50 and LTV well above $25** (6AM-benchmarked; pet affinity supports it), so each subscriber added is value-accretive even while the portfolio is in build mode.
 
-## B.6a Structural model — fixing the CityDog failure mode
+## B.6a Structural model — fixing the per-city failure mode (and out-competing CityDog)
 
-The competitive analysis is unambiguous: **per-city editorial P&Ls don't work in pets** (CityDog consolidated 18→4; Patch lost $147M on salaried local content). PoC is structured to avoid that:
+The competitive analysis is clear: **per-city *print* P&Ls don't work in pets** (CityDog's print collapsed; Tails 14→1; Patch lost $147M on salaried local content). **Corrected note:** CityDog itself did *not* die — it dropped print and runs **~20 lean, centrally-managed digital editions in major metros, profitable for 20+ years**, but with poor UX and intrusive programmatic/non-endemic ads. That both **proves the category is durable** and **defines the opening**. PoC is structured to avoid the failure mode *and* out-compete the incumbent:
 
 1. **Regional pooling.** Markets are sold and operated in **regional clusters** (6AM's edge), so one ad/sponsor sale spans several cities and ARPU/sales-efficiency rise — instead of 50 thin, independent city ad markets.
 2. **Shared platform, not per-city overhead.** Data/AI, content-ops, ad sales, customer success, and the panel/card/directory tech are **built once and reused** (Ventures shared platform), keeping fixed per-market cost minimal.
-3. **National member-brand demand fills local inventory.** APPA's member brands provide **centrally-sold national-to-local advertising** — the structural advantage no pure-play had, and the direct antidote to the thin local-ad-pool that killed CityDog/Tails.
+3. **National member-brand demand fills local inventory.** APPA's member brands provide **centrally-sold national-to-local advertising** — the structural advantage no pure-play had, and the direct antidote to the thin local-ad-pool that sank the print pet-media plays (Tails; CityDog's print) and that the surviving incumbent only papers over with intrusive ads.
 4. **AI-assisted, human-edited, owned content** (disclosed) keeps content cost near-zero without the Good Daily trust traps.
 5. **Optional licensing layer (Macaroni KID model).** For some markets, a **licensed local-operator model** (operator keeps local upside; Ventures takes a recurring platform fee + national-ad share) can scale coverage capital-light — versus salaried staff in every market. Evaluate per market type.
 
-**Net:** centralize cost and national monetization; localize only the cheap, high-engagement layers (events, directory, adoption, housing, the card). This is the model CityDog *retreated* to and 6AM *advanced* to — adopted here by design, not by crisis.
+**Net:** centralize cost and national monetization; localize only the cheap, high-engagement layers (events, directory, adoption, housing, the card). This is the lean, centralized digital model **CityDog survives on and 6AM advanced to** — adopted here by design, but with **right-size markets, a community/data/social product (not an ad-stuffed website), endemic/no-CPM monetization, and far better UX** than the incumbent.
 
 ## B.7 Build vs. partner
 

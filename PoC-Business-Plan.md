@@ -12,7 +12,7 @@
 
 **Why it matters (the Rosetta Stone).** APPA already invests **~$2.5M/year** in mission work — reversing the decline in veterinary visits, pet-inclusive housing, independent-retailer support, advocacy for live animal sales in retail, Pets in the Classroom/HABRI, and member-brand connection — all of which depend on **local community and connectivity** that APPA has no channel to deliver. PoC is that channel. It converts advocacy **from an expense into a profit center**: every dollar of mission impact also builds a revenue line, and every revenue line advances the mission.
 
-**Why it can work where others failed.** The hyper-local pet-media graveyard (CityDog 18→4 editions, Tails 14→1, Bay Woof→nonprofit) died of **thin local ad pools, centralized content cost, single-revenue-line dependence, and no data/loyalty layer.** APPA is uniquely positioned to fix each: **national member-brand advertiser demand** fills thin local inventory; **AI-assisted, human-edited** content removes the cost; a **seven-line monetization stack** (insurance lead-gen, housing, data, card, events, directory lead-gen, curated sponsorship — **no programmatic/CPM ads**) removes single-line risk; and a **first-party pet-owner panel** is the durable, exit-valuable moat.
+**Why it can work — and where the incumbent is weak.** The category is **proven durable**: **CityDog has run for 20+ years across ~20 digital markets** — but it competes the *wrong* way (major metros, centrally-managed websites, **poor UX**, and **intrusive programmatic / non-endemic ad units — pop-ups and page takeovers**). Earlier *print* plays (CityDog's own print, Tails, Bay Woof) failed on **thin local ad pools, centralized content cost, single-revenue-line dependence, and no data/loyalty layer.** APPA fixes each *and* out-competes the incumbent: **national member-brand demand** fills inventory; **AI-assisted, human-edited** content removes cost; a **seven-line monetization stack** (insurance lead-gen, housing, data, card, events, directory lead-gen, curated sponsorship — **no programmatic/CPM ads**) removes single-line risk; a **first-party pet-owner panel** is the durable, exit-valuable moat; and a **right-size footprint with a genuinely good reader experience** routes around CityDog's major-metro, ad-stuffed model.
 
 **Go-to-market.** Launch a **right-size, pet-bought-in, regionally clustered** footprint — "big enough to sustain content, small enough to be local." A **4-market Southeast test phase** (Chattanooga HQ, Brentwood/Franklin, Columbia, Raleigh) precedes incorporation; expansion fills the Southeast to ~10 markets, then replicates region-by-region (Midwest, Texas). **~10 cities = a region.**
 
@@ -80,11 +80,11 @@ Content is the **hook**; the **directory + card + panel + events + transactions 
 
 ## 5. Competitive analysis
 
-The hyper-local pet-media category has a **graveyard**, but the causes of death are exactly what APPA can fix. Key lessons, by group:
+The category is **durable but poorly served** — its one long-running network proves demand yet competes weakly, while the *print*-era plays consolidated or died. Both the failures *and* the incumbent's weaknesses are exactly what APPA can exploit. Key lessons, by group:
 
-### 5.1 Direct (hyper-local pet media) — the cautionary tales
-- **CityDog** (the closest analog): per-city licensed editions, **18→4** consolidation — a single city's pet-ad pool can't fund per-city staff. **→ pool regionally; bring national demand.**
-- **Tails** (14→1), **Bay Woof** (→ donation-funded nonprofit), **Pet Junction** (durable but deliberately tiny single-metro). **→ commercial local-pet *print* is fragile; directories survive small.**
+### 5.1 Direct (hyper-local pet media) — the incumbent and the cautionary tales
+- **CityDog** (the closest analog — **and a live competitor**): collapsed its *print* but operates **~20 digital editions in major metros** (Seattle, Portland, SF/NoCal, San Diego, LA, Denver, Phoenix, Austin, Las Vegas, Dallas, Houston, Nashville, Atlanta, Boston, Philly, Baltimore, NYC, Chicago, Vancouver BC, London) — a **viable business for 20+ years.** But it is **centrally-managed websites, run city-by-city, with poor UX and intrusive programmatic / non-endemic ad units (pop-ups, page takeovers).** **→ The category is *durable* (it sustains a 20-year network) — the opening is to beat CityDog on *model* (newsletter + community + data + social, endemic / no-CPM, great UX) and on *market* (the right-size metros it ignores).** Our footprint is **largely non-overlapping** with its major-metro map; where it overlaps (e.g., Austin), we win on local depth, UX, and the utility/data layers.
+- **Tails** (14 cities→1), **Bay Woof** (→ donation-funded nonprofit), **Pet Junction** (durable but deliberately tiny single-metro). **→ commercial local-pet *print* is fragile; lean digital + directories endure.**
 
 ### 5.2 The operating playbook (local newsletter networks)
 - **6AM City** (flagship to copy): ~$1M/city at ~100k subs × ~$10 ARPU, **~70% mature margin, CAC <$1 / LTV >$25**; edges = **regional clustering** + the **Good Daily** acquisition (350+ AI newsletters, <$1/day/market). *Reality check:* a pet audience is only **~10–25%** of a general metro, so the math needs **higher ARPU or regional pooling** — which our stack and clusters provide.
@@ -114,7 +114,7 @@ The hyper-local pet-media category has a **graveyard**, but the causes of death 
 ## 6. SWOT
 
 ### Strengths
-- **National advertiser demand via APPA member brands** — directly fixes the thin-local-ad-pool failure that killed CityDog/Tails. The single biggest structural advantage no pure-play had.
+- **National advertiser demand via APPA member brands** — directly fixes the thin-local-ad-pool problem that sank the *print* pet-media plays (and that the surviving incumbent, CityDog, only papers over with intrusive programmatic ads). The single biggest structural advantage no pure-play had.
 - **Mission, credibility, trust** — fuels consent-based panel recruitment and merchant/shelter/vet partnerships; counters the AI-content trust problem.
 - **Proprietary data foundation** (NPOS + first-party panel) feeding Pet Intelligence — scarce, high-margin, exit-valuable.
 - **Warm relationships** across adoption/shelters, vets, housing, independent retail — the emotional hook *and* the high-value lines come with access.
@@ -134,7 +134,7 @@ The hyper-local pet-media category has a **graveyard**, but the causes of death 
 - The **"my neighborhood's dog life" whitespace**; **insurance lead-gen** (3.9% penetration); **operator-side housing**; the **first-party panel** (monetize twice; strategic-exit value); a **discount card done right**; **IRL community/events**; **Macaroni-KID-style licensing**; **adoption as a high-LTV funnel**; **strategic-asset/exit potential**.
 
 ### Threats
-- The model's own **graveyard**; **well-funded national players** (Mars/Kinship, Chewy, Rover, and 6AM adding a pet vertical); **AI search collapsing content traffic (20–90%)**; **content fatigue/inbox overload**; **thin local ad market** (Google/Meta take ~77% of local digital); **marketplace disintermediation**; **merchant churn** (Groupon risk); **privacy/consent regulation** (CCPA-class); **AI-content trust backlash**; **platform/deliverability dependency**.
+- An **entrenched 20-year incumbent** (CityDog, ~20 digital metros) that could defend or move down-market; **well-funded national players** (Mars/Kinship, Chewy, Rover, and 6AM adding a pet vertical); **AI search collapsing content traffic (20–90%)**; **content fatigue/inbox overload**; **thin local ad market** (Google/Meta take ~77% of local digital); **marketplace disintermediation**; **merchant churn** (Groupon risk); **privacy/consent regulation** (CCPA-class); **AI-content trust backlash**; **platform/deliverability dependency**.
 
 ---
 
@@ -197,8 +197,8 @@ The sponsorship line is **intent-targeted, curated member-brand sponsorship — 
 | **Midwest (start 3)** | Kansas City, Omaha, Wichita |
 | **Texas (start 3)** | San Antonio (vet ✓ + live pet-deposit/housing test), Waco, Austin |
 
-### 8.3 The structural fixes (why this won't be CityDog)
-**Regional pooling** (one ad sale across a cluster), a **shared platform** (not per-city overhead), **national member-brand demand** filling local inventory, **AI-assisted/human-edited owned content**, and an optional **Macaroni-KID-style licensing layer** (operators keep local upside; Ventures takes a platform fee + national-ad share). *(Full detail: Pilot-City Selection.)*
+### 8.3 The structural fixes (how we beat CityDog and avoid the print failures)
+**Regional pooling** (one ad sale across a cluster), a **shared platform** (not per-city overhead), **national member-brand demand** filling local inventory, **AI-assisted/human-edited owned content**, and an optional **Macaroni-KID-style licensing layer** (operators keep local upside; Ventures takes a platform fee + national-ad share). Against the live incumbent specifically, the consumer-facing wedge is: **right-size markets CityDog ignores; a newsletter + community + data + social model (not an ad-stuffed website); endemic, no-CPM monetization (no pop-ups/page takeovers); and a genuinely good reader experience.** *(Full detail: Pilot-City Selection.)*
 
 ### 8.4 Eventual national footprint — 10 regions × 10 markets (2M subscribers)
 
@@ -418,7 +418,8 @@ PoC is a business unit of **APPA Ventures**, a wholly-owned **C-corp** with a **
 
 | Risk | Mitigation |
 |---|---|
-| **The category graveyard** (thin local ad pools) | Regional pooling + national member-brand demand + shared platform + 7-line stack |
+| **Thin local ad pools** (the print-era failure) | Regional pooling + national member-brand demand + shared platform + 7-line stack (no reliance on commodity CPM) |
+| **Entrenched incumbent** (CityDog, ~20 metros, 20+ yrs) | Compete on model (community/data/UX, endemic/no-CPM) + market (right-size metros it ignores); footprint largely non-overlapping |
 | **Content fatigue / inbox overload** | Utility/transaction-first (pull, not push); weekly/high-signal; non-content engagement (card/events/panel); instrument open-rate decay by cohort |
 | **Survivorship (not 50-for-50)** | Attempt ~70–80 to reach ~50; markets are cheap options; cull cheaply; model a distribution, not 50×25K |
 | **Saturated giants / high CAC** | Deprioritize top-5 metros; win right-size whitespace |

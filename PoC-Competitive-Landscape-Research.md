@@ -1,5 +1,7 @@
 # Hyper-Local Pet Media — Competitive Landscape Research
 
+> **⚠️ Superseded + factual correction.** This is the early, lighter note (superseded by **PoC-Competitive-Analysis-and-SWOT.md**). **Correction on CityDog:** it did **not** consolidate to ~4 editions and fade — it dropped *print* but operates **~20 digital editions in major metros, profitable for 20+ years** (with poor UX + intrusive programmatic ads). The category is **durable**; CityDog is a **live incumbent** to beat on model (community/data/social, endemic/no-CPM, UX) and on market (right-size metros). See the corrected entry in the SWOT doc.
+>
 > What existing hyper-local (and adjacent) pet newsletters, magazines, directories, and communities teach Pets of [City]: what to **learn**, **copy**, **optimize**, and **avoid**. Companion to §B / §B.12a. All examples are real; figures cited where available.
 
 ## 1. The landscape (models that already exist)
