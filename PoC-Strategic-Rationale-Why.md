@@ -40,4 +40,4 @@ The decisions that most affect APPA's mission — **retail pet-sale bans, pet-in
 - **Eventual business plan (post-MVP):** lead with this "why" as the strategic rationale; the financial case is the *enabler*, not the purpose.
 - **Governance:** reinforces the **core APPA ↔ Ventures** relationship — Ventures (commercial) operates the channel; core APPA's mission programs (advocacy, Pets in the Classroom, HABRI, housing, retail support) are the *beneficiaries* and partners, at arm's length.
 
-*Open item: complete the "We also…" point from leadership and add any additional mission initiatives or rationale.*
+*Rationale captured from leadership (incl. the declining-veterinary-visit challenge and the "advocacy as a profit center" Rosetta Stone framing). Add further mission initiatives here as they arise.*
