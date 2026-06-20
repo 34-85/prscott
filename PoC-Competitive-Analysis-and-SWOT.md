@@ -142,7 +142,7 @@
 - **Strategic asset/exit potential** — a local pet audience + loyalty + first-party data is exactly what a Chewy/Mars/insurer/financial player would pay up for.
 
 ### Threats (external)
-- **An entrenched 20-year incumbent — CityDog (~20 digital metros)** — could defend or move down-market; plus the *print*-era cautionary tales (Tails 14→1, Bay Woof→nonprofit). The category is durable, so a credible competitor already exists.
+- **CityDog (~20 digital metros, 20+ yrs) is a *weak, low-threat* incumbent** — it proves the category is durable but has **no moat to defend it** (no first-party data, no community/loyalty, no national member-brand demand; ad-model + major-metro cost base). It cannot follow into right-size markets or rebuild its product fast enough once PoC reaches regional scale. The **real** threats are the well-funded national players (below), not CityDog.
 - **Well-funded national players** — Mars/Kinship ($300M fund), Chewy, Rover/Blackstone ($2.3B) could move toward local; **6AM City already runs dog-friendly guides** and could add a pet vertical with scale.
 - **AI search collapsing content traffic** (20–90%) — kills any content-dependent model.
 - **Content fatigue / inbox overload** — structural newsletter headwind (any topic).
