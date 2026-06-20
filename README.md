@@ -39,7 +39,7 @@ A working set of strategy, business-plan, and research documents for the America
 
 ## Strategic rationale ("the why")
 
-- **[PoC-Strategic-Rationale-Why.md](./PoC-Strategic-Rationale-Why.md)** — why PoC matters: the local force-multiplier for APPA's ~$2.5M/year of mission investment (independent retail, pet-inclusive housing, Pets in the Classroom, HABRI, live-animal-sales advocacy) + the member-brand local connection.
+- **[PoC-Strategic-Rationale-Why.md](./PoC-Strategic-Rationale-Why.md)** — why PoC matters (the "Rosetta Stone": **advocacy as a profit center**): the local force-multiplier for APPA's ~$2.5M/year of mission investment (independent retail, pet-inclusive housing, Pets in the Classroom, HABRI, live-animal-sales advocacy, **reversing declining vet visits**) + the member-brand local connection — solving the industry's biggest problems *and* making money doing it.
 
 ## Decisions / structure
 

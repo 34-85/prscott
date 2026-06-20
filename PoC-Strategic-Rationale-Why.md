@@ -6,7 +6,10 @@
 
 APPA already invests **~$2.5M annually** in initiatives whose impact depends on **local community and connectivity** — yet APPA has **no local, consumer-facing presence** to deliver them. PoC is that missing layer. It turns a recurring **expense** into an **amplified, measurable, and partly self-funding** channel, while giving member brands a way to connect products and people in local communities.
 
-The decisions that most affect APPA's mission — **retail pet-sale bans, pet-inclusive-housing policy, where people adopt, whether kids grow up with pets** — are made and lived **locally**. A national association cannot reach that level. A network of local pet communities can.
+The decisions that most affect APPA's mission — **retail pet-sale bans, pet-inclusive-housing policy, where people adopt, whether kids grow up with pets, whether pets see a vet** — are made and lived **locally**. A national association cannot reach that level. A network of local pet communities can.
+
+> ## The Rosetta Stone: advocacy as a profit center
+> Profit is necessary — but the breakthrough is this: **if we can turn advocacy from an expense into a profit center, that is the Rosetta Stone — the holy grail.** PoC lets APPA **solve some of the pet-care industry's biggest challenges *and make money doing it*:** declining vet visits, the pet-inclusive-housing gap, threats to independent retail and live-animal sales, and stalled pet-ownership growth. The mission and the margin pull in the same direction — every dollar of impact also builds a revenue line, and every revenue line also advances the mission. That alignment is the reason to build this.
 
 ## APPA's ~$2.5M/year mission investment → how PoC amplifies each
 
@@ -17,8 +20,8 @@ The decisions that most affect APPA's mission — **retail pet-sale bans, pet-in
 | **Pets in the Classroom** (STEM education; lifelong ownership) | Schools, teachers, families are local | Local promotion, school/teacher connections, and an **adoption/ownership funnel** that extends the program's reach |
 | **HABRI** (human-animal-bond research) | The bond is formed and lived in local daily life | Localizes the bond message; the community **embodies** the research; first-party data can **feed** it |
 | **Advocacy for live animal sales in retail** (being banned locally) | Bans are enacted **community by community** | Local **community mobilization** + local **economic/ownership evidence** exactly where the decisions are made |
+| **Reversing the decline in veterinary visits** (a major animal-health problem) | Vet relationships, trust, and access are local | Get **local insight into *why* visits are declining** (data/panel); **promote wellness visits** (content, reminders, a discount card **anchored on a wellness exam**); **bring vets into the community** and be their **"rainmaker"** (directory, lead-gen, new-client flow). Insurance lead-gen also raises visit frequency. **Solves a healthcare problem *and* monetizes it.** |
 | **Member-brand connection** | Purchase happens locally | A channel to **connect member-brand products and people in local communities** |
-| *[to add — "We also…"]* | | *Awaiting the rest of your thought to fold in* |
 
 ## What PoC uniquely adds to the mission
 
@@ -29,11 +32,11 @@ The decisions that most affect APPA's mission — **retail pet-sale bans, pet-in
 
 ## The reframe (for the board)
 
-> APPA spends ~$2.5M/year advancing pet ownership, independent retail, pet-inclusive housing, education, and the human-animal bond — **without a local delivery channel.** PoC is that channel. It **amplifies** every one of those initiatives at the community level, **measures** their impact with first-party data, **mobilizes** local pet owners for advocacy, gives **member brands** a local product-to-people connection, and **partly funds itself** — converting mission spend from a cost center into a force-multiplier.
+> APPA spends ~$2.5M/year advancing pet ownership, independent retail, pet-inclusive housing, education, the human-animal bond — and faces industry challenges like **declining veterinary visits** — all **without a local delivery channel.** PoC is that channel. It **amplifies** every one of those initiatives at the community level, **measures** their impact with first-party data, **mobilizes** local pet owners for advocacy, gives **member brands** a local product-to-people connection, drives pets back to the vet, and **partly funds itself** — converting mission spend from a cost center into a **profit center.** That is the Rosetta Stone: **solving the pet-care industry's biggest problems and making money doing it.**
 
 ## How this anchors the work
 
-- **MVP:** test not just media/monetization, but the **mission-amplification signal** — e.g., shelter/adoption engagement, independent-retailer participation, housing-operator interest, and local advocacy reach — so we prove PoC advances the mission, not just the P&L.
+- **MVP:** test not just media/monetization, but the **mission-amplification signal** — e.g., shelter/adoption engagement, independent-retailer participation, housing-operator interest, **vet participation + wellness-visit promotion (the card anchored on a wellness exam)**, and local advocacy reach — so we prove PoC advances the mission, not just the P&L.
 - **Eventual business plan (post-MVP):** lead with this "why" as the strategic rationale; the financial case is the *enabler*, not the purpose.
 - **Governance:** reinforces the **core APPA ↔ Ventures** relationship — Ventures (commercial) operates the channel; core APPA's mission programs (advocacy, Pets in the Classroom, HABRI, housing, retail support) are the *beneficiaries* and partners, at arm's length.
 
