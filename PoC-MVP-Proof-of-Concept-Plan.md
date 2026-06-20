@@ -1,5 +1,26 @@
 # Pets of [City] — MVP Proof-of-Concept Plan (pre-incorporation)
 
+## Why this matters — and how it fits APPA's mission
+
+APPA already invests **~$2.5M/year** in mission work that depends on local community and connectivity — yet it has **no local, consumer-facing channel** to deliver it. **Pets of [City] is that channel.** It gives APPA's mission a local delivery layer, a measurement engine (first-party data), and — the breakthrough — a way to turn **advocacy from an expense into a profit center.** That is the purpose of this venture; the financials are the *enabler*, not the point.
+
+**The Rosetta Stone.** PoC lets APPA **solve the pet-care industry's biggest challenges *and make money doing it.*** Mission and margin pull in the same direction: every dollar of impact also builds a revenue line, and every revenue line advances the mission.
+
+**How PoC amplifies each APPA mission priority — locally:**
+
+| APPA mission priority | How PoC advances it locally |
+|---|---|
+| **Reversing the decline in veterinary visits** | Local insight into *why*; promote **wellness visits**; bring vets into the community as their "rainmaker" (directory, lead-gen, card anchored on a wellness exam) |
+| **Pet-inclusive housing** | Pet-friendly housing listings + local demand data + advocacy amplification |
+| **Independent pet retailer support** | Foot traffic via directory/featured listings/discount card + local economic-impact data |
+| **Advocacy for live animal sales in retail** | Local community mobilization + local evidence where bans are decided |
+| **Pets in the Classroom / HABRI** | Local promotion, school/teacher reach, ownership funnel; localizes the human-animal bond + can feed research |
+| **Member-brand connection** | A channel to connect member-brand products and people in local communities |
+
+**What this means for the MVP.** The pilot is built to test **mission-amplification, not just the P&L.** Alongside subscribers, CAC, engagement, and the high-margin monetization lines, we explicitly measure the **vet-wellness-visit** signal and vet/shelter/retailer/housing participation — so a GO proves PoC **advances APPA's mission**, not merely that it can make money. *(Full rationale: [PoC-Strategic-Rationale-Why.md](./PoC-Strategic-Rationale-Why.md).)*
+
+---
+
 > A lean, ~5-month test to validate the riskiest assumptions **before** incorporating APPA Ventures or committing the staged ~$3M (§D). Run as an **internal APPA project/program — no new entity yet.** Its only job: generate the evidence for a confident go/no-go.
 >
 > **Framing (per the Competitive Analysis & SWOT):** PoC is a **local pet utility + community + data business with the newsletter as the funnel** — *not* a content/media business. So the MVP must test more than "can we publish & get opens": it must test the **durable, high-margin monetization lines** (insurance lead-gen, operator-side housing, the data panel) and the **community/utility hooks**, while ceding national content to Daily Paws/Chewy/Kinship and winning on local truth + community + data.

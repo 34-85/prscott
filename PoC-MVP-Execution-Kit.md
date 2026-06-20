@@ -8,9 +8,9 @@
 
 # Part 1 — One-Page Pilot Brief
 
-**What:** A lean, ~5-month pilot of **Pets of [City]** — a hyper-local pet **utility + community + data** platform (weekly newsletter as the funnel; directory, adoption, housing, events, discount card, data panel) — in **4 Southeast markets: Chattanooga (HQ/lead), Brentwood/Franklin (member-brand HQ hub), Columbia, Raleigh.**
+**Why — and how it fits APPA's mission (the Rosetta Stone):** APPA already spends **~$2.5M/year** on mission work that depends on local community/connectivity but has **no local delivery channel.** This pilot proves PoC can be that channel — turning **advocacy from an expense into a profit center** by solving pet-care's biggest problems (declining vet visits, pet-inclusive housing, independent-retail/live-sales threats, stalled ownership, member-brand local connection) *and making money doing it.* Mission and margin pull the same direction.
 
-**Why (the Rosetta Stone):** Prove we can turn **advocacy into a profit center** — solving pet-care's biggest problems (declining vet visits, pet-inclusive housing, independent-retail/live-sales threats, stalled ownership) *and making money doing it* — while giving APPA its first **local delivery channel** for the ~$2.5M/year it already spends on mission.
+**What:** A lean, ~5-month pilot of **Pets of [City]** — a hyper-local pet **utility + community + data** platform (weekly newsletter as the funnel; directory, adoption, housing, events, discount card, data panel) — in **4 Southeast markets: Chattanooga (HQ/lead), Brentwood/Franklin (member-brand HQ hub), Columbia, Raleigh.**
 
 **Why now:** Validate the riskiest assumptions cheaply **before** incorporating APPA Ventures or committing the staged ~$3M. A weak pilot saves ~$3M and a year.
 
