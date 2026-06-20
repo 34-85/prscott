@@ -20,7 +20,7 @@ Don't build the company to find out if the model works — test the things that 
 
 Keep it to **three markets** to learn fast without overspending.
 
-> **⚠️ Markets under revision.** Per current direction we are moving from large metros to a **right-size + pet-bought-in + regional-cluster** approach — a **Chattanooga-anchored Southeast/Appalachian cluster** (Chattanooga HQ + 3–4 of Knoxville / Huntsville / Asheville / Greenville), with **San Antonio** retained as a parallel **housing/pet-deposit vertical test**. See **[PoC-Pilot-City-Shortlist.md → Part 1](./PoC-Pilot-City-Shortlist.md)**. The Austin/Orlando/Denver trio below is **superseded** (kept until cities are confirmed). In the revised plan, **Chattanooga (HQ)** assumes Orlando's "local-talent / staffed-editor + platform-seed" role.
+> **⚠️ Markets confirmed — trio below superseded.** Per current direction, the footprint is a **Chattanooga-anchored Southeast/Carolinas cluster**: **Chattanooga (HQ), Brentwood/Franklin, Greenville, Columbia, Raleigh + San Antonio** (housing/vet vertical test). Warm **vet relationships in Chattanooga, Raleigh, San Antonio**. **Recommended MVP core (3) = those vet cities** (most de-risk the vet-wellness KPI); **fast-follow = Greenville, Columbia, Brentwood**. **Chattanooga (HQ)** takes Orlando's lead-market/platform-seed role. See **[PoC-Pilot-City-Shortlist.md → Confirmed footprint](./PoC-Pilot-City-Shortlist.md)**. *(Final 3-vs-6 scope/budget pending; Austin/Orlando/Denver table below kept only until the swap is executed.)*
 
 | Market *(superseded — see callout)* | Original MVP rationale |
 |---|---|

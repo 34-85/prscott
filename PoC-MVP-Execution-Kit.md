@@ -2,7 +2,7 @@
 
 > Operational companion to the MVP Proof-of-Concept Plan. Three parts: **(1)** a one-page pilot brief for board/staff buy-in, **(2)** a week-by-week launch checklist with owners, and **(3)** a KPI dashboard pairing business metrics with **mission-amplification** metrics (incl. the vet-wellness-visit metric). Run as an **internal APPA program — no new entity.** ~5 months, ~$175K.
 >
-> **⚠️ Markets under revision.** Per current direction, markets are being re-selected as a **Chattanooga-anchored Southeast/Appalachian regional cluster** (right-size + pet-bought-in) + **San Antonio** as a housing/pet-deposit vertical test — see **[PoC-Pilot-City-Shortlist.md → Part 1](./PoC-Pilot-City-Shortlist.md)**. References to "Austin/Orlando/Denver" and "Orlando" below are placeholders; in the revised plan **Chattanooga (HQ)** takes Orlando's lead-market/platform-seed role. "3 markets" structure still holds.
+> **⚠️ Markets confirmed.** Footprint: **Chattanooga (HQ), Brentwood/Franklin, Greenville, Columbia, Raleigh + San Antonio** (housing/vet vertical test); warm **vet relationships in Chattanooga, Raleigh, San Antonio**. **Recommended MVP core (3) = those vet cities**; fast-follow = Greenville/Columbia/Brentwood — see **[PoC-Pilot-City-Shortlist.md → Confirmed footprint](./PoC-Pilot-City-Shortlist.md)**. References to "Austin/Orlando/Denver" and "Orlando" below are placeholders; **Chattanooga (HQ)** takes Orlando's lead-market/platform-seed role. "3 markets" structure still holds (final 3-vs-6 scope pending).
 
 ---
 
