@@ -748,28 +748,47 @@ This is the **bull/north-star case**, not the committed plan. It assumes a multi
 
 > **Aggressive North-Star path** to 50 markets × 25,000 subs (1.25M subscribers) by Year 5 — *distinct from, and more capital-intensive than, the conservative §C/§D base* (which models a ~20-market path on ~$3M). Illustrative; big assumptions; see caveats.
 
-### Market & subscriber ramp
+### Market & subscriber ramp — survivorship-paced
+
+**Survivorship funnel (cumulative).** Not every market works (cf. §B.12a), so model an explicit funnel: **attempt ~80 cheap AI-test markets to land ~50 viable (staffed)**; ~30 are culled *before* staffing spend.
+
+| Cumulative | Y1 | Y2 | Y3 | Y4 | Y5 |
+|---|---:|---:|---:|---:|---:|
+| AI-test markets attempted | 12 | 28 | 45 | 65 | **80** |
+| → graduated to viable/staffed | 5 | 13 | 24 | 37 | **50** |
+| → culled (cheap, pre-staffing) | 2 | 8 | 14 | 22 | **30** |
+
+*(~63% graduation rate; culled markets cost ~$5–15K each ≈ ~$0.3–0.4M total — trivial, the point of cheap AI options.)*
+
+**Subscriber outcomes are a distribution, not a flat 25K.** At Year 5, across the 50 viable markets:
+
+| Tier | # markets | Avg subs | Subs |
+|---|---:|---:|---:|
+| Stars (top) | 12 | 38K | 456K |
+| Solid (middle) | 26 | 22K | 572K |
+| Marginal | 12 | 9K | 108K |
+| **Total** | **50** | ~23K | **~1.14M** |
 
 | | Y1 | Y2 | Y3 | Y4 | Y5 |
 |---|---:|---:|---:|---:|---:|
-| Markets live | 7 | 15 | 25 | 38 | 50 |
-| Avg subscribers/market | 5,000 | 8,000 | 12,000 | 18,000 | 25,000 |
-| **Total subscribers** | 35K | 120K | 300K | 684K | **1.25M** |
-| Blended ARPU ($/sub/yr) | $12 | $18 | $26 | $36 | **$45** |
+| Viable (staffed) markets | 5 | 13 | 24 | 37 | 50 |
+| **Total subscribers** | 25K | 95K | 270K | 600K | **~1.14M** |
+| Blended ARPU ($/sub/yr) | $12 | $18 | $26 | $36 | **$45** (stars run higher) |
 
-*ARPU climbs as platform streams (panel, lead-gen, discount card, product JV, events) layer onto the base ad model with scale.*
+*ARPU climbs as platform streams (panel, lead-gen, discount card, product JV, events) layer onto the base ad model; star markets carry above-average ARPU.*
 
-### 5-year P&L (illustrative, $M)
+### 5-year P&L (survivorship-paced, illustrative $M)
 
 | ($M) | Y1 | Y2 | Y3 | Y4 | Y5 |
 |---|---:|---:|---:|---:|---:|
-| **Revenue** | 0.4 | 2.2 | 7.8 | 24.6 | **56.3** |
-| Operating expenses | 3.5 | 5.5 | 9.5 | 21.0 | 41.0 |
-| **EBITDA** | (3.1) | (3.3) | (1.7) | 3.6 | **15.3** |
-| EBITDA margin | — | — | — | 15% | **~27%** |
-| **Net income** (after D&A + ~21% tax) | (3.1) | (3.3) | (1.7) | 2.5 | **~11.3** |
+| **Revenue** | 0.3 | 1.7 | 7.0 | 21.6 | **50.9** |
+| Operating expenses (incl. cheap market culls) | 3.3 | 5.0 | 8.8 | 18.6 | 37.5 |
+| **EBITDA** | (3.0) | (3.3) | (1.8) | 3.0 | **13.4** |
+| EBITDA margin | — | — | — | 14% | **~26%** |
+| **Net income** (after D&A + ~21% tax) | (3.0) | (3.3) | (1.8) | 2.1 | **~9.8** |
 
-- **Turns EBITDA-positive in Year 4**; Year-5 net income ~$11M.
+- **Turns EBITDA-positive in Year 4**; Year-5 net income ~$9.8M.
+- *Ceiling (flat-50 × 25K) version: ~$56M revenue / ~$11M NI — treat as the optimistic bound; the survivorship-paced ~$51M / ~$9.8M is the more realistic North-Star.*
 - **Cumulative capital to fund the climb ≈ $8–12M** (peak cumulative burn through Y3–Y4) — **materially more than the §D base's ~$3M**, because this funds a far faster, larger rollout. Likely sourced from APPA reserves **plus partner / outside growth capital at the Pets-of-City LLC level** (the structure already allows this — cf. 6AM City raising from Tegna), which would dilute APPA's stake but de-risk the cash.
 
 ### Enterprise value (end of Year 5)
@@ -778,9 +797,9 @@ A platform that is part **recurring data/panel/subscription** (higher multiple) 
 
 | Method | Basis | Multiple | EV |
 |---|---|---|---|
-| Revenue multiple | ~$56M | 3–5× (recurring/data-weighted, high growth) | **~$170–280M** |
-| EBITDA multiple | ~$15M | 12–18× | **~$185–275M** |
-| **Blended estimate** | | | **~$200–250M** (range ~$150–300M) |
+| Revenue multiple | ~$51M | 3–5× (recurring/data-weighted, high growth) | **~$155–255M** |
+| EBITDA multiple | ~$13M | 12–18× | **~$160–240M** |
+| **Blended estimate** | | | **~$180–230M** (range ~$150–300M) |
 
 Plus a potential **strategic premium for the 1.25M opted-in pet-owner panel + intent data** — a one-of-a-kind first-party asset a strategic acquirer (a Chewy/Mars/NielsenIQ/insurer-type) might pay up for, beyond pure financial multiples.
 
