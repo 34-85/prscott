@@ -39,13 +39,16 @@
 | **Huntsville, AL** | ~500K | ~1:45 | Fast-growing, affluent (aerospace), under-served |
 | **Asheville, NC** | ~470K | ~2:15 | **#2 mid-size dog city**; tourism + deep dog culture |
 | **Greenville, SC** | ~550K (county) | ~2:30 | Booming, walkable downtown, strong whitespace |
+| **Franklin/Brentwood, TN** (combo) | ~250K (Williamson Co.) | ~2:00 | **Both BCFP-certified**; among the wealthiest/highest-pet-spend US communities; premium vets + boutique retail |
 
 Pick **4–5** of these for the MVP. The cluster gives us: regional density to **prove the cluster-scaling thesis**, mid-size local authenticity, HQ leverage, and a regional advertiser/sponsor pool (regional vet groups, Southeastern pet chains, regional insurers). Supporting signal: several nearby towns are **Better Cities for Pets™ certified** (Franklin, Brentwood, Hendersonville, Columbia TN; Madison AL; Mount Pleasant/North Charleston SC; Savannah/Lavonia GA) — a pipeline for cluster expansion. *(Note: BCFP isn't gating here; Asheville/Greenville/Knoxville/Chattanooga aren't on its list, but their mid-size pet-culture signal is strong.)*
 
 **Carolinas sub-cluster (right-size + BCFP-certified):** **Columbia, SC** (~140K city / ~840K metro, **BCFP-certified**) is a clean add — it pairs with **Greenville** (~1.5 hrs) and **Asheville** (~2.5 hrs) to form a tight Carolinas sub-group, extending the Southeast footprint without breaking the right-size rule.
 
-**Certified-but-large — handle deliberately:**
-- **Nashville, TN** — **BCFP-certified** and only ~2 hrs from Chattanooga, but **~2M metro** trips the right-size rule. Default: a **regional advertiser hub** to sell *into* the cluster (alongside Atlanta), **not** a local edition — *unless* we decide to run one larger "flagship" market (open item). Its proximity + certification make it the most defensible exception if we want one.
+**Capture the Nashville area the right-size way — a Franklin/Brentwood combo (not Nashville proper):**
+Instead of the ~2M Nashville metro (too big to be local), run a combined **Pets of Franklin/Brentwood** edition. Both are **BCFP-certified**, adjacent (~15 min apart) **Williamson County, TN** communities — among the **wealthiest, highest-pet-spend** areas in the US, with premium vets and boutique pet retail — and ~2 hrs from Chattanooga. This keeps the edition genuinely local while capturing the affluent Nashville-area pet market and its advertiser base. **Nashville proper stays a regional advertiser hub** to sell *into* the cluster (alongside Atlanta). *This is a reusable pattern: **combo editions** bundling adjacent affluent suburbs into one right-size local edition.*
+
+**Certified-but-large — defer:**
 - **Kansas City, MO** — **BCFP-certified** but **~2.2M metro** and Midwest (outside the Southeast cluster). Best slotted as the **anchor of a future Midwest cluster** in the replication wave, not this pilot.
 
 ## San Antonio — keep, but as a *housing/pet-deposit vertical test*, not a local-community play
@@ -62,7 +65,7 @@ Win the **Southeast cluster** from Chattanooga (incl. a **Carolinas** sub-group:
 2. **Confirm Chattanooga** as a launch market (not only HQ).
 3. **Cluster size** — 4 or 5 cities for the MVP? Include the **Carolinas sub-group** (Greenville + Asheville + Columbia SC)?
 4. **San Antonio** — parallel housing-vertical test now, or defer to a later Texas cluster?
-5. **Nashville flagship exception?** — run one larger certified market (Nashville, ~2 hrs from HQ) as a deliberate flagship, or keep it as a regional ad hub only?
+5. **Nashville area** — resolved toward a **Franklin/Brentwood combo** (right-size, certified, affluent) instead of Nashville proper. Confirm, and decide if it's a core MVP market or fast-follow.
 
 ---
 
