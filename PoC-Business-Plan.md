@@ -12,7 +12,7 @@
 
 **Why it matters (the Rosetta Stone).** APPA already invests **~$2.5M/year** in mission work — reversing the decline in veterinary visits, pet-inclusive housing, independent-retailer support, advocacy for live animal sales in retail, Pets in the Classroom/HABRI, and member-brand connection — all of which depend on **local community and connectivity** that APPA has no channel to deliver. PoC is that channel. It converts advocacy **from an expense into a profit center**: every dollar of mission impact also builds a revenue line, and every revenue line advances the mission.
 
-**Why it can work where others failed.** The hyper-local pet-media graveyard (CityDog 18→4 editions, Tails 14→1, Bay Woof→nonprofit) died of **thin local ad pools, centralized content cost, single-revenue-line dependence, and no data/loyalty layer.** APPA is uniquely positioned to fix each: **national member-brand advertiser demand** fills thin local inventory; **AI-assisted, human-edited** content removes the cost; a **seven-line monetization stack** (insurance lead-gen, housing, data, card, events, lead-gen, ads) removes single-line risk; and a **first-party pet-owner panel** is the durable, exit-valuable moat.
+**Why it can work where others failed.** The hyper-local pet-media graveyard (CityDog 18→4 editions, Tails 14→1, Bay Woof→nonprofit) died of **thin local ad pools, centralized content cost, single-revenue-line dependence, and no data/loyalty layer.** APPA is uniquely positioned to fix each: **national member-brand advertiser demand** fills thin local inventory; **AI-assisted, human-edited** content removes the cost; a **seven-line monetization stack** (insurance lead-gen, housing, data, card, events, directory lead-gen, curated sponsorship — **no programmatic/CPM ads**) removes single-line risk; and a **first-party pet-owner panel** is the durable, exit-valuable moat.
 
 **Go-to-market.** Launch a **right-size, pet-bought-in, regionally clustered** footprint — "big enough to sustain content, small enough to be local." A **4-market Southeast test phase** (Chattanooga HQ, Brentwood/Franklin, Columbia, Raleigh) precedes incorporation; expansion fills the Southeast to ~10 markets, then replicates region-by-region (Midwest, Texas). **~10 cities = a region.**
 
@@ -55,6 +55,8 @@ APPA spends ~$2.5M/year advancing pet ownership and the pet-care industry, **wit
 
 ### 3.2 Strategic framing (from the competitive analysis)
 Content is the **hook**; the **directory + card + panel + events + transactions are the moat.** Cede national service content to Daily Paws / Chewy / Kinship; win on **local truth, community, utility, and first-party data** they cannot localize. Own direct relationships (email/SMS/app/IRL) — never rented reach.
+
+**Reader-first principle — no programmatic/CPM ads.** The product carries **no commodity or programmatic CPM advertising.** A clean, trusted, high-signal edition protects engagement and slows content fatigue, which protects the first-party data asset (the crown jewel) — and trust is non-negotiable next to vet-wellness/health (YMYL) content. Member-brand demand — our single biggest structural advantage — is monetized as **curated sponsorship and integration sold on value, not impressions** (see §7), not as banner inventory.
 
 ---
 
@@ -137,7 +139,7 @@ The hyper-local pet-media category has a **graveyard**, but the causes of death 
 
 ## 7. Business model & revenue streams (the advocacy-to-profit engine)
 
-**Sequence monetization by durability/margin, not by ease.** Ads are a complement, never the core.
+**Sequence monetization by durability/margin, not by ease.** Curated sponsorship is a complement, never the core — and **the product carries no programmatic/CPM advertising** (§3.2).
 
 | # | Revenue line | Buyer | Pricing / economics | Tier |
 |---|---|---|---|---|
@@ -148,16 +150,16 @@ The hyper-local pet-media category has a **graveyard**, but the causes of death 
 | 5 | **Local events** | Sponsors + tickets + booths | Adoption days, yappy hours, regional festivals | Recurring |
 | 6 | **Product-JV sales** | Member brands | Co-branded/private-label + new-owner starter kits | Recurring |
 | 7 | **Paid directory / pay-per-lead** | Vets, groomers, retailers | **~$40/lead** beats flat listings | Recurring |
-| 8 | **Newsletter sponsorship / ads** | National member brands (sold centrally) + local SMBs | Complement; CPMs ~$25–45 | Complement |
+| 8 | **Curated sponsorship & member-brand integration** | National member brands (sold centrally) + select local sponsors | Sold on value/association (one "presented by" per edition; integrations, product-JV) — **not CPM; no programmatic** | Complement |
 
 ### 7.1 ARPU expansion (the maturity model)
 A basic newsletter earns ~$8–13/subscriber/year. The full stack lifts **blended ARPU to ~$45** (range $35–55) — **~3–5× per-subscriber value**:
 
-| Stream ($/sub/yr at maturity) | Ad | Research | Lead-gen | Events | JV | Card | Commerce | Data | **Blended** |
+| Stream ($/sub/yr at maturity) | Sponsorship | Research | Lead-gen | Events | JV | Card | Commerce | Data | **Blended** |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|--:|
 | | 12 | 6 | 8 | 4 | 4 | 5 | 3 | 3 | **~45** |
 
-This ARPU expansion — not subscriber count alone — is what makes the unit economics and the North-Star work.
+The sponsorship line is **intent-targeted, curated member-brand sponsorship — not commodity CPM** (§3.2). This ARPU expansion — not subscriber count alone — is what makes the unit economics and the North-Star work, and it holds **without** programmatic advertising.
 
 ---
 
