@@ -32,6 +32,7 @@ A working set of strategy, business-plan, and research documents for the America
 ## Pilots / proof-of-concept
 
 - **[PoC-MVP-Proof-of-Concept-Plan.md](./PoC-MVP-Proof-of-Concept-Plan.md)** — lean ~5-month, ~$175K, pre-incorporation pilot (Austin/Orlando/Denver) testing the riskiest assumptions + high-margin lines + platform-seed; explicit go/no-go.
+- **[PoC-MVP-Execution-Kit.md](./PoC-MVP-Execution-Kit.md)** — operational kit: one-page pilot brief + week-by-week launch checklist (with owners) + KPI dashboard pairing business and **mission-amplification** metrics (incl. the vet-wellness-visit metric).
 - **[PetIntelligence-MVP-Proof-of-Concept-Plan.md](./PetIntelligence-MVP-Proof-of-Concept-Plan.md)** — parallel ~$144K data-business MVP (grounded AI co-pilot on owned NPOS data) + shared-resources analysis across both MVPs.
 - **[PoC-Austin-Sample-Newsletter.md](./PoC-Austin-Sample-Newsletter.md)** — a factual, sourced sample weekly edition (sponsors/adoptable-pet labeled illustrative).
 
