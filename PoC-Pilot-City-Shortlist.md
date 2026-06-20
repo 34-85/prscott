@@ -1,6 +1,69 @@
-# Pets of [City] — Initial Pilot-City Shortlist
+# Pets of [City] — Pilot-City Selection
 
-> Companion to the Pets of [City] business plan (§B) and its market-selection criteria (§B.8). This is an **initial** list for AI test markets; Pet Intelligence data refines and re-ranks before staffing. Includes **Denver** and **San Antonio** per direction (both tied to municipal pet-deposit programs — a built-in housing/advocacy content hook).
+> Companion to the Pets of [City] business plan (§B) and its market-selection criteria (§B.8).
+>
+> **⚠️ Direction change (current).** We are deliberately moving **away from large metros** (the prior Wave-1 list below — Tampa, Las Vegas, Austin, Nashville, Orlando, Denver — is mostly 2–3M+ metros) toward a **right-size + pet-bought-in + regional-cluster** approach, because *too big = can't be local* (citywide content goes generic → fatigue/unsubscribes). The new intentional framework is **Part 1**; the prior large-metro analysis is retained below as **background**.
+
+---
+
+# Part 1 — Intentional selection framework (current direction)
+
+## The four principles
+
+1. **Right-size — "big enough to sustain content, small enough to be local."** Avoid metros so large the newsletter can't be genuinely local; a "Pets of [2M-metro]" fragments into neighborhoods, reads generic, and fatigues. Avoid towns so small they run out of weekly content + advertisers. **Sweet spot ≈ 150K–800K metro** with a real downtown/identity, enough independent pet businesses & vets, and competitive whitespace.
+2. **Pet-bought-in — start where pet culture is already strong.** Highest US pet ownership is the **Mountain West + Southern Appalachia/South** (WY 71.8%, WV 71%, ID 70%, AR/OK high). The standout *mid-size* pet cities are **Asheville NC (#2 mid-size dog city), Greenville, Boise, Colorado Springs, Bend** — not megacities. Don't spend to *create* demand; ride it.
+3. **Vet relationships — launch where we have warm vet intros.** This de-risks the headline **vet-wellness-visit mission KPI** *and* hands us a ready directory/lead-gen/discount-card pipeline. **[Founder can supply these cities — see Open Items.]** A strong vet relationship can outweigh a slightly weaker pet-friendliness score.
+4. **Regional cluster — win a region, then replicate.** Launch a tight cluster of nearby mid-size cities rather than scattered one-offs, so we get shared ops, **regional advertisers/sponsors** (a regional vet group, regional pet-supply chain, regional insurer buying across all markets), drive-time management from HQ, and compounding word-of-mouth. Then copy the playbook to the next region.
+
+## Selection scorecard (weighted, 1–5)
+
+| Criterion | Weight | What scores high |
+|---|---|---|
+| Right-size / can stay local | ×3 | ~150K–800K metro; coherent local identity; penalize >~1.5M and <~100K |
+| Pet buy-in | ×3 | High ownership; dog/outdoor culture; walkability; pet-business density |
+| **Vet-relationship strength** | ×3 | Warm founder intros to vets/clinics (de-risks mission KPI + pipeline) |
+| Regional-cluster fit | ×2 | Proximity to HQ + other pilot markets; shared regional advertisers |
+| Advertiser/economic base & growth | ×2 | Independent pet retail, affluence, in-migration |
+| Strategic anchor / signature test | ×2 | HQ presence; live pet-deposit/housing program |
+| Competitive whitespace | ×1 | No dominant local pet newsletter/community |
+| Talent / editor availability | ×1 | Identified community editor → faster, lower-risk launch |
+
+## Recommended pilot: a Chattanooga-anchored Southeast / Appalachian cluster
+
+**Anchor = Chattanooga, TN (HQ).** Per direction, if APPA Ventures is based in Chattanooga we launch there — and an HQ market means in-person ops, founder presence, and a live storefront for the model. Chattanooga ("the Scenic City") is outdoorsy, dog-centric, mid-size, and competitive whitespace. Around it sits an unusually dense ring of mid-size, pet-bought-in cities **all within ~2.5 hours' drive** — a natural first cluster:
+
+| City | ~Metro | Drive from Chattanooga | Why it fits |
+|---|---|---|---|
+| **Chattanooga, TN** ⭐HQ | ~570K | — | HQ; outdoorsy/dog culture; whitespace; right-size |
+| **Knoxville, TN** | ~900K | ~1:45 | UT town, outdoorsy, right-size core, whitespace |
+| **Huntsville, AL** | ~500K | ~1:45 | Fast-growing, affluent (aerospace), under-served |
+| **Asheville, NC** | ~470K | ~2:15 | **#2 mid-size dog city**; tourism + deep dog culture |
+| **Greenville, SC** | ~550K (county) | ~2:30 | Booming, walkable downtown, strong whitespace |
+
+Pick **4–5** of these for the MVP. The cluster gives us: regional density to **prove the cluster-scaling thesis**, mid-size local authenticity, HQ leverage, and a regional advertiser/sponsor pool (regional vet groups, Southeastern pet chains, regional insurers). Supporting signal: several nearby towns are **Better Cities for Pets™ certified** (Franklin, Brentwood, Hendersonville, Columbia TN; Madison AL; Mount Pleasant/North Charleston SC; Savannah/Lavonia GA) — a pipeline for cluster expansion. *(Note: BCFP isn't gating here; Asheville/Greenville/Knoxville/Chattanooga aren't on its list, but their mid-size pet-culture signal is strong.)* **Nashville and Atlanta are deliberately excluded as local editions** (too big to be local) but are ideal **regional advertiser hubs** to sell *into* the cluster.
+
+## San Antonio — keep, but as a *housing/pet-deposit vertical test*, not a local-community play
+
+San Antonio remains valuable for the reasons we agreed (live **pet-deposit** program + Texas's ~91% pet-friendly rentals), **but at ~2.6M metro it violates the right-size principle.** Recommendation: run SA as a **parallel monetization-vertical test** — prove the **pet-inclusive-housing / pet-deposit / insurance** engine where the program is live — rather than as a hyper-local edition. It then becomes the **seed of a future Texas Hill Country cluster** (San Marcos, New Braunfels/Cibolo — both BCFP-certified — between Austin and SA) when we replicate the regional playbook. *(Alternative if you'd rather keep the pilot single-region: defer SA to that later Texas wave.)*
+
+## The replication thesis (how regional scales)
+
+Win the **Southeast cluster** from Chattanooga → codify the playbook → replicate to the **next region's mid-size pet belt**: a **Texas Hill Country** cluster (seeded by SA) and a **Mountain West** cluster (Boise, Colorado Springs, Bend, Fort Collins — top pet-ownership + mid-size). Regional clusters, not a national patchwork.
+
+## Open items (need founder input before committing)
+
+1. **Vet-relationship cities** — which markets have strong warm vet intros? These get a ×3 scoring boost and may reorder the cluster.
+2. **Confirm Chattanooga** as a launch market (not only HQ).
+3. **Cluster size** — 4 or 5 cities for the MVP?
+4. **San Antonio** — parallel housing-vertical test now, or defer to a later Texas cluster?
+
+---
+
+# Background — prior large-metro shortlist (superseded by Part 1)
+
+> Retained for the WalletHub / Better Cities for Pets / pet-deposit research and the certified-city appendix. **Most of these are 2–3M+ metros and now de-prioritized on the right-size principle**, but the signals and the SA/Denver pet-deposit detail remain useful inputs.
+
+> This was an **initial** list for AI test markets; Pet Intelligence data refines and re-ranks before staffing. Included **Denver** and **San Antonio** per direction (both tied to municipal pet-deposit programs — a built-in housing/advocacy content hook).
 
 ## Selection signals used
 

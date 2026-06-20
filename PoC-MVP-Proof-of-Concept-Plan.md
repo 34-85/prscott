@@ -18,15 +18,17 @@ Don't build the company to find out if the model works — test the things that 
 
 ## 2. Scope — 3 MVP markets (each tests a different rationale)
 
-Keep it to **three markets** to learn fast without overspending:
+Keep it to **three markets** to learn fast without overspending.
 
-| Market | Why this one for the MVP |
+> **⚠️ Markets under revision.** Per current direction we are moving from large metros to a **right-size + pet-bought-in + regional-cluster** approach — a **Chattanooga-anchored Southeast/Appalachian cluster** (Chattanooga HQ + 3–4 of Knoxville / Huntsville / Asheville / Greenville), with **San Antonio** retained as a parallel **housing/pet-deposit vertical test**. See **[PoC-Pilot-City-Shortlist.md → Part 1](./PoC-Pilot-City-Shortlist.md)**. The Austin/Orlando/Denver trio below is **superseded** (kept until cities are confirmed). In the revised plan, **Chattanooga (HQ)** assumes Orlando's "local-talent / staffed-editor + platform-seed" role.
+
+| Market *(superseded — see callout)* | Original MVP rationale |
 |---|---|
 | **Austin** | Sample edition already built → fastest to publish; tests pure AI-assisted market |
 | **Orlando** | **Local talent identified** → tests the staffed-editor + local-ad-sales motion (the real revenue test). **Also the "platform-seed" market**: runs the lightweight discount-card, event, and product-JV tests (H5) | 
 | **Denver** | **Confirmed pet-deposit program** → tests the mission-as-content / housing-advocacy angle in an affluent, engaged market |
 
-*(San Antonio + the rest of Wave 1 follow post-incorporation. Three markets is enough to validate all five hypotheses.)*
+*(San Antonio + the rest of the pipeline follow post-incorporation. Three markets is enough to validate all five hypotheses.)*
 
 **Across all three markets:** bake **panel opt-in / consent** (CCPA-class) into the subscribe flow from day one — cheap now, and it preserves the §B-Upside data option (a weak choice to engineer it in later). Concentrate the discount-card / event / JV tests in **Orlando** to keep the pilot lean.
 

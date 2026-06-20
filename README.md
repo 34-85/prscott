@@ -24,14 +24,14 @@ A working set of strategy, business-plan, and research documents for the America
 
 - **[PoC-Competitive-Analysis-and-SWOT.md](./PoC-Competitive-Analysis-and-SWOT.md)** — the deep one: global + adjacency landscape (CityDog, 6AM/Patch/Good Daily, Kinship/Mars, Daily Paws, BringFido/Rover, DOG PPL/Sniffspot, Macaroni KID, Infatuation, Groupon, Costco/AAA, Dynata, Morning Brew…), what-works/what-fails, and a full **SWOT** + 10 strategic recommendations.
 - **[PoC-Competitive-Landscape-Research.md](./PoC-Competitive-Landscape-Research.md)** — earlier, lighter learn/copy/optimize/avoid note (superseded by the SWOT deliverable above).
-- **[PoC-Pilot-City-Shortlist.md](./PoC-Pilot-City-Shortlist.md)** — pilot-market shortlist (Wave 1: Austin, Tampa, Las Vegas, Nashville, Denver, San Antonio, Orlando) with signals (WalletHub, Better Cities for Pets, pet-deposit programs, local talent) + full BCFP certified-city appendix.
+- **[PoC-Pilot-City-Shortlist.md](./PoC-Pilot-City-Shortlist.md)** — **pilot-city selection.** *Part 1 (current):* intentional framework — **right-size** ("big enough for content, small enough to be local"), **pet-bought-in**, **vet-relationship**, and a **Chattanooga-anchored Southeast/Appalachian regional cluster** (Chattanooga HQ + Knoxville/Huntsville/Asheville/Greenville), with San Antonio as a housing/pet-deposit vertical test. *Background:* prior large-metro WalletHub/Better-Cities-for-Pets shortlist + BCFP appendix (de-prioritized as too big to stay local).
 - **[PoC-Austin-Housing-Leads-Research.md](./PoC-Austin-Housing-Leads-Research.md)** — internal worksheet: Austin no-restriction pet-housing leads (unverified) + verification protocol.
 
 ---
 
 ## Pilots / proof-of-concept
 
-- **[PoC-MVP-Proof-of-Concept-Plan.md](./PoC-MVP-Proof-of-Concept-Plan.md)** — lean ~5-month, ~$175K, pre-incorporation pilot (Austin/Orlando/Denver) testing the riskiest assumptions + high-margin lines + platform-seed; explicit go/no-go.
+- **[PoC-MVP-Proof-of-Concept-Plan.md](./PoC-MVP-Proof-of-Concept-Plan.md)** — lean ~5-month, ~$175K, pre-incorporation pilot testing the riskiest assumptions + high-margin lines + platform-seed; explicit go/no-go. *(Markets under revision → Chattanooga-anchored regional cluster; see City Selection.)*
 - **[PoC-MVP-Execution-Kit.md](./PoC-MVP-Execution-Kit.md)** — operational kit: one-page pilot brief + week-by-week launch checklist (with owners) + KPI dashboard pairing business and **mission-amplification** metrics (incl. the vet-wellness-visit metric).
 - **[PetIntelligence-MVP-Proof-of-Concept-Plan.md](./PetIntelligence-MVP-Proof-of-Concept-Plan.md)** — parallel ~$144K data-business MVP (grounded AI co-pilot on owned NPOS data) + shared-resources analysis across both MVPs.
 - **[PoC-Austin-Sample-Newsletter.md](./PoC-Austin-Sample-Newsletter.md)** — a factual, sourced sample weekly edition (sponsors/adoptable-pet labeled illustrative).
