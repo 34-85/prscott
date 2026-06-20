@@ -18,6 +18,10 @@ A working set of strategy, business-plan, and research documents for the America
    - **§D** — detailed line-itemed expense & personnel budget
 3. **[APPA-Ventures-Investment-Summary.md](./APPA-Ventures-Investment-Summary.md)** — one-page board memo: ~$3.0M staged ask + 3-year cash flow.
 
+## The full business plan
+
+- **[PoC-Business-Plan.md](./PoC-Business-Plan.md)** — **the consolidated, operator-grade Pets of [City] business plan**: executive summary, the why/mission fit, company & offering, market opportunity, competitive analysis, detailed SWOT, the 8-line monetization model + ARPU expansion, city/go-to-market strategy, **line-item (monthly) test-phase financials + base-case 3-year P&L + North-Star upside + enterprise value**, operating model/team/governance, risks, and roadmap. Synthesizes the why, competitive, city, MVP, and operating-plan documents into one high-end plan.
+
 ---
 
 ## Competitive & market research
