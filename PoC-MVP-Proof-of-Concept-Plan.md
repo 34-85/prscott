@@ -1,6 +1,8 @@
 # Pets of [City] — MVP Proof-of-Concept Plan (pre-incorporation)
 
 > A lean, ~5-month test to validate the riskiest assumptions **before** incorporating APPA Ventures or committing the staged ~$3M (§D). Run as an **internal APPA project/program — no new entity yet.** Its only job: generate the evidence for a confident go/no-go.
+>
+> **Framing (per the Competitive Analysis & SWOT):** PoC is a **local pet utility + community + data business with the newsletter as the funnel** — *not* a content/media business. So the MVP must test more than "can we publish & get opens": it must test the **durable, high-margin monetization lines** (insurance lead-gen, operator-side housing, the data panel) and the **community/utility hooks**, while ceding national content to Daily Paws/Chewy/Kinship and winning on local truth + community + data.
 
 ## 1. Purpose & the riskiest assumptions to test
 
@@ -10,7 +12,7 @@ Don't build the company to find out if the model works — test the things that 
 |---|---|---|
 | H1 | **Demand** — we can acquire engaged local pet-owner subscribers cheaply | If CAC is high, the whole model breaks |
 | H2 | **Engagement** — people actually open/read it weekly | Engagement is the leading indicator of both retention and ad value |
-| H3 | **Monetization** — local SMBs and ≥1 member brand will pay to reach this audience | Revenue is editor-sold + national; unproven for pet niche |
+| H3 | **Monetization — the durable, high-margin lines** (not just ads): can we generate **insurance lead-gen**, **operator-side housing** interest, and **paid directory/lead-gen** — plus ≥1 member-brand sponsor? | The competitive analysis says ads are a thin complement; the margin is in insurance/housing/data/lead-gen — so test *those* |
 | H4 | **Operations & quality** — AI-assisted + human-reviewed weekly content is good, factual, and cheap (no YMYL issues), and one editor can run a market | Tests the unit model and the §B guardrails |
 | H5 | **Platform-seed signals** — early appetite for the §B-Upside streams: a **citywide pet discount card** (consumers buy / businesses join), a **sponsored event**, a **product-JV "new-owner starter kit"**, and **panel opt-in** consent rates | Proves (cheaply) whether the just-in-time platform upside is real before betting on it |
 
@@ -34,7 +36,7 @@ Keep it to **three markets** to learn fast without overspending:
 |---|---|---|---|
 | **0 · Setup** | 1–3 | Pick placeholder brand; stand up newsletter platform (e.g., beehiiv/Substack-class) + analytics; build content templates & AI-assisted workflow with human review; **build subscribe flow with panel opt-in / consent**; 3-market content calendars; advertiser target lists; metrics dashboard | Ready to publish; consent baked in |
 | **1 · Soft launch** | 4–7 | Begin **weekly** sends in all 3 markets; start paid subscriber acquisition; seed via shelters/partners/social; **track panel opt-in rate** | First subscribers + baseline engagement + opt-in data |
-| **2 · Grow & monetize** | 8–16 | Scale acquisition; **Orlando editor begins local sponsorship outreach**; secure pilot sponsors/LOIs; pitch ≥1 member-brand national sponsor. **Orlando platform-seed tests:** launch a basic **citywide pet discount card** (~10–20 participating businesses + consumer sign-ups), run **one sponsored community event**, and pilot a **product-JV "new-owner starter kit"** with a member brand | Subscriber + advertiser validation + H5 platform-seed signals |
+| **2 · Grow & monetize** | 8–16 | Scale acquisition. **Test the high-margin lines (H3):** place a **pet-insurance affiliate/lead-gen** unit (esp. to new adopters) and measure leads; pitch **operator-side pet-friendly housing** to ~3–5 local property managers; sign **paid directory/pay-per-lead** with vets/groomers; pitch ≥1 member-brand national sponsor. **Orlando platform-seed tests (H5):** basic **citywide pet discount card** (~10–20 businesses, Costco/AAA-style fee + redemption tracking), **one sponsored community event**, and a **product-JV new-owner starter kit** | High-margin-line validation + advertiser + H5 signals |
 | **3 · Measure & decide** | 17–22 | Analyze vs. go/no-go thresholds; write board decision memo | **Go/no-go** on incorporating Ventures + committing ~$3M |
 
 ## 4. Success metrics & go/no-go thresholds
@@ -50,6 +52,8 @@ Measured per market by end of pilot (~month 5). Benchmarks anchored to 6AM City 
 | **Unsubscribe / send** | **< 0.5%** | Content-market fit |
 | **Engagement durability** | **Open rate holds (no steep decay) over the pilot** | Early read on **content fatigue** (the structural newsletter risk, §B.12a) |
 | **Advertiser validation** | **≥ 2–3 paid pilot sponsors or signed LOIs/market; ≥1 member-brand national sponsor interested** | Monetization proof (H3) |
+| **Insurance lead-gen (high-margin line)** | **Measurable insurance leads/clicks** at a viable effective payout (benchmark $25–152/policy) | Validates the top-margin line (H3) |
+| **Operator-side housing** | **≥ 2–3 property managers** express paid interest in pet-housing placement/tools | Validates housing monetization + advocacy (H3) |
 | **Content quality** | **Zero factual/YMYL incidents** | Guardrails hold (H4) |
 | **Editor capacity (Orlando)** | One editor sustains weekly content **+** sells local sponsors | Unit model works (H4) |
 | **Panel opt-in (all markets)** | **≥ 25–40% of subscribers opt in** to research panel | Validates the upside data asset (H5) |
@@ -57,9 +61,9 @@ Measured per market by end of pilot (~month 5). Benchmarks anchored to 6AM City 
 | **Event (Orlando)** | One event runs at **≥ breakeven** with ≥1 paying sponsor | Event-revenue signal (H5) |
 | **Product JV (Orlando)** | Starter-kit pilot sells with ≥1 member-brand partner | Product-JV signal (H5) |
 
-**Decision rule:** **GO** to incorporate + fund if **≥2 of 3 markets** clear the subscriber + engagement thresholds **and** advertiser validation is met in **≥1 market** (ideally Orlando). H5 platform-seed results are **upside evidence** (they strengthen the case and inform sequencing) but are **not gating** — a healthy core (H1–H4) is the bar. Otherwise iterate or stop — cheaply.
+**Decision rule:** **GO** to incorporate + fund if **≥2 of 3 markets** clear the subscriber + engagement thresholds **and** monetization is validated in **≥1 market** (ideally Orlando) — including signal on **≥1 high-margin line (insurance lead-gen, operator-side housing, or paid lead-gen)**, not ads alone. H5 platform-seed results (card/event/JV/panel) are **upside evidence** that strengthen the case and inform sequencing but are **not gating**. Otherwise iterate or stop — cheaply.
 
-## 5. Budget (~$165K, 3 markets + Orlando platform-seed tests, 5 months)
+## 5. Budget (~$175K, 3 markets + Orlando platform-seed + high-margin-line tests, 5 months)
 
 | Line item | Allocation |
 |---|---|
@@ -71,9 +75,10 @@ Measured per market by end of pilot (~month 5). Benchmarks anchored to 6AM City 
 | Brand placeholder, landing page & email templates (design) | $10,000 |
 | Project lead (fractional PM / existing APPA staff time) | $20,000 |
 | One sponsored community event (Orlando) + **product-JV starter-kit pilot** | $10,000 |
-| Legal/advisory (sponsorship terms, **consent/privacy**, JV terms; no entity) | $7,000 |
-| Contingency (~10%) | $15,000 |
-| **Total** | **~$169,000** |
+| **High-margin-line tests** (insurance affiliate/lead-gen setup, operator-side housing outreach, pay-per-lead tooling) | $5,000 |
+| Legal/advisory (sponsorship terms, **consent/privacy**, JV/affiliate terms; no entity) | $7,000 |
+| Contingency (~10%) | $16,000 |
+| **Total** | **~$175,000** |
 
 **Leaner alternative (~$95K):** 2 markets (Orlando + Austin), heavier AI / lighter paid acquisition, **keep only Orlando's discount-card + consent tests** (drop event/JV) — slower learning but lowest cash while still touching the upside.
 **Funding:** an operating-budget line item / board-approved pilot, **well under any threshold requiring entity formation** — and a rounding error against the ~$3M it de-risks.
