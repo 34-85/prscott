@@ -37,6 +37,37 @@ def spatial_loo_predict(survey_wide: pd.DataFrame, coords: pd.DataFrame, k: int 
     return pd.DataFrame(preds, index=zips, columns=survey_wide.columns)
 
 
+def spatial_predict(survey_wide: pd.DataFrame, survey_coords: pd.DataFrame,
+                    target_coords: pd.DataFrame, k: int = 10) -> pd.DataFrame:
+    """Predict every target ZIP's persona mix from its k nearest *surveyed* ZIPs.
+
+    Production (not leave-one-out): each target ZIP is estimated from the nearest
+    surveyed ZIPs, distance-weighted. Returns target_zip x persona.
+    """
+    s_zips = [z for z in survey_wide.index if z in survey_coords.index]
+    Xs = survey_coords.loc[s_zips][["lat", "lon"]].to_numpy(float)
+    M = survey_wide.loc[s_zips].to_numpy(float)
+    nn = NearestNeighbors(n_neighbors=min(k, len(s_zips))).fit(Xs)
+    tgt = target_coords.dropna(subset=["lat", "lon"])
+    dist, idx = nn.kneighbors(tgt[["lat", "lon"]].to_numpy(float))
+    w = 1.0 / (dist + 1e-9)
+    w /= w.sum(axis=1, keepdims=True)
+    P = np.einsum("ij,ijk->ik", w, M[idx])
+    return pd.DataFrame(P, index=tgt.index, columns=survey_wide.columns)
+
+
+def blend_full(a: pd.DataFrame, b: pd.DataFrame, wa: float = 0.5) -> pd.DataFrame:
+    """Union blend: average where both predictors cover a ZIP, else use whichever
+    one does. Each row renormalized to sum to 1."""
+    personas = list(a.columns)
+    idx = a.index.union(b.index)
+    A = a.reindex(idx)[personas].to_numpy(float)
+    B = b.reindex(idx)[personas].to_numpy(float)
+    out = np.where(np.isnan(A), B, np.where(np.isnan(B), A, wa * A + (1 - wa) * B))
+    df = pd.DataFrame(out, index=idx, columns=personas).dropna(how="all")
+    return df.div(df.sum(axis=1), axis=0)
+
+
 def blend_mixes(a: pd.DataFrame, b: pd.DataFrame, wa: float = 0.5) -> pd.DataFrame:
     """Weighted blend of two zip x persona mixes (aligned on shared ZIPs)."""
     zips = a.index.intersection(b.index)
@@ -76,4 +107,5 @@ def compare_predictors(survey_dist: pd.DataFrame, demographic_mix: pd.DataFrame,
     return pd.DataFrame(rows)
 
 
-__all__ = ["spatial_loo_predict", "blend_mixes", "compare_predictors"]
+__all__ = ["spatial_loo_predict", "spatial_predict", "blend_mixes", "blend_full",
+           "compare_predictors"]

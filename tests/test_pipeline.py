@@ -353,6 +353,30 @@ def test_spatial_predictor_and_bakeoff():
     assert (abs(bl.sum(axis=1) - 1.0) < 1e-9).all()
 
 
+def test_spatial_predict_production_and_blend_full():
+    import numpy as np
+    from zip_msa_personas import spatial
+    personas = ["A", "B", "C"]
+    rng = np.random.default_rng(0)
+    s_zips = [f"{i:05d}" for i in range(50)]
+    scoords = pd.DataFrame({"lat": rng.uniform(25, 48, 50), "lon": rng.uniform(-122, -71, 50)}, index=s_zips)
+
+    def mix(lon):
+        t = (lon + 122) / 51
+        m = np.clip(np.array([1 - t, 0.5, t]), 0.05, None)
+        return m / m.sum()
+    sw = pd.DataFrame([mix(scoords.loc[z, "lon"]) for z in s_zips], index=s_zips, columns=personas)
+    t_zips = [f"9{i:04d}" for i in range(100)]
+    tc = pd.DataFrame({"lat": rng.uniform(25, 48, 100), "lon": rng.uniform(-122, -71, 100)}, index=t_zips)
+    pred = spatial.spatial_predict(sw, scoords, tc, k=8)
+    assert len(pred) == 100 and (abs(pred.sum(axis=1) - 1.0) < 1e-9).all()
+    assert pred[tc["lon"] < -100]["A"].mean() > pred[tc["lon"] > -85]["A"].mean()  # west leans A
+    # blend_full unions coverage and keeps valid distributions.
+    dm = pd.DataFrame(rng.dirichlet([1, 1, 1], size=100), index=t_zips, columns=personas)
+    bl = spatial.blend_full(pred, dm)
+    assert (abs(bl.sum(axis=1) - 1.0) < 1e-9).all()
+
+
 def test_query_lookups():
     from zip_msa_personas import query
     enr = pd.DataFrame({

@@ -123,14 +123,32 @@ def cmd_official(args) -> int:
     except Exception as e:  # noqa: BLE001
         print(f"(region-level validation skipped: {str(e)[:100]})")
 
-    if not args.no_calibrate_national:
-        tw = surv.groupby("persona")["weight"].sum()
-        target = {p: float(tw.get(p, 0.0)) for p in dmix.columns}
-        dmix = propensity.apply_national_calibration(dmix, propensity.fit_national_calibration(dmix, target))
-        print("Applied national calibration -> demographic mix national average now matches the survey.")
+    tw = surv.groupby("persona")["weight"].sum()
+    target = {p: float(tw.get(p, 0.0)) for p in dmix.columns}
+
+    def _cal(mix):  # rake a mix so its national average matches the survey
+        if args.no_calibrate_national:
+            return mix
+        return propensity.apply_national_calibration(mix, propensity.fit_national_calibration(mix, target))
+
+    # Choose the predictor for the modeled (non-survey) ZIPs. Bake-off result:
+    # spatial smoothing >> demographics; blend wins on dominant-persona hit rate.
+    dmix_cal = _cal(dmix)
+    if args.model == "demographic":
+        model_mix = dmix_cal
+    else:
+        from . import spatial, deliverables
+        sw = (surv.assign(zip=surv["zip"].astype(str).str.zfill(5))
+              .groupby(["zip", "persona"])["weight"].sum().unstack(fill_value=0.0)
+              .reindex(columns=dmix.columns, fill_value=0.0))
+        survey_wide = sw.div(sw.sum(axis=1).replace(0, 1.0), axis=0)
+        geo = deliverables.load_geography().set_index("zip")[["lat", "lon"]]
+        smix = _cal(spatial.spatial_predict(survey_wide, geo, geo, k=args.k))
+        model_mix = smix if args.model == "spatial" else _cal(spatial.blend_full(smix, dmix_cal))
+    print(f"Predictor for modeled ZIPs: {args.model} (calibrated to survey national mix).")
 
     out = pipeline.run_demographic_blend(
-        personas_csv, ref, dmix, alpha=args.shrink_alpha, data_vintage=args.data_vintage, zip_to_dma=z2d,
+        personas_csv, ref, model_mix, alpha=args.shrink_alpha, data_vintage=args.data_vintage, zip_to_dma=z2d,
     )
     Path(args.outdir).mkdir(parents=True, exist_ok=True)
     out.enriched.to_csv(Path(args.outdir) / "enriched_national_official.csv", index=False)
@@ -366,7 +384,10 @@ def main(argv=None) -> int:
     pof.add_argument("--year", type=int, default=2022, help="ACS 5-year vintage")
     pof.add_argument("--census-key", default=None, help="Census API key (passed at runtime; overrides CENSUS_API_KEY env)")
     pof.add_argument("--no-calibrate-national", action="store_true",
-                     help="skip raking the demographic mix to the survey's national segment sizes")
+                     help="skip raking the model mix to the survey's national segment sizes")
+    pof.add_argument("--model", choices=["blend", "spatial", "demographic"], default="blend",
+                     help="predictor for modeled ZIPs (bake-off: spatial/blend >> demographic)")
+    pof.add_argument("--k", type=int, default=10, help="neighbors for spatial prediction")
     pof.add_argument("--shrink-alpha", type=float, default=5.0, help="prior strength for the survey blend")
     pof.add_argument("--data-vintage", default="NPOS2025;ACS2022;HUD2023Q4")
     pof.add_argument("--outdir", default="out_official")
