@@ -97,6 +97,19 @@ def cmd_official(args) -> int:
         if str(args.appa).lower().endswith((".xlsx", ".xls")) else args.appa
     z2d = load_zip_dma_crosswalk(args.zip_dma) if args.zip_dma else None
 
+    # National calibration: rake the demographic mix so its national average mix
+    # matches the survey's known segment sizes. Without this the raw propensity
+    # over-weights broad signals (white/Boomer), producing an argmax artifact
+    # (e.g. ~57% "dominant" Comfort Companions vs a ~17% true share).
+    from . import propensity
+    if not args.no_calibrate_national:
+        surv = personas.aggregate_to_zip_distribution(personas.load_personas(personas_csv))
+        tw = surv.groupby("persona")["weight"].sum()
+        target = {p: float(tw.get(p, 0.0)) for p in dmix.columns}
+        factors = propensity.fit_national_calibration(dmix, target)
+        dmix = propensity.apply_national_calibration(dmix, factors)
+        print("Applied national calibration -> demographic mix national average now matches the survey.")
+
     out = pipeline.run_demographic_blend(
         personas_csv, ref, dmix, alpha=args.shrink_alpha, data_vintage=args.data_vintage, zip_to_dma=z2d,
     )
@@ -106,6 +119,10 @@ def cmd_official(args) -> int:
     cov = batch.coverage_report(out.enriched)
     cov.write(Path(args.outdir) / "coverage")
     print(cov)
+    wide = out.impute_result.distributions.pivot_table(index="zip", columns="persona", values="share", fill_value=0.0)
+    nm = propensity.national_mix(wide)
+    print("\nNational AVERAGE persona mix (the real headline -- not the argmax 'dominant' count):")
+    print((nm * 100).round(1).to_string())
     print(f"\nScored {len(out.enriched):,} ZIPs from ACS demographics, anchored by the survey.")
     print(f"Outputs -> {args.outdir}/")
     return 0
@@ -281,6 +298,8 @@ def main(argv=None) -> int:
     pof.add_argument("--zip-dma", default=None, help="licensed ZIP->DMA crosswalk file")
     pof.add_argument("--year", type=int, default=2022, help="ACS 5-year vintage")
     pof.add_argument("--census-key", default=None, help="Census API key (passed at runtime; overrides CENSUS_API_KEY env)")
+    pof.add_argument("--no-calibrate-national", action="store_true",
+                     help="skip raking the demographic mix to the survey's national segment sizes")
     pof.add_argument("--shrink-alpha", type=float, default=5.0, help="prior strength for the survey blend")
     pof.add_argument("--data-vintage", default="NPOS2025;ACS2022;HUD2023Q4")
     pof.add_argument("--outdir", default="out_official")
