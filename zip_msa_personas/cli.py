@@ -101,13 +101,24 @@ def cmd_official(args) -> int:
     # matches the survey's known segment sizes. Without this the raw propensity
     # over-weights broad signals (white/Boomer), producing an argmax artifact
     # (e.g. ~57% "dominant" Comfort Companions vs a ~17% true share).
-    from . import propensity
+    from . import propensity, validation as _val
+    surv = personas.aggregate_to_zip_distribution(personas.load_personas(personas_csv))
+
+    # Credibility check: does the RAW demographic model reproduce the surveyed
+    # mix? Aggregate to MSA (where the survey is reliable) and compare.
+    if ref is not None:
+        try:
+            gmap = dict(zip(ref.zip_cbsa["zip"].astype(str).str.zfill(5), ref.zip_cbsa["cbsa"]))
+            rep = _val.validate_model_vs_survey(dmix, surv[["zip", "persona", "weight"]], group_map=gmap)
+            print("\n=== Demographic model vs survey (raw model, MSA-level) ===")
+            print(rep)
+        except Exception as e:  # noqa: BLE001
+            print(f"(model-vs-survey validation skipped: {str(e)[:100]})")
+
     if not args.no_calibrate_national:
-        surv = personas.aggregate_to_zip_distribution(personas.load_personas(personas_csv))
         tw = surv.groupby("persona")["weight"].sum()
         target = {p: float(tw.get(p, 0.0)) for p in dmix.columns}
-        factors = propensity.fit_national_calibration(dmix, target)
-        dmix = propensity.apply_national_calibration(dmix, factors)
+        dmix = propensity.apply_national_calibration(dmix, propensity.fit_national_calibration(dmix, target))
         print("Applied national calibration -> demographic mix national average now matches the survey.")
 
     out = pipeline.run_demographic_blend(

@@ -110,7 +110,83 @@ def load_cbsa_metadata() -> pd.DataFrame:
 
 
 def load_reference_data() -> ReferenceData:
-    return ReferenceData(load_zip_cbsa_crosswalk(), load_cbsa_metadata())
+    """ZIP->CBSA crosswalk + CBSA metadata.
+
+    Primary source is the Census ZCTA<->CBSA relationship file on www2.census.gov
+    (one plain file that yields both the crosswalk and the Metro/Micro flag, and
+    is far less likely to be bot-blocked than HUD). Falls back to the HUD
+    crosswalk + OMB delineation if the relationship file is unavailable.
+    """
+    try:
+        return load_zcta_cbsa_reference()
+    except Exception as census_err:  # noqa: BLE001
+        try:
+            return ReferenceData(load_zip_cbsa_crosswalk(), load_cbsa_metadata())
+        except Exception as hud_err:  # noqa: BLE001
+            raise DataUnavailable(
+                f"No ZIP->CBSA source reachable. Census relationship file: {census_err}; "
+                f"HUD: {hud_err}"
+            )
+
+
+# Census ZCTA<->CBSA relationship file (2020 geography). One row per ZCTA-CBSA
+# part; the CBSA name itself carries the Metro/Micro distinction.
+ZCTA_CBSA_REL_URL = os.environ.get(
+    "ZMP_ZCTA_CBSA_URL",
+    "https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/"
+    "tab20_zcta520_cbsa20_natl.txt",
+)
+
+
+def _find_col(cols, *must_contain):
+    up = {c.upper(): c for c in cols}
+    for u, orig in up.items():
+        if all(tok in u for tok in must_contain):
+            return orig
+    return None
+
+
+def load_zcta_cbsa_reference(url: str | None = None) -> ReferenceData:
+    """Build ReferenceData from the Census ZCTA<->CBSA relationship file."""
+    url = url or ZCTA_CBSA_REL_URL
+    # Accept a local file path (testing / user-provided) or a URL to download.
+    if str(url).startswith(("http://", "https://")):
+        path = _download(url, CACHE_DIR / "zcta_cbsa_rel.txt")
+    else:
+        path = Path(url)
+    # Delimiter varies by vintage (pipe/comma/tab); pick the one that splits the
+    # header into the most fields (csv.Sniffer is unreliable on these files).
+    header = Path(path).read_text(errors="replace").split("\n", 1)[0]
+    sep = max(["|", ",", "\t", ";"], key=header.count)
+    df = pd.read_csv(path, sep=sep, dtype=str)
+    zcta_col = _find_col(df.columns, "ZCTA5", "GEOID") or _find_col(df.columns, "GEOID_ZCTA")
+    cbsa_col = _find_col(df.columns, "CBSA", "GEOID") or _find_col(df.columns, "GEOID_CBSA")
+    name_col = _find_col(df.columns, "CBSA", "NAMELSAD") or _find_col(df.columns, "NAMELSAD_CBSA")
+    area_col = _find_col(df.columns, "AREALAND", "PART")
+    if not (zcta_col and cbsa_col and name_col):
+        raise DataUnavailable(
+            f"Relationship file columns not recognized: {list(df.columns)[:12]}..."
+        )
+
+    out = pd.DataFrame({
+        "zip": df[zcta_col].astype(str).str.extract(r"(\d{1,5})")[0].str.zfill(5),
+        "cbsa": df[cbsa_col].astype(str).str.strip(),
+        "cbsa_name": df[name_col].astype(str).str.strip(),
+        "area": pd.to_numeric(df[area_col], errors="coerce") if area_col else 1.0,
+    })
+    out = out[out["cbsa"].str.match(r"^\d{3,5}$", na=False)]   # drop ZCTAs in no CBSA
+
+    # res_ratio = this CBSA's share of the ZCTA's land (for dominant assignment).
+    tot = out.groupby("zip")["area"].transform("sum").replace(0, 1.0)
+    out["res_ratio"] = out["area"] / tot
+    zip_cbsa = out[["zip", "cbsa", "res_ratio"]].copy()
+
+    meta = out[["cbsa", "cbsa_name"]].drop_duplicates("cbsa").copy()
+    meta["metro"] = meta["cbsa_name"].str.contains("Metro", case=False, na=False)
+    meta["cbsa_title"] = (
+        meta["cbsa_name"].str.replace(r"\s+(Metro|Micro)\s+Area$", "", regex=True).str.strip()
+    )
+    return ReferenceData(zip_cbsa=zip_cbsa, cbsa_meta=meta[["cbsa", "cbsa_title", "metro"]])
 
 
 # ---- Demographic features (ACS) --------------------------------------------

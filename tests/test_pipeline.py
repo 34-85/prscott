@@ -302,6 +302,45 @@ def test_acs_fractions_feed_propensity_end_to_end():
     assert mix.iloc[0].idxmax() == "Security Seekers"
 
 
+def test_zcta_cbsa_reference_builds_crosswalk():
+    import tempfile, os
+    from zip_msa_personas import data_sources as ds
+    rows = pd.DataFrame([
+        {"GEOID_ZCTA5_20": "10001", "GEOID_CBSA_20": "35620",
+         "NAMELSAD_CBSA_20": "New York-Newark-Jersey City, NY-NJ-PA Metro Area", "AREALAND_PART": "900"},
+        {"GEOID_ZCTA5_20": "10001", "GEOID_CBSA_20": "35614",
+         "NAMELSAD_CBSA_20": "Other, NY Metro Area", "AREALAND_PART": "100"},
+        {"GEOID_ZCTA5_20": "59722", "GEOID_CBSA_20": "14580",
+         "NAMELSAD_CBSA_20": "Deer Lodge, MT Micro Area", "AREALAND_PART": "300"},
+        {"GEOID_ZCTA5_20": "99999", "GEOID_CBSA_20": "", "NAMELSAD_CBSA_20": "", "AREALAND_PART": "0"},
+    ])
+    fd, p = tempfile.mkstemp(suffix=".txt"); os.close(fd)
+    rows.to_csv(p, sep="|", index=False)
+    ref = ds.load_zcta_cbsa_reference(p)
+    z2m = crosswalk.build_zip_to_msa(ref)
+    os.remove(p)
+    # Dominant assignment by land area; micro excluded from metro; ZIP w/o CBSA dropped.
+    assert z2m[z2m.zip == "10001"]["msa_cbsa"].iloc[0] == "35620"
+    assert not bool(z2m[z2m.zip == "59722"]["in_metro"].iloc[0])
+    assert "Metro Area" not in z2m[z2m.zip == "10001"]["msa_title"].iloc[0]
+
+
+def test_validate_model_vs_survey_detects_agreement():
+    import numpy as np
+    from zip_msa_personas import validation as v
+    personas = ["A", "B", "C"]
+    zips = [f"{i:05d}" for i in range(60)]
+    gmap = {z: f"G{i % 3}" for i, z in enumerate(zips)}
+    truth = {"G0": [0.6, 0.3, 0.1], "G1": [0.2, 0.6, 0.2], "G2": [0.2, 0.2, 0.6]}
+    mm = pd.DataFrame([truth[gmap[z]] for z in zips], index=zips, columns=personas)
+    surv = pd.DataFrame(
+        [{"zip": z, "persona": p, "weight": s * 50} for z in zips for p, s in zip(personas, truth[gmap[z]])]
+    )
+    rep = v.validate_model_vs_survey(mm, surv, group_map=gmap, min_n=30)
+    assert rep.top1_agreement == 1.0
+    assert rep.mean_abs_error < 0.05
+
+
 def test_national_calibration_matches_target_mix():
     import numpy as np
     from zip_msa_personas import propensity as pr

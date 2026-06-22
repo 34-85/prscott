@@ -160,4 +160,66 @@ def concordance(assignments: pd.DataFrame, external: pd.DataFrame) -> Concordanc
     )
 
 
-__all__ = ["CalibrationReport", "backtest", "ConcordanceReport", "concordance"]
+@dataclass
+class ModelSurveyReport:
+    """How well the demographic model alone reproduces the surveyed persona mix."""
+
+    n_units: int
+    top1_agreement: float          # fraction where model's top persona == survey's
+    mean_abs_error: float          # mean |model_share - survey_share|
+    per_persona_corr: dict         # persona -> Pearson r across units
+
+    def __str__(self) -> str:
+        corr = "\n".join(f"  {p:<22} r={v:+.2f}" for p, v in self.per_persona_corr.items())
+        return (
+            f"Model-vs-survey over {self.n_units} units (survey n>=min_n)\n"
+            f"Top-persona agreement: {self.top1_agreement:.1%}\n"
+            f"Mean absolute share error: {self.mean_abs_error:.3f}\n"
+            f"Per-persona correlation:\n{corr}"
+        )
+
+
+def validate_model_vs_survey(model_mix, survey_dist, group_map=None, min_n: float = 30.0):
+    """Does the demographic model reproduce the actual surveyed mix?
+
+    Compares the demographic-propensity mix to the survey on shared geography.
+    Because the ZIP-level survey is thin, pass ``group_map`` (zip -> MSA/DMA/state)
+    to aggregate to a level where the survey is reliable; units with survey
+    weight below ``min_n`` are dropped.
+    """
+    personas = list(model_mix.columns)
+    surv = survey_dist.copy()
+    surv["zip"] = surv["zip"].astype(str).str.zfill(5)
+    mm = model_mix.copy()
+    mm.index = mm.index.astype(str).str.zfill(5)
+
+    if group_map:
+        surv["unit"] = surv["zip"].map(group_map)
+        mm_unit = mm.groupby(mm.index.map(group_map)).mean()
+    else:
+        surv["unit"] = surv["zip"]
+        mm_unit = mm
+    surv = surv.dropna(subset=["unit"])
+
+    sw = (surv.groupby(["unit", "persona"])["weight"].sum().unstack(fill_value=0.0)
+          .reindex(columns=personas, fill_value=0.0))
+    n = sw.sum(axis=1)
+    sw_share = sw.div(n.replace(0, 1.0), axis=0)
+
+    units = [u for u in sw_share.index if u in mm_unit.index and n[u] >= min_n]
+    if not units:
+        raise ValueError("No geographies meet min_n in both the model and the survey.")
+    S = sw_share.loc[units, personas]
+    M = mm_unit.loc[units, personas]
+
+    top1 = float((S.to_numpy().argmax(1) == M.to_numpy().argmax(1)).mean())
+    mae = float(np.abs(S.to_numpy() - M.to_numpy()).mean())
+    corr = {}
+    for p in personas:
+        a, b = M[p].to_numpy(float), S[p].to_numpy(float)
+        corr[p] = float(np.corrcoef(a, b)[0, 1]) if a.std() > 0 and b.std() > 0 else float("nan")
+    return ModelSurveyReport(len(units), top1, mae, corr)
+
+
+__all__ = ["CalibrationReport", "backtest", "ConcordanceReport", "concordance",
+           "ModelSurveyReport", "validate_model_vs_survey"]
