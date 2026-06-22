@@ -46,7 +46,10 @@ Run national scoring per engagement; deliver a lineage-tagged CSV/Parquet.
 - Built: `batch.run_national` scores all feature-bearing ZIPs and emits a
   coverage report (observed/modeled/extrapolated, nationally + by metro + per
   MSA); calibration report (`validate`) and rights-safe export ship alongside.
-- Remaining: pin data vintages on real NPOS/ACS/HUD; Parquet output option.
+- Built: `scripts/run_local.sh` -- one command chains ingest → fetch data →
+  calibrate → national (MSA + DMA) → validate → rights-safe export.
+- Remaining: Parquet output option; first real national run (needs local HUD/
+  Census access + licensed ZIP→DMA crosswalk).
 
 ### Phase 2 — Opportunity scoring  ✅ engine built
 A scoring layer *on top* of persona-by-ZIP. Given a client's target personas

@@ -39,7 +39,23 @@ pip install -r requirements.txt
 python -m zip_msa_personas demo --out enriched_demo.csv
 ```
 
-## Real run
+## One-command local run (recommended)
+
+On a machine with normal internet (HUD + Census reachable), the whole pipeline
+runs in one command. Your proprietary NPOS data never leaves your machine.
+
+```bash
+scripts/run_local.sh --appa NPOS_zip_by_segment.xlsx \
+    [--zip-dma your_licensed_zip_dma.csv] [--outdir ./out_local] [--venv]
+```
+
+It chains: ingest-appa → fetch reference data → calibrate → national scoring
+(MSA, plus DMA if a crosswalk is given) → validate → rights-safe export. Outputs
+land in `--outdir`: tidy personas, the fitted calibrator, enriched national
+files, coverage CSVs, a validation report, and the sellable `deliverable_*.csv`
+(+ rights manifest).
+
+## Real run (manual steps)
 
 ```bash
 # 1. Fetch + cache the official reference data (needs census.gov + huduser.gov).
