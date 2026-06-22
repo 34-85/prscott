@@ -70,6 +70,39 @@ def cmd_data(_args) -> int:
     return 0
 
 
+def cmd_official(args) -> int:
+    """Full-resolution official run: ACS demographics -> propensity -> survey blend.
+
+    Needs census.gov + huduser.gov reachable (allowlist or local). Produces the
+    national enriched dataset, coverage report, and full per-ZIP distributions.
+    """
+    from . import acs, batch
+    try:
+        ref = load_reference_data()
+        dmix = acs.demographic_mix(args.year)            # ACS fetch + propensity scoring
+    except DataUnavailable as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        print("Allowlist www2.census.gov / api.census.gov / www.huduser.gov, then retry.", file=sys.stderr)
+        return 2
+
+    personas_csv = _write_tmp(appa_loader.load_appa_segmentation(args.appa)[["zip", "persona", "weight"]]) \
+        if str(args.appa).lower().endswith((".xlsx", ".xls")) else args.appa
+    z2d = load_zip_dma_crosswalk(args.zip_dma) if args.zip_dma else None
+
+    out = pipeline.run_demographic_blend(
+        personas_csv, ref, dmix, alpha=args.shrink_alpha, data_vintage=args.data_vintage, zip_to_dma=z2d,
+    )
+    Path(args.outdir).mkdir(parents=True, exist_ok=True)
+    out.enriched.to_csv(Path(args.outdir) / "enriched_national_official.csv", index=False)
+    out.impute_result.distributions.to_csv(Path(args.outdir) / "persona_distributions.csv", index=False)
+    cov = batch.coverage_report(out.enriched)
+    cov.write(Path(args.outdir) / "coverage")
+    print(cov)
+    print(f"\nScored {len(out.enriched):,} ZIPs from ACS demographics, anchored by the survey.")
+    print(f"Outputs -> {args.outdir}/")
+    return 0
+
+
 def cmd_ingest_appa(args) -> int:
     """Convert the APPA NPOS 'ZIP by segment' workbook to a tidy personas CSV."""
     long = appa_loader.load_appa_segmentation(args.input)
@@ -234,6 +267,15 @@ def main(argv=None) -> int:
 
     pdd = sub.add_parser("data", help="fetch + cache real HUD/Census reference data")
     pdd.set_defaults(func=cmd_data)
+
+    pof = sub.add_parser("official", help="full-resolution run: ACS demographics -> propensity -> survey blend")
+    pof.add_argument("--appa", required=True, help="APPA NPOS workbook (.xlsx) or tidy personas CSV")
+    pof.add_argument("--zip-dma", default=None, help="licensed ZIP->DMA crosswalk file")
+    pof.add_argument("--year", type=int, default=2022, help="ACS 5-year vintage")
+    pof.add_argument("--shrink-alpha", type=float, default=5.0, help="prior strength for the survey blend")
+    pof.add_argument("--data-vintage", default="NPOS2025;ACS2022;HUD2023Q4")
+    pof.add_argument("--outdir", default="out_official")
+    pof.set_defaults(func=cmd_official)
 
     pi = sub.add_parser("ingest-appa", help="convert APPA NPOS ZIP-by-segment xlsx -> tidy personas CSV")
     pi.add_argument("--input", required=True, help="the .xlsx workbook")

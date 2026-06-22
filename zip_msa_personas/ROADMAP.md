@@ -98,6 +98,17 @@ Next: in the official run, use this as the demographic prior for empty ZIPs
 agreement where NPOS coverage exists. Needs ACS category fractions per ZIP
 (see `ACS_CATEGORY_SPEC`).
 
+## Stage 2 prep (official run) — built, gated on data access
+- `acs.py`: rolls raw ACS counts (age B01001 / income B19001 / race B02001+B03003
+  / marital B12001) into the propensity model's category fractions; `fetch_acs_
+  demographics` + `demographic_mix` pull and score in one call.
+- `official` CLI command + `scripts/run_official.sh`: ACS demographics ->
+  propensity scoring -> survey-anchored blend -> national enriched dataset +
+  coverage + full per-ZIP distributions, in one run.
+- Gate: needs `www2.census.gov` / `api.census.gov` / `www.huduser.gov`
+  allowlisted (or a local run). ACS variable codes are validated on first live
+  fetch. Map/workbook labels join public ZIP geography.
+
 ## Engineering backlog (priority order)
 1. **Calibration hardening** — ✅ isotonic calibration shipped (`calibration.py`):
    raw confidence → true probability, fit on held-out backtest predictions,

@@ -254,6 +254,54 @@ def test_apply_calibration_preserves_observed_and_adds_raw():
     assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
 
 
+def test_acs_buckets_cover_propensity_categories():
+    from zip_msa_personas import acs, propensity as pr
+    for var, cats in pr.ACS_CATEGORY_SPEC.items():
+        assert set(acs.ACS_BUCKETS[var].keys()) == set(cats)
+
+
+def test_acs_fractions_roll_up_and_normalize():
+    from zip_msa_personas import acs
+    counts = pd.DataFrame(
+        {
+            # age: mostly young adults
+            "22_24": [100.0], "25_29": [100.0], "55_59": [50.0],
+            # income: split low/high
+            "lt_10k": [40.0], "200k_plus": [60.0],
+            # race
+            "white": [70.0], "hispanic": [30.0],
+            # marital
+            "now_married": [60.0], "never_married": [40.0],
+        },
+        index=["00001"],
+    )
+    f = acs.fractions_from_counts(counts)
+    # Each variable's category fractions sum to 1.
+    for var in ("age", "income", "race", "marital"):
+        cols = [c for c in f.columns if c.startswith(var + "_")]
+        assert abs(f[cols].sum(axis=1).iloc[0] - 1.0) < 1e-9
+    # 55_59 rolls into Gen X; the rest of the age mass is Gen Z / Millennial.
+    assert f.loc["00001", "age_genx"] == 0.2
+    # Income split: 40 low / 60 high.
+    assert abs(f.loc["00001", "income_low"] - 0.4) < 1e-9
+    assert abs(f.loc["00001", "income_high"] - 0.6) < 1e-9
+    # Marital: widowed/divorced/separated absent -> formerly_married = 0.
+    assert f.loc["00001", "marital_formerly_married"] == 0.0
+
+
+def test_acs_fractions_feed_propensity_end_to_end():
+    from zip_msa_personas import acs, propensity as pr
+    counts = pd.DataFrame(
+        {"25_29": [200.0], "200k_plus": [150.0], "asian": [120.0], "hispanic": [80.0],
+         "never_married": [180.0]},
+        index=["29000"],
+    )
+    mix = pr.score_demographics(acs.fractions_from_counts(counts))
+    assert abs(mix.iloc[0].sum() - 1.0) < 1e-9
+    # Young, affluent, diverse, never-married -> Security Seekers tops the mix.
+    assert mix.iloc[0].idxmax() == "Security Seekers"
+
+
 def test_propensity_fingerprints_load():
     from zip_msa_personas import propensity as pr
     fp = pr.load_fingerprints()
