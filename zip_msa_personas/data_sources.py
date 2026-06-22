@@ -208,6 +208,32 @@ def load_zcta_cbsa_reference(url: str | None = None, delineation: pd.DataFrame |
     return ReferenceData(zip_cbsa=zip_cbsa, cbsa_meta=meta)
 
 
+def load_zcta_state(url: str | None = None) -> pd.DataFrame:
+    """ZIP -> state FIPS (dominant county by land area), from the ZCTA->county file.
+
+    Reuses the cached relationship file, so it's free after load_reference_data().
+    """
+    url = url or ZCTA_COUNTY_REL_URL
+    if str(url).startswith(("http://", "https://")):
+        path = _download(url, CACHE_DIR / "zcta_county_rel.txt")
+    else:
+        path = Path(url)
+    header = Path(path).read_text(errors="replace").split("\n", 1)[0]
+    sep = max(["|", ",", "\t", ";"], key=header.count)
+    rel = pd.read_csv(path, sep=sep, dtype=str)
+    zcta_col = _find_col(rel.columns, "GEOID", "ZCTA5")
+    county_col = _find_col(rel.columns, "GEOID", "COUNTY")
+    area_col = _find_col(rel.columns, "AREALAND", "PART")
+    df = pd.DataFrame({
+        "zip": rel[zcta_col].astype(str).str.extract(r"(\d{1,5})")[0].str.zfill(5),
+        "state": rel[county_col].astype(str).str.extract(r"(\d{1,5})")[0].str.zfill(5).str[:2],
+        "area": pd.to_numeric(rel[area_col], errors="coerce").fillna(0.0) if area_col else 1.0,
+    }).dropna(subset=["zip", "state"])
+    agg = df.groupby(["zip", "state"], as_index=False)["area"].sum()
+    agg = agg.sort_values(["zip", "area"], ascending=[True, False]).groupby("zip", as_index=False).first()
+    return agg[["zip", "state"]]
+
+
 # ---- Demographic features (ACS) --------------------------------------------
 
 # A compact, interpretable feature set. Extend freely -- everything downstream

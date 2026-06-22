@@ -168,30 +168,48 @@ class ModelSurveyReport:
     top1_agreement: float          # fraction where model's top persona == survey's
     mean_abs_error: float          # mean |model_share - survey_share|
     per_persona_corr: dict         # persona -> Pearson r across units
+    directional_agreement: float = float("nan")  # over/under/neutral-index match rate
+    directional_chance: float = float("nan")      # same metric if model were random
 
     def __str__(self) -> str:
         corr = "\n".join(f"  {p:<22} r={v:+.2f}" for p, v in self.per_persona_corr.items())
         return (
             f"Model-vs-survey over {self.n_units} units (survey n>=min_n)\n"
+            f"Directional (over/under-index) agreement: {self.directional_agreement:.1%} "
+            f"(chance ~{self.directional_chance:.1%})\n"
             f"Top-persona agreement: {self.top1_agreement:.1%}\n"
             f"Mean absolute share error: {self.mean_abs_error:.3f}\n"
             f"Per-persona correlation:\n{corr}"
         )
 
 
+def _direction(index_arr, lo=0.9, hi=1.1):
+    """-1 under, +1 over, 0 ~average -- vs the national rate (index=1.0)."""
+    import numpy as np
+    return np.where(index_arr > hi, 1, np.where(index_arr < lo, -1, 0))
+
+
 def validate_model_vs_survey(model_mix, survey_dist, group_map=None, min_n: float = 30.0):
     """Does the demographic model reproduce the actual surveyed mix?
 
     Compares the demographic-propensity mix to the survey on shared geography.
-    Because the ZIP-level survey is thin, pass ``group_map`` (zip -> MSA/DMA/state)
+    Because the ZIP-level survey is thin, pass ``group_map`` (zip -> MSA/DMA/region)
     to aggregate to a level where the survey is reliable; units with survey
     weight below ``min_n`` are dropped.
+
+    The headline metric is **directional agreement**: does the model get the
+    *direction* of each persona's skew (over / under / ~average vs national) right?
+    This is fairer than top-persona agreement when segments are near-equal in size.
     """
     personas = list(model_mix.columns)
     surv = survey_dist.copy()
     surv["zip"] = surv["zip"].astype(str).str.zfill(5)
     mm = model_mix.copy()
     mm.index = mm.index.astype(str).str.zfill(5)
+
+    # National rates from the full survey (ground-truth segment sizes).
+    natl = surv.groupby("persona")["weight"].sum().reindex(personas).fillna(0.0)
+    natl = (natl / natl.sum()).to_numpy()
 
     if group_map:
         surv["unit"] = surv["zip"].map(group_map)
@@ -209,17 +227,48 @@ def validate_model_vs_survey(model_mix, survey_dist, group_map=None, min_n: floa
     units = [u for u in sw_share.index if u in mm_unit.index and n[u] >= min_n]
     if not units:
         raise ValueError("No geographies meet min_n in both the model and the survey.")
-    S = sw_share.loc[units, personas]
-    M = mm_unit.loc[units, personas]
+    S = sw_share.loc[units, personas].to_numpy(float)
+    M = mm_unit.loc[units, personas].to_numpy(float)
 
-    top1 = float((S.to_numpy().argmax(1) == M.to_numpy().argmax(1)).mean())
-    mae = float(np.abs(S.to_numpy() - M.to_numpy()).mean())
+    top1 = float((S.argmax(1) == M.argmax(1)).mean())
+    mae = float(np.abs(S - M).mean())
     corr = {}
-    for p in personas:
-        a, b = M[p].to_numpy(float), S[p].to_numpy(float)
+    for j, p in enumerate(personas):
+        a, b = M[:, j], S[:, j]
         corr[p] = float(np.corrcoef(a, b)[0, 1]) if a.std() > 0 and b.std() > 0 else float("nan")
-    return ModelSurveyReport(len(units), top1, mae, corr)
+
+    # Directional agreement vs national index.
+    natl_safe = np.clip(natl, 1e-9, None)
+    s_dir, m_dir = _direction(S / natl_safe), _direction(M / natl_safe)
+    directional = float((s_dir == m_dir).mean())
+    # Chance baseline: how often the survey directions match a shuffled model.
+    rng = np.random.default_rng(0)
+    chance = float(np.mean([(s_dir == m_dir[rng.permutation(len(units))]).mean() for _ in range(20)]))
+
+    return ModelSurveyReport(len(units), top1, mae, corr, directional, chance)
+
+
+# Census Bureau 4 regions by state FIPS -- for region-level validation, where the
+# survey has far more sample per unit than at MSA level.
+_REGION_BY_FIPS = {
+    "Northeast": ["09", "23", "25", "33", "44", "50", "34", "36", "42"],
+    "Midwest": ["17", "18", "26", "39", "55", "19", "20", "27", "29", "31", "38", "46"],
+    "South": ["10", "11", "12", "13", "24", "37", "45", "51", "54", "01", "21", "28",
+              "47", "05", "22", "40", "48"],
+    "West": ["04", "08", "16", "30", "32", "35", "49", "56", "02", "06", "15", "41", "53"],
+}
+STATE_FIPS_TO_REGION = {fips: region for region, fipses in _REGION_BY_FIPS.items() for fips in fipses}
+
+
+def census_region_map(zip_state) -> dict:
+    """Build a zip -> Census region map from a zip->state-FIPS frame/dict."""
+    if hasattr(zip_state, "itertuples"):
+        items = ((r.zip, r.state) for r in zip_state.itertuples())
+    else:
+        items = zip_state.items()
+    return {z: STATE_FIPS_TO_REGION.get(str(s).zfill(2)) for z, s in items}
 
 
 __all__ = ["CalibrationReport", "backtest", "ConcordanceReport", "concordance",
-           "ModelSurveyReport", "validate_model_vs_survey"]
+           "ModelSurveyReport", "validate_model_vs_survey", "census_region_map",
+           "STATE_FIPS_TO_REGION"]

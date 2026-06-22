@@ -106,14 +106,22 @@ def cmd_official(args) -> int:
 
     # Credibility check: does the RAW demographic model reproduce the surveyed
     # mix? Aggregate to MSA (where the survey is reliable) and compare.
+    sv = surv[["zip", "persona", "weight"]]
     if ref is not None:
         try:
             gmap = dict(zip(ref.zip_cbsa["zip"].astype(str).str.zfill(5), ref.zip_cbsa["cbsa"]))
-            rep = _val.validate_model_vs_survey(dmix, surv[["zip", "persona", "weight"]], group_map=gmap)
             print("\n=== Demographic model vs survey (raw model, MSA-level) ===")
-            print(rep)
+            print(_val.validate_model_vs_survey(dmix, sv, group_map=gmap))
         except Exception as e:  # noqa: BLE001
-            print(f"(model-vs-survey validation skipped: {str(e)[:100]})")
+            print(f"(MSA-level validation skipped: {str(e)[:100]})")
+    # Region level: far more survey per unit -> a stabler read of the signal.
+    try:
+        from .data_sources import load_zcta_state
+        region_map = _val.census_region_map(load_zcta_state())
+        print("\n=== Demographic model vs survey (raw model, Census-region level) ===")
+        print(_val.validate_model_vs_survey(dmix, sv, group_map=region_map, min_n=100))
+    except Exception as e:  # noqa: BLE001
+        print(f"(region-level validation skipped: {str(e)[:100]})")
 
     if not args.no_calibrate_national:
         tw = surv.groupby("persona")["weight"].sum()

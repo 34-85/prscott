@@ -331,6 +331,47 @@ def test_zcta_cbsa_reference_builds_crosswalk():
     assert "99999" not in set(z2m.zip)
 
 
+def test_census_region_map_and_zcta_state():
+    import tempfile, os
+    from zip_msa_personas import validation as v, data_sources as ds
+    rm = v.census_region_map(pd.DataFrame({"zip": ["10001", "90001", "60601", "30301"],
+                                           "state": ["36", "06", "17", "13"]}))
+    assert rm == {"10001": "Northeast", "90001": "West", "60601": "Midwest", "30301": "South"}
+    # zip -> state from a synthetic ZCTA->county relationship file.
+    rows = pd.DataFrame([
+        {"GEOID_ZCTA5_20": "10001", "GEOID_COUNTY_20": "36061", "AREALAND_PART": "900"},
+        {"GEOID_ZCTA5_20": "10001", "GEOID_COUNTY_20": "34017", "AREALAND_PART": "100"},
+    ])
+    fd, p = tempfile.mkstemp(suffix=".txt"); os.close(fd)
+    rows.to_csv(p, sep="|", index=False)
+    z2s = ds.load_zcta_state(p)
+    os.remove(p)
+    assert z2s[z2s.zip == "10001"]["state"].iloc[0] == "36"   # dominant county is NY (36)
+
+
+def test_directional_agreement_beats_chance():
+    import numpy as np
+    from zip_msa_personas import validation as v
+    personas = ["A", "B", "C"]
+    natl = np.array([0.5, 0.3, 0.2])
+    rng = np.random.default_rng(1)
+    rows, model = [], {}
+    for i in range(40):
+        skew = rng.normal(0, 0.15, 3)
+        s = np.clip(natl + skew, 0.01, None); s = s / s.sum()
+        m = np.clip(natl + skew * 0.6, 0.01, None); m = m / m.sum()  # same direction
+        model[f"G{i}"] = m
+        for p, share in zip(personas, s):
+            for j in range(20):
+                rows.append({"zip": f"{i:02d}{j:03d}", "persona": p, "weight": share * 10})
+    surv = pd.DataFrame(rows)
+    gmap = {f"{i:02d}{j:03d}": f"G{i}" for i in range(40) for j in range(20)}
+    zl = list(dict.fromkeys(surv["zip"]))
+    mm = pd.DataFrame([model[gmap[z]] for z in zl], index=zl, columns=personas)
+    rep = v.validate_model_vs_survey(mm, surv, group_map=gmap, min_n=30)
+    assert rep.directional_agreement > rep.directional_chance + 0.1
+
+
 def test_validate_model_vs_survey_detects_agreement():
     import numpy as np
     from zip_msa_personas import validation as v
