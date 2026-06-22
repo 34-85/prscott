@@ -76,9 +76,9 @@ def align(cities: pd.DataFrame, city_msa: pd.DataFrame, viability: pd.DataFrame,
     vi = viability.copy()
     if msa_col not in vi.columns and vi.index.name == msa_col:
         vi = vi.reset_index()
-    keep = [c for c in ["market_grade", "recommendation", "opportunity_score",
+    keep = [c for c in ["market_grade", "recommendation", "lean", "opportunity_score",
                         "persona_value_index", "high_value_overindex", "reliable",
-                        "survey_zips", "median_income"] if c in vi.columns]
+                        "survey_zips", "median_income", "addressable_pet_hh"] if c in vi.columns]
     detail = cities.merge(city_msa, on=["city_key", "state"], how="left")
     detail = detail.merge(vi[[msa_col] + keep], on=msa_col, how="left")
     matched = detail[detail["market_grade"].notna()] if "market_grade" in detail else detail.iloc[0:0]

@@ -238,46 +238,53 @@ def cmd_marketfit(args) -> int:
 
 
 def cmd_certoverlay(args) -> int:
-    """Overlay a city list (default: Better Cities for Pets) onto viability grades."""
+    """Overlay a city list (Better Cities for Pets, Petfolk clinics, or your own)
+    onto the viability grades -> a per-metro scorecard for that footprint."""
     from . import overlay, deliverables
+    from pathlib import Path as _Path
     enr = pd.read_csv(args.enriched, dtype={"zip": str})
     vi = pd.read_csv(args.viability)
-    cities = overlay.load_city_list(args.cities) if args.cities else overlay.load_city_list()
+    data_dir = _Path(__file__).parent / "data"
+    builtin = {"better-cities": data_dir / "better_cities_for_pets.txt",
+               "petfolk": data_dir / "petfolk_locations.txt"}
+    cities_path = args.cities or (builtin[args.list] if args.list else None)   # --cities wins
+    cities = overlay.load_city_list(cities_path) if cities_path else overlay.load_city_list()
+    label = args.label or ("Petfolk locations" if args.list == "petfolk" else "Certified cities")
     geo = deliverables.load_geography()
     city_msa = overlay.city_to_msa(enr, geo)
     res = overlay.align(cities, city_msa, vi)
 
-    print(f"Certified cities: {res['n_total']} | mapped to a scored metro: {res['n_matched']} "
+    print(f"{label}: {res['n_total']} | mapped to a scored metro: {res['n_matched']} "
           f"({res['n_metros']} distinct metros) | unmapped: {res['n_unmatched']}")
     gd, share, mgd = res["grade_dist"], res["universe_share"], res["metro_grade_dist"]
-    print("\nGrade distribution -- per certified CITY vs per distinct METRO (clustering-corrected),")
+    print("\nGrade distribution -- per LOCATION vs per distinct METRO (clustering-corrected),")
     print("with each grade's share of the all-metro universe for reference:")
     for g in ["A", "B", "C", "D"]:
         cert = int(gd.get(g, 0)); metro = int(mgd.get(g, 0))
         cert_pct = (cert / res["n_matched"] * 100) if res["n_matched"] else 0
         metro_pct = (metro / res["n_metros"] * 100) if res["n_metros"] else 0
         uni_pct = float(share.get(g, 0)) * 100
-        print(f"  Grade {g}: {cert:3d} cities ({cert_pct:4.0f}%)  |  {metro:3d} metros ({metro_pct:4.0f}%)"
+        print(f"  Grade {g}: {cert:3d} locations ({cert_pct:4.0f}%)  |  {metro:3d} metros ({metro_pct:4.0f}%)"
               f"  vs  {uni_pct:4.0f}% of all metros")
     mc = res["metro_counts"]
     if len(mc):
         top = mc[mc > 1].head(8)
         if len(top):
-            print("\nMost-clustered metros (certified cities -> one metro):")
+            print("\nMost-clustered metros (locations -> one metro):")
             print("  " + "; ".join(f"{m} ({int(n)})" for m, n in top.items()))
 
     det = res["detail"]
     cols = [c for c in ["raw", "msa_title", "market_grade", "persona_value_index",
-                        "recommendation", "median_income"] if c in det.columns]
+                        "recommendation", "lean", "median_income"] if c in det.columns]
     matched = det[det["market_grade"].notna()] if "market_grade" in det else det
-    print(f"\nTop certified cities by metro opportunity:")
-    print(matched.head(20)[cols].to_string(index=False))
+    print(f"\nPer-location scorecard (by metro opportunity):")
+    print(matched.head(40)[cols].to_string(index=False))
     if res["n_unmatched"]:
         miss = res["unmatched"]["raw"].tolist()
         print(f"\nUnmapped ({len(miss)}; non-US or no ZIP match): {', '.join(miss[:25])}"
               + (" ..." if len(miss) > 25 else ""))
     det.to_csv(args.out, index=False)
-    print(f"\nFull overlay -> {args.out}")
+    print(f"\nFull scorecard -> {args.out}")
     return 0
 
 
@@ -599,10 +606,13 @@ def main(argv=None) -> int:
     pmf.add_argument("--out", default="market_ranking.csv")
     pmf.set_defaults(func=cmd_marketfit)
 
-    pco = sub.add_parser("certoverlay", help="overlay a city list (e.g. Better Cities for Pets) onto viability grades")
+    pco = sub.add_parser("certoverlay", help="overlay a city/clinic list (Better Cities, Petfolk, or your own) onto viability grades")
     pco.add_argument("--enriched", required=True)
     pco.add_argument("--viability", required=True, help="market_viability_vetsiting.csv from `viability`")
-    pco.add_argument("--cities", default=None, help="city list file (default: bundled Better Cities for Pets)")
+    pco.add_argument("--list", choices=["better-cities", "petfolk"], default=None,
+                     help="a bundled list (default: Better Cities for Pets)")
+    pco.add_argument("--cities", default=None, help="your own 'City, ST' list file (overrides --list)")
+    pco.add_argument("--label", default=None, help="name for the footprint in the report")
     pco.add_argument("--out", default="cert_overlay.csv")
     pco.set_defaults(func=cmd_certoverlay)
 

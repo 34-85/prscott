@@ -1,0 +1,49 @@
+# Petfolk veterinary & urgent care clinic locations (best-effort snapshot,
+# June 2026). Source: petfolk.com/locations metro pages + Yelp listings; the
+# site itself is bot-blocked, so suburb enumeration is complete for the
+# well-documented metros (Charlotte, Raleigh, Dallas, Atlanta, Orlando) and a
+# single anchor city elsewhere -- so per-metro clinic counts are a LOWER BOUND
+# except where enumerated. Petfolk operates combined primary + urgent care.
+# One "City, ST" per line; municipalities (not neighborhoods) for clean mapping.
+
+# --- Charlotte, NC metro ---
+Charlotte, NC
+Charlotte, NC
+Huntersville, NC
+Concord, NC
+Fort Mill, SC
+Indian Land, SC
+
+# --- Raleigh, NC metro ---
+Raleigh, NC
+Cary, NC
+Wake Forest, NC
+
+# --- Dallas-Fort Worth, TX metro ---
+Allen, TX
+Flower Mound, TX
+Dallas, TX
+Mansfield, TX
+Frisco, TX
+Southlake, TX
+
+# --- Atlanta, GA metro ---
+Norcross, GA
+Kennesaw, GA
+
+# --- Orlando, FL metro ---
+Altamonte Springs, FL
+Orlando, FL
+
+# --- single-anchor metros (clinic count is a lower bound) ---
+San Antonio, TX
+Houston, TX
+Indianapolis, IN
+Jacksonville, FL
+Kansas City, MO
+Oklahoma City, OK
+Tulsa, OK
+Phoenix, AZ
+Richmond, VA
+Salt Lake City, UT
+Miami, FL

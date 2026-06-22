@@ -126,9 +126,10 @@ All three consume the `official` outputs (`enriched_national_official.csv` +
 python -m zip_msa_personas viability --enriched E.csv --distributions D.csv \
     --census-key $CENSUS_KEY --min-survey 3 --out market_viability_vetsiting.csv
 
-# How a partner's city list (Better Cities for Pets, bundled) maps to the grades
+# How a footprint maps to the grades. --list better-cities (default) or petfolk;
+# or --cities your_own.txt for any operator's "City, ST" list.
 python -m zip_msa_personas certoverlay --enriched E.csv \
-    --viability market_viability_vetsiting.csv --out cert_overlay.csv
+    --viability market_viability_vetsiting.csv --list petfolk --out petfolk_scorecard.csv
 
 # Vet group: where to build a hospital, an urgent care, or avoid
 python -m zip_msa_personas vetsiting --enriched E.csv --distributions D.csv \
