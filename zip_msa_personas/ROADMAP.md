@@ -76,9 +76,12 @@ median ~1 weighted respondent/ZIP, 79% under 2, only 51 with >=5. Robust in
 aggregate and at DMA level (208 markets). Consequences, now built:
 - **Empirical-Bayes shrinkage** (`shrinkage.py`): thin ZIPs borrow from their
   market prior; observed confidence is sample-size aware (no more spurious 1.0s).
-- **DMA support**: `appa_loader.load_appa_dma` parses the DMA prior layer.
-Remaining for the full national run: ZIP->MSA (HUD) and ZIP->DMA crosswalks +
-ACS features, all of which need census.gov/huduser.gov access.
+- **DMA support**: `appa_loader.load_appa_dma` parses the DMA prior layer (keyed
+  on Nielsen code); `data_sources.load_zip_dma_crosswalk` ingests a licensed
+  ZIP->DMA crosswalk; `--market dma` shrinks toward DMA priors and adds dma_code
+  / dma_name (rights-tagged nielsen_dma) to output.
+Remaining for the full national run: ZIP->MSA (HUD) crosswalk + ACS features
+(need census.gov/huduser.gov), and your licensed ZIP->DMA crosswalk file.
 
 ## Engineering backlog (priority order)
 1. **Calibration hardening** — ✅ isotonic calibration shipped (`calibration.py`):

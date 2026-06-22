@@ -88,11 +88,13 @@ def run_national(
     data_vintage: str | None = None,
     calibrator=None,
     shrink_alpha: float = 0.0,
+    zip_to_dma=None,
+    market: str = "msa",
 ) -> tuple[pipeline.PipelineOutput, CoverageReport]:
     """Score every feature-bearing ZIP and produce a coverage report."""
     out = pipeline.run_pipeline(
         persona_path, ref, features, config=config, data_vintage=data_vintage,
-        calibrator=calibrator, shrink_alpha=shrink_alpha,
+        calibrator=calibrator, shrink_alpha=shrink_alpha, zip_to_dma=zip_to_dma, market=market,
     )
     return out, coverage_report(out.enriched)
 

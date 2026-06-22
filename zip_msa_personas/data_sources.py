@@ -150,6 +150,72 @@ def load_acs_zcta_features(year: int = 2022) -> pd.DataFrame:
     return df
 
 
+# ---- ZIP -> DMA (Nielsen market) crosswalk --------------------------------
+
+# DMA boundaries are Nielsen IP, so there is no public-domain source like HUD's.
+# Commercial users supply their licensed crosswalk file (CSV/XLSX) via
+# --zip-dma / ZMP_ZIP_DMA_FILE; an optional URL (ZMP_ZIP_DMA_URL) is supported
+# for self-hosted copies. Confirm your Nielsen license permits redistributing
+# DMA assignments before including them in a deliverable (see rights.py).
+ZIP_DMA_URL = os.environ.get("ZMP_ZIP_DMA_URL")
+
+_ZIP_ALIASES = {"zip", "zipcode", "zip_code", "postal", "postalcode", "postal_code"}
+_DMA_CODE_ALIASES = {"dma", "dma_code", "dmacode", "market", "market_code", "dma_no", "dma_number"}
+_DMA_NAME_ALIASES = {"dma_name", "dmaname", "market_name", "name", "dma_description"}
+
+
+def _read_table(source: str | Path) -> pd.DataFrame:
+    src = str(source)
+    if src.startswith(("http://", "https://")):
+        dest = CACHE_DIR / f"zip_dma_{abs(hash(src)) % 10**8}{Path(src).suffix or '.csv'}"
+        _download(src, dest)
+        source = dest
+    p = Path(source)
+    if p.suffix.lower() in {".xlsx", ".xls"}:
+        return pd.read_excel(p, dtype=str)
+    return pd.read_csv(p, dtype=str)
+
+
+def load_zip_dma_crosswalk(source: str | Path | None = None) -> pd.DataFrame:
+    """ZIP -> Nielsen DMA crosswalk, normalized to: zip, dma_code, dma_name.
+
+    Source resolution order: explicit ``source`` arg, ``ZMP_ZIP_DMA_FILE`` env,
+    then ``ZMP_ZIP_DMA_URL`` env. The mapping is Nielsen-derived -- use your
+    licensed copy.
+    """
+    source = source or os.environ.get("ZMP_ZIP_DMA_FILE") or ZIP_DMA_URL
+    if not source:
+        raise DataUnavailable(
+            "No ZIP->DMA crosswalk configured. Provide a licensed crosswalk file "
+            "(--zip-dma / ZMP_ZIP_DMA_FILE) or set ZMP_ZIP_DMA_URL."
+        )
+    df = _read_table(source)
+    cols = {c.strip().lower().replace(" ", "").replace("_", ""): c for c in df.columns}
+
+    def _find(aliases):
+        norm = {a.replace("_", "") for a in aliases}
+        for key, orig in cols.items():
+            if key in norm:
+                return orig
+        return None
+
+    zip_col = _find(_ZIP_ALIASES)
+    code_col = _find(_DMA_CODE_ALIASES)
+    name_col = _find(_DMA_NAME_ALIASES)
+    if zip_col is None or code_col is None:
+        raise ValueError(
+            f"ZIP->DMA crosswalk must have a zip and a DMA code column; saw {list(df.columns)}."
+        )
+    out = pd.DataFrame(
+        {
+            "zip": df[zip_col].astype(str).str.extract(r"(\d{1,5})")[0].str.zfill(5),
+            "dma_code": df[code_col].astype(str).str.extract(r"(\d+)")[0],
+            "dma_name": df[name_col].astype(str).str.strip() if name_col else pd.NA,
+        }
+    )
+    return out.dropna(subset=["zip", "dma_code"]).reset_index(drop=True)
+
+
 __all__ = [
     "ReferenceData",
     "DataUnavailable",
@@ -157,5 +223,6 @@ __all__ = [
     "load_zip_cbsa_crosswalk",
     "load_cbsa_metadata",
     "load_acs_zcta_features",
+    "load_zip_dma_crosswalk",
     "ACS_VARIABLES",
 ]

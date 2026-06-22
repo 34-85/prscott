@@ -293,6 +293,45 @@ def test_shrinkage_respects_market_prior():
     assert d.get(("10002", "X"), 0) > 0.4
 
 
+def test_zip_dma_loader_normalizes_and_dedupes():
+    import tempfile, os
+    from zip_msa_personas import data_sources
+    df = pd.DataFrame(
+        {
+            "Zip Code": ["7030", "07030", "10001"],   # 4-digit + dup of same zip
+            "DMA": ["501", "501", "803"],
+            "Market Name": ["New York", "New York", "Los Angeles"],
+        }
+    )
+    fd, path = tempfile.mkstemp(suffix=".csv"); os.close(fd)
+    df.to_csv(path, index=False)
+    loaded = data_sources.load_zip_dma_crosswalk(path)
+    os.remove(path)
+    assert list(loaded.columns) == ["zip", "dma_code", "dma_name"]
+    assert set(loaded["zip"]) == {"07030", "10001"}        # zfill applied
+    z2d = crosswalk.build_zip_to_dma(loaded)
+    assert z2d["zip"].is_unique                            # one DMA per zip
+    assert z2d[z2d["zip"] == "07030"]["dma_code"].iloc[0] == "501"
+
+
+def test_dma_used_as_shrinkage_market():
+    # A thin ZIP shrinks toward its DMA's composition, not the national one.
+    ref, features, persona_df = demo.make_demo(seed=4)
+    import tempfile, os
+    fd, p = tempfile.mkstemp(suffix=".csv"); os.close(fd)
+    persona_df.to_csv(p, index=False)
+    z2d = pd.DataFrame({"zip": features["zip"], "dma_code": "501", "dma_name": "New York"})
+    out = pipeline.run_pipeline(p, ref, features, shrink_alpha=5.0, zip_to_dma=z2d, market="dma")
+    os.remove(p)
+    assert {"dma_code", "dma_name"} <= set(out.enriched.columns)
+    assert out.enriched["dma_code"].notna().any()
+
+
+def test_dma_fields_are_rights_tagged():
+    assert rights.field_license("dma_code") == rights.RESELLABLE
+    assert rights.FIELD_SOURCE["dma_code"] == "nielsen_dma"
+
+
 def test_appa_dma_sheet_parses():
     import tempfile, os
     seg_cols = {name: 2 + 2 * i for i, name in enumerate(appa_loader.SEGMENTS)}  # DMA: segs start col 2

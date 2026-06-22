@@ -67,10 +67,15 @@ def load_appa_segmentation(path: str | Path, sheet: str = "ZIPS BY STATE") -> pd
 
 
 def load_appa_dma(path: str | Path, sheet: str = "DMA") -> pd.DataFrame:
-    """Tidy DMA-level rows: dma, persona, weight -- the statistically robust prior."""
+    """Tidy DMA-level rows: dma_code, dma, persona, weight -- the robust prior.
+
+    DMA labels look like '543 - SPRINGFIELD - HOLYOKE'; we split out the leading
+    Nielsen market code so a ZIP->DMA crosswalk can join on it.
+    """
     tidy = parse_segment_sheet(path, sheet).rename(columns={"label": "dma"})
-    out = tidy.groupby(["dma", "persona"], as_index=False)["weight"].sum()
-    return out.sort_values(["dma", "persona"]).reset_index(drop=True)
+    tidy["dma_code"] = tidy["dma"].str.extract(r"^\s*(\d+)")[0]
+    out = tidy.groupby(["dma_code", "dma", "persona"], as_index=False)["weight"].sum()
+    return out.sort_values(["dma_code", "persona"]).reset_index(drop=True)
 
 
 def summarize(long: pd.DataFrame, unit: str = "zip") -> str:

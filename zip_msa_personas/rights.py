@@ -49,6 +49,12 @@ SOURCES: dict[str, DataSource] = {
         "(publisher of the NPOS since 1998). Fully resellable; no third-party terms.",
     ),
     "derived_model": DataSource("derived_model", RESELLABLE, "Outputs of this pipeline's model"),
+    "nielsen_dma": DataSource(
+        "nielsen_dma", RESELLABLE,
+        "Nielsen DMA assignments (ZIP->DMA crosswalk). DMA boundaries are Nielsen "
+        "IP -- confirm your license permits redistributing DMA assignments in a "
+        "deliverable; flip to internal_only if it does not.",
+    ),
     "experian_mosaic": DataSource(
         "experian_mosaic", INTERNAL,
         "Experian Mosaic -- licensed. Validation/confirmation ONLY. Do NOT include "
@@ -62,6 +68,8 @@ FIELD_SOURCE: dict[str, str] = {
     "msa_cbsa": "hud_crosswalk",
     "msa_title": "omb_delineation",
     "in_metro": "omb_delineation",
+    "dma_code": "nielsen_dma",
+    "dma_name": "nielsen_dma",
     "persona": "proprietary_segmentation",
     "observed_personas": "proprietary_segmentation",
     "confidence": "derived_model",

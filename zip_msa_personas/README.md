@@ -119,6 +119,24 @@ thin ZIPs no longer score ~1.0 confidence. It's on by default (`--shrink-alpha 5
 set 0 to disable). On the real data this moves observed-tier mean confidence from
 an overconfident 0.94 (74% at 1.0) to an honest ~0.30.
 
+## DMA (Nielsen market) geography
+
+DMA is first-class alongside MSA. Because the ZIP→DMA mapping is Nielsen IP
+(unlike public-domain HUD/Census), you supply your **licensed crosswalk file**;
+the loader autodetects zip / DMA-code / DMA-name columns and normalizes to one
+DMA per ZIP. DMA codes from the NPOS DMA sheet (`501 - NEW YORK` → `501`) join
+straight to it.
+
+```bash
+python -m zip_msa_personas national --personas appa_personas.csv \
+    --zip-dma your_licensed_zip_dma.csv --market dma
+```
+
+`--market dma` makes the DMA the prior that thin ZIPs shrink toward; `dma_code`
+/ `dma_name` are added to the output (rights-tagged `nielsen_dma` — confirm your
+license permits redistributing DMA assignments, else flip to internal in
+`rights.py`).
+
 ## National scoring + coverage
 
 Score the full ZCTA universe and report how much of the country is observed vs

@@ -21,7 +21,7 @@ import json
 
 from . import demo as demo_mod
 from . import appa_loader, batch, calibration, crosswalk, impute, opportunity, personas, pipeline, rights, validation
-from .data_sources import DataUnavailable, load_acs_zcta_features, load_reference_data
+from .data_sources import DataUnavailable, load_acs_zcta_features, load_reference_data, load_zip_dma_crosswalk
 
 
 def _print_summary(out: pipeline.PipelineOutput) -> None:
@@ -97,9 +97,10 @@ def cmd_national(args) -> int:
         ppath = args.personas
         vintage = args.data_vintage
     calib = calibration.Calibrator.load(args.calibrator) if args.calibrator else None
+    z2d = load_zip_dma_crosswalk(args.zip_dma) if (args.zip_dma or args.market == "dma") else None
     out, cov = batch.run_national(
         ppath, ref, features, config=impute.ImputeConfig(k=args.k), data_vintage=vintage,
-        calibrator=calib, shrink_alpha=args.shrink_alpha,
+        calibrator=calib, shrink_alpha=args.shrink_alpha, zip_to_dma=z2d, market=args.market,
     )
     out.enriched.to_csv(args.out, index=False)
     cov_dir = Path(args.out).with_suffix("")
@@ -211,9 +212,10 @@ def cmd_run(args) -> int:
     )
     features["zip"] = features["zip"].astype(str).str.zfill(5)
     calib = calibration.Calibrator.load(args.calibrator) if args.calibrator else None
+    z2d = load_zip_dma_crosswalk(args.zip_dma) if (args.zip_dma or args.market == "dma") else None
     out = pipeline.run_pipeline(
         args.personas, ref, features, config=impute.ImputeConfig(k=args.k),
-        calibrator=calib, shrink_alpha=args.shrink_alpha,
+        calibrator=calib, shrink_alpha=args.shrink_alpha, zip_to_dma=z2d, market=args.market,
     )
     out.enriched.to_csv(args.out, index=False)
     _print_summary(out)
@@ -247,6 +249,8 @@ def main(argv=None) -> int:
     pn.add_argument("--calibrator", default=None, help="calibrator.json from `calibrate`")
     pn.add_argument("--shrink-alpha", type=float, default=5.0,
                     help="empirical-Bayes prior strength for thin ZIPs (0 disables)")
+    pn.add_argument("--zip-dma", default=None, help="licensed ZIP->DMA crosswalk file (CSV/XLSX)")
+    pn.add_argument("--market", choices=["msa", "dma"], default="msa", help="market geography for shrinkage")
     pn.add_argument("--k", type=int, default=10)
     pn.set_defaults(func=cmd_national)
 
@@ -292,6 +296,8 @@ def main(argv=None) -> int:
     pr.add_argument("--calibrator", default=None, help="calibrator.json from `calibrate`")
     pr.add_argument("--shrink-alpha", type=float, default=5.0,
                     help="empirical-Bayes prior strength for thin ZIPs (0 disables)")
+    pr.add_argument("--zip-dma", default=None, help="licensed ZIP->DMA crosswalk file (CSV/XLSX)")
+    pr.add_argument("--market", choices=["msa", "dma"], default="msa", help="market geography for shrinkage")
     pr.add_argument("--k", type=int, default=10)
     pr.set_defaults(func=cmd_run)
 

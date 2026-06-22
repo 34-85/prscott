@@ -30,6 +30,8 @@ def run_pipeline(
     data_vintage: str | None = None,
     calibrator: "calibration.Calibrator | None" = None,
     shrink_alpha: float = 0.0,
+    zip_to_dma: pd.DataFrame | None = None,
+    market: str = "msa",
 ) -> PipelineOutput:
     # Stage 1: ZIP -> Metro MSA (dominant assign).
     z2m = crosswalk.build_zip_to_msa(ref)
@@ -49,9 +51,18 @@ def run_pipeline(
     # Optional Stage 2b: empirical-Bayes shrinkage of thin ZIPs toward their
     # market (MSA) prior -> denser distributions + honest, sample-size-aware
     # confidence for the observed tier.
+    # Market geography for shrinkage: MSA (default) or Nielsen DMA.
+    dma_map = None
+    if zip_to_dma is not None:
+        z2d = crosswalk.build_zip_to_dma(zip_to_dma)
+        dma_map = z2d.set_index("zip")["dma_code"].to_dict()
+
     observed_confidence = None
     if shrink_alpha and shrink_alpha > 0:
-        market_map = z2m.set_index("zip")["msa_cbsa"].to_dict()
+        if market == "dma" and dma_map:
+            market_map = dma_map
+        else:
+            market_map = z2m.set_index("zip")["msa_cbsa"].to_dict()
         sr = shrinkage.shrink(dist, alpha=shrink_alpha, market_map=market_map)
         dist, observed_confidence = sr.distribution, sr.confidence
 
@@ -70,6 +81,8 @@ def run_pipeline(
         on="zip",
         how="left",
     )
+    if zip_to_dma is not None:
+        enriched = enriched.merge(z2d, on="zip", how="left")
     return PipelineOutput(
         enriched=enriched.sort_values("zip").reset_index(drop=True),
         zip_to_msa=z2m,

@@ -55,4 +55,22 @@ def match_zips_to_msa(zips: pd.Series, zip_to_msa: pd.DataFrame) -> pd.DataFrame
     return out
 
 
-__all__ = ["build_zip_to_msa", "match_zips_to_msa"]
+def build_zip_to_dma(zip_dma: pd.DataFrame, ratio_col: str | None = None) -> pd.DataFrame:
+    """One row per ZIP -> its Nielsen DMA.
+
+    DMA crosswalks are usually 1:1 (a ZIP sits in a single DMA). If a ratio/weight
+    column is present, the dominant DMA wins; otherwise duplicates collapse to the
+    first (deterministic by dma_code).
+    """
+    df = zip_dma.copy()
+    df["zip"] = df["zip"].astype(str).str.zfill(5)
+    sort_cols, asc = ["zip"], [True]
+    if ratio_col and ratio_col in df.columns:
+        sort_cols.append(ratio_col); asc.append(False)
+    sort_cols.append("dma_code"); asc.append(True)
+    df = df.sort_values(sort_cols, ascending=asc)
+    winners = df.groupby("zip", as_index=False).first()
+    return winners[["zip", "dma_code", "dma_name"]]
+
+
+__all__ = ["build_zip_to_msa", "match_zips_to_msa", "build_zip_to_dma"]
