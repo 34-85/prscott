@@ -302,6 +302,23 @@ def test_acs_fractions_feed_propensity_end_to_end():
     assert mix.iloc[0].idxmax() == "Security Seekers"
 
 
+def test_national_calibration_matches_target_mix():
+    import numpy as np
+    from zip_msa_personas import propensity as pr
+    rng = np.random.default_rng(0)
+    personas = ["A", "B", "C", "D"]
+    mix = pd.DataFrame(rng.dirichlet([0.55, 0.2, 0.15, 0.10] * np.array(6), size=1500), columns=personas)
+    target = {"A": 0.25, "B": 0.25, "C": 0.25, "D": 0.25}
+    factors = pr.fit_national_calibration(mix, target)
+    cal = pr.apply_national_calibration(mix, factors)
+    nm = pr.national_mix(cal)
+    # National weighted mix now matches the target within tolerance.
+    for p in personas:
+        assert abs(nm[p] - 0.25) < 1e-3
+    # Each ZIP's mix still sums to 1.
+    assert (abs(cal.sum(axis=1) - 1.0) < 1e-9).all()
+
+
 def test_propensity_fingerprints_load():
     from zip_msa_personas import propensity as pr
     fp = pr.load_fingerprints()

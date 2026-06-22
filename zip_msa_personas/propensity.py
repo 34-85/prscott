@@ -188,6 +188,50 @@ def dominant(mix: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame({"persona": top, "share": mix.max(axis=1)}, index=mix.index)
 
 
+def national_mix(mix: pd.DataFrame, weights=None) -> pd.Series:
+    """Population-weighted national average persona mix (the real headline number,
+    not the argmax 'dominant-persona' count, which over-states the largest segment).
+    """
+    M = mix.to_numpy(float)
+    w = np.ones(len(M)) if weights is None else np.asarray(weights, float)
+    w = w / w.sum()
+    return pd.Series(w @ M, index=mix.columns).sort_values(ascending=False)
+
+
+def fit_national_calibration(mix: pd.DataFrame, target_rates: dict, weights=None,
+                             iters: int = 100, tol: float = 1e-7) -> dict:
+    """Raking factors so the population-weighted national mix matches the survey.
+
+    The raw demographic propensity, applied across all ZIPs, can drift from the
+    known national segment sizes (e.g. over-weighting broad signals like
+    white/Boomer). This fits one multiplicative factor per persona via iterative
+    proportional fitting so the calibrated national mix equals ``target_rates``.
+    """
+    personas = list(mix.columns)
+    target = np.array([target_rates[p] for p in personas], float)
+    target = target / target.sum()
+    M = mix[personas].to_numpy(float)
+    w = np.ones(len(M)) if weights is None else np.asarray(weights, float)
+    w = w / w.sum()
+    f = np.ones(len(personas))
+    for _ in range(iters):
+        adj = M * f
+        adj = adj / adj.sum(axis=1, keepdims=True)
+        cur = w @ adj
+        if np.max(np.abs(cur - target)) < tol:
+            break
+        f = f * (target / np.clip(cur, 1e-12, None))
+    return dict(zip(personas, f))
+
+
+def apply_national_calibration(mix: pd.DataFrame, factors: dict) -> pd.DataFrame:
+    """Apply raking factors and renormalize each ZIP's mix to sum to 1."""
+    personas = list(mix.columns)
+    M = mix[personas].to_numpy(float) * np.array([factors[p] for p in personas])
+    M = M / M.sum(axis=1, keepdims=True)
+    return pd.DataFrame(M, index=mix.index, columns=personas)
+
+
 def national_index(mix: pd.DataFrame, base_rates: dict) -> pd.DataFrame:
     """Convert a persona mix to index vs the national base rate (100 = average)."""
     out = mix.copy()
@@ -198,6 +242,7 @@ def national_index(mix: pd.DataFrame, base_rates: dict) -> pd.DataFrame:
 
 __all__ = [
     "Fingerprints", "load_fingerprints", "score_demographics", "dominant",
-    "national_index", "blend_with_survey", "ACS_CATEGORY_SPEC", "DEFAULT_FINGERPRINTS",
-    "SURVEY_ANCHORED", "DEMOGRAPHIC_MODEL",
+    "national_index", "blend_with_survey", "national_mix",
+    "fit_national_calibration", "apply_national_calibration",
+    "ACS_CATEGORY_SPEC", "DEFAULT_FINGERPRINTS", "SURVEY_ANCHORED", "DEMOGRAPHIC_MODEL",
 ]
