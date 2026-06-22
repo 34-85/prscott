@@ -188,7 +188,11 @@ def cmd_marketfit(args) -> int:
     from . import marketfit as mf
     enr = pd.read_csv(args.enriched, dtype={"zip": str})
     dist = pd.read_csv(args.distributions, dtype={"zip": str})
-    library = dict(mf.CATEGORY_AFFINITY, **mf.FORMAT_AFFINITY)
+    if args.npos_affinities:
+        library = mf.load_affinities(args.npos_affinities)   # empirical, from NPOS
+        print(f"Using NPOS-derived affinities for {len(library)} categories.")
+    else:
+        library = dict(mf.CATEGORY_AFFINITY, **mf.FORMAT_AFFINITY)
     if args.weights:
         library.update(json.loads(Path(args.weights).read_text()))
     mix = mf.msa_persona_mix(enr, dist, min_zips=args.min_zips)
@@ -461,6 +465,8 @@ def main(argv=None) -> int:
     pmf.add_argument("--distributions", required=True)
     pmf.add_argument("--category", default=None, help="category/format to rank markets for")
     pmf.add_argument("--assortment-msa", default=None, dest="assortment_msa", help="metro to read assortment emphasis for")
+    pmf.add_argument("--npos-affinities", default=None, dest="npos_affinities",
+                     help="NPOS persona x category cross-tab (CSV/XLSX) -> empirical affinities")
     pmf.add_argument("--weights", default=None, help="JSON of extra/override category affinities")
     pmf.add_argument("--min-zips", type=int, default=8)
     pmf.add_argument("--out", default="market_ranking.csv")

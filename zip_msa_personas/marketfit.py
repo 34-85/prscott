@@ -85,5 +85,35 @@ def assortment_index(mix: pd.DataFrame, msa: str, library: dict = CATEGORY_AFFIN
     return pd.DataFrame(rows).sort_values("index", ascending=False).reset_index(drop=True)
 
 
+def affinities_from_npos(table: pd.DataFrame, normalize: str = "max") -> dict:
+    """Convert an NPOS persona x category cross-tab into an affinity library.
+
+    ``table`` has the 7 segments on one axis and product categories on the other;
+    values are purchase incidence (% of segment buying), average spend, or an
+    index vs national -- any of these work. Each category is normalized so its
+    strongest-buying persona = 1.0, giving relative affinities the scorer uses.
+    """
+    from . import appa_loader
+    t = table.copy()
+    segs = set(appa_loader.SEGMENTS)
+    if not (segs & set(map(str, t.index))) and (segs & set(map(str, t.columns))):
+        t = t.T  # personas were columns -> make them rows
+    t = t.apply(pd.to_numeric, errors="coerce").fillna(0.0)
+    lib = {}
+    for cat in t.columns:
+        col = t[cat]
+        w = col / (col.max() or 1.0) if normalize == "max" else col
+        lib[str(cat)] = {str(p): round(float(v), 3) for p, v in w.items() if v > 0}
+    return lib
+
+
+def load_affinities(path) -> dict:
+    """Read an NPOS persona x category file (CSV/XLSX, personas in first column)."""
+    from pathlib import Path
+    p = Path(path)
+    df = pd.read_excel(p, index_col=0) if p.suffix.lower() in {".xlsx", ".xls"} else pd.read_csv(p, index_col=0)
+    return affinities_from_npos(df)
+
+
 __all__ = ["CATEGORY_AFFINITY", "FORMAT_AFFINITY", "msa_persona_mix", "market_fit",
-           "assortment_index"]
+           "assortment_index", "affinities_from_npos", "load_affinities"]

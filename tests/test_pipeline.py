@@ -412,6 +412,19 @@ def test_marketfit_category_and_assortment():
     assert assort.iloc[0]["category"] in ("Premium / fresh food", "Tech / smart / status")
 
 
+def test_marketfit_affinities_from_npos():
+    from zip_msa_personas import marketfit as mf, appa_loader
+    segs = appa_loader.SEGMENTS
+    # Ambitious clearly the top premium-food buyer; Prudent the top value buyer.
+    tab = pd.DataFrame(index=segs)
+    tab["Premium food"] = [30, 10, 50, 80, 40, 30, 45]   # Ambitious=80 is max
+    tab["Value food"] = [40, 70, 20, 15, 25, 35, 20]      # Prudent=70 is max
+    lib = mf.affinities_from_npos(tab)
+    assert lib["Premium food"]["Ambitious Go-Getters"] == 1.0
+    assert max(lib["Premium food"], key=lib["Premium food"].get) == "Ambitious Go-Getters"
+    assert max(lib["Value food"], key=lib["Value food"].get) == "Prudent Pragmatists"
+
+
 def test_vetsiting_volume_gate_and_recommendation():
     from zip_msa_personas import vetsiting
     enr = pd.DataFrame({"zip": ["10001", "10002", "20001", "20002", "30001", "30002"],
