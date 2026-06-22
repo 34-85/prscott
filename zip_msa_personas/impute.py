@@ -46,6 +46,7 @@ class ImputeResult:
     assignments: pd.DataFrame  # zip, persona, confidence, provenance, msa_cbsa, ...
     threshold: float
     baselines: dict = field(default_factory=dict)
+    distributions: pd.DataFrame = None  # long zip, persona, share (if requested)
 
 
 def _feature_matrix(features: pd.DataFrame, cols: list[str]):
@@ -76,6 +77,7 @@ def impute_personas(
     config: ImputeConfig | None = None,
     data_vintage: str | None = None,
     observed_confidence: dict | None = None,
+    return_distributions: bool = False,
 ) -> ImputeResult:
     """Produce a persona estimate for *every* ZIP that has a feature vector.
 
@@ -125,11 +127,13 @@ def impute_personas(
     msa_map = zip_to_msa.set_index("zip")["msa_cbsa"].to_dict()
 
     records = []
+    dist_records = []  # (zip, persona, share) for the full per-ZIP distribution
     observed_set = set(observed_zips)
     for z, i in zip_index.items():
         msa = msa_map.get(z)
         if z in observed_set:
-            persona, share = _top(obs_dist_map[z])
+            full = obs_dist_map[z]
+            persona, share = _top(full)
             # Honest confidence: from shrinkage (sample-size aware) when provided,
             # else the simple heuristic.
             if observed_confidence is not None and z in observed_confidence:
@@ -137,21 +141,24 @@ def impute_personas(
             else:
                 conf = round(min(1.0, 0.5 + share / 2), 4)
             records.append((z, persona, conf, OBSERVED, msa, ""))
-            continue
-
-        dist, idx = nn_pred.kneighbors(X[i : i + 1])
-        dist, idx = dist[0], idx[0]
-        nearest = dist[0]
-        if nearest <= threshold:
-            persona, conf, evidence = _weighted_vote(dist, idx, observed_zips, obs_dist_map, threshold)
-            records.append((z, persona, round(conf, 4), IMPUTED, msa, evidence))
         else:
-            base = baselines.get(msa) or baselines["__national__"]
-            persona, share = _top(base)
-            # Confidence decays with how far beyond the cutoff we are.
-            conf = round(float(0.25 * threshold / max(nearest, 1e-9)) * max(share, 0.0), 4)
-            evidence = f"baseline:{'msa:' + msa if msa in baselines else 'national'}"
-            records.append((z, persona, min(conf, 0.25), EXTRAPOLATED, msa, evidence))
+            dist, idx = nn_pred.kneighbors(X[i : i + 1])
+            dist, idx = dist[0], idx[0]
+            nearest = dist[0]
+            if nearest <= threshold:
+                persona, conf, evidence, full = _weighted_vote(dist, idx, observed_zips, obs_dist_map, threshold)
+                records.append((z, persona, round(conf, 4), IMPUTED, msa, evidence))
+            else:
+                full = baselines.get(msa) or baselines["__national__"]
+                persona, share = _top(full)
+                # Confidence decays with how far beyond the cutoff we are.
+                conf = round(float(0.25 * threshold / max(nearest, 1e-9)) * max(share, 0.0), 4)
+                evidence = f"baseline:{'msa:' + msa if msa in baselines else 'national'}"
+                records.append((z, persona, min(conf, 0.25), EXTRAPOLATED, msa, evidence))
+        if return_distributions:
+            for p, v in full.items():
+                if v > 0:
+                    dist_records.append((z, p, round(float(v), 5)))
 
     assignments = pd.DataFrame(
         records,
@@ -164,7 +171,12 @@ def impute_personas(
     assignments["methodology_version"] = METHODOLOGY_VERSION
     assignments["data_vintage"] = data_vintage or "unspecified"
     assignments["model_params"] = f"k={k};sim_pct={config.similarity_percentile}"
-    return ImputeResult(assignments=assignments, threshold=threshold, baselines=baselines)
+    distributions = (
+        pd.DataFrame(dist_records, columns=["zip", "persona", "share"]) if return_distributions else None
+    )
+    return ImputeResult(
+        assignments=assignments, threshold=threshold, baselines=baselines, distributions=distributions
+    )
 
 
 def _top(dist: dict):
@@ -195,7 +207,7 @@ def _weighted_vote(dist, idx, observed_zips, obs_dist_map, threshold):
     evidence = "neighbors:" + ",".join(
         f"{observed_zips[j]}:{w / weights.sum():.2f}" for j, w in top
     )
-    return persona, min(confidence, 0.99), evidence
+    return persona, min(confidence, 0.99), evidence, blended
 
 
 def summarize(result: ImputeResult) -> pd.DataFrame:

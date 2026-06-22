@@ -254,6 +254,23 @@ def test_apply_calibration_preserves_observed_and_adds_raw():
     assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
 
 
+def test_impute_returns_full_distributions_that_sum_to_one():
+    ref, features, persona_df = demo.make_demo(seed=6)
+    dist = personas.aggregate_to_zip_distribution(_df_to_dist(persona_df))
+    z2m = crosswalk.build_zip_to_msa(ref)
+    z2m = z2m[z2m["zip"].isin(set(features["zip"]))]
+    res = impute.impute_personas(features, dist, z2m, return_distributions=True)
+    assert res.distributions is not None
+    # Every scored ZIP has a distribution that sums to ~1.
+    sums = res.distributions.groupby("zip")["share"].sum()
+    assert (abs(sums - 1.0) < 1e-3).all()   # shares stored rounded to 5 dp
+    # The top persona in the distribution matches the assignment's persona.
+    top = res.distributions.sort_values("share").groupby("zip").tail(1).set_index("zip")["persona"]
+    a = res.assignments.set_index("zip")["persona"]
+    agree = (top.reindex(a.index) == a).mean()
+    assert agree > 0.99
+
+
 def test_shrinkage_pulls_thin_zips_to_prior_and_lowers_confidence():
     # One thin ZIP (1 respondent, segment A) and one dense ZIP (mostly B).
     # National prior is B-heavy, so the thin ZIP should be pulled toward B and
