@@ -111,12 +111,18 @@ _INCOME_VARS = dict(zip(
      "45_50k", "50_60k", "60_75k", "75_100k", "100_125k", "125_150k", "150_200k", "200k_plus"],
 ))
 # B12001 Sex by Marital Status -> fine names (summed male+female).
+# NB: the ACS "Now married:" total (004/013) NESTS "Married, spouse absent:
+# Separated" (007/016) inside it. The persona fingerprints treat separated as
+# formerly-married (widowed+divorced+separated), so the separated count is
+# subtracted out of now_married below -- otherwise separated people would be
+# counted in BOTH `married` and `formerly_married`. Validated against the live
+# ACS5 variable metadata on the first official run (2026-06).
 _MARITAL_PAIRS = {
     "never_married": [("B12001", "003"), ("B12001", "012")],
-    "now_married": [("B12001", "004"), ("B12001", "013")],
+    "now_married": [("B12001", "004"), ("B12001", "013")],   # full "Now married:" total
     "widowed": [("B12001", "009"), ("B12001", "018")],
     "divorced": [("B12001", "010"), ("B12001", "019")],
-    "separated": [("B12001", "007"), ("B12001", "016")],
+    "separated": [("B12001", "007"), ("B12001", "016")],     # nested inside now_married
 }
 
 
@@ -128,6 +134,9 @@ def fetch_acs_demographics(year: int = 2022) -> pd.DataFrame:
     first live run is the validation point.
     """
     import requests
+
+    from .data_sources import DataUnavailable
+
     base = f"https://api.census.gov/data/{year}/acs/acs5"
     headers = {"User-Agent": "zip-msa-personas/1.0"}
     key = os.environ.get("CENSUS_API_KEY")
@@ -139,6 +148,19 @@ def fetch_acs_demographics(year: int = 2022) -> pd.DataFrame:
             url += f"&key={key}"
         r = requests.get(url, headers=headers, timeout=120)
         r.raise_for_status()
+        # The ACS API answers a keyless/invalid-key request with HTTP 200 and an
+        # HTML "Missing Key" page, not JSON -- so raise_for_status() passes and a
+        # bare r.json() would throw a cryptic decode error. Detect it explicitly.
+        if "json" not in r.headers.get("content-type", "").lower():
+            snippet = " ".join(r.text.split())[:160]
+            hint = (
+                "set CENSUS_API_KEY (free: https://api.census.gov/data/key_signup.html)"
+                if not key else "verify the CENSUS_API_KEY value"
+            )
+            raise DataUnavailable(
+                f"ACS API did not return JSON for {get[:60]}... -- {hint}. "
+                f"Response began: {snippet!r}"
+            )
         rows = r.json()
         df = pd.DataFrame(rows[1:], columns=rows[0])
         df = df.rename(columns={"zip code tabulation area": "zip"})
@@ -164,6 +186,9 @@ def fetch_acs_demographics(year: int = 2022) -> pd.DataFrame:
     mar = _get(mar_codes)
     for name, pairs in _MARITAL_PAIRS.items():
         out[name] = sum(mar[f"{t}_{c}E"] for t, c in pairs)
+    # Separated is nested inside "Now married:"; remove it so the married and
+    # formerly_married rollups are disjoint (no double counting).
+    out["now_married"] = (out["now_married"] - out["separated"]).clip(lower=0)
 
     out.index = out.index.astype(str).str.zfill(5)
     return out
