@@ -20,7 +20,7 @@ import pandas as pd
 import json
 
 from . import demo as demo_mod
-from . import batch, calibration, crosswalk, impute, opportunity, personas, pipeline, rights, validation
+from . import appa_loader, batch, calibration, crosswalk, impute, opportunity, personas, pipeline, rights, validation
 from .data_sources import DataUnavailable, load_acs_zcta_features, load_reference_data
 
 
@@ -67,6 +67,16 @@ def cmd_data(_args) -> int:
     print(f"Cached ZIP->CBSA crosswalk: {len(ref.zip_cbsa)} rows")
     print(f"Cached CBSA metadata: {len(ref.cbsa_meta)} CBSAs")
     print(f"Cached ACS ZCTA features: {len(feats)} ZCTAs")
+    return 0
+
+
+def cmd_ingest_appa(args) -> int:
+    """Convert the APPA NPOS 'ZIP by segment' workbook to a tidy personas CSV."""
+    long = appa_loader.load_appa_segmentation(args.input)
+    long[["zip", "persona", "weight"]].to_csv(args.out, index=False)
+    print(appa_loader.summarize(long))
+    print(f"\nWrote tidy personas -> {args.out}")
+    print("Next:  national --personas " + args.out + "  (needs census.gov/huduser.gov)")
     return 0
 
 
@@ -220,6 +230,11 @@ def main(argv=None) -> int:
 
     pdd = sub.add_parser("data", help="fetch + cache real HUD/Census reference data")
     pdd.set_defaults(func=cmd_data)
+
+    pi = sub.add_parser("ingest-appa", help="convert APPA NPOS ZIP-by-segment xlsx -> tidy personas CSV")
+    pi.add_argument("--input", required=True, help="the .xlsx workbook")
+    pi.add_argument("--out", default="appa_personas.csv")
+    pi.set_defaults(func=cmd_ingest_appa)
 
     pn = sub.add_parser("national", help="score all ZCTAs + coverage report")
     pn.add_argument("--demo", action="store_true")

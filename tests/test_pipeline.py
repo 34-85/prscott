@@ -253,6 +253,45 @@ def test_apply_calibration_preserves_observed_and_adds_raw():
     assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
 
 
+def test_appa_loader_parses_weighted_matrix():
+    import tempfile, os
+    from zip_msa_personas import appa_loader
+    seg_cols = {name: 3 + 2 * i for i, name in enumerate(appa_loader.SEGMENTS)}
+    ncols = 17
+    grid = [["" for _ in range(ncols)] for _ in range(6)]
+    grid[3][0] = "Sheet 1"
+    for name, c in seg_cols.items():
+        grid[3][c] = name            # segment-name header row
+        grid[4][c] = "Count"
+        grid[4][c + 1] = "%"
+    grid[5][2] = "Weighted base"     # base row (no valid zip -> skipped)
+
+    def datarow(state, zipv, weights):
+        row = ["" for _ in range(ncols)]
+        row[1] = state
+        row[2] = zipv
+        for name, w in weights.items():
+            row[seg_cols[name]] = w
+        return row
+
+    grid.append(datarow("MASSACHUSETTS", "1001", {"Comfort Companions": 2.0}))   # 4-digit -> zfill
+    grid.append(datarow("", "10002", {"Adventure Seekers": 1.5, "Well-being Warriors": 0.5}))
+    grid.append(datarow("", "10003", {}))                                        # all-zero -> dropped
+    sumrow = ["" for _ in range(ncols)]; sumrow[2] = "SUM"
+    grid.append(sumrow)
+
+    fd, path = tempfile.mkstemp(suffix=".xlsx")
+    os.close(fd)
+    pd.DataFrame(grid).to_excel(path, sheet_name="ZIPS BY STATE", header=False, index=False)
+
+    long = appa_loader.load_appa_segmentation(path)
+    os.remove(path)
+    assert set(long["zip"]) == {"01001", "10002"}            # zfill + all-zero dropped + SUM dropped
+    comfort = long[(long["zip"] == "01001") & (long["persona"] == "Comfort Companions")]
+    assert abs(comfort["weight"].iloc[0] - 2.0) < 1e-9
+    assert long[long["zip"] == "10002"].shape[0] == 2        # two segments present
+
+
 def _df_to_dist(persona_df):
     import pandas as pd
     raw = pd.DataFrame(
