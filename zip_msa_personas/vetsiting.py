@@ -82,10 +82,20 @@ def build_volume_from_acs(enriched: pd.DataFrame, acs_features: pd.DataFrame,
     m = e.merge(af[["zip", "households", "median_household_income"]], on="zip", how="inner").dropna(subset=[msa_col])
     m["households"] = pd.to_numeric(m["households"], errors="coerce").fillna(0.0)
     m["median_household_income"] = pd.to_numeric(m["median_household_income"], errors="coerce")
+    # ACS encodes "median not available" as a large negative jam value
+    # (e.g. -666666666); drop those so they don't poison the weighted mean.
+    m.loc[m["median_household_income"] < 0, "median_household_income"] = pd.NA
     g = m.groupby(msa_col)
     hh = g["households"].sum()
-    # Household-weighted mean of ZCTA median incomes (approx MSA income).
-    inc = g.apply(lambda d: (d["median_household_income"] * d["households"]).sum() / max(d["households"].sum(), 1))
+
+    # Household-weighted mean of ZCTA median incomes (approx MSA income), over
+    # only the ZCTAs that actually report an income.
+    def _weighted_income(d: pd.DataFrame) -> float:
+        v = d.dropna(subset=["median_household_income"])
+        w = v["households"].sum()
+        return float((v["median_household_income"] * v["households"]).sum() / w) if w > 0 else float("nan")
+
+    inc = g.apply(_weighted_income)
     out = pd.DataFrame({"households": hh.round(0), "median_income": inc.round(0)})
     out["addressable_pet_hh"] = (out["households"] * ownership_rate).round(0)
     return out

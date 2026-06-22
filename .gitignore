@@ -6,6 +6,7 @@ out_official/
 out_local/
 enriched_*.csv
 persona_distributions*.csv
+vet_siting*.csv
 *.xlsx
 appa_personas*.csv
 calibrator.json
