@@ -70,14 +70,15 @@ def coverage_report(enriched: pd.DataFrame) -> CoverageReport:
         .reset_index()
     )
 
+    survey_like = {impute.OBSERVED, "survey_anchored"}
     sub = enriched.dropna(subset=["msa_cbsa"])
     if sub.empty:
-        by_msa = pd.DataFrame(columns=["msa_cbsa", "msa_title", *tiers, "total", "pct_observed", "pct_estimated"])
+        by_msa = pd.DataFrame(columns=["msa_cbsa", "msa_title", *order, "total", "pct_observed", "pct_estimated"])
     else:
         piv = (
             sub.pivot_table(index=["msa_cbsa", "msa_title"], columns="provenance", values="zip",
                             aggfunc="count", fill_value=0)
-            .reindex(columns=tiers, fill_value=0)
+            .reindex(columns=order, fill_value=0)
         )
         piv["total"] = piv.sum(axis=1)
         survey_cols = [c for c in piv.columns if c in survey_like]
