@@ -70,6 +70,16 @@ on-demand lookups in their own apps.
 Only if the market pulls you there. Upload personas → get scored file + a
 calibration/coverage report + opportunity maps.
 
+## Data reality (from the real NPOS export)
+The ZIP-level survey is statistically thin: ~6,071 ZIPs (~18% of US ZCTAs),
+median ~1 weighted respondent/ZIP, 79% under 2, only 51 with >=5. Robust in
+aggregate and at DMA level (208 markets). Consequences, now built:
+- **Empirical-Bayes shrinkage** (`shrinkage.py`): thin ZIPs borrow from their
+  market prior; observed confidence is sample-size aware (no more spurious 1.0s).
+- **DMA support**: `appa_loader.load_appa_dma` parses the DMA prior layer.
+Remaining for the full national run: ZIP->MSA (HUD) and ZIP->DMA crosswalks +
+ACS features, all of which need census.gov/huduser.gov access.
+
 ## Engineering backlog (priority order)
 1. **Calibration hardening** — ✅ isotonic calibration shipped (`calibration.py`):
    raw confidence → true probability, fit on held-out backtest predictions,

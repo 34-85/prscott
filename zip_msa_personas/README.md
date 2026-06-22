@@ -102,6 +102,23 @@ Each output row is stamped with `methodology_version`, `data_vintage`,
 baseline) that produced it. This is what lets you answer a customer's "where did
 this number come from?"
 
+## APPA NPOS data: ingest + sparse-ZIP shrinkage
+
+The NPOS export is a survey-weighted ZIP×segment matrix (7 pet-owner segments)
+that is **thin at ZIP level** (median ~1 weighted respondent; 79% of ZIPs < 2).
+
+```bash
+python -m zip_msa_personas ingest-appa --input NPOS_zip_by_segment.xlsx \
+    --out appa_personas.csv
+```
+
+Because a single respondent is not a distribution, the pipeline applies
+**empirical-Bayes shrinkage** (`shrinkage.py`): each ZIP's persona mix is pulled
+toward its market (MSA/DMA, national fallback) prior, weighted by sample size, so
+thin ZIPs no longer score ~1.0 confidence. It's on by default (`--shrink-alpha 5`,
+set 0 to disable). On the real data this moves observed-tier mean confidence from
+an overconfident 0.94 (74% at 1.0) to an honest ~0.30.
+
 ## National scoring + coverage
 
 Score the full ZCTA universe and report how much of the country is observed vs
@@ -156,7 +173,9 @@ zip_msa_personas/
   crosswalk.py     # Stage 1: ZIP -> Metro MSA (dominant assign)
   personas.py      # Stage 2: load + aggregate your persona file
   impute.py        # Stage 3: similarity imputation + disclosed extrapolation
+  shrinkage.py     # empirical-Bayes shrinkage of thin survey ZIPs toward market prior
   calibration.py   # isotonic confidence calibration (confidence -> true probability)
+  appa_loader.py   # parse the APPA NPOS ZIP/DMA segmentation workbook -> tidy
   pipeline.py      # orchestration
   batch.py         # national scoring + coverage report
   opportunity.py   # persona <-> offer <-> location fit scoring

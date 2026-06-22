@@ -7,7 +7,8 @@ import pandas as pd
 import numpy as np
 
 from zip_msa_personas import (
-    batch, calibration, crosswalk, demo, impute, opportunity, personas, pipeline, rights, validation,
+    appa_loader, batch, calibration, crosswalk, demo, impute, opportunity,
+    personas, pipeline, rights, shrinkage, validation,
 )
 from zip_msa_personas.data_sources import ReferenceData
 
@@ -251,6 +252,65 @@ def test_apply_calibration_preserves_observed_and_adds_raw():
     assert "confidence_raw" in out.columns
     obs = out[out["provenance"] == impute.OBSERVED]
     assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
+
+
+def test_shrinkage_pulls_thin_zips_to_prior_and_lowers_confidence():
+    # One thin ZIP (1 respondent, segment A) and one dense ZIP (mostly B).
+    # National prior is B-heavy, so the thin ZIP should be pulled toward B and
+    # carry much lower confidence than the dense one.
+    dist = pd.DataFrame(
+        [
+            {"zip": "00001", "persona": "A", "weight": 1.0},
+            {"zip": "00002", "persona": "B", "weight": 40.0},
+            {"zip": "00002", "persona": "A", "weight": 2.0},
+            {"zip": "00003", "persona": "B", "weight": 30.0},
+        ]
+    )
+    sr = shrinkage.shrink(dist, alpha=5.0)
+    d = sr.distribution.set_index(["zip", "persona"])["share"]
+    # Thin ZIP's A share is dragged well below its raw 1.0.
+    assert d[("00001", "A")] < 0.6
+    # Confidence: dense ZIP > thin ZIP.
+    assert sr.confidence["00002"] > sr.confidence["00001"]
+    # Shares sum to 1 per zip.
+    tot = sr.distribution.groupby("zip")["share"].sum()
+    assert (abs(tot - 1.0) < 1e-9).all()
+
+
+def test_shrinkage_respects_market_prior():
+    # Two markets with opposite compositions; a thin ZIP shrinks toward ITS market.
+    dist = pd.DataFrame(
+        [
+            {"zip": "10001", "persona": "X", "weight": 50.0},   # market M1 -> X-heavy
+            {"zip": "10002", "persona": "Y", "weight": 1.0},    # thin, in M1
+            {"zip": "20001", "persona": "Y", "weight": 50.0},   # market M2 -> Y-heavy
+        ]
+    )
+    market_map = {"10001": "M1", "10002": "M1", "20001": "M2"}
+    sr = shrinkage.shrink(dist, alpha=10.0, market_map=market_map)
+    d = sr.distribution.set_index(["zip", "persona"])["share"]
+    # Thin ZIP in M1 should gain X mass from its X-heavy market despite observing Y.
+    assert d.get(("10002", "X"), 0) > 0.4
+
+
+def test_appa_dma_sheet_parses():
+    import tempfile, os
+    seg_cols = {name: 2 + 2 * i for i, name in enumerate(appa_loader.SEGMENTS)}  # DMA: segs start col 2
+    ncols = 16
+    grid = [["" for _ in range(ncols)] for _ in range(6)]
+    for name, c in seg_cols.items():
+        grid[3][c] = name
+        grid[4][c] = "Count"; grid[4][c + 1] = "%"
+    grid[5][1] = "Weighted base"
+    row = ["" for _ in range(ncols)]
+    row[1] = "501 - NEW YORK"; row[seg_cols["Comfort Companions"]] = 12.0
+    grid.append(row)
+    fd, path = tempfile.mkstemp(suffix=".xlsx"); os.close(fd)
+    pd.DataFrame(grid).to_excel(path, sheet_name="DMA", header=False, index=False)
+    dma = appa_loader.load_appa_dma(path)
+    os.remove(path)
+    assert dma["dma"].tolist() == ["501 - NEW YORK"]
+    assert abs(dma["weight"].iloc[0] - 12.0) < 1e-9
 
 
 def test_appa_loader_parses_weighted_matrix():

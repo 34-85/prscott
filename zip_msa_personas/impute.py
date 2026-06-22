@@ -75,6 +75,7 @@ def impute_personas(
     zip_to_msa: pd.DataFrame,
     config: ImputeConfig | None = None,
     data_vintage: str | None = None,
+    observed_confidence: dict | None = None,
 ) -> ImputeResult:
     """Produce a persona estimate for *every* ZIP that has a feature vector.
 
@@ -129,7 +130,13 @@ def impute_personas(
         msa = msa_map.get(z)
         if z in observed_set:
             persona, share = _top(obs_dist_map[z])
-            records.append((z, persona, round(min(1.0, 0.5 + share / 2), 4), OBSERVED, msa, ""))
+            # Honest confidence: from shrinkage (sample-size aware) when provided,
+            # else the simple heuristic.
+            if observed_confidence is not None and z in observed_confidence:
+                conf = round(float(observed_confidence[z]), 4)
+            else:
+                conf = round(min(1.0, 0.5 + share / 2), 4)
+            records.append((z, persona, conf, OBSERVED, msa, ""))
             continue
 
         dist, idx = nn_pred.kneighbors(X[i : i + 1])

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from . import calibration, crosswalk, impute, personas
+from . import calibration, crosswalk, impute, personas, shrinkage
 from .data_sources import ReferenceData
 
 
@@ -29,6 +29,7 @@ def run_pipeline(
     config: impute.ImputeConfig | None = None,
     data_vintage: str | None = None,
     calibrator: "calibration.Calibrator | None" = None,
+    shrink_alpha: float = 0.0,
 ) -> PipelineOutput:
     # Stage 1: ZIP -> Metro MSA (dominant assign).
     z2m = crosswalk.build_zip_to_msa(ref)
@@ -42,15 +43,30 @@ def run_pipeline(
     feat_zips = set(features["zip"])
     z2m_feat = z2m[z2m["zip"].isin(feat_zips)].copy()
 
+    # Keep the raw observed segments for display before any shrinkage densifies it.
+    raw_dist = dist
+
+    # Optional Stage 2b: empirical-Bayes shrinkage of thin ZIPs toward their
+    # market (MSA) prior -> denser distributions + honest, sample-size-aware
+    # confidence for the observed tier.
+    observed_confidence = None
+    if shrink_alpha and shrink_alpha > 0:
+        market_map = z2m.set_index("zip")["msa_cbsa"].to_dict()
+        sr = shrinkage.shrink(dist, alpha=shrink_alpha, market_map=market_map)
+        dist, observed_confidence = sr.distribution, sr.confidence
+
     # Stage 3: impute every ZIP that has a feature vector.
-    result = impute.impute_personas(features, dist, z2m_feat, config=config, data_vintage=data_vintage)
+    result = impute.impute_personas(
+        features, dist, z2m_feat, config=config, data_vintage=data_vintage,
+        observed_confidence=observed_confidence,
+    )
 
     # Optional Stage 3b: calibrate estimate confidence into true probabilities.
     if calibrator is not None:
         result.assignments = calibration.apply_calibration(result.assignments, calibrator)
 
     enriched = result.assignments.merge(
-        dist.groupby("zip")["persona"].apply(lambda s: ", ".join(sorted(set(s)))).rename("observed_personas"),
+        raw_dist.groupby("zip")["persona"].apply(lambda s: ", ".join(sorted(set(s)))).rename("observed_personas"),
         on="zip",
         how="left",
     )

@@ -98,7 +98,8 @@ def cmd_national(args) -> int:
         vintage = args.data_vintage
     calib = calibration.Calibrator.load(args.calibrator) if args.calibrator else None
     out, cov = batch.run_national(
-        ppath, ref, features, config=impute.ImputeConfig(k=args.k), data_vintage=vintage, calibrator=calib
+        ppath, ref, features, config=impute.ImputeConfig(k=args.k), data_vintage=vintage,
+        calibrator=calib, shrink_alpha=args.shrink_alpha,
     )
     out.enriched.to_csv(args.out, index=False)
     cov_dir = Path(args.out).with_suffix("")
@@ -211,7 +212,8 @@ def cmd_run(args) -> int:
     features["zip"] = features["zip"].astype(str).str.zfill(5)
     calib = calibration.Calibrator.load(args.calibrator) if args.calibrator else None
     out = pipeline.run_pipeline(
-        args.personas, ref, features, config=impute.ImputeConfig(k=args.k), calibrator=calib
+        args.personas, ref, features, config=impute.ImputeConfig(k=args.k),
+        calibrator=calib, shrink_alpha=args.shrink_alpha,
     )
     out.enriched.to_csv(args.out, index=False)
     _print_summary(out)
@@ -243,6 +245,8 @@ def main(argv=None) -> int:
     pn.add_argument("--data-vintage", default=None, help="e.g. NPOS2024;ACS2022;HUD2023Q4")
     pn.add_argument("--out", default="enriched_national.csv")
     pn.add_argument("--calibrator", default=None, help="calibrator.json from `calibrate`")
+    pn.add_argument("--shrink-alpha", type=float, default=5.0,
+                    help="empirical-Bayes prior strength for thin ZIPs (0 disables)")
     pn.add_argument("--k", type=int, default=10)
     pn.set_defaults(func=cmd_national)
 
@@ -286,6 +290,8 @@ def main(argv=None) -> int:
     pr.add_argument("--features", default=None, help="ZIP feature CSV (default: cached ACS)")
     pr.add_argument("--out", default="enriched_zips.csv")
     pr.add_argument("--calibrator", default=None, help="calibrator.json from `calibrate`")
+    pr.add_argument("--shrink-alpha", type=float, default=5.0,
+                    help="empirical-Bayes prior strength for thin ZIPs (0 disables)")
     pr.add_argument("--k", type=int, default=10)
     pr.set_defaults(func=cmd_run)
 

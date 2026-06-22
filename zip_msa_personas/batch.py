@@ -87,10 +87,12 @@ def run_national(
     config: impute.ImputeConfig | None = None,
     data_vintage: str | None = None,
     calibrator=None,
+    shrink_alpha: float = 0.0,
 ) -> tuple[pipeline.PipelineOutput, CoverageReport]:
     """Score every feature-bearing ZIP and produce a coverage report."""
     out = pipeline.run_pipeline(
-        persona_path, ref, features, config=config, data_vintage=data_vintage, calibrator=calibrator
+        persona_path, ref, features, config=config, data_vintage=data_vintage,
+        calibrator=calibrator, shrink_alpha=shrink_alpha,
     )
     return out, coverage_report(out.enriched)
 
