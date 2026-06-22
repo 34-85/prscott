@@ -1,18 +1,49 @@
-# prscott
+# APPA Geo-Persona Intelligence Engine
 
-General GitHub repo.
+A commercial geo-intelligence product built on APPA's proprietary National Pet
+Owners Survey (NPOS) segmentation. It turns the seven NPOS pet-owner personas
+into a national, ZIP-level dataset — then ranks markets for vet groups, pet
+brands, and retailers — with **every estimate honestly labeled** by how it was
+produced and how far to trust it.
 
-## ZIP → MSA → Persona pipeline
-
-Match ZIP codes to metro areas, attach persona data, and estimate personas for
-empty ZIPs — every estimate labeled `observed` / `imputed_similar` /
-`extrapolated_baseline` with a confidence score. See
-[`zip_msa_personas/README.md`](./zip_msa_personas/README.md).
+The persona signal is **first-party** (APPA owns NPOS) and every geography we
+ship is first-party or public-domain (Census/HUD), so deliverables carry **no
+redistribution constraints**.
 
 ```bash
 pip install -r requirements.txt
-python -m zip_msa_personas demo        # end-to-end on synthetic data, no network
+python -m zip_msa_personas demo        # full pipeline on synthetic data, no network
 ```
+
+### What it produces
+
+- **A scored national dataset** — persona mix for every ZIP, aggregable to
+  metro/MSA, Nielsen DMA, Census region, or nation, each row carrying
+  `provenance` + a calibrated `confidence`.
+- **Customer applications** — vet-siting (hospital / urgent-care / avoid),
+  brand & retailer market-fit (which metros for a category; what to emphasize in
+  a metro), opportunity & lookalike-expansion scoring.
+- **Business-ready files** — an Excel workbook, US persona maps, and per-persona
+  one-pager leave-behinds, built in one command.
+
+### Documentation map
+
+| Doc | What's in it |
+|---|---|
+| [`zip_msa_personas/README.md`](./zip_msa_personas/README.md) | Package deep-dive: each stage, provenance, shrinkage, calibration, rights |
+| [`zip_msa_personas/COMMANDS.md`](./zip_msa_personas/COMMANDS.md) | Every CLI command, flags, and the two-session operating pattern |
+| [`zip_msa_personas/METHODOLOGY.md`](./zip_msa_personas/METHODOLOGY.md) | Methodology + the honest confidence/validation story (diligence-grade) |
+| [`zip_msa_personas/ROADMAP.md`](./zip_msa_personas/ROADMAP.md) | Commercial path and data reality |
+| [`zip_msa_personas/RUN_NOTES.md`](./zip_msa_personas/RUN_NOTES.md) | Validation notes from the live Census/ACS runs |
+
+### How it runs: two sessions
+
+The networked stages need `census.gov` + a Census API key. The workflow splits
+into a **build session** (offline: code, the `demo`, tests) and a
+**Census-enabled session** (the real `official` run on the NPOS workbook).
+Proprietary data and derived per-ZIP outputs are git-ignored — only code and
+notes are committed; polished files are delivered out-of-band. See
+[`COMMANDS.md`](./zip_msa_personas/COMMANDS.md#the-two-session-operating-pattern).
 
 ## Higgsfield MCP integration
 

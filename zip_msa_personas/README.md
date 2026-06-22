@@ -192,33 +192,71 @@ Mosaic, if used, stays an **internal confirmation** signal via
 `validation.concordance` (measures persona↔Mosaic alignment without
 redistributing Mosaic labels) — never an enrichment field in the output.
 
-## Commercial path
+## Customer applications
 
-See [`ROADMAP.md`](./ROADMAP.md). Short version: first-party pet-owner personas +
-public-domain Census/HUD means **no redistribution constraints**. Recommended
-sequence is **file delivery → opportunity scoring → API → self-serve**, all over
-this same core library.
+Beyond the scored dataset, the same persona substrate powers the advisory
+layers (all consume the `official` outputs):
+
+- **Vet-siting** (`vetsiting`) — per-metro hospital vs urgent-care lean + an
+  avoid-gate on addressable demand.
+- **Brand / retailer market-fit** (`marketfit`) — rank metros for a product
+  category/format, or read one metro's assortment emphasis. Affinities can be
+  the seeded library or **empirical** ones derived from NPOS respondent
+  microdata (`derive-affinities`).
+- **Opportunity & lookalike** (`opportunity`, `lookalike.py`) — fit-×-size
+  ranking with whitespace, and "markets like your winners" expansion.
+- **Just-ask lookups** (`query`) and the **deliverable kit** (`deliverables`).
+
+Full command reference: [`COMMANDS.md`](./COMMANDS.md).
+
+## Commercial path & methodology
+
+- [`ROADMAP.md`](./ROADMAP.md) — commercial path. Short version: first-party
+  personas + public-domain Census/HUD means **no redistribution constraints**;
+  sequence is **file delivery → opportunity scoring → API → self-serve**.
+- [`METHODOLOGY.md`](./METHODOLOGY.md) — the approach and the **honest
+  confidence story**: calibrated nationally, survey-anchored core, spatial/blend
+  for modeled ZIPs, and where to trust each altitude. Diligence-grade.
 
 ## Layout
 
 ```
 zip_msa_personas/
   data_sources.py  # the only networked module: HUD/Census fetch + cache
-  crosswalk.py     # Stage 1: ZIP -> Metro MSA (dominant assign)
+  crosswalk.py     # Stage 1: ZIP -> Metro MSA (dominant assign) + ZIP -> DMA
   personas.py      # Stage 2: load + aggregate your persona file
   impute.py        # Stage 3: similarity imputation + disclosed extrapolation
-  propensity.py    # demographic-propensity model (persona mix from ACS demographics)
-  data/persona_fingerprints.json   # per-persona demographic indices (from APPA deck)
+  propensity.py    # demographic-propensity model + national raking calibration
+  spatial.py       # spatial smoothing predictor + the demographic-vs-spatial bake-off
+  data/persona_fingerprints.json    # per-persona demographic indices (from APPA deck)
+  data/persona_descriptions.json    # per-persona name/quote/description (from deck)
   shrinkage.py     # empirical-Bayes shrinkage of thin survey ZIPs toward market prior
   calibration.py   # isotonic confidence calibration (confidence -> true probability)
+  indexing.py      # confidence-aware index vs national (real skew vs sampling noise)
   appa_loader.py   # parse the APPA NPOS ZIP/DMA segmentation workbook -> tidy
-  pipeline.py      # orchestration
+  acs.py           # ACS demographic fetch + bucketing for the propensity model
+  pipeline.py      # orchestration (impute path + demographic-blend path)
   batch.py         # national scoring + coverage report
   opportunity.py   # persona <-> offer <-> location fit scoring
-  validation.py    # backtest/calibration + external concordance (Mosaic)
+  lookalike.py     # market-expansion: find markets like a client's best ones
+  validation.py    # backtest/calibration + model-vs-survey + external concordance
   rights.py        # license tagging + rights-safe export
-  cli.py           # demo / data / run / national / coverage / opportunity / validate / export
+  # --- customer applications + delivery ---
+  vetsiting.py     # hospital / urgent-care / avoid scorecard per metro
+  marketfit.py     # brand/retailer category & assortment fit
+  microdata.py     # respondent microdata -> empirical persona affinities
+  query.py         # plain-language lookups against the scored dataset
+  deliverables.py  # one command -> workbook + maps + one-pagers
+  reporting.py     # the multi-tab Excel workbook
+  maps.py          # US dot-density persona / index maps
+  onepager.py      # per-persona sales leave-behind
+  cli.py           # demo/data/run/national/official/bakeoff/coverage/opportunity/
+                   #   validate/calibrate/export/ingest-appa/query/deliverables/
+                   #   vetsiting/marketfit/derive-affinities
   demo.py          # synthetic fixtures for the offline demo
 tests/test_pipeline.py
 data/demo/         # sample persona + feature CSVs
 ```
+
+See [`COMMANDS.md`](./COMMANDS.md) for the full command/flag reference and
+[`METHODOLOGY.md`](./METHODOLOGY.md) for methodology + confidence.
