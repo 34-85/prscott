@@ -183,6 +183,36 @@ def cmd_bakeoff(args) -> int:
     return 0
 
 
+def cmd_vetsiting(args) -> int:
+    """Vet-siting scorecard: hospital vs urgent-care lean + avoid gate per metro."""
+    from . import vetsiting
+    enr = pd.read_csv(args.enriched, dtype={"zip": str})
+    dist = pd.read_csv(args.distributions, dtype={"zip": str})
+    hw, uw = vetsiting.HOSPITAL_WEIGHTS, vetsiting.URGENTCARE_WEIGHTS
+    if args.weights:
+        w = json.loads(Path(args.weights).read_text())
+        hw, uw = w.get("hospital", hw), w.get("urgent_care", uw)
+    sc = vetsiting.score_msas(enr, dist, hw, uw, min_zips=args.min_zips)
+
+    if args.census_key:
+        import os
+        os.environ["CENSUS_API_KEY"] = args.census_key
+    try:
+        feats = load_acs_zcta_features()
+        vol = vetsiting.build_volume_from_acs(enr, feats, ownership_rate=args.ownership_rate)
+        sc = sc.join(vol)
+        sc = vetsiting.recommend_sites(sc, avoid_quantile=args.avoid_quantile)
+        print("Top metros by priority (addressable demand x fit), with recommendation:")
+        cols = ["recommendation", "addressable_pet_hh", "median_income", "hospital_fit", "urgentcare_fit", "priority"]
+        print(sc[cols].head(20).to_string())
+    except Exception as e:  # noqa: BLE001
+        print(f"(volume layer skipped -- no Census access: {str(e)[:80]}). Persona-fit only.")
+        print(sc[["n_zips", "hospital_fit", "urgentcare_fit", "lean"]].head(20).to_string())
+    sc.reset_index().to_csv(args.out, index=False)
+    print(f"\nFull scorecard -> {args.out}")
+    return 0
+
+
 def cmd_query(args) -> int:
     """Plain-language lookups against the scored dataset."""
     from . import query
@@ -399,6 +429,17 @@ def main(argv=None) -> int:
     pbo.add_argument("--year", type=int, default=2022)
     pbo.add_argument("--k", type=int, default=10)
     pbo.set_defaults(func=cmd_bakeoff)
+
+    pvs = sub.add_parser("vetsiting", help="hospital vs urgent-care vs avoid scorecard per metro")
+    pvs.add_argument("--enriched", required=True)
+    pvs.add_argument("--distributions", required=True)
+    pvs.add_argument("--census-key", default=None, help="enables the addressable-households + income layer")
+    pvs.add_argument("--ownership-rate", type=float, default=0.66)
+    pvs.add_argument("--avoid-quantile", type=float, default=0.25)
+    pvs.add_argument("--min-zips", type=int, default=8)
+    pvs.add_argument("--weights", default=None, help="JSON: {hospital:{...}, urgent_care:{...}}")
+    pvs.add_argument("--out", default="vet_siting_scorecard.csv")
+    pvs.set_defaults(func=cmd_vetsiting)
 
     pq = sub.add_parser("query", help="plain-language lookups against the scored dataset")
     pq.add_argument("--enriched", required=True)

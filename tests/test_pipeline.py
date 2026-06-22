@@ -393,6 +393,31 @@ def test_vetsiting_scores_service_model_lean():
     assert sc.loc["B", "urgentcare_fit"] > sc.loc["B", "hospital_fit"]
 
 
+def test_vetsiting_volume_gate_and_recommendation():
+    from zip_msa_personas import vetsiting
+    enr = pd.DataFrame({"zip": ["10001", "10002", "20001", "20002", "30001", "30002"],
+                        "msa_title": ["Hosp", "Hosp", "Urg", "Urg", "Tiny", "Tiny"]})
+    rows = []
+    for z, m in [("10001", {"Well-being Warriors": 0.7, "Ambitious Go-Getters": 0.3}),
+                 ("10002", {"Well-being Warriors": 0.6, "Security Seekers": 0.4}),
+                 ("20001", {"Prudent Pragmatists": 0.5, "Adventure Seekers": 0.5}),
+                 ("20002", {"Adventure Seekers": 0.6, "Prudent Pragmatists": 0.4}),
+                 ("30001", {"Comfort Companions": 0.5, "Adventure Seekers": 0.5}),
+                 ("30002", {"Comfort Companions": 0.6, "Prudent Pragmatists": 0.4})]:
+        rows += [{"zip": z, "persona": p, "share": s} for p, s in m.items()]
+    sc = vetsiting.score_msas(enr, pd.DataFrame(rows), min_zips=1)
+    feats = pd.DataFrame({"zip": ["10001", "10002", "20001", "20002", "30001", "30002"],
+                          "households": [50000, 60000, 40000, 45000, 1000, 1200],
+                          "median_household_income": [95000, 90000, 55000, 52000, 48000, 50000]})
+    sc = sc.join(vetsiting.build_volume_from_acs(enr, feats, ownership_rate=0.66))
+    out = vetsiting.recommend_sites(sc, avoid_quantile=0.25)
+    rec = out["recommendation"].to_dict()
+    assert rec["Hosp"] == "Build hospital"
+    assert rec["Urg"] == "Build urgent care"
+    assert rec["Tiny"] == "Avoid (low volume)"
+    assert abs(out.loc["Hosp", "addressable_pet_hh"] - (110000 * 0.66)) < 1
+
+
 def test_query_lookups():
     from zip_msa_personas import query
     enr = pd.DataFrame({

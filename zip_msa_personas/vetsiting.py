@@ -70,4 +70,49 @@ def recommend(scorecard: pd.DataFrame, n: int = 15) -> dict:
     }
 
 
-__all__ = ["score_msas", "recommend", "HOSPITAL_WEIGHTS", "URGENTCARE_WEIGHTS"]
+def build_volume_from_acs(enriched: pd.DataFrame, acs_features: pd.DataFrame,
+                          ownership_rate: float = 0.66, msa_col: str = "msa_title") -> pd.DataFrame:
+    """Per-MSA addressable pet households + income, from ACS ZCTA features.
+
+    ``acs_features`` (from ``load_acs_zcta_features``) needs 'households' and
+    'median_household_income'. Addressable pet HH = households x ownership_rate.
+    """
+    af = acs_features.copy(); af["zip"] = af["zip"].astype(str).str.zfill(5)
+    e = enriched[["zip", msa_col]].copy(); e["zip"] = e["zip"].astype(str).str.zfill(5)
+    m = e.merge(af[["zip", "households", "median_household_income"]], on="zip", how="inner").dropna(subset=[msa_col])
+    m["households"] = pd.to_numeric(m["households"], errors="coerce").fillna(0.0)
+    m["median_household_income"] = pd.to_numeric(m["median_household_income"], errors="coerce")
+    g = m.groupby(msa_col)
+    hh = g["households"].sum()
+    # Household-weighted mean of ZCTA median incomes (approx MSA income).
+    inc = g.apply(lambda d: (d["median_household_income"] * d["households"]).sum() / max(d["households"].sum(), 1))
+    out = pd.DataFrame({"households": hh.round(0), "median_income": inc.round(0)})
+    out["addressable_pet_hh"] = (out["households"] * ownership_rate).round(0)
+    return out
+
+
+def recommend_sites(scorecard: pd.DataFrame, avoid_quantile: float = 0.25) -> pd.DataFrame:
+    """Final recommendation: avoid (low volume) / build hospital / build urgent care.
+
+    Requires ``addressable_pet_hh`` (from ``build_volume_from_acs``). Avoid gate =
+    bottom ``avoid_quantile`` of addressable demand; otherwise the persona lean
+    decides the model. ``priority`` = addressable demand x fit for the chosen
+    model (where to act first).
+    """
+    sc = scorecard.copy()
+    if "addressable_pet_hh" not in sc:
+        raise ValueError("Run build_volume_from_acs and merge addressable_pet_hh first.")
+    thresh = sc["addressable_pet_hh"].quantile(avoid_quantile)
+    rec = pd.Series("Either (balanced)", index=sc.index)
+    rec[sc["lean"] == "Hospital"] = "Build hospital"
+    rec[sc["lean"] == "Urgent care"] = "Build urgent care"
+    rec[sc["addressable_pet_hh"] < thresh] = "Avoid (low volume)"
+    sc["recommendation"] = rec
+    chosen_fit = sc["hospital_fit"].where(sc["lean"] == "Hospital", sc["urgentcare_fit"])
+    sc["priority"] = (sc["addressable_pet_hh"] * chosen_fit).round(0)
+    sc.loc[sc["recommendation"] == "Avoid (low volume)", "priority"] = 0
+    return sc.sort_values("priority", ascending=False)
+
+
+__all__ = ["score_msas", "recommend", "build_volume_from_acs", "recommend_sites",
+           "HOSPITAL_WEIGHTS", "URGENTCARE_WEIGHTS"]
