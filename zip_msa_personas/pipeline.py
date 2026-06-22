@@ -93,7 +93,7 @@ def run_pipeline(
 
 def run_demographic_blend(
     persona_path: str | Path,
-    ref: ReferenceData,
+    ref: ReferenceData | None,
     demographic_mix: pd.DataFrame,
     *,
     alpha: float = 5.0,
@@ -108,18 +108,25 @@ def run_demographic_blend(
     demographics-based estimate everywhere, updated by the survey where it
     exists (empirical Bayes). Provenance is ``survey_anchored`` or
     ``demographic_model``.
+
+    ``ref`` (the HUD/CBSA crosswalk) is optional -- the demographic scoring needs
+    only Census ACS. When ``ref`` is None, MSA label columns are left blank.
     """
     from . import propensity
 
-    z2m = crosswalk.build_zip_to_msa(ref)
+    z2m = crosswalk.build_zip_to_msa(ref) if ref is not None else None
     raw = personas.load_personas(persona_path)
     raw_dist = personas.aggregate_to_zip_distribution(raw)
 
     assignments, distributions = propensity.blend_with_survey(raw_dist, demographic_mix, alpha=alpha)
 
-    assignments = assignments.merge(
-        z2m[["zip", "msa_cbsa", "msa_title", "in_metro"]], on="zip", how="left"
-    )
+    if z2m is not None:
+        assignments = assignments.merge(
+            z2m[["zip", "msa_cbsa", "msa_title", "in_metro"]], on="zip", how="left"
+        )
+    else:
+        for c in ("msa_cbsa", "msa_title", "in_metro"):
+            assignments[c] = pd.NA
     if zip_to_dma is not None:
         z2d = crosswalk.build_zip_to_dma(zip_to_dma)
         assignments = assignments.merge(z2d, on="zip", how="left")

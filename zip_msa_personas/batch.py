@@ -46,10 +46,18 @@ class CoverageReport:
 def coverage_report(enriched: pd.DataFrame) -> CoverageReport:
     total = len(enriched)
 
+    # Provenance-agnostic: works for both the spatial tiers (observed/imputed/
+    # extrapolated) and the demographic-blend tiers (survey_anchored/
+    # demographic_model). Order known tiers first, then any others.
+    present = list(enriched["provenance"].dropna().unique())
+    known = _TIER_ORDER + ["survey_anchored", "demographic_model"]
+    tiers = [t for t in known if t in present] + [t for t in present if t not in known]
+    survey_like = {impute.OBSERVED, "survey_anchored"}
+
     by_prov = (
         enriched.groupby("provenance")
         .agg(zips=("zip", "size"), mean_confidence=("confidence", "mean"))
-        .reindex(_TIER_ORDER)
+        .reindex(tiers)
         .dropna(how="all")
         .reset_index()
     )
@@ -58,19 +66,24 @@ def coverage_report(enriched: pd.DataFrame) -> CoverageReport:
     by_metro = (
         enriched.assign(area=enriched["in_metro"].map({True: "metro", False: "non_metro"}).fillna("unknown"))
         .pivot_table(index="area", columns="provenance", values="zip", aggfunc="count", fill_value=0)
-        .reindex(columns=_TIER_ORDER, fill_value=0)
+        .reindex(columns=tiers, fill_value=0)
         .reset_index()
     )
 
-    piv = (
-        enriched.dropna(subset=["msa_cbsa"])
-        .pivot_table(index=["msa_cbsa", "msa_title"], columns="provenance", values="zip", aggfunc="count", fill_value=0)
-        .reindex(columns=_TIER_ORDER, fill_value=0)
-    )
-    piv["total"] = piv.sum(axis=1)
-    piv["pct_observed"] = piv[impute.OBSERVED] / piv["total"]
-    piv["pct_estimated"] = 1 - piv["pct_observed"]
-    by_msa = piv.reset_index().sort_values("total", ascending=False)
+    sub = enriched.dropna(subset=["msa_cbsa"])
+    if sub.empty:
+        by_msa = pd.DataFrame(columns=["msa_cbsa", "msa_title", *tiers, "total", "pct_observed", "pct_estimated"])
+    else:
+        piv = (
+            sub.pivot_table(index=["msa_cbsa", "msa_title"], columns="provenance", values="zip",
+                            aggfunc="count", fill_value=0)
+            .reindex(columns=tiers, fill_value=0)
+        )
+        piv["total"] = piv.sum(axis=1)
+        survey_cols = [c for c in piv.columns if c in survey_like]
+        piv["pct_observed"] = (piv[survey_cols].sum(axis=1) / piv["total"]) if survey_cols else 0.0
+        piv["pct_estimated"] = 1 - piv["pct_observed"]
+        by_msa = piv.reset_index().sort_values("total", ascending=False)
 
     persona_mix = (
         enriched.groupby("persona").agg(zips=("zip", "size")).reset_index().sort_values("zips", ascending=False)

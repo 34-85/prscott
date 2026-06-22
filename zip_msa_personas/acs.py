@@ -120,28 +120,40 @@ _MARITAL_PAIRS = {
 }
 
 
-def fetch_acs_demographics(year: int = 2022) -> pd.DataFrame:
+def fetch_acs_demographics(year: int = 2022, api_key: str | None = None) -> pd.DataFrame:
     """Pull the ACS tables and return per-ZCTA fine-category counts.
 
     Output columns are the fine names used by ``fractions_from_counts``. Network
-    fetch -- needs census.gov reachable. Variable codes are standard ACS5; the
-    first live run is the validation point.
+    fetch -- needs census.gov reachable. The Census API now requires an API key
+    for ZCTA queries; pass ``api_key`` or set ``CENSUS_API_KEY``. Variable codes
+    are standard ACS5; the first live run is the validation point.
     """
     import requests
+    from .data_sources import DataUnavailable
+
     base = f"https://api.census.gov/data/{year}/acs/acs5"
     headers = {"User-Agent": "zip-msa-personas/1.0"}
-    key = os.environ.get("CENSUS_API_KEY")
+    key = api_key or os.environ.get("CENSUS_API_KEY")
 
     def _get(varcodes):
         get = ",".join(varcodes)
         url = f"{base}?get={get}&for=zip%20code%20tabulation%20area:*"
         if key:
             url += f"&key={key}"
-        r = requests.get(url, headers=headers, timeout=120)
-        r.raise_for_status()
+        r = requests.get(url, headers=headers, timeout=180)
+        if r.status_code != 200:
+            raise DataUnavailable(f"Census API HTTP {r.status_code} for {get[:40]}...: {r.text[:160]}")
+        # The API returns an HTML/text error page (still HTTP 200) when the key
+        # is missing or invalid -- detect that instead of crashing on .json().
+        body = r.text.lstrip()
+        if not body.startswith("["):
+            hint = "a Census API key is required" if not key else "the key may be invalid"
+            raise DataUnavailable(
+                f"Census API did not return JSON ({hint}). "
+                f"Pass --census-key or set CENSUS_API_KEY. Response began: {body[:160]!r}"
+            )
         rows = r.json()
-        df = pd.DataFrame(rows[1:], columns=rows[0])
-        df = df.rename(columns={"zip code tabulation area": "zip"})
+        df = pd.DataFrame(rows[1:], columns=rows[0]).rename(columns={"zip code tabulation area": "zip"})
         for c in varcodes:
             df[c] = pd.to_numeric(df[c], errors="coerce")
         return df.set_index("zip")
@@ -169,10 +181,10 @@ def fetch_acs_demographics(year: int = 2022) -> pd.DataFrame:
     return out
 
 
-def demographic_mix(year: int = 2022):
+def demographic_mix(year: int = 2022, api_key: str | None = None):
     """Convenience: fetch ACS -> fractions -> propensity persona mix per ZIP."""
     from . import propensity
-    fracs = fractions_from_counts(fetch_acs_demographics(year))
+    fracs = fractions_from_counts(fetch_acs_demographics(year, api_key=api_key))
     return propensity.score_demographics(fracs)
 
 

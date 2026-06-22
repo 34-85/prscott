@@ -348,6 +348,25 @@ def test_propensity_national_index_is_100_at_base_rate():
     assert (abs(idx.iloc[0] - 100) <= 1).all()
 
 
+def test_demographic_blend_without_hud_and_coverage():
+    # Official demographics-only path: ref=None (HUD unavailable), blend tiers.
+    ref, features, persona_df = demo.make_demo(seed=11)
+    allz = sorted(features["zip"]); segs = sorted(persona_df["persona"].unique())
+    mix = pd.DataFrame(1.0 / len(segs), index=allz, columns=segs)
+    import tempfile, os
+    fd, p = tempfile.mkstemp(suffix=".csv"); os.close(fd)
+    persona_df.to_csv(p, index=False)
+    out = pipeline.run_demographic_blend(p, None, mix, data_vintage="ACS2022")
+    os.remove(p)
+    from zip_msa_personas import propensity as pr
+    assert out.enriched["msa_cbsa"].isna().all()            # no HUD -> blank MSA labels
+    assert set(out.enriched["provenance"]) <= {pr.SURVEY_ANCHORED, pr.DEMOGRAPHIC_MODEL}
+    # Coverage report is provenance-agnostic and totals correctly.
+    cov = batch.coverage_report(out.enriched)
+    assert cov.by_provenance["zips"].sum() == len(out.enriched)
+    assert cov.by_msa.empty                                 # no MSA labels available
+
+
 def test_blend_with_survey_covers_all_and_survey_overrides():
     from zip_msa_personas import propensity as pr
     survey = pd.DataFrame([("A", "X", 100.0), ("B", "Y", 2.0)], columns=["zip", "persona", "weight"])
