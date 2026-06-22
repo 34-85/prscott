@@ -28,12 +28,16 @@ URGENTCARE_WEIGHTS = {
 def score_msas(enriched: pd.DataFrame, distributions: pd.DataFrame,
                hospital_weights: dict = HOSPITAL_WEIGHTS,
                urgentcare_weights: dict = URGENTCARE_WEIGHTS,
-               msa_col: str = "msa_title", min_zips: int = 5) -> pd.DataFrame:
+               msa_col: str = "msa_title", min_zips: int = 5,
+               min_survey: int = 0) -> pd.DataFrame:
     """Per-MSA hospital-fit vs urgent-care-fit, with the recommended model tilt.
 
     Aggregates each MSA's pet-owner persona mix (mean over its ZIPs), then scores
-    fit to each model. ``min_zips`` drops tiny MSAs for stability.
+    fit to each model. ``min_zips`` drops tiny MSAs for stability; ``survey_zips``
+    + ``reliable`` record how much real survey support each metro has, so a thin
+    spatially-smoothed market can't be trusted at the top of a recommendation.
     """
+    from . import reliability
     e = enriched[["zip", msa_col]].copy()
     e["zip"] = e["zip"].astype(str).str.zfill(5)
     d = distributions.copy(); d["zip"] = d["zip"].astype(str).str.zfill(5)
@@ -59,14 +63,21 @@ def score_msas(enriched: pd.DataFrame, distributions: pd.DataFrame,
                          labels=["Urgent care", "Balanced", "Hospital"])
     for p in personas:
         out[p] = (mix[p] * 100).round(1)
+    out = reliability.attach(out, enriched, min_survey=min_survey, group_col=msa_col)
     return out.sort_values("tilt_vs_natl", ascending=False)
 
 
-def recommend(scorecard: pd.DataFrame, n: int = 15) -> dict:
-    """Top metros leaning hospital vs urgent care (by relative tilt)."""
+def recommend(scorecard: pd.DataFrame, n: int = 15, reliable_only: bool = True) -> dict:
+    """Top metros leaning hospital vs urgent care (by relative tilt).
+
+    ``reliable_only`` (default) restricts the lists to metros with enough real
+    survey support behind them -- the guard against a thin small market topping
+    the recommendation purely on smoothed noise.
+    """
+    sc = scorecard[scorecard["reliable"]] if (reliable_only and "reliable" in scorecard) else scorecard
     return {
-        "build_hospital": scorecard.sort_values("tilt_vs_natl", ascending=False).head(n),
-        "build_urgent_care": scorecard.sort_values("tilt_vs_natl", ascending=True).head(n),
+        "build_hospital": sc.sort_values("tilt_vs_natl", ascending=False).head(n),
+        "build_urgent_care": sc.sort_values("tilt_vs_natl", ascending=True).head(n),
     }
 
 
@@ -117,10 +128,13 @@ def recommend_sites(scorecard: pd.DataFrame, avoid_quantile: float = 0.25) -> pd
     rec[sc["lean"] == "Hospital"] = "Build hospital"
     rec[sc["lean"] == "Urgent care"] = "Build urgent care"
     rec[sc["addressable_pet_hh"] < thresh] = "Avoid (low volume)"
+    # Thin survey support -> we won't stake a build call on it, regardless of fit.
+    if "reliable" in sc:
+        rec[~sc["reliable"]] = "Insufficient survey support"
     sc["recommendation"] = rec
     chosen_fit = sc["hospital_fit"].where(sc["lean"] == "Hospital", sc["urgentcare_fit"])
     sc["priority"] = (sc["addressable_pet_hh"] * chosen_fit).round(0)
-    sc.loc[sc["recommendation"] == "Avoid (low volume)", "priority"] = 0
+    sc.loc[sc["recommendation"].isin(["Avoid (low volume)", "Insufficient survey support"]), "priority"] = 0
     return sc.sort_values("priority", ascending=False)
 
 

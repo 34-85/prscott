@@ -184,6 +184,17 @@ scripts/run_local.sh --appa NPOS.xlsx [--zip-dma licensed_zip_dma.csv] [--outdir
 
 ---
 
+## Reliability filter (`--min-survey`)
+
+`vetsiting`, `marketfit`, and `query --top-persona` each accept `--min-survey`
+(default **3**): a market is only trusted at the top of a ranking if at least
+that many of its ZIPs were reached by an actual survey response (`survey_zips`).
+This is the guard against the *Kankakee artifact* — a tiny, all-modeled market
+spiking to the top of a list on smoothed noise. The persona index is still
+computed against the full national mean; the filter only governs which markets
+*rank*, and the full flagged ranking (every market, with `survey_zips` +
+`reliable`) is always written to the output CSV. Set `--min-survey 0` to disable.
+
 ## Flag conventions
 
 - `--demo` runs the command on bundled synthetic data with no network.

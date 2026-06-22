@@ -47,8 +47,15 @@ def mix_for_group(enriched: pd.DataFrame, distributions: pd.DataFrame,
 
 def top_markets_for_persona(enriched: pd.DataFrame, distributions: pd.DataFrame,
                             persona: str, group_col: str = "msa_title",
-                            n: int = 20, base_rate: float | None = None) -> pd.DataFrame:
-    """Markets ranked by a persona's share (and index vs national if known)."""
+                            n: int = 20, base_rate: float | None = None,
+                            min_survey: int = 0) -> pd.DataFrame:
+    """Markets ranked by a persona's share (and index vs national if known).
+
+    ``min_survey`` drops markets with too little real survey support behind them
+    (the reliability filter) before taking the top ``n`` -- so a thin,
+    spatially-smoothed small market can't spike to the top of the list.
+    """
+    from . import reliability
     e = enriched.copy()
     e["zip"] = e["zip"].astype(str).str.zfill(5)
     w = _wide(distributions)
@@ -57,10 +64,12 @@ def top_markets_for_persona(enriched: pd.DataFrame, distributions: pd.DataFrame,
     g = e[["zip", group_col]].dropna(subset=[group_col]).merge(
         w[persona].rename("share"), left_on="zip", right_index=True, how="inner")
     agg = g.groupby(group_col)["share"].mean().sort_values(ascending=False)
-    out = (agg * 100).round(1).rename("share_%").reset_index().head(n)
+    out = (agg * 100).round(1).rename("share_%").reset_index()
     if base_rate:
         out["index"] = (out["share_%"] / (base_rate * 100) * 100).round(0).astype(int)
-    return out
+    if min_survey:
+        out = reliability.filter_table(out, enriched, group_col, min_survey=min_survey, drop=True)
+    return out.head(n)
 
 
 def siting_read(enriched: pd.DataFrame, distributions: pd.DataFrame, zip_code: str) -> str:

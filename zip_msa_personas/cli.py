@@ -211,15 +211,25 @@ def cmd_marketfit(args) -> int:
         library.update(json.loads(Path(args.weights).read_text()))
     mix = mf.msa_persona_mix(enr, dist, min_zips=args.min_zips)
     if args.assortment_msa:
+        sup = int(mix["survey_zips"].get(args.assortment_msa, 0)) if "survey_zips" in mix else 0
+        if sup < args.min_survey:
+            print(f"NOTE: {args.assortment_msa} has only {sup} survey-backed ZIPs "
+                  f"(< --min-survey {args.min_survey}); read the emphasis below as directional.")
         print(f"Assortment emphasis for {args.assortment_msa} (100 = US avg):")
         print(mf.assortment_index(mix, args.assortment_msa, library).to_string(index=False))
     elif args.category:
         if args.category not in library:
             print(f"Unknown category. Options: {list(library)}"); return 2
-        out = mf.market_fit(mix, library[args.category])
-        out.reset_index().to_csv(args.out, index=False)
-        print(f"Top markets for '{args.category}' (index vs US avg):")
-        print(out.head(20)[["index", "n_zips"]].to_string())
+        out = mf.market_fit(mix, library[args.category], min_survey=args.min_survey)
+        out.reset_index().to_csv(args.out, index=False)   # full ranking, reliability flagged
+        shown = out[out["reliable"]] if "reliable" in out else out
+        cols = [c for c in ["index", "survey_zips", "n_zips"] if c in out]
+        print(f"Top markets for '{args.category}' (index vs US avg; survey-reliable, "
+              f">= {args.min_survey} survey ZIPs):")
+        print(shown.head(20)[cols].to_string())
+        dropped = len(out) - len(shown)
+        if dropped:
+            print(f"({dropped} thin-support markets held out of the top list; all rows in the CSV.)")
         print(f"\nFull ranking -> {args.out}")
     else:
         print("Categories:", list(library))
@@ -236,7 +246,7 @@ def cmd_vetsiting(args) -> int:
     if args.weights:
         w = json.loads(Path(args.weights).read_text())
         hw, uw = w.get("hospital", hw), w.get("urgent_care", uw)
-    sc = vetsiting.score_msas(enr, dist, hw, uw, min_zips=args.min_zips)
+    sc = vetsiting.score_msas(enr, dist, hw, uw, min_zips=args.min_zips, min_survey=args.min_survey)
 
     if args.census_key:
         import os
@@ -246,12 +256,18 @@ def cmd_vetsiting(args) -> int:
         vol = vetsiting.build_volume_from_acs(enr, feats, ownership_rate=args.ownership_rate)
         sc = sc.join(vol)
         sc = vetsiting.recommend_sites(sc, avoid_quantile=args.avoid_quantile)
-        print("Top metros by priority (addressable demand x fit), with recommendation:")
-        cols = ["recommendation", "addressable_pet_hh", "median_income", "hospital_fit", "urgentcare_fit", "priority"]
+        print(f"Top metros by priority (addressable demand x fit), with recommendation "
+              f"(thin support, < {args.min_survey} survey ZIPs, flagged 'Insufficient survey support'):")
+        cols = ["recommendation", "survey_zips", "addressable_pet_hh", "median_income",
+                "hospital_fit", "urgentcare_fit", "priority"]
         print(sc[cols].head(20).to_string())
     except Exception as e:  # noqa: BLE001
         print(f"(volume layer skipped -- no Census access: {str(e)[:80]}). Persona-fit only.")
-        print(sc[["n_zips", "hospital_fit", "urgentcare_fit", "lean"]].head(20).to_string())
+        rel = vetsiting.recommend(sc, n=20, reliable_only=True)
+        print(f"Top metros leaning HOSPITAL (survey-reliable, >= {args.min_survey} survey ZIPs):")
+        print(rel["build_hospital"][["survey_zips", "n_zips", "hospital_fit", "urgentcare_fit", "lean"]].to_string())
+        print(f"\nTop metros leaning URGENT CARE (survey-reliable):")
+        print(rel["build_urgent_care"][["survey_zips", "n_zips", "hospital_fit", "urgentcare_fit", "lean"]].to_string())
     sc.reset_index().to_csv(args.out, index=False)
     print(f"\nFull scorecard -> {args.out}")
     return 0
@@ -270,8 +286,10 @@ def cmd_query(args) -> int:
         print(f"Average persona mix for {args.group_col} ~ '{args.group}':")
         print(query.mix_for_group(enr, dist, args.group_col, args.group).to_string())
     elif args.top_persona:
-        print(f"Top {args.n} {args.group_col} by {args.top_persona} share:")
-        print(query.top_markets_for_persona(enr, dist, args.top_persona, args.group_col, args.n).to_string(index=False))
+        print(f"Top {args.n} {args.group_col} by {args.top_persona} share "
+              f"(survey-reliable, >= {args.min_survey} survey ZIPs):")
+        print(query.top_markets_for_persona(enr, dist, args.top_persona, args.group_col,
+                                            args.n, min_survey=args.min_survey).to_string(index=False))
     else:
         print("Specify --zip, or --group-col + --group, or --top-persona.")
     return 0
@@ -491,6 +509,8 @@ def main(argv=None) -> int:
                      help="NPOS persona x category cross-tab (CSV/XLSX) -> empirical affinities")
     pmf.add_argument("--weights", default=None, help="JSON of extra/override category affinities")
     pmf.add_argument("--min-zips", type=int, default=8)
+    pmf.add_argument("--min-survey", type=int, default=3, dest="min_survey",
+                     help="min survey-backed ZIPs for a market to be trusted in the ranking (reliability filter)")
     pmf.add_argument("--out", default="market_ranking.csv")
     pmf.set_defaults(func=cmd_marketfit)
 
@@ -501,6 +521,8 @@ def main(argv=None) -> int:
     pvs.add_argument("--ownership-rate", type=float, default=0.66)
     pvs.add_argument("--avoid-quantile", type=float, default=0.25)
     pvs.add_argument("--min-zips", type=int, default=8)
+    pvs.add_argument("--min-survey", type=int, default=3, dest="min_survey",
+                     help="min survey-backed ZIPs for a metro to carry a build recommendation (reliability filter)")
     pvs.add_argument("--weights", default=None, help="JSON: {hospital:{...}, urgent_care:{...}}")
     pvs.add_argument("--out", default="vet_siting_scorecard.csv")
     pvs.set_defaults(func=cmd_vetsiting)
@@ -512,6 +534,8 @@ def main(argv=None) -> int:
     pq.add_argument("--group-col", default="msa_title", dest="group_col")
     pq.add_argument("--group", default=None, help="market name to match (with --group-col)")
     pq.add_argument("--top-persona", default=None, dest="top_persona")
+    pq.add_argument("--min-survey", type=int, default=3, dest="min_survey",
+                    help="min survey-backed ZIPs for a market in --top-persona rankings (reliability filter)")
     pq.add_argument("--n", type=int, default=20)
     pq.set_defaults(func=cmd_query)
 

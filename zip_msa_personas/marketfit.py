@@ -47,28 +47,49 @@ FORMAT_AFFINITY = {
 }
 
 
+# Non-persona bookkeeping columns carried alongside the persona shares in a mix.
+_META_COLS = ("n_zips", "survey_zips")
+
+
 def msa_persona_mix(enriched: pd.DataFrame, distributions: pd.DataFrame,
                     msa_col: str = "msa_title", min_zips: int = 8) -> pd.DataFrame:
-    """Mean pet-owner persona mix per MSA (with n_zips), the shared substrate."""
+    """Mean pet-owner persona mix per MSA (with n_zips + survey_zips), the shared
+    substrate. ``survey_zips`` is how many of the metro's ZIPs an actual survey
+    response reached -- the basis for the reliability filter on any ranking."""
+    from . import reliability
     e = enriched[["zip", msa_col]].copy(); e["zip"] = e["zip"].astype(str).str.zfill(5)
     d = distributions.copy(); d["zip"] = d["zip"].astype(str).str.zfill(5)
     wide = d.pivot_table(index="zip", columns="persona", values="share", fill_value=0.0)
     g = e.dropna(subset=[msa_col]).merge(wide, left_on="zip", right_index=True, how="inner").groupby(msa_col)
     mix = g[list(wide.columns)].mean()
     mix["n_zips"] = g.size()
+    sup = reliability.survey_support(enriched, msa_col)
+    mix["survey_zips"] = [int(sup.get(m, 0)) for m in mix.index]
     return mix[mix["n_zips"] >= min_zips]
 
 
 def _fit(mix: pd.DataFrame, affinity: dict) -> pd.Series:
-    personas = [c for c in mix.columns if c != "n_zips"]
+    personas = [c for c in mix.columns if c not in _META_COLS]
     w = pd.Series(affinity).reindex(personas).fillna(0.0)
     return (mix[personas].to_numpy() @ w.to_numpy())
 
 
-def market_fit(mix: pd.DataFrame, affinity: dict) -> pd.DataFrame:
-    """Per-MSA fit + index vs national for one category/format."""
+def market_fit(mix: pd.DataFrame, affinity: dict, min_survey: int = 0,
+               drop_unreliable: bool = False) -> pd.DataFrame:
+    """Per-MSA fit + index vs national for one category/format.
+
+    The index is computed against the full national mean; ``min_survey`` then
+    flags (or, with ``drop_unreliable``, removes) markets whose ranking rests on
+    too little real survey support -- so a thin small market can't top the list.
+    """
     fit = pd.Series(_fit(mix, affinity), index=mix.index)
-    out = pd.DataFrame({"fit": fit.round(4), "index": (fit / fit.mean() * 100).round(0), "n_zips": mix["n_zips"]})
+    out = pd.DataFrame({"fit": fit.round(4), "index": (fit / fit.mean() * 100).round(0),
+                        "n_zips": mix["n_zips"]})
+    if "survey_zips" in mix.columns:
+        out["survey_zips"] = mix["survey_zips"]
+        out["reliable"] = out["survey_zips"] >= int(min_survey)
+        if drop_unreliable:
+            out = out[out["reliable"]]
     return out.sort_values("index", ascending=False)
 
 

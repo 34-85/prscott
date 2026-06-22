@@ -233,6 +233,7 @@ zip_msa_personas/
   shrinkage.py     # empirical-Bayes shrinkage of thin survey ZIPs toward market prior
   calibration.py   # isotonic confidence calibration (confidence -> true probability)
   indexing.py      # confidence-aware index vs national (real skew vs sampling noise)
+  reliability.py   # reliability filter: min survey support before a market is ranked
   appa_loader.py   # parse the APPA NPOS ZIP/DMA segmentation workbook -> tidy
   acs.py           # ACS demographic fetch + bucketing for the propensity model
   pipeline.py      # orchestration (impute path + demographic-blend path)

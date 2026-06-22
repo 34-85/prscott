@@ -904,6 +904,63 @@ def test_appa_loader_parses_weighted_matrix():
     assert long[long["zip"] == "10002"].shape[0] == 2        # two segments present
 
 
+def _reliability_fixture():
+    # "Big" has real survey support; "Thin" is all modeled yet spikes a persona
+    # (the Kankakee artifact) -- it must not be trusted at the top of a ranking.
+    enr = pd.DataFrame({
+        "zip": ["10001", "10002", "10003", "90001", "90002", "90003"],
+        "msa_title": ["Big", "Big", "Big", "Thin", "Thin", "Thin"],
+        "provenance": ["survey_anchored", "survey_anchored", "demographic_model",
+                       "demographic_model", "demographic_model", "demographic_model"],
+    })
+    rows = []
+    for z, m in [("10001", {"Adventure Seekers": 0.5, "Comfort Companions": 0.5}),
+                 ("10002", {"Adventure Seekers": 0.5, "Comfort Companions": 0.5}),
+                 ("10003", {"Adventure Seekers": 0.5, "Comfort Companions": 0.5}),
+                 ("90001", {"Security Seekers": 0.9, "Comfort Companions": 0.1}),
+                 ("90002", {"Security Seekers": 0.9, "Comfort Companions": 0.1}),
+                 ("90003", {"Security Seekers": 0.9, "Comfort Companions": 0.1})]:
+        rows += [{"zip": z, "persona": p, "share": s} for p, s in m.items()]
+    return enr, pd.DataFrame(rows)
+
+
+def test_reliability_survey_support_counts_survey_tiers():
+    from zip_msa_personas import reliability
+    enr, _ = _reliability_fixture()
+    sup = reliability.survey_support(enr)
+    assert sup["Big"] == 2 and sup.get("Thin", 0) == 0       # only survey-tier ZIPs count
+    # A frame with no provenance fails safe to zero support, not infinite trust.
+    no_prov = enr.drop(columns=["provenance"])
+    assert (reliability.survey_support(no_prov) == 0).all()
+
+
+def test_reliability_filter_drops_thin_market_from_top_markets():
+    from zip_msa_personas import query
+    enr, dist = _reliability_fixture()
+    # Thin spikes Security Seekers, so unfiltered it tops the list...
+    unfiltered = query.top_markets_for_persona(enr, dist, "Security Seekers", min_survey=0)
+    assert unfiltered.iloc[0]["msa_title"] == "Thin"
+    # ...but the reliability filter holds it out for lack of survey support.
+    filtered = query.top_markets_for_persona(enr, dist, "Security Seekers", min_survey=2)
+    assert "Thin" not in set(filtered["msa_title"])
+    assert "Big" in set(filtered["msa_title"])
+
+
+def test_reliability_filter_flags_marketfit_and_vetsiting():
+    from zip_msa_personas import marketfit as mf, vetsiting
+    enr, dist = _reliability_fixture()
+    mix = mf.msa_persona_mix(enr, dist, min_zips=1)
+    assert int(mix.loc["Big", "survey_zips"]) == 2 and int(mix.loc["Thin", "survey_zips"]) == 0
+    ranking = mf.market_fit(mix, mf.CATEGORY_AFFINITY["Tech / smart / status"], min_survey=2)
+    assert bool(ranking.loc["Big", "reliable"]) and not bool(ranking.loc["Thin", "reliable"])
+    # Vet recommendation: Thin is excluded from the trusted lists.
+    sc = vetsiting.score_msas(enr, dist, min_zips=1, min_survey=2)
+    assert not bool(sc.loc["Thin", "reliable"])
+    recs = vetsiting.recommend(sc, reliable_only=True)
+    titles = set(recs["build_hospital"].index) | set(recs["build_urgent_care"].index)
+    assert "Thin" not in titles and "Big" in titles
+
+
 def _df_to_dist(persona_df):
     import pandas as pd
     raw = pd.DataFrame(

@@ -202,10 +202,17 @@ What this means for **where to trust the output**:
   black-box.
 - **Thin-ZIP noise can propagate.** Spatial smoothing can carry a noisy surveyed
   ZIP into small neighboring markets, producing extreme small-market indices
-  (e.g. a Kankakee Security Seekers index of 462). A reliability filter
-  (suppress / flag indices resting on low effective sample size — see
-  `indexing.py` for the confidence-interval machinery) is the recommended next
-  guard and is **not yet wired into the headline rankings**.
+  (e.g. a Kankakee Security Seekers index of 462). This is now guarded by the
+  **reliability filter** (`reliability.py`): every "top markets" ranking — vet,
+  brand, retailer, and the `query` lookups — measures the real survey support
+  behind each market (`survey_zips` = ZIPs an actual survey response reached) and
+  requires a minimum (`--min-survey`, default 3) before a market can be trusted
+  at the top. The persona *index* is still computed against the full national
+  mean; the filter only governs which markets are allowed to rank, and the full
+  flagged ranking (every market, with `survey_zips` + `reliable`) is always
+  written to the output CSV for transparency. The complementary per-cell
+  significance machinery (`indexing.py`, Wilson intervals on effective sample
+  size) remains available for confidence-aware index reporting.
 - **ZIP-vs-ZCTA gap.** ~7,000 ZIPs aren't in the 2020 ZCTA universe and carry
   blank MSA labels / no ACS features; this is the standard postal-vs-statistical
   geography mismatch, not a pipeline error.
