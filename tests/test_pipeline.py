@@ -393,6 +393,25 @@ def test_vetsiting_scores_service_model_lean():
     assert sc.loc["B", "urgentcare_fit"] > sc.loc["B", "hospital_fit"]
 
 
+def test_marketfit_category_and_assortment():
+    from zip_msa_personas import marketfit as mf
+    enr = pd.DataFrame({"zip": ["10001", "10002", "20001", "20002"],
+                        "msa_title": ["Affluent", "Affluent", "Budget", "Budget"]})
+    rows = []
+    for z, m in [("10001", {"Ambitious Go-Getters": 0.6, "Well-being Warriors": 0.4}),
+                 ("10002", {"Ambitious Go-Getters": 0.5, "Security Seekers": 0.5}),
+                 ("20001", {"Prudent Pragmatists": 0.6, "Comfort Companions": 0.4}),
+                 ("20002", {"Prudent Pragmatists": 0.5, "Comfort Companions": 0.5})]:
+        rows += [{"zip": z, "persona": p, "share": s} for p, s in m.items()]
+    mix = mf.msa_persona_mix(enr, pd.DataFrame(rows), min_zips=1)
+    pf = mf.market_fit(mix, mf.CATEGORY_AFFINITY["Premium / fresh food"])
+    vf = mf.market_fit(mix, mf.CATEGORY_AFFINITY["Value / private-label"])
+    assert pf.loc["Affluent", "fit"] > pf.loc["Budget", "fit"]      # premium -> affluent
+    assert vf.loc["Budget", "fit"] > vf.loc["Affluent", "fit"]      # value -> budget
+    assort = mf.assortment_index(mix, "Affluent")
+    assert assort.iloc[0]["category"] in ("Premium / fresh food", "Tech / smart / status")
+
+
 def test_vetsiting_volume_gate_and_recommendation():
     from zip_msa_personas import vetsiting
     enr = pd.DataFrame({"zip": ["10001", "10002", "20001", "20002", "30001", "30002"],

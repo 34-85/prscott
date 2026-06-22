@@ -183,6 +183,32 @@ def cmd_bakeoff(args) -> int:
     return 0
 
 
+def cmd_marketfit(args) -> int:
+    """Brand/retailer market-fit: rank markets for a category, or a metro's assortment."""
+    from . import marketfit as mf
+    enr = pd.read_csv(args.enriched, dtype={"zip": str})
+    dist = pd.read_csv(args.distributions, dtype={"zip": str})
+    library = dict(mf.CATEGORY_AFFINITY, **mf.FORMAT_AFFINITY)
+    if args.weights:
+        library.update(json.loads(Path(args.weights).read_text()))
+    mix = mf.msa_persona_mix(enr, dist, min_zips=args.min_zips)
+    if args.assortment_msa:
+        print(f"Assortment emphasis for {args.assortment_msa} (100 = US avg):")
+        print(mf.assortment_index(mix, args.assortment_msa, library).to_string(index=False))
+    elif args.category:
+        if args.category not in library:
+            print(f"Unknown category. Options: {list(library)}"); return 2
+        out = mf.market_fit(mix, library[args.category])
+        out.reset_index().to_csv(args.out, index=False)
+        print(f"Top markets for '{args.category}' (index vs US avg):")
+        print(out.head(20)[["index", "n_zips"]].to_string())
+        print(f"\nFull ranking -> {args.out}")
+    else:
+        print("Categories:", list(library))
+        print("Use --category '<name>' to rank markets, or --assortment-msa '<metro>'.")
+    return 0
+
+
 def cmd_vetsiting(args) -> int:
     """Vet-siting scorecard: hospital vs urgent-care lean + avoid gate per metro."""
     from . import vetsiting
@@ -429,6 +455,16 @@ def main(argv=None) -> int:
     pbo.add_argument("--year", type=int, default=2022)
     pbo.add_argument("--k", type=int, default=10)
     pbo.set_defaults(func=cmd_bakeoff)
+
+    pmf = sub.add_parser("marketfit", help="brand/retailer: rank markets for a category or read a metro's assortment")
+    pmf.add_argument("--enriched", required=True)
+    pmf.add_argument("--distributions", required=True)
+    pmf.add_argument("--category", default=None, help="category/format to rank markets for")
+    pmf.add_argument("--assortment-msa", default=None, dest="assortment_msa", help="metro to read assortment emphasis for")
+    pmf.add_argument("--weights", default=None, help="JSON of extra/override category affinities")
+    pmf.add_argument("--min-zips", type=int, default=8)
+    pmf.add_argument("--out", default="market_ranking.csv")
+    pmf.set_defaults(func=cmd_marketfit)
 
     pvs = sub.add_parser("vetsiting", help="hospital vs urgent-care vs avoid scorecard per metro")
     pvs.add_argument("--enriched", required=True)
