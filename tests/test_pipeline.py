@@ -331,6 +331,28 @@ def test_zcta_cbsa_reference_builds_crosswalk():
     assert "99999" not in set(z2m.zip)
 
 
+def test_query_lookups():
+    from zip_msa_personas import query
+    enr = pd.DataFrame({
+        "zip": ["10001", "30301"],
+        "persona": ["Security Seekers", "Comfort Companions"],
+        "confidence": [0.31, 0.22],
+        "provenance": ["survey_anchored", "demographic_model"],
+        "msa_title": ["New York-Newark", "Atlanta"],
+    })
+    dist = pd.DataFrame([
+        {"zip": "10001", "persona": "Security Seekers", "share": 0.4},
+        {"zip": "10001", "persona": "Adventure Seekers", "share": 0.6},
+        {"zip": "30301", "persona": "Comfort Companions", "share": 0.7},
+        {"zip": "30301", "persona": "Adventure Seekers", "share": 0.3},
+    ])
+    mix = query.mix_for_zip(dist, "10001")
+    assert mix.index[0] == "Adventure Seekers" and abs(mix.iloc[0] - 60.0) < 1e-6
+    tm = query.top_markets_for_persona(enr, dist, "Security Seekers", "msa_title", n=5)
+    assert tm.iloc[0]["msa_title"] == "New York-Newark"
+    assert "Security Seekers" in query.siting_read(enr, dist, "10001")
+
+
 def test_census_region_map_and_zcta_state():
     import tempfile, os
     from zip_msa_personas import validation as v, data_sources as ds

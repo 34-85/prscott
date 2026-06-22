@@ -147,6 +147,36 @@ def cmd_official(args) -> int:
     return 0
 
 
+def cmd_query(args) -> int:
+    """Plain-language lookups against the scored dataset."""
+    from . import query
+    enr = pd.read_csv(args.enriched, dtype={"zip": str})
+    dist = pd.read_csv(args.distributions, dtype={"zip": str})
+    if args.zip:
+        print(f"Persona mix for ZIP {args.zip}:")
+        print(query.mix_for_zip(dist, args.zip).to_string())
+        print("\n" + query.siting_read(enr, dist, args.zip))
+    elif args.group and args.group_col:
+        print(f"Average persona mix for {args.group_col} ~ '{args.group}':")
+        print(query.mix_for_group(enr, dist, args.group_col, args.group).to_string())
+    elif args.top_persona:
+        print(f"Top {args.n} {args.group_col} by {args.top_persona} share:")
+        print(query.top_markets_for_persona(enr, dist, args.top_persona, args.group_col, args.n).to_string(index=False))
+    else:
+        print("Specify --zip, or --group-col + --group, or --top-persona.")
+    return 0
+
+
+def cmd_deliverables(args) -> int:
+    """Build the workbook + maps + one-pagers from the official outputs."""
+    from . import deliverables
+    enr = pd.read_csv(args.enriched, dtype={"zip": str})
+    dist = pd.read_csv(args.distributions, dtype={"zip": str})
+    out = deliverables.build_deliverables(enr, dist, args.outdir, is_preview=args.preview)
+    print(f"Deliverable kit written to {out}/ (workbook, maps/, onepagers/)")
+    return 0
+
+
 def cmd_ingest_appa(args) -> int:
     """Convert the APPA NPOS 'ZIP by segment' workbook to a tidy personas CSV."""
     long = appa_loader.load_appa_segmentation(args.input)
@@ -323,6 +353,23 @@ def main(argv=None) -> int:
     pof.add_argument("--data-vintage", default="NPOS2025;ACS2022;HUD2023Q4")
     pof.add_argument("--outdir", default="out_official")
     pof.set_defaults(func=cmd_official)
+
+    pq = sub.add_parser("query", help="plain-language lookups against the scored dataset")
+    pq.add_argument("--enriched", required=True)
+    pq.add_argument("--distributions", required=True)
+    pq.add_argument("--zip", default=None)
+    pq.add_argument("--group-col", default="msa_title", dest="group_col")
+    pq.add_argument("--group", default=None, help="market name to match (with --group-col)")
+    pq.add_argument("--top-persona", default=None, dest="top_persona")
+    pq.add_argument("--n", type=int, default=20)
+    pq.set_defaults(func=cmd_query)
+
+    pdl = sub.add_parser("deliverables", help="build workbook + maps + one-pagers from official outputs")
+    pdl.add_argument("--enriched", required=True)
+    pdl.add_argument("--distributions", required=True)
+    pdl.add_argument("--outdir", default="deliverable_kit")
+    pdl.add_argument("--preview", action="store_true")
+    pdl.set_defaults(func=cmd_deliverables)
 
     pi = sub.add_parser("ingest-appa", help="convert APPA NPOS ZIP-by-segment xlsx -> tidy personas CSV")
     pi.add_argument("--input", required=True, help="the .xlsx workbook")
