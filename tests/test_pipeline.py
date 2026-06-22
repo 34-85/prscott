@@ -254,6 +254,31 @@ def test_apply_calibration_preserves_observed_and_adds_raw():
     assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
 
 
+def test_build_workbook_has_expected_tabs():
+    import tempfile, os, openpyxl
+    from zip_msa_personas import reporting
+    segs = ["Seg A", "Seg B"]
+    z = pd.DataFrame(
+        {
+            "ZIP": ["00001", "00002", "00003"],
+            "City": ["X", "Y", "Z"],
+            "State": ["AA", "AA", "BB"],
+            "Top persona": ["Seg A", "Seg B", "Seg A"],
+            "Confidence": [0.9, 0.5, 0.2],
+            "Basis": [reporting.BASIS_ORDER[0], reporting.BASIS_ORDER[1], reporting.BASIS_ORDER[2]],
+            "Seg A": [0.7, 0.3, 0.6],
+            "Seg B": [0.3, 0.7, 0.4],
+        }
+    )
+    fd, path = tempfile.mkstemp(suffix=".xlsx"); os.close(fd)
+    reporting.build_workbook(z, segs, path, top_n=2)
+    wb = openpyxl.load_workbook(path, read_only=True)
+    names = wb.sheetnames
+    os.remove(path)
+    assert {"Read me", "All ZIPs", "By State", "Footprint by basis"} <= set(names)
+    assert any(n.startswith("Top2 Seg A") for n in names)
+
+
 def test_impute_returns_full_distributions_that_sum_to_one():
     ref, features, persona_df = demo.make_demo(seed=6)
     dist = personas.aggregate_to_zip_distribution(_df_to_dist(persona_df))
