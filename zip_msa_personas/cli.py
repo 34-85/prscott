@@ -183,6 +183,20 @@ def cmd_bakeoff(args) -> int:
     return 0
 
 
+def cmd_derive_affinities(args) -> int:
+    """Build a persona x category affinity table from respondent-level microdata."""
+    from . import microdata
+    df = pd.read_excel(args.microdata) if str(args.microdata).lower().endswith((".xlsx", ".xls")) \
+        else pd.read_csv(args.microdata)
+    cols = [c.strip() for c in args.columns.split(",")] if args.columns else \
+        [c for c in df.columns if c not in (args.persona_col, args.weight_col, "zip")]
+    table = microdata.persona_affinity_table(df, cols, args.persona_col, args.weight_col)
+    table.to_csv(args.out)
+    print(f"Persona x category table ({table.shape[0]} personas x {table.shape[1]} columns) -> {args.out}")
+    print("Feed it to:  marketfit --npos-affinities " + args.out)
+    return 0
+
+
 def cmd_marketfit(args) -> int:
     """Brand/retailer market-fit: rank markets for a category, or a metro's assortment."""
     from . import marketfit as mf
@@ -459,6 +473,14 @@ def main(argv=None) -> int:
     pbo.add_argument("--year", type=int, default=2022)
     pbo.add_argument("--k", type=int, default=10)
     pbo.set_defaults(func=cmd_bakeoff)
+
+    pda = sub.add_parser("derive-affinities", help="persona x category affinities from respondent microdata")
+    pda.add_argument("--microdata", required=True, help="respondent-level file (CSV/XLSX)")
+    pda.add_argument("--columns", default=None, help="comma-separated value columns (default: all non-id columns)")
+    pda.add_argument("--persona-col", default="persona", dest="persona_col")
+    pda.add_argument("--weight-col", default=None, dest="weight_col", help="survey weight column, if any")
+    pda.add_argument("--out", default="npos_affinities.csv")
+    pda.set_defaults(func=cmd_derive_affinities)
 
     pmf = sub.add_parser("marketfit", help="brand/retailer: rank markets for a category or read a metro's assortment")
     pmf.add_argument("--enriched", required=True)

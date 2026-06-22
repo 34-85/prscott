@@ -412,6 +412,27 @@ def test_marketfit_category_and_assortment():
     assert assort.iloc[0]["category"] in ("Premium / fresh food", "Tech / smart / status")
 
 
+def test_microdata_persona_affinities():
+    import numpy as np
+    from zip_msa_personas import microdata, appa_loader
+    segs = appa_loader.SEGMENTS
+    rng = np.random.default_rng(0)
+    n = 1500
+    df = pd.DataFrame({
+        "persona": rng.choice(segs, n),
+        "weight": rng.uniform(0.5, 2, n),
+        "buys_premium": rng.choice(["Yes", "No"], n),
+        "treat_spend": rng.uniform(20, 400, n),
+    })
+    amb = df["persona"] == "Ambitious Go-Getters"
+    df.loc[amb, "buys_premium"] = "Yes"   # force Ambitious to top the category
+    tab = microdata.persona_affinity_table(df, ["buys_premium", "treat_spend"], "persona", "weight")
+    assert tab["buys_premium"].idxmax() == "Ambitious Go-Getters"
+    assert (tab["buys_premium"] <= 1.0).all()                 # incidence is a fraction
+    lib = microdata.derive_affinities(df, ["buys_premium", "treat_spend"], "persona", "weight")
+    assert lib["buys_premium"]["Ambitious Go-Getters"] == 1.0  # normalized top buyer
+
+
 def test_marketfit_affinities_from_npos():
     from zip_msa_personas import marketfit as mf, appa_loader
     segs = appa_loader.SEGMENTS
