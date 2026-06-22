@@ -961,6 +961,31 @@ def test_reliability_filter_flags_marketfit_and_vetsiting():
     assert "Thin" not in titles and "Big" in titles
 
 
+def test_econ_persona_value_from_fingerprints():
+    from zip_msa_personas import econ
+    w = econ.persona_value_weights()
+    # Derived purely from the deck: premium-spend x high-income.
+    assert w["Security Seekers"] > w["Ambitious Go-Getters"] > w["Comfort Companions"]
+    assert w["Prudent Pragmatists"] == w.min()           # lowest value persona
+    assert abs(w.mean() - 1.0) < 1e-9                     # normalized to mean 1.0
+    tab = econ.persona_value_table()
+    assert tab.iloc[0]["persona"] == "Security Seekers"   # tops the value index
+
+
+def test_econ_viability_sheet_reliability_and_grades():
+    from zip_msa_personas import econ
+    enr, dist = _reliability_fixture()
+    sheet = econ.build_viability(enr, dist, acs_features=None, min_survey=2, min_zips=1)
+    assert set(["market_grade", "persona_value_index", "high_value_overindex",
+                "reliable", "survey_zips"]).issubset(sheet.columns)
+    # Thin market (no survey support) is flagged and cannot grade A/B.
+    assert not bool(sheet.loc["Thin", "reliable"])
+    assert sheet.loc["Thin", "market_grade"] not in ("A", "B")
+    assert bool(sheet.loc["Big", "reliable"])
+    # Every market is retained (universe view), not dropped.
+    assert {"Big", "Thin"}.issubset(set(sheet.index))
+
+
 def _df_to_dist(persona_df):
     import pandas as pd
     raw = pd.DataFrame(

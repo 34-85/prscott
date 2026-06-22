@@ -237,6 +237,47 @@ def cmd_marketfit(args) -> int:
     return 0
 
 
+def cmd_viability(args) -> int:
+    """Combined market-viability sheet: persona-value + over-index + income +
+    addressable demand + vet-siting model, reliability-filtered."""
+    from . import econ
+    enr = pd.read_csv(args.enriched, dtype={"zip": str})
+    dist = pd.read_csv(args.distributions, dtype={"zip": str})
+    print("Persona economic value (premium-spend x high-income, 100 = avg persona):")
+    print(econ.persona_value_table().to_string(index=False))
+
+    feats = None
+    if args.census_key:
+        import os
+        os.environ["CENSUS_API_KEY"] = args.census_key
+    try:
+        feats = load_acs_zcta_features()
+    except Exception as e:  # noqa: BLE001
+        print(f"\n(no Census access: {str(e)[:80]}). Building without income/demand layer.")
+
+    sheet = econ.build_viability(enr, dist, acs_features=feats, min_survey=args.min_survey,
+                                 min_zips=args.min_zips)
+    sheet.reset_index().rename(columns={"index": "msa_title"}).to_csv(args.out, index=False)
+    try:
+        xlsx = str(Path(args.out).with_suffix(".xlsx"))
+        sheet.reset_index().rename(columns={"index": "msa_title"}).to_excel(xlsx, index=False)
+        print(f"\nWrote {xlsx}")
+    except Exception as e:  # noqa: BLE001
+        print(f"(xlsx skipped: {str(e)[:60]})")
+
+    grade = sheet["market_grade"].value_counts().reindex(["A", "B", "C", "D"]).fillna(0).astype(int)
+    rel = int(sheet["reliable"].sum()) if "reliable" in sheet else 0
+    print(f"\n{len(sheet)} metros graded: A={grade['A']} B={grade['B']} C={grade['C']} D={grade['D']}; "
+          f"{rel} survey-reliable (>= {args.min_survey} survey ZIPs).")
+    show = [c for c in ["market_grade", "recommendation", "opportunity_score", "persona_value_index",
+                        "high_value_overindex", "reliable", "survey_zips", "median_income"] if c in sheet]
+    print("\nTop 15 by opportunity:")
+    print(sheet.head(15)[show].to_string())
+    print(f"\nNOTE: {econ.NOTES}")
+    print(f"\nFull sheet -> {args.out}")
+    return 0
+
+
 def cmd_vetsiting(args) -> int:
     """Vet-siting scorecard: hospital vs urgent-care lean + avoid gate per metro."""
     from . import vetsiting
@@ -513,6 +554,16 @@ def main(argv=None) -> int:
                      help="min survey-backed ZIPs for a market to be trusted in the ranking (reliability filter)")
     pmf.add_argument("--out", default="market_ranking.csv")
     pmf.set_defaults(func=cmd_marketfit)
+
+    pvy = sub.add_parser("viability", help="combined market-viability + vet-siting sheet (persona value x income x demand)")
+    pvy.add_argument("--enriched", required=True)
+    pvy.add_argument("--distributions", required=True)
+    pvy.add_argument("--census-key", default=None, help="enables median income + addressable demand + recommendation")
+    pvy.add_argument("--min-survey", type=int, default=3, dest="min_survey",
+                     help="min survey-backed ZIPs before a market can grade A/B (reliability filter)")
+    pvy.add_argument("--min-zips", type=int, default=8, dest="min_zips")
+    pvy.add_argument("--out", default="market_viability_vetsiting.csv")
+    pvy.set_defaults(func=cmd_viability)
 
     pvs = sub.add_parser("vetsiting", help="hospital vs urgent-care vs avoid scorecard per metro")
     pvs.add_argument("--enriched", required=True)

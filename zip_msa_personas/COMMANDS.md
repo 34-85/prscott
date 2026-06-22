@@ -113,11 +113,18 @@ All three consume the `official` outputs (`enriched_national_official.csv` +
 
 | Command | Network | Purpose |
 |---|---|---|
+| `viability` | census + key (optional) | **The combined one-sheet market view:** persona economic value × HH income × addressable demand × vet-siting model, graded A–D, reliability-filtered. |
 | `vetsiting` | census + key (optional) | Per-metro scorecard: full-service hospital vs urgent-care lean, plus an avoid-gate on addressable demand (needs the Census volume layer). |
 | `marketfit` | — | Brand/retailer: rank markets for a product category/format, **or** read one metro's assortment emphasis. |
 | `derive-affinities` | — | Respondent microdata → empirical persona × category affinity table that feeds `marketfit --npos-affinities`. |
 
 ```bash
+# The complete package: every metro graded A-D on persona-value x income x
+# demand, with the vet-siting recommendation, reliability-filtered. Writes
+# both .csv and .xlsx.
+python -m zip_msa_personas viability --enriched E.csv --distributions D.csv \
+    --census-key $CENSUS_KEY --min-survey 3 --out market_viability_vetsiting.csv
+
 # Vet group: where to build a hospital, an urgent care, or avoid
 python -m zip_msa_personas vetsiting --enriched E.csv --distributions D.csv \
     --census-key $CENSUS_KEY --out vet_scorecard.csv

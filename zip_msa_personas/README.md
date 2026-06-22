@@ -243,6 +243,7 @@ zip_msa_personas/
   validation.py    # backtest/calibration + model-vs-survey + external concordance
   rights.py        # license tagging + rights-safe export
   # --- customer applications + delivery ---
+  econ.py          # persona economic value (deck-derived) + combined viability sheet
   vetsiting.py     # hospital / urgent-care / avoid scorecard per metro
   marketfit.py     # brand/retailer category & assortment fit
   microdata.py     # respondent microdata -> empirical persona affinities
@@ -253,7 +254,7 @@ zip_msa_personas/
   onepager.py      # per-persona sales leave-behind
   cli.py           # demo/data/run/national/official/bakeoff/coverage/opportunity/
                    #   validate/calibrate/export/ingest-appa/query/deliverables/
-                   #   vetsiting/marketfit/derive-affinities
+                   #   viability/vetsiting/marketfit/derive-affinities
   demo.py          # synthetic fixtures for the offline demo
 tests/test_pipeline.py
 data/demo/         # sample persona + feature CSVs
