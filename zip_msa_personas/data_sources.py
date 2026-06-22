@@ -134,12 +134,24 @@ def load_acs_zcta_features(year: int = 2022) -> pd.DataFrame:
     base = f"https://api.census.gov/data/{year}/acs/acs5"
     get = ",".join(ACS_VARIABLES.keys())
     url = f"{base}?get={get}&for=zip%20code%20tabulation%20area:*"
+    key = os.environ.get("CENSUS_API_KEY")
+    if key:
+        url += f"&key={key}"
     cache = CACHE_DIR / f"acs_zcta_{year}.parquet"
     if cache.exists():
         return pd.read_parquet(cache)
     resp = requests.get(url, headers=_HEADERS, timeout=120)
     if resp.status_code != 200:
         raise DataUnavailable(f"ACS fetch failed (HTTP {resp.status_code}) at {url}")
+    # A keyless/invalid-key request returns HTTP 200 + an HTML "Missing Key" page,
+    # not JSON. Detect it so the failure is actionable rather than a decode error.
+    if "json" not in resp.headers.get("content-type", "").lower():
+        snippet = " ".join(resp.text.split())[:160]
+        hint = (
+            "set CENSUS_API_KEY (free: https://api.census.gov/data/key_signup.html)"
+            if not key else "verify the CENSUS_API_KEY value"
+        )
+        raise DataUnavailable(f"ACS API did not return JSON -- {hint}. Response began: {snippet!r}")
     rows = resp.json()
     df = pd.DataFrame(rows[1:], columns=rows[0])
     df = df.rename(columns={**ACS_VARIABLES, "zip code tabulation area": "zip"})

@@ -109,8 +109,8 @@ def run_demographic_blend(
     exists (empirical Bayes). Provenance is ``survey_anchored`` or
     ``demographic_model``.
 
-    ``ref`` (the HUD/CBSA crosswalk) is optional -- the demographic scoring needs
-    only Census ACS. When ``ref`` is None, MSA label columns are left blank.
+    ``ref`` may be ``None`` (e.g. the HUD ZIP->CBSA crosswalk is unreachable):
+    the run then proceeds demographics-only with blank MSA labels.
     """
     from . import propensity
 
@@ -125,8 +125,10 @@ def run_demographic_blend(
             z2m[["zip", "msa_cbsa", "msa_title", "in_metro"]], on="zip", how="left"
         )
     else:
-        for c in ("msa_cbsa", "msa_title", "in_metro"):
-            assignments[c] = pd.NA
+        # No ZIP->MSA crosswalk: demographics-only run, MSA labels left blank.
+        assignments["msa_cbsa"] = pd.NA
+        assignments["msa_title"] = pd.NA
+        assignments["in_metro"] = pd.NA
     if zip_to_dma is not None:
         z2d = crosswalk.build_zip_to_dma(zip_to_dma)
         assignments = assignments.merge(z2d, on="zip", how="left")

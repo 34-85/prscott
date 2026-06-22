@@ -2,7 +2,10 @@ __pycache__/
 *.pyc
 data/cache/
 data/out/
+out_official/
+out_local/
 enriched_*.csv
+persona_distributions*.csv
 *.xlsx
 appa_personas*.csv
 calibrator.json

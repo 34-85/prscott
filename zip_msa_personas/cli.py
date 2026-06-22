@@ -77,20 +77,21 @@ def cmd_official(args) -> int:
     national enriched dataset, coverage report, and full per-ZIP distributions.
     """
     from . import acs, batch
-    # Core scoring needs only Census ACS. Census now requires an API key for ZCTA.
+    if args.census_key:
+        import os
+        os.environ["CENSUS_API_KEY"] = args.census_key
     try:
-        dmix = acs.demographic_mix(args.year, api_key=args.census_key)
+        dmix = acs.demographic_mix(args.year)            # ACS fetch + propensity scoring
     except DataUnavailable as e:
-        print(f"ERROR (Census): {e}", file=sys.stderr)
+        print(f"ERROR: {e}", file=sys.stderr)
+        print("Allowlist api.census.gov and set --census-key / CENSUS_API_KEY, then retry.", file=sys.stderr)
         return 2
-
-    # HUD/CBSA crosswalk only adds MSA labels -- optional. Don't let it block the run.
-    ref = None
     try:
-        ref = load_reference_data()
-    except Exception as e:  # noqa: BLE001 -- any HUD failure -> proceed without MSA labels
-        print(f"NOTE: MSA labels unavailable (HUD/CBSA crosswalk: {str(e)[:120]}). "
-              "Proceeding demographics-only; add MSA/DMA labels later.", file=sys.stderr)
+        ref = load_reference_data()                      # HUD ZIP->CBSA + OMB delineation
+    except DataUnavailable as e:
+        print(f"WARNING: ZIP->MSA reference data unavailable ({e}).", file=sys.stderr)
+        print("Proceeding demographics-only; MSA labels will be blank.", file=sys.stderr)
+        ref = None
 
     personas_csv = _write_tmp(appa_loader.load_appa_segmentation(args.appa)[["zip", "persona", "weight"]]) \
         if str(args.appa).lower().endswith((".xlsx", ".xls")) else args.appa
@@ -279,7 +280,7 @@ def main(argv=None) -> int:
     pof.add_argument("--appa", required=True, help="APPA NPOS workbook (.xlsx) or tidy personas CSV")
     pof.add_argument("--zip-dma", default=None, help="licensed ZIP->DMA crosswalk file")
     pof.add_argument("--year", type=int, default=2022, help="ACS 5-year vintage")
-    pof.add_argument("--census-key", default=None, help="Census API key (or set CENSUS_API_KEY)")
+    pof.add_argument("--census-key", default=None, help="Census API key (passed at runtime; overrides CENSUS_API_KEY env)")
     pof.add_argument("--shrink-alpha", type=float, default=5.0, help="prior strength for the survey blend")
     pof.add_argument("--data-vintage", default="NPOS2025;ACS2022;HUD2023Q4")
     pof.add_argument("--outdir", default="out_official")
