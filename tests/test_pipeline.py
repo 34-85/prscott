@@ -254,6 +254,25 @@ def test_apply_calibration_preserves_observed_and_adds_raw():
     assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
 
 
+def test_maps_render_png_files():
+    import tempfile, os
+    from zip_msa_personas import maps
+    df = pd.DataFrame(
+        {
+            "lon": [-100, -80, -120, -90],
+            "lat": [40, 35, 45, 30],
+            "Top persona": ["A", "B", "A", "B"],
+            "A_idx": [150, 50, 120, 80],
+        }
+    )
+    d = tempfile.mkdtemp()
+    p1 = maps.dominant_persona_map(df, "Top persona", os.path.join(d, "dom.png"))
+    p2 = maps.index_map(df, "A_idx", os.path.join(d, "idx.png"), title="A index")
+    assert p1.exists() and p1.stat().st_size > 0
+    assert p2.exists() and p2.stat().st_size > 0
+    os.remove(p1); os.remove(p2); os.rmdir(d)
+
+
 def test_build_workbook_has_expected_tabs():
     import tempfile, os, openpyxl
     from zip_msa_personas import reporting
