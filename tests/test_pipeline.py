@@ -331,6 +331,28 @@ def test_zcta_cbsa_reference_builds_crosswalk():
     assert "99999" not in set(z2m.zip)
 
 
+def test_spatial_predictor_and_bakeoff():
+    import numpy as np
+    from zip_msa_personas import spatial
+    personas = ["A", "B", "C"]
+    rng = np.random.default_rng(0)
+    zips = [f"{i:05d}" for i in range(120)]
+    coords = pd.DataFrame({"lat": rng.uniform(25, 48, 120), "lon": rng.uniform(-122, -71, 120)}, index=zips)
+
+    def mix_for(lon):
+        t = (lon + 122) / 51
+        m = np.clip(np.array([1 - t, 0.5, t]), 0.05, None)
+        return m / m.sum()
+    sw = pd.DataFrame([mix_for(coords.loc[z, "lon"]) for z in zips], index=zips, columns=personas)
+    pred = spatial.spatial_loo_predict(sw, coords, k=8)
+    # Leave-one-out spatial prediction recovers the smooth structure.
+    assert np.corrcoef(pred["A"], sw["A"])[0, 1] > 0.8
+    # Blend stays a valid distribution.
+    dm = pd.DataFrame(rng.dirichlet([1, 1, 1], size=120), index=zips, columns=personas)
+    bl = spatial.blend_mixes(pred, dm)
+    assert (abs(bl.sum(axis=1) - 1.0) < 1e-9).all()
+
+
 def test_query_lookups():
     from zip_msa_personas import query
     enr = pd.DataFrame({

@@ -147,6 +147,24 @@ def cmd_official(args) -> int:
     return 0
 
 
+def cmd_bakeoff(args) -> int:
+    """Predictor bake-off: demographic vs spatial vs blend, on real survey data."""
+    from . import acs, deliverables, spatial
+    if args.census_key:
+        import os
+        os.environ["CENSUS_API_KEY"] = args.census_key
+    dmix = acs.demographic_mix(args.year)
+    ref = load_reference_data()
+    survey = appa_loader.load_appa_segmentation(args.appa)[["zip", "persona", "weight"]]
+    geo = deliverables.load_geography().set_index("zip")
+    group_map = dict(zip(ref.zip_cbsa["zip"].astype(str).str.zfill(5), ref.zip_cbsa["cbsa"]))
+    table = spatial.compare_predictors(survey, dmix, geo[["lat", "lon"]], group_map, k=args.k)
+    print("=== Predictor bake-off (MSA-level, held-out) ===")
+    print(table.to_string(index=False))
+    print("\nHigher 'lift' (directional - chance) and lower 'mae' = better for the modeled ZIPs.")
+    return 0
+
+
 def cmd_query(args) -> int:
     """Plain-language lookups against the scored dataset."""
     from . import query
@@ -353,6 +371,13 @@ def main(argv=None) -> int:
     pof.add_argument("--data-vintage", default="NPOS2025;ACS2022;HUD2023Q4")
     pof.add_argument("--outdir", default="out_official")
     pof.set_defaults(func=cmd_official)
+
+    pbo = sub.add_parser("bakeoff", help="compare demographic vs spatial vs blend predictors")
+    pbo.add_argument("--appa", required=True)
+    pbo.add_argument("--census-key", default=None)
+    pbo.add_argument("--year", type=int, default=2022)
+    pbo.add_argument("--k", type=int, default=10)
+    pbo.set_defaults(func=cmd_bakeoff)
 
     pq = sub.add_parser("query", help="plain-language lookups against the scored dataset")
     pq.add_argument("--enriched", required=True)
