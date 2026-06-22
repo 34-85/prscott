@@ -254,6 +254,52 @@ def test_apply_calibration_preserves_observed_and_adds_raw():
     assert (obs["confidence"] == obs["confidence_raw"]).all()   # ground truth untouched
 
 
+def test_propensity_fingerprints_load():
+    from zip_msa_personas import propensity as pr
+    fp = pr.load_fingerprints()
+    assert len(fp.personas) == 7
+    assert abs(sum(fp.base_rates.values()) - 1.0) < 1e-6
+    for p in fp.personas:
+        for v in ("age", "income", "race", "marital"):
+            assert v in fp.fingerprints[p]
+
+
+def _archetype(age, inc, race, mar):
+    from zip_msa_personas import propensity as pr
+    d = {}
+    for v, cat in [("age", age), ("income", inc), ("race", race), ("marital", mar)]:
+        for c in pr.ACS_CATEGORY_SPEC[v]:
+            d[f"{v}_{c}"] = 1.0 if c == cat else 0.0
+    return d
+
+
+def test_propensity_matches_deck_signatures():
+    from zip_msa_personas import propensity as pr
+    fp = pr.load_fingerprints()
+    arch = pd.DataFrame(
+        {
+            "young_affluent_diverse": _archetype("genz", "high", "asian", "never_married"),
+            "older_white_lowincome": _archetype("boomer", "low", "white", "formerly_married"),
+        }
+    ).T
+    mix = pr.score_demographics(arch, fp)
+    # mix sums to 1 per ZIP
+    assert (abs(mix.sum(axis=1) - 1.0) < 1e-9).all()
+    # young/affluent/diverse over-indexes Security Seekers above its base rate
+    assert mix.loc["young_affluent_diverse", "Security Seekers"] > fp.base_rates["Security Seekers"]
+    assert pr.dominant(mix).loc["young_affluent_diverse", "persona"] == "Security Seekers"
+    # older/white/low-income leans Comfort Companions
+    assert pr.dominant(mix).loc["older_white_lowincome", "persona"] == "Comfort Companions"
+
+
+def test_propensity_national_index_is_100_at_base_rate():
+    from zip_msa_personas import propensity as pr
+    fp = pr.load_fingerprints()
+    mix = pd.DataFrame([fp.base_rates])  # one "ZIP" exactly at national mix
+    idx = pr.national_index(mix, fp.base_rates)
+    assert (abs(idx.iloc[0] - 100) <= 1).all()
+
+
 def test_maps_render_png_files():
     import tempfile, os
     from zip_msa_personas import maps

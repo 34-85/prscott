@@ -1,0 +1,309 @@
+{
+ "_meta": {
+  "source": "APPA Pet Owner Segmentation deck, May 2024 (n=5000)",
+  "index_convention": "100 = national average; >120 over-indexes, <80 under-indexes",
+  "predictive_vars": [
+   "age",
+   "income",
+   "race",
+   "marital"
+  ],
+  "descriptive_vars": [
+   "pet_type",
+   "spend",
+   "role"
+  ],
+  "note": "Index numbers are per-category likelihood ratios used as the propensity model parameters."
+ },
+ "base_rates": {
+  "Comfort Companions": 0.17,
+  "Prudent Pragmatists": 0.09,
+  "Passionate Parents": 0.16,
+  "Ambitious Go-Getters": 0.14,
+  "Security Seekers": 0.1,
+  "Adventure Seekers": 0.17,
+  "Well-being Warriors": 0.17
+ },
+ "fingerprints": {
+  "Prudent Pragmatists": {
+   "role": {
+    "like_child": 82,
+    "like_friend": 109,
+    "like_family": 97,
+    "just_pet": 227
+   },
+   "age": {
+    "genz": 51,
+    "millennial": 87,
+    "genx": 118,
+    "boomer": 118
+   },
+   "income": {
+    "low": 134,
+    "mid": 101,
+    "high": 54
+   },
+   "race": {
+    "white": 114,
+    "black": 77,
+    "asian": 52,
+    "hispanic": 61
+   },
+   "marital": {
+    "married": 98,
+    "formerly_married": 136,
+    "never_married": 76
+   },
+   "pet_type": {
+    "dog": 88,
+    "cat": 122,
+    "other": 147
+   },
+   "spend": {
+    "premium": 46,
+    "moderate": 93,
+    "budget": 242
+   }
+  },
+  "Security Seekers": {
+   "role": {
+    "like_child": 98,
+    "like_friend": 169,
+    "like_family": 83,
+    "just_pet": 97
+   },
+   "age": {
+    "genz": 229,
+    "millennial": 141,
+    "genx": 68,
+    "boomer": 33
+   },
+   "income": {
+    "low": 74,
+    "mid": 87,
+    "high": 155
+   },
+   "race": {
+    "white": 63,
+    "black": 205,
+    "asian": 217,
+    "hispanic": 197
+   },
+   "marital": {
+    "married": 97,
+    "formerly_married": 48,
+    "never_married": 143
+   },
+   "pet_type": {
+    "dog": 106,
+    "cat": 83,
+    "other": 125
+   },
+   "spend": {
+    "premium": 154,
+    "moderate": 79,
+    "budget": 72
+   }
+  },
+  "Comfort Companions": {
+   "age": {
+    "genz": 54,
+    "millennial": 60,
+    "genx": 98,
+    "boomer": 157
+   },
+   "income": {
+    "low": 99,
+    "mid": 105,
+    "high": 93
+   },
+   "race": {
+    "white": 122,
+    "black": 28,
+    "asian": 78,
+    "hispanic": 44
+   },
+   "marital": {
+    "married": 98,
+    "formerly_married": 133,
+    "never_married": 78
+   },
+   "role": {
+    "like_child": 89,
+    "like_friend": 100,
+    "like_family": 109,
+    "just_pet": 112
+   },
+   "pet_type": {
+    "cat": 181,
+    "dog": 64,
+    "other": 100
+   },
+   "spend": {
+    "premium": 54,
+    "moderate": 122,
+    "budget": 107
+   }
+  },
+  "Adventure Seekers": {
+   "role": {
+    "like_child": 94,
+    "like_friend": 110,
+    "like_family": 104,
+    "just_pet": 91
+   },
+   "age": {
+    "genz": 115,
+    "millennial": 100,
+    "genx": 103,
+    "boomer": 91
+   },
+   "income": {
+    "low": 99,
+    "mid": 99,
+    "high": 104
+   },
+   "race": {
+    "white": 96,
+    "black": 103,
+    "asian": 111,
+    "hispanic": 113
+   },
+   "marital": {
+    "married": 99,
+    "formerly_married": 88,
+    "never_married": 110
+   },
+   "pet_type": {
+    "dog": 106,
+    "cat": 91,
+    "other": 67
+   },
+   "spend": {
+    "premium": 108,
+    "moderate": 101,
+    "budget": 79
+   }
+  },
+  "Ambitious Go-Getters": {
+   "role": {
+    "like_child": 113,
+    "like_friend": 98,
+    "like_family": 91,
+    "just_pet": 69
+   },
+   "age": {
+    "genz": 129,
+    "millennial": 131,
+    "genx": 90,
+    "boomer": 68
+   },
+   "income": {
+    "low": 90,
+    "mid": 98,
+    "high": 116
+   },
+   "race": {
+    "white": 90,
+    "black": 130,
+    "asian": 107,
+    "hispanic": 132
+   },
+   "marital": {
+    "married": 96,
+    "formerly_married": 78,
+    "never_married": 121
+   },
+   "pet_type": {
+    "dog": 112,
+    "cat": 75,
+    "other": 87
+   },
+   "spend": {
+    "premium": 140,
+    "moderate": 87,
+    "budget": 69
+   }
+  },
+  "Well-being Warriors": {
+   "role": {
+    "like_child": 94,
+    "like_friend": 88,
+    "like_family": 111,
+    "just_pet": 101
+   },
+   "age": {
+    "genz": 68,
+    "millennial": 88,
+    "genx": 108,
+    "boomer": 118
+   },
+   "income": {
+    "low": 80,
+    "mid": 108,
+    "high": 113
+   },
+   "race": {
+    "white": 99,
+    "black": 114,
+    "asian": 76,
+    "hispanic": 102
+   },
+   "marital": {
+    "married": 114,
+    "formerly_married": 100,
+    "never_married": 81
+   },
+   "pet_type": {
+    "dog": 116,
+    "cat": 61,
+    "other": 116
+   },
+   "spend": {
+    "premium": 100,
+    "moderate": 102,
+    "budget": 94
+   }
+  },
+  "Passionate Parents": {
+   "role": {
+    "like_child": 124,
+    "like_friend": 57,
+    "like_family": 95,
+    "just_pet": 54
+   },
+   "age": {
+    "genz": 86,
+    "millennial": 110,
+    "genx": 109,
+    "boomer": 90
+   },
+   "income": {
+    "low": 129,
+    "mid": 97,
+    "high": 67
+   },
+   "race": {
+    "white": 105,
+    "black": 86,
+    "asian": 86,
+    "hispanic": 80
+   },
+   "marital": {
+    "married": 95,
+    "formerly_married": 108,
+    "never_married": 101
+   },
+   "pet_type": {
+    "dog": 110,
+    "cat": 79,
+    "other": 90
+   },
+   "spend": {
+    "premium": 103,
+    "moderate": 101,
+    "budget": 89
+   }
+  }
+ }
+}

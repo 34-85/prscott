@@ -207,6 +207,8 @@ zip_msa_personas/
   crosswalk.py     # Stage 1: ZIP -> Metro MSA (dominant assign)
   personas.py      # Stage 2: load + aggregate your persona file
   impute.py        # Stage 3: similarity imputation + disclosed extrapolation
+  propensity.py    # demographic-propensity model (persona mix from ACS demographics)
+  data/persona_fingerprints.json   # per-persona demographic indices (from APPA deck)
   shrinkage.py     # empirical-Bayes shrinkage of thin survey ZIPs toward market prior
   calibration.py   # isotonic confidence calibration (confidence -> true probability)
   appa_loader.py   # parse the APPA NPOS ZIP/DMA segmentation workbook -> tidy

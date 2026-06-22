@@ -1,0 +1,136 @@
+"""Demographic-propensity model: persona mix from Census demographics.
+
+The APPA segmentation deck gives, for each persona, an **index** per demographic
+category (age, income, race/ethnicity, marital status) -- e.g. Ambitious
+Go-Getters index 131 on Millennials, 116 on high income. An index is a
+likelihood ratio (100 = national average), so we can score any ZIP's
+demographics against every persona's fingerprint and estimate its persona mix --
+*without* needing the survey to have reached that ZIP.
+
+Model (naive-Bayes / log-linear over demographic marginals):
+
+    score(persona | zip) = base_rate(persona)
+                           * PROD over variables v of
+                             ( SUM over categories c of  frac_zip[v,c] * index[persona,v,c] / 100 )
+
+then normalize across personas so the mix sums to 1. The inner sum is the ZIP's
+average index for that persona on variable v; the product combines variables
+under an independence assumption. Everything is explainable: each persona's
+score decomposes into which demographics drove it.
+
+Only Census-available variables are used to *predict* (age, income, race,
+marital). Pet type / spend / role are persona descriptors, not ZIP-level
+predictors, so they live in the fingerprint for profiling but not scoring.
+"""
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+DEFAULT_FINGERPRINTS = Path(__file__).resolve().parent / "data" / "persona_fingerprints.json"
+
+# How each predictive variable's categories map to expected demographic-fraction
+# columns. The official run produces these fractions per ZIP from ACS:
+#   age      -> generations from ACS age bands (B01001)
+#   income   -> household-income tiers (B19001): low/<50k, mid/50-100k, high/>100k
+#   race     -> B02001 + Hispanic origin B03003 (normalized within the variable)
+#   marital  -> B12001: married / formerly (widowed+divorced+separated) / never
+ACS_CATEGORY_SPEC = {
+    "age": ["genz", "millennial", "genx", "boomer"],
+    "income": ["low", "mid", "high"],
+    "race": ["white", "black", "asian", "hispanic"],
+    "marital": ["married", "formerly_married", "never_married"],
+}
+
+
+@dataclass
+class Fingerprints:
+    base_rates: dict
+    fingerprints: dict          # persona -> var -> category -> index
+    meta: dict
+
+    @property
+    def personas(self) -> list[str]:
+        return list(self.fingerprints)
+
+
+def load_fingerprints(path: str | Path = DEFAULT_FINGERPRINTS) -> Fingerprints:
+    d = json.loads(Path(path).read_text())
+    return Fingerprints(d["base_rates"], d["fingerprints"], d.get("_meta", {}))
+
+
+def _col(var: str, cat: str) -> str:
+    return f"{var}_{cat}"
+
+
+def score_demographics(
+    demographics: pd.DataFrame,
+    fp: Fingerprints | None = None,
+    predictive_vars: list[str] | None = None,
+) -> pd.DataFrame:
+    """Per-ZIP persona mix from demographic fractions.
+
+    ``demographics`` is indexed by zip with columns ``<var>_<category>`` holding
+    the ZIP's population fraction in each category (e.g. ``age_genz``,
+    ``income_high``, ``race_white``, ``marital_married``). Categories within a
+    variable are normalized to sum to 1 (defensive).
+
+    Returns a DataFrame indexed by zip with one column per persona (shares that
+    sum to 1).
+    """
+    fp = fp or load_fingerprints()
+    vars_ = predictive_vars or fp.meta.get("predictive_vars") or list(ACS_CATEGORY_SPEC)
+    personas = fp.personas
+    df = demographics.copy()
+
+    # Normalize each variable's category fractions to sum to 1 per ZIP.
+    norm = {}
+    for v in vars_:
+        cats = ACS_CATEGORY_SPEC[v]
+        cols = [_col(v, c) for c in cats if _col(v, c) in df.columns]
+        block = df[cols].fillna(0.0).to_numpy(float)
+        totals = block.sum(axis=1, keepdims=True)
+        totals[totals == 0] = 1.0
+        norm[v] = (block / totals, cats, cols)
+
+    log_scores = np.zeros((len(df), len(personas)))
+    for pi, persona in enumerate(personas):
+        ls = np.log(max(fp.base_rates.get(persona, 1e-6), 1e-9))
+        for v in vars_:
+            block, cats, cols = norm[v]
+            idx = np.array([fp.fingerprints[persona].get(v, {}).get(c, 100) / 100.0
+                            for c in cats if _col(v, c) in df.columns])
+            avg_index = block @ idx            # ZIP's avg index for this persona/var
+            avg_index = np.clip(avg_index, 1e-6, None)
+            ls = ls + np.log(avg_index)
+        log_scores[:, pi] = ls
+
+    # Softmax across personas -> mix that sums to 1.
+    log_scores -= log_scores.max(axis=1, keepdims=True)
+    w = np.exp(log_scores)
+    mix = w / w.sum(axis=1, keepdims=True)
+    return pd.DataFrame(mix, index=df.index, columns=personas)
+
+
+def dominant(mix: pd.DataFrame) -> pd.DataFrame:
+    """Top persona + its share per ZIP."""
+    top = mix.idxmax(axis=1)
+    return pd.DataFrame({"persona": top, "share": mix.max(axis=1)}, index=mix.index)
+
+
+def national_index(mix: pd.DataFrame, base_rates: dict) -> pd.DataFrame:
+    """Convert a persona mix to index vs the national base rate (100 = average)."""
+    out = mix.copy()
+    for p in out.columns:
+        out[p] = out[p] / max(base_rates.get(p, 1e-9), 1e-9) * 100
+    return out.round(0)
+
+
+__all__ = [
+    "Fingerprints", "load_fingerprints", "score_demographics", "dominant",
+    "national_index", "ACS_CATEGORY_SPEC", "DEFAULT_FINGERPRINTS",
+]

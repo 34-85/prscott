@@ -86,6 +86,18 @@ aggregate and at DMA level (208 markets). Consequences, now built:
 Remaining for the full national run: ZIP->MSA (HUD) crosswalk + ACS features
 (need census.gov/huduser.gov), and your licensed ZIP->DMA crosswalk file.
 
+## Demographic-propensity model (`propensity.py`)
+Built from the APPA segmentation deck: each persona's demographic **index**
+(age, income, race/ethnicity, marital status) is a likelihood ratio, so any
+ZIP's Census demographics can be scored against all 7 fingerprints to estimate
+its persona mix -- independent of survey coverage. Naive-Bayes / log-linear,
+fully explainable. Validated on archetypes (young/affluent/diverse -> Security
+Seekers; older/white/lower-income -> Comfort Companions).
+Next: in the official run, use this as the demographic prior for empty ZIPs
+(replacing/blending the spatial smoothing), and validate model-vs-survey
+agreement where NPOS coverage exists. Needs ACS category fractions per ZIP
+(see `ACS_CATEGORY_SPEC`).
+
 ## Engineering backlog (priority order)
 1. **Calibration hardening** — ✅ isotonic calibration shipped (`calibration.py`):
    raw confidence → true probability, fit on held-out backtest predictions,
