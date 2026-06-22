@@ -12,3 +12,4 @@ market_viability*.csv
 appa_personas*.csv
 calibrator.json
 .venv/
+bcfp_alignment*.csv
