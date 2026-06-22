@@ -237,6 +237,41 @@ def cmd_marketfit(args) -> int:
     return 0
 
 
+def cmd_certoverlay(args) -> int:
+    """Overlay a city list (default: Better Cities for Pets) onto viability grades."""
+    from . import overlay, deliverables
+    enr = pd.read_csv(args.enriched, dtype={"zip": str})
+    vi = pd.read_csv(args.viability)
+    cities = overlay.load_city_list(args.cities) if args.cities else overlay.load_city_list()
+    geo = deliverables.load_geography()
+    city_msa = overlay.city_to_msa(enr, geo)
+    res = overlay.align(cities, city_msa, vi)
+
+    print(f"Certified cities: {res['n_total']} | mapped to a scored metro: {res['n_matched']} | "
+          f"unmapped: {res['n_unmatched']}")
+    gd, share = res["grade_dist"], res["universe_share"]
+    print("\nGrade distribution of certified cities vs the metro universe:")
+    for g in ["A", "B", "C", "D"]:
+        cert = int(gd.get(g, 0))
+        cert_pct = (cert / res["n_matched"] * 100) if res["n_matched"] else 0
+        uni_pct = float(share.get(g, 0)) * 100
+        print(f"  Grade {g}: {cert:3d} certified ({cert_pct:4.0f}%)  vs  {uni_pct:4.0f}% of all metros")
+
+    det = res["detail"]
+    cols = [c for c in ["raw", "msa_title", "market_grade", "persona_value_index",
+                        "recommendation", "median_income"] if c in det.columns]
+    matched = det[det["market_grade"].notna()] if "market_grade" in det else det
+    print(f"\nTop certified cities by metro opportunity:")
+    print(matched.head(20)[cols].to_string(index=False))
+    if res["n_unmatched"]:
+        miss = res["unmatched"]["raw"].tolist()
+        print(f"\nUnmapped ({len(miss)}; non-US or no ZIP match): {', '.join(miss[:25])}"
+              + (" ..." if len(miss) > 25 else ""))
+    det.to_csv(args.out, index=False)
+    print(f"\nFull overlay -> {args.out}")
+    return 0
+
+
 def cmd_viability(args) -> int:
     """Combined market-viability sheet: persona-value + over-index + income +
     addressable demand + vet-siting model, reliability-filtered."""
@@ -554,6 +589,13 @@ def main(argv=None) -> int:
                      help="min survey-backed ZIPs for a market to be trusted in the ranking (reliability filter)")
     pmf.add_argument("--out", default="market_ranking.csv")
     pmf.set_defaults(func=cmd_marketfit)
+
+    pco = sub.add_parser("certoverlay", help="overlay a city list (e.g. Better Cities for Pets) onto viability grades")
+    pco.add_argument("--enriched", required=True)
+    pco.add_argument("--viability", required=True, help="market_viability_vetsiting.csv from `viability`")
+    pco.add_argument("--cities", default=None, help="city list file (default: bundled Better Cities for Pets)")
+    pco.add_argument("--out", default="cert_overlay.csv")
+    pco.set_defaults(func=cmd_certoverlay)
 
     pvy = sub.add_parser("viability", help="combined market-viability + vet-siting sheet (persona value x income x demand)")
     pvy.add_argument("--enriched", required=True)

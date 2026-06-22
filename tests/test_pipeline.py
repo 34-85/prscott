@@ -986,6 +986,30 @@ def test_econ_viability_sheet_reliability_and_grades():
     assert {"Big", "Thin"}.issubset(set(sheet.index))
 
 
+def test_overlay_parses_and_aligns_city_list_to_grades():
+    from zip_msa_personas import overlay
+    cities = overlay.parse_city_lines([
+        "# comment", "", "Washington, D.C.", "Charlotte, NC.", "Caledon, Ontario", "Austin, TX"])
+    assert set(cities["state"]) == {"DC", "NC", "ONTARIO", "TX"}
+    assert not bool(cities.set_index("city_key").loc["caledon", "us"])   # Canada flagged non-US
+    assert bool(cities.set_index("city_key").loc["austin", "us"])
+
+    enr = pd.DataFrame({"zip": ["73301", "73344", "28202", "20001"],
+                        "msa_title": ["Austin, TX", "Austin, TX", "Charlotte, NC", "Washington, DC"]})
+    geo = pd.DataFrame({"zip": ["73301", "73344", "28202", "20001"],
+                        "city": ["Austin", "Austin", "Charlotte", "Washington"],
+                        "state": ["TX", "TX", "NC", "DC"], "lat": [30, 30, 35, 38], "lon": [-97, -97, -80, -77]})
+    c2m = overlay.city_to_msa(enr, geo)
+    assert c2m.set_index(["city_key", "state"]).loc[("austin", "TX"), "msa_title"] == "Austin, TX"
+
+    vi = pd.DataFrame({"msa_title": ["Austin, TX", "Charlotte, NC", "Washington, DC"],
+                       "market_grade": ["A", "B", "A"], "opportunity_score": [9, 5, 8],
+                       "persona_value_index": [110, 102, 115]})
+    res = overlay.align(cities, c2m, vi)
+    assert res["n_matched"] == 3 and res["n_unmatched"] == 1     # Caledon unmapped
+    assert int(res["grade_dist"]["A"]) == 2 and int(res["grade_dist"]["B"]) == 1
+
+
 def _df_to_dist(persona_df):
     import pandas as pd
     raw = pd.DataFrame(

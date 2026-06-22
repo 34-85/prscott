@@ -117,6 +117,7 @@ All three consume the `official` outputs (`enriched_national_official.csv` +
 | `vetsiting` | census + key (optional) | Per-metro scorecard: full-service hospital vs urgent-care lean, plus an avoid-gate on addressable demand (needs the Census volume layer). |
 | `marketfit` | — | Brand/retailer: rank markets for a product category/format, **or** read one metro's assortment emphasis. |
 | `derive-affinities` | — | Respondent microdata → empirical persona × category affinity table that feeds `marketfit --npos-affinities`. |
+| `certoverlay` | census (geography) | Overlay a city list (default: Mars "Better Cities for Pets") onto the viability grades — does an external footprint sit in high-opportunity metros? |
 
 ```bash
 # The complete package: every metro graded A-D on persona-value x income x
@@ -124,6 +125,10 @@ All three consume the `official` outputs (`enriched_national_official.csv` +
 # both .csv and .xlsx.
 python -m zip_msa_personas viability --enriched E.csv --distributions D.csv \
     --census-key $CENSUS_KEY --min-survey 3 --out market_viability_vetsiting.csv
+
+# How a partner's city list (Better Cities for Pets, bundled) maps to the grades
+python -m zip_msa_personas certoverlay --enriched E.csv \
+    --viability market_viability_vetsiting.csv --out cert_overlay.csv
 
 # Vet group: where to build a hospital, an urgent care, or avoid
 python -m zip_msa_personas vetsiting --enriched E.csv --distributions D.csv \

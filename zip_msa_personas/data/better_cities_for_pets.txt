@@ -1,0 +1,191 @@
+# Mars Petcare "Better Cities for Pets" certified communities.
+# Public program roster (not proprietary NPOS data). One "City, ST" per line.
+# Used by `certoverlay` to compare the certification footprint against the
+# market-viability grades. Non-US entries (e.g. Ontario, Canada) won't map to a
+# US CBSA and are reported as unmatched.
+Agoura Hills, CA
+Aiken, SC
+Alameda, CA
+Alexandria, VA
+Allentown, PA
+Altus, OK
+Arlington, TX
+Arlington, VA
+Auburn, ME
+Austin, TX
+Baltimore, MD
+Bartlett, TN
+Batavia, OH
+Bellevue, OH
+Benton, AR
+Bentonville, AR
+Beverly Hills, CA
+Bloomington, IN
+Boca Raton, FL
+Bolingbrook, IL
+Bound Brook, NJ
+Bowling Green, MO
+Brentwood, TN
+Caledon, Ontario
+Calumet City, IL
+Camuy, Puerto Rico
+Cape Coral, FL
+Carmichael, CA
+Carson City, NV
+Carthage, IL
+Central Falls, RI
+Charlotte, NC
+Chelmsford, MA
+Cheyenne, WY
+Cibolo, TX
+Clay, NY
+Cleveland, OH
+Columbia, SC
+Columbia, TN
+Cuero, TX
+Dallas, TX
+Danbury, CT
+Dania Beach, FL
+Daytona Beach, FL
+Dearborn, MI
+Downey, CA
+Dublin, CA
+Duluth, MN
+Edinburg, TX
+Elsa, TX
+Emeryville, CA
+Erie, CO
+Eureka Springs, AR
+Everett, WA
+Farmington Hills, MI
+Findlay, OH
+Flagstaff, AZ
+Fort Smith, AR
+Fort Wayne, IN
+Fort Worth, TX
+Franklin, TN
+Fremont, CA
+Gainesville, FL
+Germantown, TN
+Grand Forks, ND
+Gresham, OR
+Gulfport, MS
+Hallandale Beach, FL
+Hannibal, MO
+Harlingen, TX
+Hattiesburg, MS
+Henderson, NV
+Hendersonville, TN
+Hollywood, FL
+Hopkinsville, KY
+Houston, TX
+Hughson, CA
+Huntington, WV
+Independence, IA
+Jackson, WY
+Jersey City, NJ
+Kansas City, MO
+Key West, FL
+Kitchener, Ontario
+Laguna Niguel, CA
+Lake Stevens, WA
+Lakeland, FL
+Lancaster, OH
+Largo, FL
+Las Vegas, NV
+Lavonia, GA
+Lewiston, ID
+Lexington, VA
+Livermore, CA
+Louisville, KY
+Madison, AL
+Manhattan Beach, CA
+Manteo, NC
+Margate, FL
+Mattoon, IL
+Memphis, TN
+Miami Beach, FL
+Miami Lakes, FL
+Miami, FL
+Mission, TX
+Montclair, NJ
+Moreno Valley, CA
+Mount Pleasant, SC
+Mundelein, IL
+Muscatine, IA
+Myrtle Beach, SC
+Nashville, TN
+Nauvoo, IL
+New Orleans, LA
+Nicholasville, KY
+North Charleston, SC
+North Lauderdale, FL
+Novato, CA
+Oakland Park, FL
+Oakland, CA
+Oconomowoc, WI
+Olney, IL
+Orion Township, MI
+Ormond Beach, FL
+Ortonville, MI
+Oxford, MS
+Palm Springs, CA
+Pauls Valley, OK
+Philadelphia, PA
+Phoenix, AZ
+Plano, TX
+Port St. Lucie, FL
+Portage, MI
+Pottstown, PA
+Pratt, KS
+Quebradillas, Puerto Rico
+Redmond, WA
+Reno, NV
+Reynoldsburg, OH
+Rialto, CA
+Richmond, VA
+Riverside, CA
+Rochester Hills, MI
+Rochester, MI
+Royalton, MN
+Salt Lake City, UT
+San Marcos, TX
+Sanford, FL
+Santa Clarita, CA
+Santa Monica, CA
+Savage, MN
+Savannah, GA
+Schenectady, NY
+Sheboygan, WI
+Shelby Township, MI
+Sherwood, AR
+Sonoma, CA
+South Sioux City, NE
+Southport, NC
+Sparks, NV
+Spokane, WA
+St. Charles, MO
+St. Joseph, MO
+St. Petersburg, FL
+Starkville, MS
+Stockton, CA
+Sunrise, FL
+Surfside, FL
+Sutherlin, OR
+Sweet Home, OR
+Syracuse, NY
+Tamarac, FL
+Tampa, FL
+Tempe, AZ
+Topeka, KS
+Tracy, CA
+Treasure Island, FL
+Tucson, AZ
+Union City, CA
+Vancouver, WA
+Walnut Creek, CA
+Washington, DC
+Waterford, CA
+Webster, FL
+West Hollywood, CA
+Westland, MI

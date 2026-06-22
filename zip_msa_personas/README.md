@@ -244,6 +244,7 @@ zip_msa_personas/
   rights.py        # license tagging + rights-safe export
   # --- customer applications + delivery ---
   econ.py          # persona economic value (deck-derived) + combined viability sheet
+  overlay.py       # overlay an external city list (e.g. Better Cities for Pets) onto grades
   vetsiting.py     # hospital / urgent-care / avoid scorecard per metro
   marketfit.py     # brand/retailer category & assortment fit
   microdata.py     # respondent microdata -> empirical persona affinities
