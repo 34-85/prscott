@@ -14,3 +14,4 @@ calibrator.json
 .venv/
 bcfp_alignment*.csv
 scratch_bcfp/
+cert_overlay*.csv
