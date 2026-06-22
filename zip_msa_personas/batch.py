@@ -16,6 +16,10 @@ from . import impute, pipeline
 from .data_sources import ReferenceData
 
 _TIER_ORDER = [impute.OBSERVED, impute.IMPUTED, impute.EXTRAPOLATED]
+# The demographic-blend (official) run uses its own provenance tiers; recognize
+# them too so coverage reporting doesn't silently drop them.
+_BLEND_TIERS = ["survey_anchored", "demographic_model"]
+_ALL_TIERS = _TIER_ORDER + _BLEND_TIERS
 
 
 @dataclass
@@ -46,10 +50,14 @@ class CoverageReport:
 def coverage_report(enriched: pd.DataFrame) -> CoverageReport:
     total = len(enriched)
 
+    # Order known tiers first (impute tiers, then blend tiers), keeping any others.
+    present = list(enriched["provenance"].dropna().unique())
+    order = [t for t in _ALL_TIERS if t in present] + [t for t in present if t not in _ALL_TIERS]
+
     by_prov = (
         enriched.groupby("provenance")
         .agg(zips=("zip", "size"), mean_confidence=("confidence", "mean"))
-        .reindex(_TIER_ORDER)
+        .reindex(order)
         .dropna(how="all")
         .reset_index()
     )
@@ -58,7 +66,7 @@ def coverage_report(enriched: pd.DataFrame) -> CoverageReport:
     by_metro = (
         enriched.assign(area=enriched["in_metro"].map({True: "metro", False: "non_metro"}).fillna("unknown"))
         .pivot_table(index="area", columns="provenance", values="zip", aggfunc="count", fill_value=0)
-        .reindex(columns=_TIER_ORDER, fill_value=0)
+        .reindex(columns=order, fill_value=0)
         .reset_index()
     )
 
