@@ -45,6 +45,7 @@ def build_persona_onepager(
     map_png: str | Path | None,
     top_markets: pd.DataFrame | None,
     out_path: str | Path,
+    is_preview: bool = True,
 ) -> Path:
     """Render a one-pager PNG for ``persona``.
 
@@ -102,8 +103,10 @@ def build_persona_onepager(
                  for r in top_markets.head(8).itertuples()]
         ax.text(0, 0.86, "\n".join(lines), fontsize=9.2, va="top", family="monospace")
 
-    fig.text(0.04, 0.025, "Source: APPA Pet Owner Segmentation (NPOS). PREVIEW — geography/demographics finalized in official run.",
-             fontsize=7.5, color="#999")
+    footer = ("Source: APPA Pet Owner Segmentation (NPOS). PREVIEW — geography/demographics finalized in official run."
+              if is_preview else
+              "Source: APPA Pet Owner Segmentation (NPOS) + U.S. Census ACS. Modeled ZIPs are directional; lead with MSA/region.")
+    fig.text(0.04, 0.025, footer, fontsize=7.5, color="#999")
     fig.savefig(out_path, bbox_inches="tight", facecolor="white")
     plt.close(fig)
     return Path(out_path)

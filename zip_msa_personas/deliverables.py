@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from . import appa_loader, maps, onepager, propensity, reporting
+from . import appa_loader, maps, onepager, propensity, query, reporting
 from .data_sources import CACHE_DIR, _download
 
 # Public ZIP geography (GeoNames mirror on GitHub -- allowlisted). Used only for
@@ -69,7 +69,16 @@ def build_deliverables(enriched: pd.DataFrame, distributions: pd.DataFrame, outd
         m[f"{s}_idx"] = m[s] / natl[s] * 100
         mp = out / "maps" / f"{i:02d}_{re.sub(r'[^A-Za-z]+', '_', s)}_index.png"
         maps.index_map(m, f"{s}_idx", mp, title=f"{s} — index vs US average (100=avg)")
-        onepager.build_persona_onepager(s, fp, desc, mp, None, out / "onepagers" / f"{re.sub(r'[^A-Za-z]+','_',s)}.png")
+        # Real top markets (MSAs over-indexing on this persona) for the one-pager.
+        try:
+            tm = query.top_markets_for_persona(e.reset_index() if e.index.name == "zip" else e,
+                                               distributions, s, "msa_title", n=8,
+                                               base_rate=float(natl[s])).rename(columns={"msa_title": "geo"})
+        except Exception:  # noqa: BLE001
+            tm = None
+        onepager.build_persona_onepager(s, fp, desc, mp, tm,
+                                        out / "onepagers" / f"{re.sub(r'[^A-Za-z]+','_',s)}.png",
+                                        is_preview=is_preview)
     return out
 
 
