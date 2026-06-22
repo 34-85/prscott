@@ -337,6 +337,43 @@ def test_run_demographic_blend_scores_every_demographic_zip():
     assert anchored <= surveyed
 
 
+def test_indexing_gates_significance_on_sample_size():
+    from zip_msa_personas import indexing
+    shares = pd.DataFrame({"X": [1.0, 0.5], "Y": [0.0, 0.5]}, index=["thin", "solid"])
+    base = {"X": 0.1, "Y": 0.9}
+    n = pd.Series({"thin": 1.0, "solid": 200.0})
+    t = indexing.index_with_significance(shares, base, n, min_n=30).set_index(["geo", "persona"])
+    # A single-respondent 100% cell must NOT be called significant.
+    assert not t.loc[("thin", "X"), "significant"]
+    # A large-sample clear over-index IS significant.
+    assert t.loc[("solid", "X"), "significant"] and t.loc[("solid", "X"), "direction"] == "over"
+    assert t.loc[("solid", "X"), "index"] == 500
+
+
+def test_lookalike_excludes_seeds_and_ranks_by_similarity():
+    from zip_msa_personas import lookalike
+    profiles = pd.DataFrame(
+        {"X": [0.9, 0.85, 0.1, 0.88], "Y": [0.1, 0.15, 0.9, 0.12]},
+        index=["seed", "similar", "different", "similar2"],
+    )
+    res = lookalike.find_lookalikes(profiles, ["seed"], top_n=3)
+    assert "seed" not in set(res["geo"])                 # seeds excluded
+    assert res.iloc[0]["geo"] in {"similar", "similar2"}  # closest profile ranks first
+    assert res["similarity"].is_monotonic_decreasing
+    assert res.iloc[-1]["geo"] == "different"
+
+
+def test_onepager_renders():
+    import tempfile, os
+    from zip_msa_personas import onepager, propensity
+    fp = propensity.load_fingerprints()
+    desc = onepager.load_descriptions(propensity.DEFAULT_FINGERPRINTS.parent / "persona_descriptions.json")
+    fd, path = tempfile.mkstemp(suffix=".png"); os.close(fd)
+    out = onepager.build_persona_onepager("Security Seekers", fp, desc, None, None, path)
+    assert out.exists() and out.stat().st_size > 0
+    os.remove(path)
+
+
 def test_maps_render_png_files():
     import tempfile, os
     from zip_msa_personas import maps
