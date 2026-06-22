@@ -116,6 +116,72 @@ def score_demographics(
     return pd.DataFrame(mix, index=df.index, columns=personas)
 
 
+SURVEY_ANCHORED = "survey_anchored"
+DEMOGRAPHIC_MODEL = "demographic_model"
+
+
+def blend_with_survey(
+    survey_dist: pd.DataFrame,
+    demographic_mix: pd.DataFrame,
+    alpha: float = 5.0,
+):
+    """Empirical-Bayes blend of the survey with a per-ZIP demographic prior.
+
+    For every ZIP that has a demographic prior:
+      * if the survey reached it -> posterior = (survey_counts + alpha*prior) /
+        (n + alpha), tagged ``survey_anchored``;
+      * otherwise -> the demographic prior itself, tagged ``demographic_model``.
+
+    Because the demographic model covers every ZIP, this eliminates the
+    disclosed low-confidence extrapolation tail: empty ZIPs get a real,
+    demographics-based estimate instead of a coarse baseline.
+
+    Parameters
+    ----------
+    survey_dist : long (zip, persona, weight) -- raw survey weighted counts.
+    demographic_mix : DataFrame indexed by zip, one column per persona (prior
+        shares summing to 1), e.g. from ``score_demographics``.
+
+    Returns
+    -------
+    (assignments, distributions) :
+        assignments -> zip, persona, confidence, provenance
+        distributions -> long zip, persona, share
+    """
+    personas = list(demographic_mix.columns)
+    surv = (
+        survey_dist.groupby(["zip", "persona"])["weight"].sum().unstack(fill_value=0.0)
+        .reindex(columns=personas, fill_value=0.0)
+    )
+    n = surv.sum(axis=1)
+
+    arr = demographic_mix.to_numpy(float)
+    arr = arr / arr.sum(axis=1, keepdims=True)
+    surv_idx = {z: i for i, z in enumerate(surv.index)}
+
+    assign, dist_rows = [], []
+    for zi, z in enumerate(demographic_mix.index):
+        prior = arr[zi]
+        if z in surv_idx and n.iloc[surv_idx[z]] > 0:
+            w = surv.iloc[surv_idx[z]].to_numpy(float)
+            nz = w.sum()
+            post = (w + alpha * prior) / (nz + alpha)
+            prov = SURVEY_ANCHORED
+        else:
+            post = prior
+            prov = DEMOGRAPHIC_MODEL
+        post = post / post.sum()
+        ti = int(post.argmax())
+        assign.append((z, personas[ti], round(float(post[ti]), 4), prov))
+        for p, v in zip(personas, post):
+            if v > 0:
+                dist_rows.append((z, p, round(float(v), 5)))
+
+    assignments = pd.DataFrame(assign, columns=["zip", "persona", "confidence", "provenance"])
+    distributions = pd.DataFrame(dist_rows, columns=["zip", "persona", "share"])
+    return assignments, distributions
+
+
 def dominant(mix: pd.DataFrame) -> pd.DataFrame:
     """Top persona + its share per ZIP."""
     top = mix.idxmax(axis=1)
@@ -132,5 +198,6 @@ def national_index(mix: pd.DataFrame, base_rates: dict) -> pd.DataFrame:
 
 __all__ = [
     "Fingerprints", "load_fingerprints", "score_demographics", "dominant",
-    "national_index", "ACS_CATEGORY_SPEC", "DEFAULT_FINGERPRINTS",
+    "national_index", "blend_with_survey", "ACS_CATEGORY_SPEC", "DEFAULT_FINGERPRINTS",
+    "SURVEY_ANCHORED", "DEMOGRAPHIC_MODEL",
 ]

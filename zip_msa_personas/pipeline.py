@@ -91,4 +91,55 @@ def run_pipeline(
     )
 
 
-__all__ = ["PipelineOutput", "run_pipeline"]
+def run_demographic_blend(
+    persona_path: str | Path,
+    ref: ReferenceData,
+    demographic_mix: pd.DataFrame,
+    *,
+    alpha: float = 5.0,
+    data_vintage: str | None = None,
+    zip_to_dma: pd.DataFrame | None = None,
+) -> PipelineOutput:
+    """Score every ZIP by blending the survey with a demographic prior.
+
+    ``demographic_mix`` (zip x persona prior shares, e.g. from
+    ``propensity.score_demographics``) covers the whole country, so this path
+    replaces the spatial imputation + disclosed-extrapolation tail with a
+    demographics-based estimate everywhere, updated by the survey where it
+    exists (empirical Bayes). Provenance is ``survey_anchored`` or
+    ``demographic_model``.
+    """
+    from . import propensity
+
+    z2m = crosswalk.build_zip_to_msa(ref)
+    raw = personas.load_personas(persona_path)
+    raw_dist = personas.aggregate_to_zip_distribution(raw)
+
+    assignments, distributions = propensity.blend_with_survey(raw_dist, demographic_mix, alpha=alpha)
+
+    assignments = assignments.merge(
+        z2m[["zip", "msa_cbsa", "msa_title", "in_metro"]], on="zip", how="left"
+    )
+    if zip_to_dma is not None:
+        z2d = crosswalk.build_zip_to_dma(zip_to_dma)
+        assignments = assignments.merge(z2d, on="zip", how="left")
+    assignments["methodology_version"] = impute.METHODOLOGY_VERSION
+    assignments["data_vintage"] = data_vintage or "unspecified"
+    assignments["model_params"] = f"blend_alpha={alpha}"
+
+    enriched = assignments.merge(
+        raw_dist.groupby("zip")["persona"].apply(lambda s: ", ".join(sorted(set(s)))).rename("observed_personas"),
+        on="zip", how="left",
+    )
+    result = impute.ImputeResult(
+        assignments=assignments, threshold=float("nan"), baselines={}, distributions=distributions
+    )
+    return PipelineOutput(
+        enriched=enriched.sort_values("zip").reset_index(drop=True),
+        zip_to_msa=z2m,
+        observed_distribution=raw_dist,
+        impute_result=result,
+    )
+
+
+__all__ = ["PipelineOutput", "run_pipeline", "run_demographic_blend"]

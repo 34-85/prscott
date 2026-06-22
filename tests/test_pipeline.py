@@ -300,6 +300,43 @@ def test_propensity_national_index_is_100_at_base_rate():
     assert (abs(idx.iloc[0] - 100) <= 1).all()
 
 
+def test_blend_with_survey_covers_all_and_survey_overrides():
+    from zip_msa_personas import propensity as pr
+    survey = pd.DataFrame([("A", "X", 100.0), ("B", "Y", 2.0)], columns=["zip", "persona", "weight"])
+    demo = pd.DataFrame({"X": [0.2, 0.3, 0.9], "Y": [0.8, 0.7, 0.1]}, index=["A", "B", "C"])
+    a, d = pr.blend_with_survey(survey, demo, alpha=5.0)
+    a = a.set_index("zip")
+    # Strong survey overrides the prior; A flips from prior-Y to survey-X.
+    assert a.loc["A", "persona"] == "X" and a.loc["A", "provenance"] == pr.SURVEY_ANCHORED
+    # No-survey ZIP gets the demographic prior, full coverage, no extrapolation tail.
+    assert a.loc["C", "provenance"] == pr.DEMOGRAPHIC_MODEL and a.loc["C", "persona"] == "X"
+    assert set(a.index) == {"A", "B", "C"}
+    assert (abs(d.groupby("zip")["share"].sum() - 1.0) < 1e-6).all()
+
+
+def test_run_demographic_blend_scores_every_demographic_zip():
+    ref, features, persona_df = demo.make_demo(seed=8)
+    surv_personas = sorted(persona_df["persona"].unique())
+    # A demographic prior covering ALL feature ZIPs (superset of surveyed ones).
+    allz = sorted(features["zip"])
+    mix = pd.DataFrame(
+        1.0 / len(surv_personas), index=allz, columns=surv_personas
+    )
+    import tempfile, os
+    fd, p = tempfile.mkstemp(suffix=".csv"); os.close(fd)
+    persona_df.to_csv(p, index=False)
+    out = pipeline.run_demographic_blend(p, ref, mix, data_vintage="NPOS2025;ACS2022")
+    os.remove(p)
+    from zip_msa_personas import propensity as pr
+    assert set(out.enriched["zip"]) == set(allz)                 # every demographic ZIP scored
+    assert set(out.enriched["provenance"]) <= {pr.SURVEY_ANCHORED, pr.DEMOGRAPHIC_MODEL}
+    assert {"msa_cbsa", "methodology_version", "data_vintage"} <= set(out.enriched.columns)
+    # ZIPs with survey are anchored; the rest are demographic_model.
+    surveyed = set(persona_df["zip"].astype(str).str.zfill(5))
+    anchored = set(out.enriched[out.enriched["provenance"] == pr.SURVEY_ANCHORED]["zip"])
+    assert anchored <= surveyed
+
+
 def test_maps_render_png_files():
     import tempfile, os
     from zip_msa_personas import maps
