@@ -21,8 +21,32 @@ per-ZIP outputs are git-ignored — only these notes are committed.
 | ACS error handling for missing key | ✅ hardened (was a cryptic decode error) |
 | **Live ACS data fetch** | ✅ **succeeded with a Census API key (passed via `--census-key`)** |
 | **ACS codes validated against live data** | ✅ all 5 tables returned valid numeric data; marital de-dup confirmed |
-| HUD ZIP→CBSA crosswalk fetch | ⚠️ bot-blocked (`huduser.gov` HTTP 202) → ran **demographics-only**, MSA labels blank (expected) |
+| HUD ZIP→CBSA crosswalk fetch | ⚠️ bot-blocked (`huduser.gov` HTTP 202) — bypassed via Census ZCTA→county→CBSA (see below) |
+| MSA labels populated | ✅ **20,105 ZIPs (59.5%)** carry a metro MSA, via `www2.census.gov` |
 | National enriched dataset + per-ZIP distributions + coverage | ✅ **33,774 ZIPs scored** |
+
+## MSA labels via Census ZCTA→county→CBSA (HUD bypass)
+
+HUD's ZIP→CBSA file stays bot-blocked (HTTP 202). The Census Bureau publishes **no
+direct ZCTA→CBSA file** (the expected `tab20_zcta520_cbsa20_natl.txt` is a 404 —
+the `zcta520/` relationship dir only relates ZCTA to county/tract/place). So
+`load_reference_data` now builds ZIP→CBSA as **ZCTA→county**
+(`tab20_zcta520_county20_natl.txt`) **joined to county→CBSA + Metro/Micro** (the
+OMB delineation `list1_2023.xlsx`) — both on `www2.census.gov`, which serves
+through the allowlist. Dominant assignment is by the land area of each ZCTA-CBSA
+overlap. Result: 26,524 ZCTAs mapped (20,105 metro / 6,419 micro-or-non-metro);
+the remaining ~7,250 ZIPs aren't in the 2020 ZCTA crosswalk (the usual ZIP-vs-ZCTA
+gap) and keep blank MSA labels. HUD remains the automatic fallback.
+
+### Model-vs-survey credibility (raw model, MSA-level, before calibration)
+With MSA geography available, the run now reports how well the **raw** demographic
+model reproduces the surveyed mix over the 53 MSAs with enough survey weight
+(n≥min_n): **top-persona agreement 24.5%**, **mean absolute share error 0.046**
+(4.6 pts). Per-persona correlations are weak-but-mostly-positive (Prudent
+Pragmatists r=+0.36, Passionate Parents +0.29, Comfort Companions/Security Seekers
++0.20; Well-being Warriors −0.17). Read: the demographics-only prior is a weak
+positive signal on its own — which is exactly why the national calibration + the
+survey-anchored blend carry the weight. Honest, not oversold.
 
 ## Run results (2026-06-22, ACS 2022, demographics-only)
 

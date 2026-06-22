@@ -112,10 +112,10 @@ def load_cbsa_metadata() -> pd.DataFrame:
 def load_reference_data() -> ReferenceData:
     """ZIP->CBSA crosswalk + CBSA metadata.
 
-    Primary source is the Census ZCTA<->CBSA relationship file on www2.census.gov
-    (one plain file that yields both the crosswalk and the Metro/Micro flag, and
-    is far less likely to be bot-blocked than HUD). Falls back to the HUD
-    crosswalk + OMB delineation if the relationship file is unavailable.
+    Primary source is the Census ZCTA->county relationship file joined to the OMB
+    CBSA delineation (county->CBSA + Metro/Micro), both on www2.census.gov -- which
+    serves through the allowlist and isn't bot-blocked like HUD. Falls back to the
+    HUD crosswalk + OMB delineation if the Census path is unavailable.
     """
     try:
         return load_zcta_cbsa_reference()
@@ -124,17 +124,19 @@ def load_reference_data() -> ReferenceData:
             return ReferenceData(load_zip_cbsa_crosswalk(), load_cbsa_metadata())
         except Exception as hud_err:  # noqa: BLE001
             raise DataUnavailable(
-                f"No ZIP->CBSA source reachable. Census relationship file: {census_err}; "
+                f"No ZIP->CBSA source reachable. Census ZCTA->county->CBSA: {census_err}; "
                 f"HUD: {hud_err}"
             )
 
 
-# Census ZCTA<->CBSA relationship file (2020 geography). One row per ZCTA-CBSA
-# part; the CBSA name itself carries the Metro/Micro distinction.
-ZCTA_CBSA_REL_URL = os.environ.get(
-    "ZMP_ZCTA_CBSA_URL",
+# Census ZCTA->county relationship file (2020 geography). The Bureau publishes no
+# direct ZCTA->CBSA file, so we go ZCTA -> county (this file) -> CBSA (the OMB
+# delineation, county-level). One row per ZCTA-county part, with the land area of
+# the part for dominant assignment.
+ZCTA_COUNTY_REL_URL = os.environ.get(
+    "ZMP_ZCTA_COUNTY_URL",
     "https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/"
-    "tab20_zcta520_cbsa20_natl.txt",
+    "tab20_zcta520_county20_natl.txt",
 )
 
 
@@ -146,47 +148,64 @@ def _find_col(cols, *must_contain):
     return None
 
 
-def load_zcta_cbsa_reference(url: str | None = None) -> ReferenceData:
-    """Build ReferenceData from the Census ZCTA<->CBSA relationship file."""
-    url = url or ZCTA_CBSA_REL_URL
+def load_county_cbsa_delineation() -> pd.DataFrame:
+    """County FIPS -> CBSA code, title, Metro flag (OMB delineation, list1)."""
+    path = _download(CBSA_DELINEATION_URL, CACHE_DIR / "cbsa_delineation.xlsx")
+    df = pd.read_excel(path, skiprows=2, dtype=str)
+    df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
+    code_col = next(c for c in df.columns if "cbsa_code" in c)
+    title_col = next(c for c in df.columns if "cbsa_title" in c)
+    type_col = next(c for c in df.columns if "metropolitan/micropolitan" in c or "type" in c)
+    st_col = next(c for c in df.columns if "fips_state" in c)
+    cty_col = next(c for c in df.columns if "fips_county" in c)
+    out = df.dropna(subset=[code_col, st_col, cty_col]).copy()
+    out["county"] = out[st_col].str.zfill(2) + out[cty_col].str.zfill(3)
+    out["cbsa"] = out[code_col].str.strip()
+    out["cbsa_title"] = out[title_col].str.strip()
+    out["metro"] = out[type_col].str.contains("Metropolitan", case=False, na=False)
+    return out[["county", "cbsa", "cbsa_title", "metro"]].drop_duplicates("county")
+
+
+def load_zcta_cbsa_reference(url: str | None = None, delineation: pd.DataFrame | None = None) -> ReferenceData:
+    """Build ReferenceData via ZCTA -> county (relationship file) -> CBSA (OMB).
+
+    ``delineation`` (county, cbsa, cbsa_title, metro) defaults to the live OMB
+    delineation; pass one to build offline / in tests.
+    """
+    url = url or ZCTA_COUNTY_REL_URL
     # Accept a local file path (testing / user-provided) or a URL to download.
     if str(url).startswith(("http://", "https://")):
-        path = _download(url, CACHE_DIR / "zcta_cbsa_rel.txt")
+        path = _download(url, CACHE_DIR / "zcta_county_rel.txt")
     else:
         path = Path(url)
     # Delimiter varies by vintage (pipe/comma/tab); pick the one that splits the
     # header into the most fields (csv.Sniffer is unreliable on these files).
     header = Path(path).read_text(errors="replace").split("\n", 1)[0]
     sep = max(["|", ",", "\t", ";"], key=header.count)
-    df = pd.read_csv(path, sep=sep, dtype=str)
-    zcta_col = _find_col(df.columns, "ZCTA5", "GEOID") or _find_col(df.columns, "GEOID_ZCTA")
-    cbsa_col = _find_col(df.columns, "CBSA", "GEOID") or _find_col(df.columns, "GEOID_CBSA")
-    name_col = _find_col(df.columns, "CBSA", "NAMELSAD") or _find_col(df.columns, "NAMELSAD_CBSA")
-    area_col = _find_col(df.columns, "AREALAND", "PART")
-    if not (zcta_col and cbsa_col and name_col):
+    rel = pd.read_csv(path, sep=sep, dtype=str)
+    zcta_col = _find_col(rel.columns, "GEOID", "ZCTA5")
+    county_col = _find_col(rel.columns, "GEOID", "COUNTY")
+    area_col = _find_col(rel.columns, "AREALAND", "PART")
+    if not (zcta_col and county_col):
         raise DataUnavailable(
-            f"Relationship file columns not recognized: {list(df.columns)[:12]}..."
+            f"ZCTA->county relationship columns not recognized: {list(rel.columns)[:12]}..."
         )
+    z2c = pd.DataFrame({
+        "zip": rel[zcta_col].astype(str).str.extract(r"(\d{1,5})")[0].str.zfill(5),
+        "county": rel[county_col].astype(str).str.extract(r"(\d{1,5})")[0].str.zfill(5),
+        "area": pd.to_numeric(rel[area_col], errors="coerce").fillna(0.0) if area_col else 1.0,
+    }).dropna(subset=["zip", "county"])
 
-    out = pd.DataFrame({
-        "zip": df[zcta_col].astype(str).str.extract(r"(\d{1,5})")[0].str.zfill(5),
-        "cbsa": df[cbsa_col].astype(str).str.strip(),
-        "cbsa_name": df[name_col].astype(str).str.strip(),
-        "area": pd.to_numeric(df[area_col], errors="coerce") if area_col else 1.0,
-    })
-    out = out[out["cbsa"].str.match(r"^\d{3,5}$", na=False)]   # drop ZCTAs in no CBSA
+    delin = load_county_cbsa_delineation() if delineation is None else delineation
+    joined = z2c.merge(delin[["county", "cbsa"]], on="county", how="inner")
+    # Land area of each (ZCTA, CBSA) overlap -> share of the ZCTA for dominant assign.
+    agg = joined.groupby(["zip", "cbsa"], as_index=False)["area"].sum()
+    tot = agg.groupby("zip")["area"].transform("sum").replace(0, 1.0)
+    agg["res_ratio"] = agg["area"] / tot
+    zip_cbsa = agg[["zip", "cbsa", "res_ratio"]].copy()
 
-    # res_ratio = this CBSA's share of the ZCTA's land (for dominant assignment).
-    tot = out.groupby("zip")["area"].transform("sum").replace(0, 1.0)
-    out["res_ratio"] = out["area"] / tot
-    zip_cbsa = out[["zip", "cbsa", "res_ratio"]].copy()
-
-    meta = out[["cbsa", "cbsa_name"]].drop_duplicates("cbsa").copy()
-    meta["metro"] = meta["cbsa_name"].str.contains("Metro", case=False, na=False)
-    meta["cbsa_title"] = (
-        meta["cbsa_name"].str.replace(r"\s+(Metro|Micro)\s+Area$", "", regex=True).str.strip()
-    )
-    return ReferenceData(zip_cbsa=zip_cbsa, cbsa_meta=meta[["cbsa", "cbsa_title", "metro"]])
+    meta = delin[["cbsa", "cbsa_title", "metro"]].drop_duplicates("cbsa").reset_index(drop=True)
+    return ReferenceData(zip_cbsa=zip_cbsa, cbsa_meta=meta)
 
 
 # ---- Demographic features (ACS) --------------------------------------------

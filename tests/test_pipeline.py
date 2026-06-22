@@ -305,24 +305,30 @@ def test_acs_fractions_feed_propensity_end_to_end():
 def test_zcta_cbsa_reference_builds_crosswalk():
     import tempfile, os
     from zip_msa_personas import data_sources as ds
-    rows = pd.DataFrame([
-        {"GEOID_ZCTA5_20": "10001", "GEOID_CBSA_20": "35620",
-         "NAMELSAD_CBSA_20": "New York-Newark-Jersey City, NY-NJ-PA Metro Area", "AREALAND_PART": "900"},
-        {"GEOID_ZCTA5_20": "10001", "GEOID_CBSA_20": "35614",
-         "NAMELSAD_CBSA_20": "Other, NY Metro Area", "AREALAND_PART": "100"},
-        {"GEOID_ZCTA5_20": "59722", "GEOID_CBSA_20": "14580",
-         "NAMELSAD_CBSA_20": "Deer Lodge, MT Micro Area", "AREALAND_PART": "300"},
-        {"GEOID_ZCTA5_20": "99999", "GEOID_CBSA_20": "", "NAMELSAD_CBSA_20": "", "AREALAND_PART": "0"},
+    # ZCTA -> county relationship rows (Census format), joined to an injected
+    # county -> CBSA delineation. 10001 spans two counties in different CBSAs;
+    # dominant assignment by land area picks 35620. 59722 -> a Micro CBSA.
+    rel = pd.DataFrame([
+        {"GEOID_ZCTA5_20": "10001", "GEOID_COUNTY_20": "36061", "AREALAND_PART": "900"},
+        {"GEOID_ZCTA5_20": "10001", "GEOID_COUNTY_20": "36005", "AREALAND_PART": "100"},
+        {"GEOID_ZCTA5_20": "59722", "GEOID_COUNTY_20": "30077", "AREALAND_PART": "300"},
+        {"GEOID_ZCTA5_20": "99999", "GEOID_COUNTY_20": "99999", "AREALAND_PART": "0"},
+    ])
+    delin = pd.DataFrame([
+        {"county": "36061", "cbsa": "35620", "cbsa_title": "New York-Newark-Jersey City, NY-NJ", "metro": True},
+        {"county": "36005", "cbsa": "35620", "cbsa_title": "New York-Newark-Jersey City, NY-NJ", "metro": True},
+        {"county": "30077", "cbsa": "14580", "cbsa_title": "Deer Lodge, MT", "metro": False},
     ])
     fd, p = tempfile.mkstemp(suffix=".txt"); os.close(fd)
-    rows.to_csv(p, sep="|", index=False)
-    ref = ds.load_zcta_cbsa_reference(p)
+    rel.to_csv(p, sep="|", index=False)
+    ref = ds.load_zcta_cbsa_reference(p, delineation=delin)
     z2m = crosswalk.build_zip_to_msa(ref)
     os.remove(p)
     # Dominant assignment by land area; micro excluded from metro; ZIP w/o CBSA dropped.
     assert z2m[z2m.zip == "10001"]["msa_cbsa"].iloc[0] == "35620"
     assert not bool(z2m[z2m.zip == "59722"]["in_metro"].iloc[0])
-    assert "Metro Area" not in z2m[z2m.zip == "10001"]["msa_title"].iloc[0]
+    assert z2m[z2m.zip == "10001"]["msa_title"].iloc[0] == "New York-Newark-Jersey City, NY-NJ"
+    assert "99999" not in set(z2m.zip)
 
 
 def test_validate_model_vs_survey_detects_agreement():
