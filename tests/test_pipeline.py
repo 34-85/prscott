@@ -377,6 +377,22 @@ def test_spatial_predict_production_and_blend_full():
     assert (abs(bl.sum(axis=1) - 1.0) < 1e-9).all()
 
 
+def test_vetsiting_scores_service_model_lean():
+    from zip_msa_personas import vetsiting
+    enr = pd.DataFrame({"zip": ["10001", "10002", "20001", "20002"],
+                        "msa_title": ["A", "A", "B", "B"]})
+    rows = []
+    for z, m in [("10001", {"Well-being Warriors": 0.6, "Ambitious Go-Getters": 0.4}),
+                 ("10002", {"Well-being Warriors": 0.7, "Security Seekers": 0.3}),
+                 ("20001", {"Prudent Pragmatists": 0.5, "Adventure Seekers": 0.5}),
+                 ("20002", {"Adventure Seekers": 0.6, "Prudent Pragmatists": 0.4})]:
+        rows += [{"zip": z, "persona": p, "share": s} for p, s in m.items()]
+    sc = vetsiting.score_msas(enr, pd.DataFrame(rows), min_zips=1)
+    # Health/affluent MSA leans hospital; budget/outdoor MSA leans urgent care.
+    assert sc.loc["A", "hospital_fit"] > sc.loc["A", "urgentcare_fit"]
+    assert sc.loc["B", "urgentcare_fit"] > sc.loc["B", "hospital_fit"]
+
+
 def test_query_lookups():
     from zip_msa_personas import query
     enr = pd.DataFrame({
