@@ -24,6 +24,29 @@ DEFAULT_CITY_LIST = Path(__file__).parent / "data" / "better_cities_for_pets.txt
 _NON_US = {"ONTARIO", "QUEBEC", "BRITISH COLUMBIA", "ALBERTA"}
 _STATE_FIX = {"D.C.": "DC", "DC.": "DC", "PUERTO RICO": "PR"}
 
+# Full state name -> USPS code. ``load_geography`` reports the full name, while
+# the certified-city list uses the two-letter code; normalize so they join.
+_STATE_ABBR = {
+    "ALABAMA": "AL", "ALASKA": "AK", "ARIZONA": "AZ", "ARKANSAS": "AR", "CALIFORNIA": "CA",
+    "COLORADO": "CO", "CONNECTICUT": "CT", "DELAWARE": "DE", "DISTRICT OF COLUMBIA": "DC",
+    "FLORIDA": "FL", "GEORGIA": "GA", "HAWAII": "HI", "IDAHO": "ID", "ILLINOIS": "IL",
+    "INDIANA": "IN", "IOWA": "IA", "KANSAS": "KS", "KENTUCKY": "KY", "LOUISIANA": "LA",
+    "MAINE": "ME", "MARYLAND": "MD", "MASSACHUSETTS": "MA", "MICHIGAN": "MI", "MINNESOTA": "MN",
+    "MISSISSIPPI": "MS", "MISSOURI": "MO", "MONTANA": "MT", "NEBRASKA": "NE", "NEVADA": "NV",
+    "NEW HAMPSHIRE": "NH", "NEW JERSEY": "NJ", "NEW MEXICO": "NM", "NEW YORK": "NY",
+    "NORTH CAROLINA": "NC", "NORTH DAKOTA": "ND", "OHIO": "OH", "OKLAHOMA": "OK", "OREGON": "OR",
+    "PENNSYLVANIA": "PA", "RHODE ISLAND": "RI", "SOUTH CAROLINA": "SC", "SOUTH DAKOTA": "SD",
+    "TENNESSEE": "TN", "TEXAS": "TX", "UTAH": "UT", "VERMONT": "VT", "VIRGINIA": "VA",
+    "WASHINGTON": "WA", "WEST VIRGINIA": "WV", "WISCONSIN": "WI", "WYOMING": "WY",
+    "PUERTO RICO": "PR",
+}
+
+
+def _state_code(s: str) -> str:
+    """Normalize a state label (full name or code) to its USPS two-letter code."""
+    u = str(s).strip().upper()
+    return _STATE_ABBR.get(u, u)
+
 
 def _norm_city(s: str) -> str:
     """Lowercase, strip punctuation/whitespace for a forgiving city-name match."""
@@ -60,7 +83,7 @@ def city_to_msa(enriched: pd.DataFrame, geography: pd.DataFrame,
     g = geography[["zip", "city", "state"]].copy()
     g["zip"] = g["zip"].astype(str).str.zfill(5)
     g["city_key"] = g["city"].map(_norm_city)
-    g["state"] = g["state"].astype(str).str.upper()
+    g["state"] = g["state"].map(_state_code)
     e = enriched[["zip", msa_col]].copy()
     e["zip"] = e["zip"].astype(str).str.zfill(5)
     m = g.merge(e, on="zip", how="inner").dropna(subset=[msa_col])
