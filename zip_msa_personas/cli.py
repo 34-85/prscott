@@ -247,15 +247,24 @@ def cmd_certoverlay(args) -> int:
     city_msa = overlay.city_to_msa(enr, geo)
     res = overlay.align(cities, city_msa, vi)
 
-    print(f"Certified cities: {res['n_total']} | mapped to a scored metro: {res['n_matched']} | "
-          f"unmapped: {res['n_unmatched']}")
-    gd, share = res["grade_dist"], res["universe_share"]
-    print("\nGrade distribution of certified cities vs the metro universe:")
+    print(f"Certified cities: {res['n_total']} | mapped to a scored metro: {res['n_matched']} "
+          f"({res['n_metros']} distinct metros) | unmapped: {res['n_unmatched']}")
+    gd, share, mgd = res["grade_dist"], res["universe_share"], res["metro_grade_dist"]
+    print("\nGrade distribution -- per certified CITY vs per distinct METRO (clustering-corrected),")
+    print("with each grade's share of the all-metro universe for reference:")
     for g in ["A", "B", "C", "D"]:
-        cert = int(gd.get(g, 0))
+        cert = int(gd.get(g, 0)); metro = int(mgd.get(g, 0))
         cert_pct = (cert / res["n_matched"] * 100) if res["n_matched"] else 0
+        metro_pct = (metro / res["n_metros"] * 100) if res["n_metros"] else 0
         uni_pct = float(share.get(g, 0)) * 100
-        print(f"  Grade {g}: {cert:3d} certified ({cert_pct:4.0f}%)  vs  {uni_pct:4.0f}% of all metros")
+        print(f"  Grade {g}: {cert:3d} cities ({cert_pct:4.0f}%)  |  {metro:3d} metros ({metro_pct:4.0f}%)"
+              f"  vs  {uni_pct:4.0f}% of all metros")
+    mc = res["metro_counts"]
+    if len(mc):
+        top = mc[mc > 1].head(8)
+        if len(top):
+            print("\nMost-clustered metros (certified cities -> one metro):")
+            print("  " + "; ".join(f"{m} ({int(n)})" for m, n in top.items()))
 
     det = res["detail"]
     cols = [c for c in ["raw", "msa_title", "market_grade", "persona_value_index",

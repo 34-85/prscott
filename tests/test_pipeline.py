@@ -1008,6 +1008,23 @@ def test_overlay_parses_and_aligns_city_list_to_grades():
     res = overlay.align(cities, c2m, vi)
     assert res["n_matched"] == 3 and res["n_unmatched"] == 1     # Caledon unmapped
     assert int(res["grade_dist"]["A"]) == 2 and int(res["grade_dist"]["B"]) == 1
+    assert res["n_metros"] == 3                                  # 3 distinct metros
+
+
+def test_overlay_distinct_metros_corrects_city_clustering():
+    from zip_msa_personas import overlay
+    # Three certified cities, but two are LA suburbs -> one metro. Per-city counts
+    # overstate Grade A; the distinct-metro view corrects it.
+    cities = overlay.parse_city_lines(["Santa Monica, CA", "Beverly Hills, CA", "Topeka, KS"])
+    c2m = pd.DataFrame({"city_key": ["santa monica", "beverly hills", "topeka"],
+                        "state": ["CA", "CA", "KS"],
+                        "msa_title": ["Los Angeles, CA", "Los Angeles, CA", "Topeka, KS"],
+                        "n": [3, 2, 4]})
+    vi = pd.DataFrame({"msa_title": ["Los Angeles, CA", "Topeka, KS"],
+                       "market_grade": ["A", "C"], "opportunity_score": [9, 3]})
+    res = overlay.align(cities, c2m, vi)
+    assert int(res["grade_dist"]["A"]) == 2 and int(res["metro_grade_dist"]["A"]) == 1
+    assert res["n_metros"] == 2 and int(res["metro_counts"]["Los Angeles, CA"]) == 2
 
 
 def _df_to_dist(persona_df):

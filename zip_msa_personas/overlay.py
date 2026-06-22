@@ -89,12 +89,25 @@ def align(cities: pd.DataFrame, city_msa: pd.DataFrame, viability: pd.DataFrame,
     # Compare to the universe: are certified cities richer in A/B than all metros?
     base = (viability["market_grade"].value_counts(normalize=True).reindex(["A", "B", "C", "D"]).fillna(0)
             if "market_grade" in viability else pd.Series(dtype=float))
+
+    # Metro-clustering correction: many certified cities collapse onto the same
+    # metro (10+ CA suburbs -> LA/SF), so a per-city grade count overstates how
+    # many *distinct* high-grade markets the certification actually touches.
+    metros = (matched.drop_duplicates(msa_col) if msa_col in matched else matched.iloc[0:0])
+    metro_grade_dist = (metros["market_grade"].value_counts().reindex(["A", "B", "C", "D"]).fillna(0).astype(int)
+                        if "market_grade" in metros else pd.Series(dtype=int))
+    # The most-clustered metros (how many certified cities map to each).
+    metro_counts = (matched.groupby(msa_col).size().sort_values(ascending=False)
+                    if msa_col in matched and len(matched) else pd.Series(dtype=int))
+
     return {
         "detail": detail.sort_values("opportunity_score", ascending=False)
                   if "opportunity_score" in detail else detail,
         "matched": matched, "unmatched": unmatched,
         "grade_dist": grade_dist, "universe_share": base,
+        "metro_grade_dist": metro_grade_dist, "metro_counts": metro_counts,
         "n_total": len(cities), "n_matched": len(matched), "n_unmatched": len(unmatched),
+        "n_metros": int(metros[msa_col].nunique()) if msa_col in metros else 0,
     }
 
 
