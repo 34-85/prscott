@@ -45,9 +45,12 @@ def score_msas(enriched: pd.DataFrame, distributions: pd.DataFrame,
     personas = list(wide.columns)
 
     g = e.dropna(subset=[msa_col]).merge(wide, left_on="zip", right_index=True, how="inner")
-    agg = g.groupby(msa_col)
-    mix = agg[personas].mean()
-    n_zips = agg.size().rename("n_zips")
+    # Support-weight ZIPs when available so a thin survey ZIP can't tilt a metro
+    # (falls back to equal weight when there's no `support` column).
+    w = reliability.zip_weights(enriched)
+    g["_w"] = g["zip"].map(w).fillna(reliability.DEFAULT_MODEL_FLOOR) if w is not None else 1.0
+    mix = reliability.weighted_group_mean(g, msa_col, personas)
+    n_zips = g.groupby(msa_col).size().rename("n_zips")
     mix = mix[n_zips >= min_zips]
 
     hw = pd.Series(hospital_weights).reindex(personas).fillna(0.0)

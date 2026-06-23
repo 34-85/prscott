@@ -52,19 +52,28 @@ _META_COLS = ("n_zips", "survey_zips")
 
 
 def msa_persona_mix(enriched: pd.DataFrame, distributions: pd.DataFrame,
-                    msa_col: str = "msa_title", min_zips: int = 8) -> pd.DataFrame:
+                    msa_col: str = "msa_title", min_zips: int = 8,
+                    model_floor: float = 0.15) -> pd.DataFrame:
     """Mean pet-owner persona mix per MSA (with n_zips + survey_zips), the shared
     substrate. ``survey_zips`` is how many of the metro's ZIPs an actual survey
-    response reached -- the basis for the reliability filter on any ranking."""
+    response reached -- the basis for the reliability filter on any ranking.
+
+    When ``enriched`` carries a per-ZIP ``support`` column (survey effective
+    sample), ZIPs are combined by a **support-weighted** mean so a thin survey
+    ZIP can't dominate the metro mix; otherwise it falls back to an equal-weight
+    mean (backward compatible)."""
     from . import reliability
     e = enriched[["zip", msa_col]].copy(); e["zip"] = e["zip"].astype(str).str.zfill(5)
     d = distributions.copy(); d["zip"] = d["zip"].astype(str).str.zfill(5)
     wide = d.pivot_table(index="zip", columns="persona", values="share", fill_value=0.0)
-    g = e.dropna(subset=[msa_col]).merge(wide, left_on="zip", right_index=True, how="inner").groupby(msa_col)
-    mix = g[list(wide.columns)].mean()
-    mix["n_zips"] = g.size()
+    cols = list(wide.columns)
+    m = e.dropna(subset=[msa_col]).merge(wide, left_on="zip", right_index=True, how="inner")
+    w = reliability.zip_weights(enriched, model_floor=model_floor)
+    m["_w"] = m["zip"].map(w).fillna(model_floor) if w is not None else 1.0
+    mix = reliability.weighted_group_mean(m, msa_col, cols)
+    mix["n_zips"] = m.groupby(msa_col).size()
     sup = reliability.survey_support(enriched, msa_col)
-    mix["survey_zips"] = [int(sup.get(m, 0)) for m in mix.index]
+    mix["survey_zips"] = [int(sup.get(mm, 0)) for mm in mix.index]
     return mix[mix["n_zips"] >= min_zips]
 
 

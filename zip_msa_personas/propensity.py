@@ -170,14 +170,20 @@ def blend_with_survey(
         else:
             post = prior
             prov = DEMOGRAPHIC_MODEL
+            nz = 0.0
         post = post / post.sum()
         ti = int(post.argmax())
-        assign.append((z, personas[ti], round(float(post[ti]), 4), prov))
+        # eff_n = survey weighted respondents behind this ZIP; support = the
+        # own-data fraction n/(n+alpha). Both let downstream rollups down-weight
+        # thin survey ZIPs so a 1-2 respondent spike can't dominate a market mix.
+        support = nz / (nz + alpha) if nz > 0 else 0.0
+        assign.append((z, personas[ti], round(float(post[ti]), 4), prov,
+                       round(float(nz), 3), round(float(support), 4)))
         for p, v in zip(personas, post):
             if v > 0:
                 dist_rows.append((z, p, round(float(v), 5)))
 
-    assignments = pd.DataFrame(assign, columns=["zip", "persona", "confidence", "provenance"])
+    assignments = pd.DataFrame(assign, columns=["zip", "persona", "confidence", "provenance", "eff_n", "support"])
     distributions = pd.DataFrame(dist_rows, columns=["zip", "persona", "share"])
     return assignments, distributions
 

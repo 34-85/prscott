@@ -69,4 +69,37 @@ def filter_table(ranked: pd.DataFrame, enriched: pd.DataFrame, group_col: str,
     return out[out["reliable"]].reset_index(drop=True) if drop else out
 
 
-__all__ = ["survey_support", "attach", "filter_table", "SURVEY_TIERS", "DEFAULT_MIN_SURVEY"]
+DEFAULT_MODEL_FLOOR = 0.15
+
+
+def zip_weights(enriched: pd.DataFrame, support_col: str = "support",
+                model_floor: float = DEFAULT_MODEL_FLOOR) -> "pd.Series | None":
+    """Per-ZIP aggregation weight from survey support, or ``None`` if unavailable.
+
+    Returns a Series (zip -> weight) where a well-sampled survey ZIP (support -> 1)
+    outweighs a thin one, and modeled / zero-support ZIPs sit at ``model_floor`` so
+    the demographic universe still contributes a baseline. This is what keeps a
+    sparse survey ZIP (e.g. a 1-2 respondent spike) from dominating a metro mix.
+    If the frame carries no ``support`` column we return ``None`` and callers fall
+    back to an equal-weight mean (backward compatible).
+    """
+    if support_col not in enriched.columns:
+        return None
+    e = enriched[["zip", support_col]].copy()
+    e["zip"] = e["zip"].astype(str).str.zfill(5)
+    s = pd.to_numeric(e[support_col], errors="coerce").fillna(0.0).clip(0.0, 1.0).clip(lower=model_floor)
+    return pd.Series(s.to_numpy(), index=e["zip"])
+
+
+def weighted_group_mean(frame: pd.DataFrame, group_col: str, value_cols: list,
+                        weight: str = "_w") -> pd.DataFrame:
+    """Per-group weighted mean of ``value_cols`` using the ``weight`` column."""
+    def _wm(g):
+        w = g[weight].to_numpy()
+        tot = w.sum() or 1.0
+        return pd.Series((g[value_cols].mul(w, axis=0).sum()) / tot, index=value_cols)
+    return frame.groupby(group_col, group_keys=True).apply(_wm)
+
+
+__all__ = ["survey_support", "attach", "filter_table", "zip_weights", "weighted_group_mean",
+           "SURVEY_TIERS", "DEFAULT_MIN_SURVEY", "DEFAULT_MODEL_FLOOR"]

@@ -212,7 +212,18 @@ What this means for **where to trust the output**:
   flagged ranking (every market, with `survey_zips` + `reliable`) is always
   written to the output CSV for transparency. The complementary per-cell
   significance machinery (`indexing.py`, Wilson intervals on effective sample
-  size) remains available for confidence-aware index reporting.
+  size) remains available for confidence-aware index reporting. A second guard
+  works *inside* each market: the blend exposes a per-ZIP **effective survey
+  sample** (`eff_n`) and **support** (`n/(n+alpha)`), and the metro rollups
+  (`marketfit.msa_persona_mix`, `vetsiting.score_msas`, `econ`) combine ZIPs by
+  a **support-weighted mean** — a well-sampled survey ZIP outweighs a thin one,
+  and modeled ZIPs sit at a floor — so a 1–2 respondent spike can't dominate a
+  metro's mix. (Observed in practice: a single thin survey ZIP, Cool Springs
+  37067, had pulled affluent Franklin TN's mix toward a budget persona until the
+  effective-sample weighting damped it. For very small sub-metro corridors —
+  only a handful of ZIPs — aggregation weighting can't fully rescue a spike;
+  there the right tools are per-ZIP inspection and the market-level reliability
+  flag.)
 - **ZIP-vs-ZCTA gap.** ~7,000 ZIPs aren't in the 2020 ZCTA universe and carry
   blank MSA labels / no ACS features; this is the standard postal-vs-statistical
   geography mismatch, not a pipeline error.

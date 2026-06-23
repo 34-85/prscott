@@ -904,6 +904,43 @@ def test_appa_loader_parses_weighted_matrix():
     assert long[long["zip"] == "10002"].shape[0] == 2        # two segments present
 
 
+def test_blend_exposes_effective_sample_support():
+    from zip_msa_personas import propensity
+    personas = list(propensity.load_fingerprints().fingerprints.keys())
+    dm = pd.DataFrame(1.0 / len(personas), index=["00001", "00002"], columns=personas)
+    surv = pd.DataFrame({"zip": ["00001"], "persona": [personas[0]], "weight": [4.0]})
+    a, _ = propensity.blend_with_survey(surv, dm, alpha=5.0)
+    a = a.set_index("zip")
+    assert a.loc["00001", "provenance"] == "survey_anchored"
+    assert abs(a.loc["00001", "eff_n"] - 4.0) < 1e-6
+    assert abs(a.loc["00001", "support"] - 4.0 / 9.0) < 1e-4   # n/(n+alpha)
+    assert a.loc["00002", "provenance"] == "demographic_model"
+    assert a.loc["00002", "support"] == 0.0
+
+
+def test_support_weighting_damps_thin_survey_spike():
+    # The 37067 lesson: one thin survey ZIP spikes a budget persona; two
+    # well-sampled survey ZIPs and three modeled ZIPs are clean. Support-weighting
+    # must pull the metro mix toward the well-sampled ZIPs vs an equal mean.
+    from zip_msa_personas import marketfit as mf
+    zips = ["00001", "00002", "00003", "00004", "00005", "00006"]
+    enr = pd.DataFrame({
+        "zip": zips, "msa_title": "M",
+        "provenance": ["survey_anchored"] * 3 + ["demographic_model"] * 3,
+        "support": [0.20, 0.85, 0.85, 0.0, 0.0, 0.0],   # ZIP1 is the thin spike
+    })
+    spike = {"Prudent Pragmatists": 0.7, "Well-being Warriors": 0.3}
+    clean = {"Well-being Warriors": 0.6, "Ambitious Go-Getters": 0.4}
+    rows = []
+    for z, mx in zip(zips, [spike, clean, clean, clean, clean, clean]):
+        rows += [{"zip": z, "persona": p, "share": s} for p, s in mx.items()]
+    dist = pd.DataFrame(rows)
+    eq = mf.msa_persona_mix(enr.drop(columns=["support"]), dist, min_zips=1)   # equal weight
+    wt = mf.msa_persona_mix(enr, dist, min_zips=1)                             # support weighted
+    assert wt.loc["M", "Prudent Pragmatists"] < eq.loc["M", "Prudent Pragmatists"]
+    assert wt.loc["M", "Prudent Pragmatists"] < 0.10   # spike no longer dominates
+
+
 def _reliability_fixture():
     # "Big" has real survey support; "Thin" is all modeled yet spikes a persona
     # (the Kankakee artifact) -- it must not be trusted at the top of a ranking.
