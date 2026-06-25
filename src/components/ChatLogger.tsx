@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react'
 import { useStore } from '../app/store'
 import { classifyChat, INTENT_META, type ChatIntent } from '../lib/classifier'
 import { resolveMealRef } from '../lib/mealRef'
+import { shouldEstimateAsRestaurant } from '../lib/restaurant'
 import { proteinBadge } from '../lib/macroEstimator'
+import { RestaurantTag, RestaurantDetail } from './RestaurantCard'
 import { formatTime } from '../lib/dates'
 import { createEmptyLog } from '../lib/storage'
 import { BadgePill } from './Badge'
@@ -20,7 +22,8 @@ type Entry =
 
 /** Conversational logging surface. Classifies each line and routes it. */
 export function ChatLogger({ date }: { date: string }) {
-  const { state, addMeal, addNote, deleteMeal, deleteNote, setWeight, updateMealText } = useStore()
+  const { state, addMeal, addRestaurantMeal, addNote, deleteMeal, deleteNote, setWeight, updateMealText } =
+    useStore()
   const log = state.logs[date] ?? createEmptyLog(date)
   const [text, setText] = useState('')
   const [flash, setFlash] = useState<string | null>(null)
@@ -47,9 +50,16 @@ export function ChatLogger({ date }: { date: string }) {
         setWeight(date, intent.weight, intent.weightNote ?? log.weightNote)
         setFlash(`Logged morning weight ${intent.weight?.toFixed(1)} lb.`)
         break
-      case 'meal':
-        addMeal(date, intent.mealText ?? raw)
+      case 'meal': {
+        const mealText = intent.mealText ?? raw
+        if (shouldEstimateAsRestaurant(mealText, state.customFoods)) {
+          addRestaurantMeal(date, mealText)
+          setFlash('Estimated as a restaurant/unknown meal — see the range.')
+        } else {
+          addMeal(date, mealText)
+        }
         break
+      }
       case 'note':
         addNote(date, intent.note || raw)
         break
@@ -203,26 +213,38 @@ function MealExchange({ meal, onDelete }: { meal: Meal; onDelete: () => void }) 
         <div className="max-w-[88%] rounded-2xl rounded-tl-sm border border-ink-line bg-ink-soft px-3 py-2">
           <button onClick={() => setOpen((o) => !o)} className="block w-full text-left">
             <div className="flex items-center gap-2">
-              <span className="tnum text-lg font-bold">{meal.calories}</span>
+              <span className="tnum text-lg font-bold">
+                {meal.restaurant ? '~' : ''}
+                {meal.calories}
+              </span>
               <span className="text-[11px] text-mute-soft">kcal</span>
-              <BadgePill badge={proteinBadge(meal.protein, meal.calories)} />
+              {meal.restaurant ? (
+                <RestaurantTag />
+              ) : (
+                <BadgePill badge={proteinBadge(meal.protein, meal.calories)} />
+              )}
               <span className={`text-[10px] ${CONF_STYLE[meal.confidence]}`}>{meal.confidence}</span>
             </div>
             <div className="tnum mt-0.5 text-[12px] text-mute">
+              {meal.restaurant ? '~' : ''}
               {meal.protein}P · {meal.carbs}C · {meal.fat}F · {formatTime(meal.timestamp)}
             </div>
           </button>
           {open && (
             <div className="mt-2 space-y-1 border-t border-ink-line pt-2">
-              {meal.parsedFoods.map((f, i) => (
-                <div key={i} className="flex justify-between text-[11px]">
-                  <span className="text-mute">
-                    {f.amount} {f.unit} · {f.foodName}
-                    {!f.matched && <span className="ml-1 text-bad">(guess)</span>}
-                  </span>
-                  <span className="tnum text-mute-soft">{f.calories} kcal</span>
-                </div>
-              ))}
+              {meal.restaurant ? (
+                <RestaurantDetail info={meal.restaurant} confidence={meal.confidence} />
+              ) : (
+                meal.parsedFoods.map((f, i) => (
+                  <div key={i} className="flex justify-between text-[11px]">
+                    <span className="text-mute">
+                      {f.amount} {f.unit} · {f.foodName}
+                      {!f.matched && <span className="ml-1 text-bad">(guess)</span>}
+                    </span>
+                    <span className="tnum text-mute-soft">{f.calories} kcal</span>
+                  </div>
+                ))
+              )}
               <button onClick={onDelete} className="mt-1 text-[11px] font-medium text-bad hover:underline">
                 Delete
               </button>

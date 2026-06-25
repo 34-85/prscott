@@ -31,6 +31,23 @@ export interface FoodEstimate {
   matched?: boolean
 }
 
+/** A [min, max] estimate range for each macro. */
+export interface MacroRangeTuple {
+  calories: [number, number]
+  protein: [number, number]
+  carbs: [number, number]
+  fat: [number, number]
+}
+
+/** Restaurant/unknown-meal estimate attached to a meal. Its presence flags restaurant mode. */
+export interface RestaurantInfo {
+  range: MacroRangeTuple
+  /** Calories likely unaccounted for (cooking oils, butter, sauces). */
+  hiddenCalories: number
+  /** Detected signals: protein source, starch, sauce, visible fat, portion. */
+  components: string[]
+}
+
 /** A meal: raw text the user typed plus the parsed/estimated result. */
 export interface Meal {
   id: string
@@ -43,6 +60,8 @@ export interface Meal {
   fat: number
   confidence: Confidence
   notes?: string
+  /** Set when the meal was logged via restaurant estimation. Macros above are the range midpoints. */
+  restaurant?: RestaurantInfo
 }
 
 /** A free-form note the user jotted via chat ("slept poorly", "high sodium dinner"). */

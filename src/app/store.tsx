@@ -24,11 +24,13 @@ import {
   upsertMeal,
 } from '../lib/storage'
 import { estimateMeal } from '../lib/macroEstimator'
+import { buildRestaurantMealData, estimateRestaurantMeal } from '../lib/restaurant'
 import { buildSeedState } from '../lib/seed'
 
 interface StoreApi {
   state: AppState
   addMeal: (date: string, rawText: string, notes?: string) => void
+  addRestaurantMeal: (date: string, rawText: string, notes?: string) => void
   updateMeal: (date: string, meal: Meal) => void
   updateMealText: (date: string, mealId: string, rawText: string) => void
   deleteMeal: (date: string, mealId: string) => void
@@ -76,6 +78,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         fat: est.fat,
         confidence: est.confidence,
         notes,
+      }
+      return upsertMeal(s, date, meal)
+    })
+  }, [])
+
+  const addRestaurantMeal = useCallback((date: string, rawText: string, notes?: string) => {
+    setState((s) => {
+      const est = estimateRestaurantMeal(rawText)
+      const data = buildRestaurantMealData(est)
+      const meal: Meal = {
+        id: makeMealId(),
+        timestamp: new Date().toISOString(),
+        rawText,
+        parsedFoods: [],
+        notes,
+        ...data,
       }
       return upsertMeal(s, date, meal)
     })
@@ -148,6 +166,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     () => ({
       state,
       addMeal,
+      addRestaurantMeal,
       updateMeal,
       updateMealText,
       deleteMeal,
@@ -163,6 +182,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [
       state,
       addMeal,
+      addRestaurantMeal,
       updateMeal,
       updateMealText,
       deleteMeal,

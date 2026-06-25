@@ -1,7 +1,13 @@
 import { useMemo, useState } from 'react'
 import { useStore } from '../app/store'
 import { estimateMeal, proteinBadge } from '../lib/macroEstimator'
+import {
+  buildRestaurantMealData,
+  estimateRestaurantMeal,
+  shouldEstimateAsRestaurant,
+} from '../lib/restaurant'
 import { BadgePill } from './Badge'
+import { RestaurantDetail } from './RestaurantCard'
 import type { Confidence, Meal } from '../lib/types'
 
 interface Props {
@@ -28,19 +34,49 @@ const CONF_STYLE: Record<Confidence, string> = {
 
 /** Natural-language meal entry with live macro preview. Bottom-sheet modal. */
 export function MealLogger({ date, onClose, editMeal }: Props) {
-  const { state, addMeal, updateMeal } = useStore()
+  const { state, addMeal, addRestaurantMeal, updateMeal } = useStore()
   const isEdit = editMeal != null
   const [text, setText] = useState(editMeal?.rawText ?? '')
   const [notes, setNotes] = useState(editMeal?.notes ?? '')
+  const [restaurant, setRestaurant] = useState(editMeal?.restaurant != null)
 
   const preview = useMemo(
     () => (text.trim() ? estimateMeal(text, state.customFoods) : null),
     [text, state.customFoods],
   )
 
+  const restPreview = useMemo(
+    () => (restaurant && text.trim() ? estimateRestaurantMeal(text) : null),
+    [restaurant, text],
+  )
+  const restInfo = useMemo(
+    () => (restPreview ? buildRestaurantMealData(restPreview) : null),
+    [restPreview],
+  )
+
+  // Suggest restaurant mode for restaurant/unknown meals the canonical DB can't pin down.
+  const suggest = useMemo(
+    () => !restaurant && text.trim().length > 0 && shouldEstimateAsRestaurant(text, state.customFoods),
+    [restaurant, text, state.customFoods],
+  )
+
   function submit() {
     if (!text.trim()) return
-    if (isEdit) {
+    if (restaurant) {
+      if (isEdit) {
+        const est = estimateRestaurantMeal(text.trim())
+        const data = buildRestaurantMealData(est)
+        updateMeal(date, {
+          ...editMeal,
+          rawText: text.trim(),
+          parsedFoods: [],
+          notes: notes.trim() || undefined,
+          ...data,
+        })
+      } else {
+        addRestaurantMeal(date, text.trim(), notes.trim() || undefined)
+      }
+    } else if (isEdit) {
       // Re-estimate but preserve the meal's id and original timestamp.
       const est = estimateMeal(text.trim(), state.customFoods)
       updateMeal(date, {
@@ -53,6 +89,7 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
         fat: est.fat,
         confidence: est.confidence,
         notes: notes.trim() || undefined,
+        restaurant: undefined,
       })
     } else {
       addMeal(date, text.trim(), notes.trim() || undefined)
@@ -102,8 +139,45 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
             ))}
           </div>
 
-          {/* Live preview */}
-          {preview && (
+          {/* Restaurant estimate toggle */}
+          <label className="mt-3 flex cursor-pointer items-center justify-between rounded-xl border border-ink-line bg-ink-soft/50 px-3 py-2.5">
+            <span className="text-sm">
+              🍽 Restaurant estimate
+              <span className="ml-1 text-[11px] text-mute-soft">range + hidden calories</span>
+            </span>
+            <input
+              type="checkbox"
+              checked={restaurant}
+              onChange={(e) => setRestaurant(e.target.checked)}
+              className="h-5 w-9 cursor-pointer appearance-none rounded-full bg-ink-line transition-colors checked:bg-accent relative
+                before:absolute before:top-0.5 before:left-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-transform checked:before:translate-x-4"
+            />
+          </label>
+
+          {/* Suggestion to switch into restaurant mode */}
+          {suggest && (
+            <button
+              onClick={() => setRestaurant(true)}
+              className="mt-2 w-full rounded-xl border border-warn/30 bg-warn/10 px-3 py-2 text-left text-[12px] text-warn"
+            >
+              Looks like a restaurant or unknown meal — tap to estimate as a range with hidden
+              calories.
+            </button>
+          )}
+
+          {/* Restaurant range preview */}
+          {restaurant && restInfo && restPreview && (
+            <div className="mt-4 rounded-2xl border border-warn/30 bg-ink-soft/50 p-3">
+              <RestaurantDetail info={restInfo.restaurant} confidence={restPreview.confidence} />
+              <p className="mt-2 text-[11px] text-mute-soft">
+                Logs the midpoint (~{restInfo.calories} kcal · {restInfo.protein}P) toward your
+                totals.
+              </p>
+            </div>
+          )}
+
+          {/* Live preview (normal mode) */}
+          {!restaurant && preview && (
             <div className="mt-4 rounded-2xl border border-ink-line bg-ink-soft/50 p-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">

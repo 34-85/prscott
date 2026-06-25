@@ -13,6 +13,7 @@ import { CoachInsights } from './CoachInsights'
 import { MealLogger } from './MealLogger'
 import { ChatLogger } from './ChatLogger'
 import { BadgePill } from './Badge'
+import { RestaurantTag, RestaurantDetail } from './RestaurantCard'
 import type { Meal } from '../lib/types'
 
 type Mode = 'chat' | 'structured'
@@ -163,31 +164,43 @@ function MealRow({
             <span>{formatTime(meal.timestamp)}</span>
             <span>·</span>
             <span className="tnum">
+              {meal.restaurant ? '~' : ''}
               {meal.protein}P {meal.carbs}C {meal.fat}F
             </span>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <span className="tnum text-sm font-semibold">{meal.calories}</span>
-          <BadgePill badge={proteinBadge(meal.protein, meal.calories)} />
+          <span className="tnum text-sm font-semibold">
+            {meal.restaurant ? '~' : ''}
+            {meal.calories}
+          </span>
+          {meal.restaurant ? (
+            <RestaurantTag />
+          ) : (
+            <BadgePill badge={proteinBadge(meal.protein, meal.calories)} />
+          )}
         </div>
       </button>
 
       {open && (
         <div className="border-t border-ink-line px-3 py-2.5">
-          <div className="space-y-1">
-            {meal.parsedFoods.map((f, i) => (
-              <div key={i} className="flex justify-between text-[12px]">
-                <span className="text-mute">
-                  {f.amount} {f.unit} · {f.foodName}
-                  {!f.matched && <span className="ml-1 text-bad">(guess)</span>}
-                </span>
-                <span className="tnum text-mute-soft">
-                  {f.calories} kcal · {f.protein}P
-                </span>
-              </div>
-            ))}
-          </div>
+          {meal.restaurant ? (
+            <RestaurantDetail info={meal.restaurant} confidence={meal.confidence} />
+          ) : (
+            <div className="space-y-1">
+              {meal.parsedFoods.map((f, i) => (
+                <div key={i} className="flex justify-between text-[12px]">
+                  <span className="text-mute">
+                    {f.amount} {f.unit} · {f.foodName}
+                    {!f.matched && <span className="ml-1 text-bad">(guess)</span>}
+                  </span>
+                  <span className="tnum text-mute-soft">
+                    {f.calories} kcal · {f.protein}P
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
           {meal.notes && <p className="mt-2 text-[12px] text-mute-soft">Note: {meal.notes}</p>}
           <div className="mt-2 flex gap-4">
             <button

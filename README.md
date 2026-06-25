@@ -149,6 +149,34 @@ Key rules implemented:
 - **Cooking fats are additive** — `8 oz chicken + 1 tbsp olive oil` → 376 + 120 kcal.
 - **Unknown foods still estimate** with a low-confidence placeholder so totals keep moving.
 
+## Restaurant estimation mode
+
+Restaurant and unknown meals carry large portions and uncounted cooking fats, so a point
+estimate would lie. `restaurant.ts` instead returns a **macro range**, a **confidence score**,
+and the **calories likely hidden** in oils/butter/sauces. It reads five signals from the text:
+
+- **Protein source** → anchors the estimate with a typical restaurant portion (e.g. chicken
+  6–9 oz, steak 6–10 oz) at slightly fattier per-oz macros.
+- **Portion size** → words like *large*/*half* scale the portion (×1.3 / ×0.7).
+- **Visible fats** → butter, oil/fried, cheese, avocado, bacon, nuts.
+- **Sauces** → creamy/alfredo/aioli, gravy, sweet glaze, pesto, dressing — the biggest source
+  of hidden calories.
+- **Starch presence** → rice, pasta, fries, potato, bread, burrito, beans, pizza.
+
+Every restaurant meal also gets a **cooking-fat tax** (~50–150 kcal) that always counts toward
+hidden calories. Confidence caps at **medium** (these meals are inherently uncertain) and is
+*low* when the protein can't be identified.
+
+It's reached three ways: a **toggle** in the Add Meal sheet; an **auto-suggestion** when the
+canonical DB can't match the text (or a restaurant keyword/brand appears); and **automatically
+in chat mode** for the same triggers. The logged meal stores the full range + hidden calories
+on `meal.restaurant` and contributes the **range midpoint** to your daily totals (shown with a
+`~` and a `RESTAURANT ~EST` tag everywhere it appears).
+
+Example — `chicken alfredo pasta from olive garden` →
+690–1380 kcal · 60–94 P · 44–94 C · 29–73 F, ~300 kcal hidden, medium confidence
+(signals: chicken ~6–9 oz, cooking oil/butter, creamy sauce, pasta).
+
 ### Protein efficiency badges
 
 `protein g / 100 kcal`, shown on every food and meal card:
