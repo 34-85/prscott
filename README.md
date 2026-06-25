@@ -1,32 +1,170 @@
-# prscott
+# PSMF Tracker
 
-General GitHub repo.
+A mobile-first web app for **food, weight, and PSMF-style diet tracking** — built as a
+calm performance dashboard rather than a consumer calorie counter.
 
-## Higgsfield MCP integration
+It does two jobs:
 
-This repo ships a project-scoped [`.mcp.json`](./.mcp.json) that registers the
-[Higgsfield](https://higgsfield.ai/mcp) MCP server with Claude Code. Higgsfield
-exposes 30+ image and video generation models (Soul, Cinema Studio, Flux,
-Seedream, Kling, Minimax Hailuo, Veo, etc.) over a single hosted endpoint.
+1. **Tracker** — log weight and food, estimate calories/macros from natural language, and
+   measure PSMF compliance in real time.
+2. **Coach** — forecast weight loss, detect stalls, separate fat loss from water
+   fluctuation, and give precise, shame-free behavioral guidance.
 
-### Use it with Claude Code
+Design language: **Bloomberg terminal × Apple Health × executive dashboard** — quiet,
+high-contrast, fast data entry, no gamified noise.
 
-1. Open this repo in Claude Code. On first use you'll be prompted to approve
-   the project-scoped MCP server.
-2. Run `/mcp` and authenticate the `higgsfield` server through your
-   Higgsfield account (OAuth — no API keys to manage).
-3. Ask Claude to generate an image or video, e.g. *"Generate a 4K product
-   shot of a matte-black espresso machine on a marble counter."*
+> ⚠️ This app estimates nutrition and weight trends. It is not medical advice.
+> Very-low-calorie or PSMF-style diets should be used carefully, especially with medical
+> conditions or medications.
 
-### Install at user scope instead
+---
 
-If you'd rather have Higgsfield available across all your projects:
+## Install
+
+Requires Node 18+.
 
 ```bash
-claude mcp add --transport http --scope user higgsfield https://mcp.higgsfield.ai/mcp
+npm install
 ```
 
-### Other clients
+## Run
 
-Any MCP-compatible client (Claude Desktop, Cursor, etc.) can point at the
-same endpoint: `https://mcp.higgsfield.ai/mcp` over HTTP transport.
+```bash
+npm run dev       # start the dev server (Vite) → http://localhost:5173
+npm run build     # type-check + production build into dist/
+npm run preview   # preview the production build
+npm run lint      # type-check only (tsc --noEmit)
+```
+
+On first launch the app seeds **two weeks of realistic demo data** (strong PSMF days, a
+mediocre day, a planned refeed, and a water-fluctuation spike) so every screen is immediately
+meaningful. Erase it or reload it any time from **Settings → Data**. All state persists to
+`localStorage`; there is no backend and no external API.
+
+---
+
+## Architecture overview
+
+```
+src/
+  app/
+    App.tsx            # tab shell (Today / History / Foods / Settings) + bottom nav
+    store.tsx          # React context: state + actions, localStorage persistence
+  components/
+    Dashboard.tsx      # "Today" view — composes the panels below
+    WeightEntry.tsx    # morning weigh-in entry
+    MealLogger.tsx     # natural-language meal entry with live macro preview
+    RunningTotals.tsx  # logged totals + remaining daily allowances
+    ComplianceScore.tsx# PSMF 0–10 gauge + component breakdown
+    ForecastCard.tsx   # required vs observed pace, projected goal date
+    CoachInsights.tsx  # coaching cards
+    History.tsx        # weight / score / calorie / protein charts + weekly summaries
+    Foods.tsx          # food library browser + personal-food editor
+    Settings.tsx       # editable targets, plan, meat-weight mode, data controls
+    Badge.tsx          # protein-efficiency badge pill
+  lib/
+    types.ts           # domain types
+    foodDatabase.ts    # personal library (branded) + generic USDA-style foods
+    parser.ts          # tokenizes raw text → quantity / unit / modifiers / food
+    macroEstimator.ts  # matches parsed food → DB → macro estimate + confidence
+    compliance.ts      # PSMF 0–10 scoring
+    forecast.ts        # rolling average + regression pace + goal projection
+    coach.ts           # insight generation (stalls, water vs fat, pacing)
+    storage.ts         # persistence + pure state mutators + recompute
+    seed.ts            # demo data generator
+    dates.ts           # date-key helpers
+```
+
+**Data flow.** Every mutation goes through `store.tsx`, which calls a pure mutator in
+`storage.ts`. Mutators recompute a day's cached totals and compliance via `recomputeLog`, then
+the new `AppState` is persisted to `localStorage`. Derived views (forecast, coach, charts) are
+computed on render from the logs — they are never stored, so changing a setting instantly
+re-scores all history.
+
+### Tech stack
+
+React 18 · TypeScript · Tailwind CSS · Vite · localStorage. No backend, no paid APIs. Charts
+are hand-rolled SVG (no chart library) to keep the bundle small.
+
+---
+
+## Meal parsing & estimation
+
+You log meals in natural language, e.g. `10 oz sirloin, asparagus, 1 tbsp butter`.
+
+1. **`parser.ts`** splits the line on separators (`,`, `and`, `with`, `+`) and extracts a
+   leading quantity (numbers, fractions, number-words), a unit (`oz`, `cup`, `scoop`, `tbsp`,
+   `bottle`, `serving`, …), and preparation modifiers (`grilled`, `lean`, `cooked`, …).
+2. **`macroEstimator.ts`** matches each food phrase against the database, preferring the
+   **personal/branded library over generic entries**, then scales the entry's per-unit macros
+   by the resolved amount and assigns a **confidence** (high / medium / low).
+
+Key rules implemented:
+
+- **Meat weights are cooked** by default. Meats are stored per-ounce, so `8 oz grilled
+  chicken breast` → 376 kcal / 70 P / 8 F (high confidence).
+- **Branded defaults** — `Slate` → 1 bottle (180/42/2/1); `cottage cheese` → 1 cup (2
+  servings); `whole tub greek yogurt` → 5 servings.
+- **Cooking fats are additive** — `8 oz chicken + 1 tbsp olive oil` → 376 + 120 kcal.
+- **Unknown foods still estimate** with a low-confidence placeholder so totals keep moving.
+
+### Protein efficiency badges
+
+`protein g / 100 kcal`, shown on every food and meal card:
+
+| Badge | Efficiency |
+|-------|-----------|
+| Elite PSMF | > 18 |
+| Strong | 12–18 |
+| Acceptable | 8–12 |
+| Poor for cut | < 8 |
+
+---
+
+## Compliance scoring (0–10)
+
+`compliance.ts` scores each logged day:
+
+| Component | Points | Logic |
+|-----------|--------|-------|
+| Protein | 0–3 | full credit at/above the floor (over-max protein is fine on PSMF) |
+| Carbs | 0–2 | full credit under the cap; partial up to 1.5× |
+| Fat | 0–2 | full credit under the cap; partial up to 1.5× |
+| Calories | 0–2 | full credit inside the min–max window; partial just outside |
+| Logging | 0–1 | rewards logging meals + a morning weigh-in |
+
+Status labels: **Excellent** (9–10) · **Strong** (8–8.9) · **Acceptable** (7–7.9) ·
+**Marginal** (5–6.9) · **Off Plan** (< 5).
+
+---
+
+## Forecasting
+
+`forecast.ts` works from the **trend, not single readings**:
+
+- **7-day rolling average** of morning weights smooths daily water noise.
+- **Observed pace** is the least-squares regression slope over all weigh-ins (lb/day → lb/week).
+- **Required pace** = `goalLoss / targetWeeks`; the implied deficit uses **3500 kcal ≈ 1 lb fat**.
+- **Projected goal date** extrapolates the remaining loss at the observed pace.
+- **Status** compares observed vs required pace with a ±10% tolerance band → *Ahead / On /
+  Behind schedule*.
+
+Default plan: lose 20 lb in 11 weeks ≈ **1.82 lb/week ≈ 0.26 lb/day ≈ ~900 kcal/day deficit**
+(all editable in Settings).
+
+---
+
+## Coaching engine
+
+`coach.ts` generates calm, analytical insights and deliberately **does not overreact to a
+single weigh-in**:
+
+- **Water vs fat** — when the scale jumps but recent compliance is high, it explains the rise
+  as water / sodium / glycogen / inflammation, not fat gain.
+- **Plateau detection** — if the 7-day average is flat for 10+ days despite compliance > 8, it
+  flags a genuine stall and suggests a small calorie trim, light activity, sodium consistency,
+  sleep, or a planned refeed.
+- **Pacing** — surfaces ahead / on / behind status with concrete, non-drastic next steps.
+- **Protein shortfall** — flags multi-day protein under the floor and how to close the gap.
+
+Tone is always precise and shame-free; it never scolds.
