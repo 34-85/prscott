@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useStore } from '../app/store'
 import { classifyChat, INTENT_META, type ChatIntent } from '../lib/classifier'
+import { resolveMealRef } from '../lib/mealRef'
 import { proteinBadge } from '../lib/macroEstimator'
 import { formatTime } from '../lib/dates'
 import { createEmptyLog } from '../lib/storage'
@@ -52,16 +53,31 @@ export function ChatLogger({ date }: { date: string }) {
       case 'note':
         addNote(date, intent.note || raw)
         break
+      case 'delete': {
+        const target = resolveMealRef(log.meals, intent.mealRef ?? '')
+        if (target) {
+          deleteMeal(date, target.id)
+          setFlash(`Deleted “${target.rawText}”.`)
+        } else {
+          setFlash(
+            intent.mealRef
+              ? `Couldn't find a meal matching “${intent.mealRef}”.`
+              : 'Nothing to delete.',
+          )
+        }
+        break
+      }
       case 'correction':
         if (intent.correctionTarget === 'weight') {
           setWeight(date, intent.weight, intent.weightNote ?? log.weightNote)
           setFlash(`Corrected weight to ${intent.weight?.toFixed(1)} lb.`)
         } else {
+          // Target the meal that best matches the corrected food; else the latest.
           const ordered = [...log.meals].sort((a, b) => a.timestamp.localeCompare(b.timestamp))
-          const last = ordered[ordered.length - 1]
-          if (last) {
-            updateMealText(date, last.id, intent.mealText ?? raw)
-            setFlash('Updated your most recent meal.')
+          const target = resolveMealRef(log.meals, intent.mealText ?? '') ?? ordered[ordered.length - 1]
+          if (target) {
+            updateMealText(date, target.id, intent.mealText ?? raw)
+            setFlash(`Updated “${target.rawText}”.`)
           } else {
             addMeal(date, intent.mealText ?? raw)
             setFlash('Nothing to correct yet — logged as a new meal.')

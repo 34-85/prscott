@@ -5,7 +5,7 @@ import type { Confidence, FoodEntry } from './types'
 import { estimateMeal } from './macroEstimator'
 import { KNOWN_UNITS } from './parser'
 
-export type ChatIntentType = 'weight' | 'meal' | 'correction' | 'note'
+export type ChatIntentType = 'weight' | 'meal' | 'correction' | 'note' | 'delete'
 
 export interface ChatIntent {
   type: ChatIntentType
@@ -17,6 +17,8 @@ export interface ChatIntent {
   mealText?: string
   /** note payload */
   note?: string
+  /** delete payload — natural-language reference to the meal to remove */
+  mealRef?: string
   /** for corrections, what is being corrected */
   correctionTarget?: 'weight' | 'meal'
   confidence: Confidence
@@ -24,6 +26,11 @@ export interface ChatIntent {
 
 const CORRECTION_RE =
   /^(corrections?|correct|actually|oops|edit|fix|scratch that|i meant|make that|change that)\b[:,\-—]?\s*/i
+
+const DELETE_RE = /^(delete|remove|undo|erase|get rid of|take off)\b[:,\-—]?\s*/i
+
+// Trailing "… not 8" / "… not the 8 oz" clause in a correction — drop it.
+const NOT_CLAUSE_RE = /[,;]?\s*\bnot\b\s+.*$/i
 
 // Leading conversational filler to strip from a correction's remainder.
 const FILLER_PREFIX_RE =
@@ -85,10 +92,18 @@ export function classifyChat(text: string, customFoods: FoodEntry[] = []): ChatI
   const raw = text.trim()
   if (!raw) return { type: 'note', raw, note: '', confidence: 'low' }
 
-  // 1. Correction — strip the trigger, then sub-classify the remainder.
+  // 1. Delete — "delete lunch", "remove the chicken", "undo last meal".
+  if (DELETE_RE.test(raw)) {
+    const ref = raw.replace(DELETE_RE, '').trim()
+    return { type: 'delete', mealRef: ref, raw, confidence: ref ? 'high' : 'low' }
+  }
+
+  // 2. Correction — strip the trigger, then sub-classify the remainder.
   if (CORRECTION_RE.test(raw)) {
     let remainder = raw.replace(CORRECTION_RE, '').trim()
     remainder = remainder.replace(FILLER_PREFIX_RE, '').trim()
+    // "10 oz chicken not 8" -> "10 oz chicken"
+    remainder = remainder.replace(NOT_CLAUSE_RE, '').trim()
     const we = extractWeight(remainder)
     if (we && startsWithWeight(remainder, we.index) && !mealHasMatch(remainder, customFoods)) {
       return {
@@ -109,13 +124,13 @@ export function classifyChat(text: string, customFoods: FoodEntry[] = []): ChatI
     }
   }
 
-  // 2. Explicit "note: ..." prefix.
+  // 3. Explicit "note: ..." prefix.
   if (/^note\b/i.test(raw)) {
     const note = raw.replace(/^note\b[:,\-—]?\s*/i, '').trim()
     return { type: 'note', note: note || raw, raw, confidence: 'high' }
   }
 
-  // 3. Weight — a body-weight number leading the line, no food match.
+  // 4. Weight — a body-weight number leading the line, no food match.
   const we = extractWeight(raw)
   const hasFood = mealHasMatch(raw, customFoods)
   if (we && startsWithWeight(raw, we.index) && !hasFood) {
@@ -129,18 +144,18 @@ export function classifyChat(text: string, customFoods: FoodEntry[] = []): ChatI
     }
   }
 
-  // 4. Meal — a known food matched.
+  // 5. Meal — a known food matched.
   if (hasFood) {
     return { type: 'meal', mealText: raw, raw, confidence: estimateMeal(raw, customFoods).confidence }
   }
 
-  // 5. Note keywords (feeling / slept / sodium ...).
+  // 6. Note keywords (feeling / slept / sodium ...).
   if (NOTE_RE.test(raw)) {
     const note = raw.replace(NOTE_RE, '').trim()
     return { type: 'note', note: note || raw, raw, confidence: 'medium' }
   }
 
-  // 6. Fallback — unit/quantity present reads as a meal guess; otherwise a note.
+  // 7. Fallback — unit/quantity present reads as a meal guess; otherwise a note.
   if (hasUnitOrQuantity(raw)) {
     return { type: 'meal', mealText: raw, raw, confidence: 'low' }
   }
@@ -152,4 +167,5 @@ export const INTENT_META: Record<ChatIntentType, { label: string; color: string 
   meal: { label: 'Meal', color: 'text-good' },
   correction: { label: 'Correction', color: 'text-warn' },
   note: { label: 'Note', color: 'text-mute' },
+  delete: { label: 'Delete', color: 'text-bad' },
 }

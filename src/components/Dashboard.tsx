@@ -23,6 +23,7 @@ export function Dashboard() {
   const date = todayKey()
   const log = state.logs[date] ?? createEmptyLog(date)
   const [showLogger, setShowLogger] = useState(false)
+  const [editingMeal, setEditingMeal] = useState<Meal | null>(null)
   const [mode, setMode] = useState<Mode>(
     () => (localStorage.getItem(MODE_KEY) as Mode) || 'chat',
   )
@@ -91,7 +92,12 @@ export function Dashboard() {
               {[...log.meals]
                 .sort((a, b) => a.timestamp.localeCompare(b.timestamp))
                 .map((m) => (
-                  <MealRow key={m.id} meal={m} onDelete={() => deleteMeal(date, m.id)} />
+                  <MealRow
+                    key={m.id}
+                    meal={m}
+                    onEdit={() => setEditingMeal(m)}
+                    onDelete={() => deleteMeal(date, m.id)}
+                  />
                 ))}
             </div>
           )}
@@ -121,12 +127,29 @@ export function Dashboard() {
         </div>
       )}
 
-      {showLogger && <MealLogger date={date} onClose={() => setShowLogger(false)} />}
+      {(showLogger || editingMeal) && (
+        <MealLogger
+          date={date}
+          editMeal={editingMeal ?? undefined}
+          onClose={() => {
+            setShowLogger(false)
+            setEditingMeal(null)
+          }}
+        />
+      )}
     </div>
   )
 }
 
-function MealRow({ meal, onDelete }: { meal: Meal; onDelete: () => void }) {
+function MealRow({
+  meal,
+  onEdit,
+  onDelete,
+}: {
+  meal: Meal
+  onEdit: () => void
+  onDelete: () => void
+}) {
   const [open, setOpen] = useState(false)
   return (
     <div className="rounded-xl border border-ink-line bg-ink-soft/50">
@@ -166,12 +189,20 @@ function MealRow({ meal, onDelete }: { meal: Meal; onDelete: () => void }) {
             ))}
           </div>
           {meal.notes && <p className="mt-2 text-[12px] text-mute-soft">Note: {meal.notes}</p>}
-          <button
-            onClick={onDelete}
-            className="mt-2 text-[11px] font-medium text-bad hover:underline"
-          >
-            Delete meal
-          </button>
+          <div className="mt-2 flex gap-4">
+            <button
+              onClick={onEdit}
+              className="text-[11px] font-medium text-accent hover:underline"
+            >
+              Edit meal
+            </button>
+            <button
+              onClick={onDelete}
+              className="text-[11px] font-medium text-bad hover:underline"
+            >
+              Delete meal
+            </button>
+          </div>
         </div>
       )}
     </div>

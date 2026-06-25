@@ -102,22 +102,30 @@ A conversational surface where you type naturally and the app classifies each li
 |----------|---------------|--------|
 | `214.6 this morning` | **weight** | sets morning weigh-in (trailing words become a note) |
 | `Slate shake` | **meal** | parses + logs the meal |
-| `Correction: that was 10 oz chicken` | **correction** | re-estimates and replaces your most recent meal |
+| `Correction: 10 oz chicken not 8` | **correction** | re-estimates and replaces the matching meal |
 | `actually 213.2` | **correction** | overwrites the morning weight |
+| `Delete lunch` | **delete** | removes the referenced meal |
 | `note: slept poorly, high sodium` | **note** | jots a free-form day note |
 
-Classification heuristics: a leading body-weight number (50–600, no food match) → weight;
-a correction trigger (`correction`, `actually`, `fix`, `i meant`, …) strips the trigger and
-conversational filler then sub-classifies the remainder as weight or meal; an explicit
-`note:` prefix or feeling/sleep/sodium keywords → note; a recognized food (or a
-unit/quantity) → meal. The composer shows a live **“Reads as …”** chip with the detected
-intent and confidence before you send. The transcript is rendered directly from the day's
-data, so corrections and deletes stay consistent with the rest of the dashboard.
+Classification heuristics: a `delete`/`remove`/`undo` trigger → delete; a leading body-weight
+number (50–600, no food match) → weight; a correction trigger (`correction`, `actually`,
+`fix`, `i meant`, …) strips the trigger, conversational filler, and any trailing “… not X”
+clause, then sub-classifies the remainder as weight or meal; an explicit `note:` prefix or
+feeling/sleep/sodium keywords → note; a recognized food (or a unit/quantity) → meal. The
+composer shows a live **“Reads as …”** chip with the detected intent and confidence before you
+send.
+
+**Meal editing & deletion.** Corrections and deletes resolve a natural-language meal reference
+via `mealRef.ts`: meal-time words (`breakfast`/`lunch`/`dinner` → time-of-day buckets),
+position (`last`/`first`), or a food name (`the chicken`). A correction re-estimates and
+replaces the best-matching meal; `Delete lunch` removes it. The transcript is rendered directly
+from the day's data, so every edit stays consistent with the rest of the dashboard.
 
 ### Structured mode
 
 The classic UI: a dedicated morning-weight field, a “+ Add Meal” sheet with a live macro
-preview and quick-add chips, and an editable meal list. Identical data, just form-driven.
+preview and quick-add chips, and a meal list where each entry expands to **Edit** (reopens the
+sheet in edit mode, preserving id/timestamp) or **Delete**. Identical data, just form-driven.
 
 ---
 

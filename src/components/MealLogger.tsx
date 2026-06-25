@@ -2,11 +2,13 @@ import { useMemo, useState } from 'react'
 import { useStore } from '../app/store'
 import { estimateMeal, proteinBadge } from '../lib/macroEstimator'
 import { BadgePill } from './Badge'
-import type { Confidence } from '../lib/types'
+import type { Confidence, Meal } from '../lib/types'
 
 interface Props {
   date: string
   onClose: () => void
+  /** When set, the sheet edits this meal in place instead of adding a new one. */
+  editMeal?: Meal
 }
 
 const QUICK_ADDS = [
@@ -25,10 +27,11 @@ const CONF_STYLE: Record<Confidence, string> = {
 }
 
 /** Natural-language meal entry with live macro preview. Bottom-sheet modal. */
-export function MealLogger({ date, onClose }: Props) {
-  const { state, addMeal } = useStore()
-  const [text, setText] = useState('')
-  const [notes, setNotes] = useState('')
+export function MealLogger({ date, onClose, editMeal }: Props) {
+  const { state, addMeal, updateMeal } = useStore()
+  const isEdit = editMeal != null
+  const [text, setText] = useState(editMeal?.rawText ?? '')
+  const [notes, setNotes] = useState(editMeal?.notes ?? '')
 
   const preview = useMemo(
     () => (text.trim() ? estimateMeal(text, state.customFoods) : null),
@@ -37,7 +40,23 @@ export function MealLogger({ date, onClose }: Props) {
 
   function submit() {
     if (!text.trim()) return
-    addMeal(date, text.trim(), notes.trim() || undefined)
+    if (isEdit) {
+      // Re-estimate but preserve the meal's id and original timestamp.
+      const est = estimateMeal(text.trim(), state.customFoods)
+      updateMeal(date, {
+        ...editMeal,
+        rawText: text.trim(),
+        parsedFoods: est.parsedFoods,
+        calories: est.calories,
+        protein: est.protein,
+        carbs: est.carbs,
+        fat: est.fat,
+        confidence: est.confidence,
+        notes: notes.trim() || undefined,
+      })
+    } else {
+      addMeal(date, text.trim(), notes.trim() || undefined)
+    }
     onClose()
   }
 
@@ -52,7 +71,7 @@ export function MealLogger({ date, onClose }: Props) {
         <div className="rounded-t-3xl border border-ink-line bg-ink-card p-5 pb-8 sm:rounded-3xl">
           <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-ink-line sm:hidden" />
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Add Meal</h2>
+            <h2 className="text-lg font-semibold">{isEdit ? 'Edit Meal' : 'Add Meal'}</h2>
             <button onClick={onClose} className="text-sm text-mute-soft hover:text-white">
               Cancel
             </button>
@@ -134,7 +153,7 @@ export function MealLogger({ date, onClose }: Props) {
             disabled={!text.trim()}
             className="btn-primary mt-4 w-full py-3 text-base disabled:opacity-40"
           >
-            Log Meal
+            {isEdit ? 'Save Changes' : 'Log Meal'}
           </button>
         </div>
       </div>
