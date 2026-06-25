@@ -17,6 +17,9 @@ export type ComplianceStatus =
 
 export type ForecastStatus = 'Ahead of schedule' | 'On schedule' | 'Behind schedule'
 
+/** How a day is run. Refeed/Maintenance are legitimate when intentional. */
+export type DayType = 'PSMF Day' | 'Moderate Cut Day' | 'Maintenance Day' | 'Refeed Day'
+
 /** A single resolved food line within a meal. */
 export interface FoodEstimate {
   foodName: string
@@ -79,6 +82,8 @@ export interface DailyLog {
   meals: Meal[]
   /** User notes captured in chat mode. */
   notes?: DayNote[]
+  /** User-declared intention for the day. When set to Refeed/Maintenance, compliance grades leniently. */
+  plannedType?: DayType
   totalCalories: number
   totalProtein: number
   totalCarbs: number

@@ -67,13 +67,20 @@ export function ComplianceScore({ log, settings, compact }: Props) {
           {result.hasData ? status : 'No Data'}
         </div>
         {!compact && (
-          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-mute">
-            <Component label="Protein" value={breakdown.protein} max={3} />
-            <Component label="Carbs" value={breakdown.carbs} max={2} />
-            <Component label="Fat" value={breakdown.fat} max={2} />
-            <Component label="Cals" value={breakdown.calories} max={2} />
-            <Component label="Logging" value={breakdown.logging} max={1} />
-          </div>
+          <>
+            <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-mute">
+              <Component label="Protein" value={breakdown.protein} max={3} />
+              <Component label="Carbs" value={breakdown.carbs} max={2} />
+              <Component label="Fat" value={breakdown.fat} max={2} />
+              <Component label="Cals" value={breakdown.calories} max={2} />
+              <Component label="Logging" value={breakdown.logging} max={1} />
+            </div>
+            {result.gradedAs !== 'PSMF Day' && (
+              <div className="mt-1.5 text-[11px] text-mute-soft">
+                Graded against <span className="text-warn">{result.gradedAs}</span> targets
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

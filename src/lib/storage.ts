@@ -1,4 +1,4 @@
-import type { AppState, DailyLog, DayNote, FoodEntry, Meal, UserSettings } from './types'
+import type { AppState, DailyLog, DayNote, DayType, FoodEntry, Meal, UserSettings } from './types'
 import { computeCompliance } from './compliance'
 
 const STORAGE_KEY = 'psmf-tracker-state'
@@ -156,6 +156,17 @@ export function removeDayNote(state: AppState, date: string, noteId: string): Ap
   if (!log) return state
   const notes = (log.notes ?? []).filter((n) => n.id !== noteId)
   return { ...state, logs: { ...state.logs, [date]: { ...log, notes } } }
+}
+
+export function setPlannedType(
+  state: AppState,
+  date: string,
+  plannedType: DayType | undefined,
+): AppState {
+  const log = state.logs[date] ?? createEmptyLog(date)
+  // plannedType changes how compliance grades the day, so recompute.
+  const updated = recomputeLog({ ...log, plannedType }, state.settings)
+  return { ...state, logs: { ...state.logs, [date]: updated } }
 }
 
 export function addCustomFood(state: AppState, food: FoodEntry): AppState {

@@ -4,6 +4,7 @@ import { classifyChat, INTENT_META, type ChatIntent } from '../lib/classifier'
 import { resolveMealRef } from '../lib/mealRef'
 import { shouldEstimateAsRestaurant } from '../lib/restaurant'
 import { proteinBadge } from '../lib/macroEstimator'
+import { errorBand } from '../lib/confidence'
 import { RestaurantTag, RestaurantDetail } from './RestaurantCard'
 import { formatTime } from '../lib/dates'
 import { createEmptyLog } from '../lib/storage'
@@ -223,7 +224,9 @@ function MealExchange({ meal, onDelete }: { meal: Meal; onDelete: () => void }) 
               ) : (
                 <BadgePill badge={proteinBadge(meal.protein, meal.calories)} />
               )}
-              <span className={`text-[10px] ${CONF_STYLE[meal.confidence]}`}>{meal.confidence}</span>
+              <span className={`text-[10px] ${CONF_STYLE[meal.confidence]}`}>
+                {meal.confidence} {errorBand(meal.confidence).label}
+              </span>
             </div>
             <div className="tnum mt-0.5 text-[12px] text-mute">
               {meal.restaurant ? '~' : ''}

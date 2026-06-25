@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type { AppState, FoodEntry, Meal, UserSettings } from '../lib/types'
+import type { AppState, DayType, FoodEntry, Meal, UserSettings } from '../lib/types'
 import {
   addCustomFood as addCustomFoodFn,
   addDayNote as addDayNoteFn,
@@ -20,6 +20,7 @@ import {
   removeMeal as removeMealFn,
   saveState,
   setMorningWeight as setMorningWeightFn,
+  setPlannedType as setPlannedTypeFn,
   updateSettings as updateSettingsFn,
   upsertMeal,
 } from '../lib/storage'
@@ -35,6 +36,7 @@ interface StoreApi {
   updateMealText: (date: string, mealId: string, rawText: string) => void
   deleteMeal: (date: string, mealId: string) => void
   setWeight: (date: string, weight: number | undefined, note?: string) => void
+  setDayType: (date: string, plannedType: DayType | undefined) => void
   addNote: (date: string, text: string) => void
   deleteNote: (date: string, noteId: string) => void
   updateSettings: (patch: Partial<UserSettings>) => void
@@ -134,6 +136,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  const setDayType = useCallback((date: string, plannedType: DayType | undefined) => {
+    setState((s) => setPlannedTypeFn(s, date, plannedType))
+  }, [])
+
   const addNote = useCallback((date: string, text: string) => {
     setState((s) => addDayNoteFn(s, date, text))
   }, [])
@@ -171,6 +177,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       updateMealText,
       deleteMeal,
       setWeight,
+      setDayType,
       addNote,
       deleteNote,
       updateSettings,
@@ -187,6 +194,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       updateMealText,
       deleteMeal,
       setWeight,
+      setDayType,
       addNote,
       deleteNote,
       updateSettings,

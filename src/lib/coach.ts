@@ -1,6 +1,8 @@
 import type { DailyLog, UserSettings } from './types'
 import { computeCompliance } from './compliance'
 import { computeForecast, weighIns, rollingTrend, type Forecast } from './forecast'
+import { estimateWaterWeight } from './waterWeight'
+import { classifyDay } from './dayType'
 import { daysBetween, todayKey } from './dates'
 
 export type InsightTone = 'positive' | 'info' | 'caution' | 'alert'
@@ -11,6 +13,11 @@ export interface CoachInsight {
   title: string
   body: string
 }
+
+// Coach voice: experienced nutrition coach + data analyst + emotionally neutral
+// performance advisor. Priorities: accuracy, trend analysis, preventing
+// overreaction, reinforcing consistency. No cheerleading, shame, generic
+// motivation, or overconfidence — every claim is tied to the data.
 
 /** Average compliance score over the most recent N logged days (with meals). */
 function recentCompliance(logs: DailyLog[], settings: UserSettings, n: number): number | null {
@@ -23,10 +30,7 @@ function recentCompliance(logs: DailyLog[], settings: UserSettings, n: number): 
   return scored.reduce((a, b) => a + b, 0) / scored.length
 }
 
-/**
- * Detect a plateau: rolling average essentially flat over 10+ days
- * despite good compliance (>8).
- */
+/** Detect a plateau: rolling average flat over 10+ days despite good compliance. */
 function detectPlateau(
   logs: Record<string, DailyLog>,
   settings: UserSettings,
@@ -35,7 +39,6 @@ function detectPlateau(
   if (points.length < 4) return { stalled: false, days: 0 }
   const trend = rollingTrend(points)
   const last = trend[trend.length - 1]
-  // Find the earliest trend point within a 10+ day window.
   const windowStart = trend.find((t) => daysBetween(t.date, last.date) <= 14)
   if (!windowStart) return { stalled: false, days: 0 }
   const span = daysBetween(windowStart.date, last.date)
@@ -57,34 +60,58 @@ export function computeCoachInsights(
   const logList = Object.values(logs)
   const points = weighIns(logs)
 
-  // --- 1. Single-day weight spike vs. strong compliance -------------------
-  if (points.length >= 2) {
-    const last = points[points.length - 1]
-    const prev = points[points.length - 2]
-    const dayChange = last.weight - prev.weight
-    const recent3 = recentCompliance(logList, settings, 3)
-    if (dayChange >= 1.0 && recent3 != null && recent3 >= 8) {
+  // --- 1. Intentional day acknowledgment ---------------------------------
+  const todayLog = logs[today]
+  if (todayLog && todayLog.plannedType && todayLog.meals.length > 0) {
+    const t = todayLog.plannedType
+    if (t === 'Refeed Day' || t === 'Maintenance Day') {
+      const water = estimateWaterWeight(today, logs, settings)
       insights.push({
-        id: 'water-spike',
+        id: 'planned-day',
         tone: 'info',
-        title: `Scale up ${dayChange.toFixed(1)} lb — compliance ${recent3.toFixed(1)}`,
+        title: `${t} logged as planned`,
         body:
-          'Weight increase likely reflects water, sodium, inflammation, or glycogen. ' +
-          'Your intake data does not suggest fat gain. Hold the line and watch the 7-day trend, not the single reading.',
-      })
-    } else if (dayChange >= 1.0) {
-      insights.push({
-        id: 'daily-noise',
-        tone: 'info',
-        title: `Scale up ${dayChange.toFixed(1)} lb overnight`,
-        body:
-          'Day-to-day weight swings of 1–3 lb are normal water movement. ' +
-          'Judge progress by the rolling average across the week.',
+          `Elevated carbs/calories are by design and are not scored against PSMF targets today. ` +
+          `Expect roughly ${water.min}–${water.max} lb of temporary water over the next 1–2 days. ` +
+          `It does not represent fat gain and will clear from the trend.`,
       })
     }
   }
 
-  // --- 2. Plateau detection ----------------------------------------------
+  // --- 2. Water-aware analysis of a scale increase -----------------------
+  if (points.length >= 2) {
+    const last = points[points.length - 1]
+    const prev = points[points.length - 2]
+    const dayChange = last.weight - prev.weight
+    if (dayChange >= 1.0) {
+      const water = estimateWaterWeight(last.date, logs, settings)
+      const recent3 = recentCompliance(logList, settings, 3)
+      const planned = logs[last.date]?.plannedType
+      const drivers = water.factors
+        .filter((f) => f.name !== 'Normal daily variance')
+        .map((f) => f.name.toLowerCase())
+      const driverText = drivers.length ? ` Likely drivers: ${drivers.join(', ')}.` : ''
+      const benign =
+        (recent3 != null && recent3 >= 8) ||
+        planned === 'Refeed Day' ||
+        planned === 'Maintenance Day'
+
+      insights.push({
+        id: 'water-spike',
+        tone: 'info',
+        title: `Scale +${dayChange.toFixed(1)} lb — modeled water ${water.min}–${water.max} lb`,
+        body:
+          `The water model attributes ${water.min}–${water.max} lb of this move to temporary ` +
+          `factors.${driverText} ` +
+          (benign
+            ? 'Intake and compliance do not indicate fat gain. '
+            : 'Confirm intake before drawing conclusions. ') +
+          'Read the 7-day average, not the single reading.',
+      })
+    }
+  }
+
+  // --- 3. Plateau detection ----------------------------------------------
   const plateau = detectPlateau(logs, settings)
   if (plateau.stalled) {
     insights.push({
@@ -92,75 +119,73 @@ export function computeCoachInsights(
       tone: 'caution',
       title: `Trend flat for ${plateau.days} days`,
       body:
-        'The 7-day average has held steady despite solid compliance. This reads as a genuine plateau, not noise. ' +
-        'Consider: trim calories ~100–150/day, add 15–20 min daily activity, verify sodium consistency, and prioritize sleep recovery. ' +
-        'A single planned refeed can also restore output if you have been deep in deficit.',
+        'The 7-day average has held steady despite compliance above 8 — this reads as a genuine plateau, not noise. ' +
+        'Options, in order of preference: trim 100–150 kcal/day, add 15–20 min daily activity, hold sodium consistent, and prioritize sleep. ' +
+        'A single planned refeed can also restore output after a long deficit.',
     })
   }
 
-  // --- 3. Schedule status ------------------------------------------------
+  // --- 4. Schedule status (neutral, numeric) -----------------------------
   if (fc.hasData && fc.observedWeeklyLoss != null) {
     if (fc.status === 'Ahead of schedule') {
       insights.push({
         id: 'ahead',
-        tone: 'positive',
-        title: 'Ahead of schedule',
-        body: `Trend pace is ${fc.observedWeeklyLoss.toFixed(2)} lb/week vs a target of ${fc.requiredWeeklyLoss.toFixed(2)}. Maintain current execution — no need to push harder or under-eat.`,
+        tone: 'info',
+        title: 'Ahead of required pace',
+        body: `Trend pace ${fc.observedWeeklyLoss.toFixed(2)} lb/week vs ${fc.requiredWeeklyLoss.toFixed(2)} required. Current inputs are sufficient — no need to cut further or push harder.`,
       })
     } else if (fc.status === 'Behind schedule') {
       insights.push({
         id: 'behind',
         tone: 'caution',
-        title: 'Behind target pace',
-        body: `Trend pace is ${fc.observedWeeklyLoss.toFixed(2)} lb/week vs a target of ${fc.requiredWeeklyLoss.toFixed(2)}. If this holds for another week, tighten calories toward the lower bound or add light daily activity. Avoid drastic cuts.`,
+        title: 'Behind required pace',
+        body: `Trend pace ${fc.observedWeeklyLoss.toFixed(2)} lb/week vs ${fc.requiredWeeklyLoss.toFixed(2)} required. If it holds another week, tighten calories toward the lower bound or add light activity. Avoid drastic cuts.`,
       })
     } else {
       insights.push({
         id: 'on-track',
-        tone: 'positive',
-        title: 'On schedule',
-        body: `Trend pace ${fc.observedWeeklyLoss.toFixed(2)} lb/week is tracking your ${fc.requiredWeeklyLoss.toFixed(2)} lb/week target. Consistency is doing the work.`,
+        tone: 'info',
+        title: 'On required pace',
+        body: `Trend pace ${fc.observedWeeklyLoss.toFixed(2)} lb/week is matching the ${fc.requiredWeeklyLoss.toFixed(2)} lb/week target. Holding inputs steady sustains it.`,
       })
     }
   }
 
-  // --- 4. Protein-shortfall pattern --------------------------------------
+  // --- 5. Protein-shortfall pattern --------------------------------------
   const recentLogged = logList
     .filter((l) => l.meals.length > 0)
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 3)
   if (recentLogged.length >= 3 && recentLogged.every((l) => l.totalProtein < settings.proteinMin)) {
-    const avgP =
-      recentLogged.reduce((a, l) => a + l.totalProtein, 0) / recentLogged.length
+    const avgP = recentLogged.reduce((a, l) => a + l.totalProtein, 0) / recentLogged.length
     insights.push({
       id: 'protein-low',
       tone: 'caution',
-      title: 'Protein running below floor',
-      body: `Last 3 logged days averaged ${avgP.toFixed(0)}g protein, under your ${settings.proteinMin}g minimum. Protein preserves lean mass in a deep deficit — add a shake or a lean protein serving to close the gap.`,
+      title: 'Protein below floor for 3 days',
+      body: `Last 3 logged days averaged ${avgP.toFixed(0)}g protein, under the ${settings.proteinMin}g minimum. Protein preserves lean mass in a deep deficit — add a shake or a lean protein serving to close the gap.`,
     })
   }
 
-  // --- 5. Today: gentle nudge to finish the day --------------------------
-  const todayLog = logs[today]
-  if (todayLog && todayLog.meals.length > 0) {
+  // --- 6. Today: protein remaining ---------------------------------------
+  if (todayLog && todayLog.meals.length > 0 && classifyDay(todayLog, settings).effective !== 'Refeed Day') {
     const remainingP = settings.proteinMin - todayLog.totalProtein
     if (remainingP > 20) {
       insights.push({
         id: 'today-protein',
         tone: 'info',
-        title: 'Protein target not yet met today',
-        body: `${remainingP.toFixed(0)}g protein remaining to hit your floor. A Slate shake (42g) or a 6 oz chicken breast (53g) would get you there.`,
+        title: 'Protein not yet at floor today',
+        body: `${remainingP.toFixed(0)}g protein remaining to the minimum. A Slate shake (42g) or a 6 oz chicken breast (53g) closes it.`,
       })
     }
   }
 
-  // --- 6. Cold start -----------------------------------------------------
+  // --- 7. Cold start -----------------------------------------------------
   if (points.length < 2 && logList.every((l) => l.meals.length === 0)) {
     insights.push({
       id: 'getting-started',
       tone: 'info',
       title: 'Building your baseline',
-      body: 'Log a morning weight and your meals for a few days. Coaching insights sharpen once a 7-day trend forms — single readings are intentionally ignored.',
+      body: 'Log a morning weight and meals for a few days. Insights sharpen once a 7-day trend forms — single readings are intentionally ignored.',
     })
   }
 

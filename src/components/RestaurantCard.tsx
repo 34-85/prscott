@@ -1,4 +1,5 @@
 import type { Confidence, RestaurantInfo } from '../lib/types'
+import { errorBand } from '../lib/confidence'
 
 const CONF_STYLE: Record<Confidence, string> = {
   high: 'text-good',
@@ -44,7 +45,7 @@ export function RestaurantDetail({
         </span>
         {confidence && (
           <span className={`text-[11px] font-medium ${CONF_STYLE[confidence]}`}>
-            {confidence} confidence
+            {confidence} {errorBand(confidence).label}
           </span>
         )}
       </div>

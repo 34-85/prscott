@@ -1,4 +1,5 @@
-import type { ComplianceStatus, DailyLog, UserSettings } from './types'
+import type { ComplianceStatus, DailyLog, DayType, UserSettings } from './types'
+import { dayTargets, estimateMaintenance, type DayTargets } from './dayType'
 
 export interface ComplianceBreakdown {
   protein: number // 0-3
@@ -13,6 +14,8 @@ export interface ComplianceResult {
   breakdown: ComplianceBreakdown
   status: ComplianceStatus
   hasData: boolean
+  /** The day type the score was graded against (planned intention, else strict PSMF). */
+  gradedAs: DayType
 }
 
 function scoreProtein(p: number, s: UserSettings): number {
@@ -22,23 +25,23 @@ function scoreProtein(p: number, s: UserSettings): number {
   return 0
 }
 
-function scoreCarbs(c: number, s: UserSettings): number {
-  if (c <= s.carbMax) return 2
-  if (c <= s.carbMax * 1.5) return 1
+function scoreCarbs(c: number, t: DayTargets): number {
+  if (c <= t.carbMax) return 2
+  if (c <= t.carbMax * 1.5) return 1
   return 0
 }
 
-function scoreFat(f: number, s: UserSettings): number {
-  if (f <= s.fatMax) return 2
-  if (f <= s.fatMax * 1.5) return 1
+function scoreFat(f: number, t: DayTargets): number {
+  if (f <= t.fatMax) return 2
+  if (f <= t.fatMax * 1.5) return 1
   return 0
 }
 
-function scoreCalories(cal: number, s: UserSettings): number {
-  if (cal >= s.calorieMin && cal <= s.calorieMax) return 2
-  // Mild miss (within 15% of a bound) keeps a point.
-  if (cal < s.calorieMin && cal >= s.calorieMin * 0.7) return 1
-  if (cal > s.calorieMax && cal <= s.calorieMax * 1.15) return 1
+function scoreCalories(cal: number, t: DayTargets): number {
+  if (cal >= t.calMin && cal <= t.calMax) return 2
+  // Mild miss (within ~15% of a bound) keeps a point.
+  if (cal < t.calMin && cal >= t.calMin * 0.7) return 1
+  if (cal > t.calMax && cal <= t.calMax * 1.15) return 1
   return 0
 }
 
@@ -58,13 +61,23 @@ export function statusFromScore(score: number): ComplianceStatus {
   return 'Off Plan'
 }
 
+/**
+ * Score a day's adherence (0–10). When the user has declared an intentional
+ * Refeed/Maintenance/Moderate day, the carb/calorie/fat sub-scores are graded
+ * against that plan — so an intentional refeed is not automatically "off plan".
+ * Unplanned days are graded strictly against PSMF targets.
+ */
 export function computeCompliance(log: DailyLog, settings: UserSettings): ComplianceResult {
   const hasData = log.meals.length > 0
+  const gradedAs: DayType = log.plannedType ?? 'PSMF Day'
+  const maint = estimateMaintenance(log.morningWeight ?? settings.startingWeight)
+  const t = dayTargets(gradedAs, settings, maint)
+
   const breakdown: ComplianceBreakdown = {
     protein: hasData ? scoreProtein(log.totalProtein, settings) : 0,
-    carbs: hasData ? scoreCarbs(log.totalCarbs, settings) : 0,
-    fat: hasData ? scoreFat(log.totalFat, settings) : 0,
-    calories: hasData ? scoreCalories(log.totalCalories, settings) : 0,
+    carbs: hasData ? scoreCarbs(log.totalCarbs, t) : 0,
+    fat: hasData ? scoreFat(log.totalFat, t) : 0,
+    calories: hasData ? scoreCalories(log.totalCalories, t) : 0,
     logging: scoreLogging(log),
   }
 
@@ -77,6 +90,7 @@ export function computeCompliance(log: DailyLog, settings: UserSettings): Compli
     breakdown,
     status: statusFromScore(score),
     hasData,
+    gradedAs,
   }
 }
 

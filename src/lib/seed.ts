@@ -1,4 +1,4 @@
-import type { AppState, DailyLog, Meal } from './types'
+import type { AppState, DailyLog, DayType, Meal } from './types'
 import { DEFAULT_SETTINGS, createEmptyLog, recomputeLog } from './storage'
 import { estimateMeal } from './macroEstimator'
 import { addDays, parseKey, todayKey } from './dates'
@@ -15,6 +15,7 @@ interface DaySpec {
   weightNote?: string
   meals: MealSpec[]
   coachNotes?: string[]
+  plannedType?: DayType
 }
 
 function buildMeal(dateKey: string, spec: MealSpec, idx: number): Meal {
@@ -121,11 +122,12 @@ const DAY_SPECS: DaySpec[] = [
     offset: 6,
     weight: 211.0,
     weightNote: 'Planned refeed',
+    plannedType: 'Refeed Day',
     meals: [
       { text: '1 cup cottage cheese, berries', hour: 8 },
       { text: '8 oz grilled chicken breast, 2 cups broccoli', hour: 12 },
       { text: 'Greek yogurt, berries', hour: 16 },
-      { text: '10 oz sirloin, salad greens, 1 tbsp olive oil, 1 tbsp butter', hour: 19, notes: 'Refeed — extra carbs intentional' },
+      { text: '10 oz sirloin, salad greens, 1 tbsp olive oil, 1 tbsp butter, berries', hour: 19, notes: 'Refeed — extra carbs intentional' },
     ],
     coachNotes: ['Planned refeed to support training and hormones.'],
   },
@@ -203,6 +205,7 @@ export function buildSeedState(today = todayKey()): AppState {
     let log = createEmptyLog(dateKey)
     log.morningWeight = spec.weight
     log.weightNote = spec.weightNote
+    log.plannedType = spec.plannedType
     log.meals = spec.meals.map((m, i) => buildMeal(dateKey, m, i))
     log.coachNotes = spec.coachNotes ?? []
     log = recomputeLog(log, settings)

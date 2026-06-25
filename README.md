@@ -190,20 +190,53 @@ Example — `chicken alfredo pasta from olive garden` →
 
 ---
 
+## Day classification (`dayType.ts`)
+
+Each day is labeled **PSMF Day**, **Moderate Cut Day**, **Maintenance Day**, or **Refeed Day**.
+It's auto-classified from the macros (carb surge + elevated calories → refeed; calories near
+maintenance → maintenance; over the PSMF ceiling but still a deficit → moderate cut; otherwise
+PSMF), and you can **declare an intention** on the Today tab. Maintenance ≈ bodyweight × 11.
+
+Crucially, **an intentional Refeed or Maintenance day is not automatically off-plan**: when you
+declare one, compliance grades carbs/calories/fat against that day type's wider window instead
+of strict PSMF. An *un*declared high-carb day is still graded strictly (so an accidental binge
+still reads as off-plan). Protein and logging are graded the same on every day type.
+
 ## Compliance scoring (0–10)
 
-`compliance.ts` scores each logged day:
+`compliance.ts` scores each logged day against the **intended** day type:
 
 | Component | Points | Logic |
 |-----------|--------|-------|
 | Protein | 0–3 | full credit at/above the floor (over-max protein is fine on PSMF) |
-| Carbs | 0–2 | full credit under the cap; partial up to 1.5× |
-| Fat | 0–2 | full credit under the cap; partial up to 1.5× |
-| Calories | 0–2 | full credit inside the min–max window; partial just outside |
+| Carbs | 0–2 | full credit under the day type's cap; partial up to 1.5× |
+| Fat | 0–2 | full credit under the day type's cap; partial up to 1.5× |
+| Calories | 0–2 | full credit inside the day type's window; partial just outside |
 | Logging | 0–1 | rewards logging meals + a morning weigh-in |
 
 Status labels: **Excellent** (9–10) · **Strong** (8–8.9) · **Acceptable** (7–7.9) ·
 **Marginal** (5–6.9) · **Off Plan** (< 5).
+
+## Macro confidence model (`confidence.ts`)
+
+Every estimate carries a confidence tier anchored to its **source**, with a quantified error
+band shown in the UI:
+
+| Tier | Source | Error |
+|------|--------|-------|
+| High | packaged / branded foods (personal library) | ±5% |
+| Medium | weighed home-cooked foods (generic DB, clear portion) | ±15% |
+| Low | restaurant / ambiguous portions | ±30–50% |
+
+A meal's confidence is its weakest line. Restaurant meals are always low and shown as a range.
+
+## Water-weight model (`waterWeight.ts`)
+
+Separates temporary scale variance from real fat change. It scans the day's text and macro
+deltas for **high sodium, carb increase, alcohol, poor sleep, inflammation, and bowel
+irregularity**, plus a baseline daily variance, and sums them into an expected **1–7 lb**
+temporary range. The coach uses it to explain a scale jump with specific drivers rather than a
+generic "it's just water."
 
 ---
 
@@ -225,15 +258,16 @@ Default plan: lose 20 lb in 11 weeks ≈ **1.82 lb/week ≈ 0.26 lb/day ≈ ~900
 
 ## Coaching engine
 
-`coach.ts` generates calm, analytical insights and deliberately **does not overreact to a
-single weigh-in**:
+`coach.ts` behaves like an **experienced nutrition coach + data analyst + emotionally neutral
+performance advisor**. Priorities, in order: **accuracy → trend analysis → preventing
+overreaction → reinforcing consistency**. It avoids cheerleading, shame, generic motivation,
+and overconfidence — every claim is tied to the data.
 
-- **Water vs fat** — when the scale jumps but recent compliance is high, it explains the rise
-  as water / sodium / glycogen / inflammation, not fat gain.
-- **Plateau detection** — if the 7-day average is flat for 10+ days despite compliance > 8, it
-  flags a genuine stall and suggests a small calorie trim, light activity, sodium consistency,
-  sleep, or a planned refeed.
-- **Pacing** — surfaces ahead / on / behind status with concrete, non-drastic next steps.
+- **Intentional-day acknowledgment** — a declared refeed/maintenance day is recognized as
+  planned, with the expected temporary water bump quantified; it is not flagged off-plan.
+- **Water-aware spike analysis** — when the scale jumps, it cites the modeled water range and
+  the specific drivers (sodium, carb increase, sleep, …) instead of "it's just water."
+- **Plateau detection** — 7-day average flat for 10+ days despite compliance > 8 → flagged as a
+  genuine stall with ordered options (small calorie trim, activity, sodium, sleep, refeed).
+- **Pacing** — neutral, numeric ahead / on / behind status with non-drastic next steps.
 - **Protein shortfall** — flags multi-day protein under the floor and how to close the gap.
-
-Tone is always precise and shame-free; it never scolds.

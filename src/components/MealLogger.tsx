@@ -8,6 +8,7 @@ import {
 } from '../lib/restaurant'
 import { BadgePill } from './Badge'
 import { RestaurantDetail } from './RestaurantCard'
+import { errorBand } from '../lib/confidence'
 import type { Confidence, Meal } from '../lib/types'
 
 interface Props {
@@ -187,7 +188,7 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
                 <div className="flex items-center gap-2">
                   <BadgePill badge={proteinBadge(preview.protein, preview.calories)} />
                   <span className={`text-[11px] font-medium ${CONF_STYLE[preview.confidence]}`}>
-                    {preview.confidence} confidence
+                    {preview.confidence} {errorBand(preview.confidence).label}
                   </span>
                 </div>
               </div>

@@ -112,7 +112,18 @@ export function estimateSegment(seg: ParsedSegment, db: FoodEntry[]): FoodEstima
   }
 
   const { entry } = match
-  const { multiplier, confidence } = resolveMultiplier(seg, entry)
+  const { multiplier, confidence: portionConf } = resolveMultiplier(seg, entry)
+
+  // Confidence is anchored to the food SOURCE (per the macro confidence model):
+  //   branded / personal library  -> high   (±5%)
+  //   generic DB, clean portion    -> medium (±15%)
+  //   generic DB, ambiguous portion-> low    (±30–50%)
+  const branded = entry.priority <= 0
+  const confidence: Confidence = branded
+    ? 'high'
+    : portionConf === 'high'
+      ? 'medium'
+      : 'low'
 
   return {
     foodName: entry.name,

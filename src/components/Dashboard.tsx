@@ -12,8 +12,10 @@ import { ForecastCard } from './ForecastCard'
 import { CoachInsights } from './CoachInsights'
 import { MealLogger } from './MealLogger'
 import { ChatLogger } from './ChatLogger'
+import { DayTypeControl } from './DayTypeControl'
 import { BadgePill } from './Badge'
 import { RestaurantTag, RestaurantDetail } from './RestaurantCard'
+import { errorBand } from '../lib/confidence'
 import type { Meal } from '../lib/types'
 
 type Mode = 'chat' | 'structured'
@@ -54,6 +56,9 @@ export function Dashboard() {
         <div className="my-4 h-px bg-ink-line" />
         <RunningTotals log={log} settings={state.settings} />
       </div>
+
+      {/* Day type */}
+      <DayTypeControl date={date} />
 
       {/* Logging mode toggle */}
       <div className="flex rounded-xl border border-ink-line bg-ink-soft p-1">
@@ -201,7 +206,11 @@ function MealRow({
               ))}
             </div>
           )}
-          {meal.notes && <p className="mt-2 text-[12px] text-mute-soft">Note: {meal.notes}</p>}
+          <p className="mt-2 text-[11px] text-mute-soft">
+            Estimate confidence: <span className="text-white">{meal.confidence}</span>{' '}
+            {errorBand(meal.confidence).label} · {errorBand(meal.confidence).source}
+          </p>
+          {meal.notes && <p className="mt-1 text-[12px] text-mute-soft">Note: {meal.notes}</p>}
           <div className="mt-2 flex gap-4">
             <button
               onClick={onEdit}
