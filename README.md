@@ -88,6 +88,39 @@ are hand-rolled SVG (no chart library) to keep the bundle small.
 
 ---
 
+## Logging modes
+
+The **Today** tab offers two ways to log, switchable with a toggle (your choice is
+remembered):
+
+### Chat mode (preferred)
+
+A conversational surface where you type naturally and the app classifies each line via
+`classifier.ts` into one of four intents, then routes it:
+
+| You type | Classified as | Action |
+|----------|---------------|--------|
+| `214.6 this morning` | **weight** | sets morning weigh-in (trailing words become a note) |
+| `Slate shake` | **meal** | parses + logs the meal |
+| `Correction: that was 10 oz chicken` | **correction** | re-estimates and replaces your most recent meal |
+| `actually 213.2` | **correction** | overwrites the morning weight |
+| `note: slept poorly, high sodium` | **note** | jots a free-form day note |
+
+Classification heuristics: a leading body-weight number (50–600, no food match) → weight;
+a correction trigger (`correction`, `actually`, `fix`, `i meant`, …) strips the trigger and
+conversational filler then sub-classifies the remainder as weight or meal; an explicit
+`note:` prefix or feeling/sleep/sodium keywords → note; a recognized food (or a
+unit/quantity) → meal. The composer shows a live **“Reads as …”** chip with the detected
+intent and confidence before you send. The transcript is rendered directly from the day's
+data, so corrections and deletes stay consistent with the rest of the dashboard.
+
+### Structured mode
+
+The classic UI: a dedicated morning-weight field, a “+ Add Meal” sheet with a live macro
+preview and quick-add chips, and an editable meal list. Identical data, just form-driven.
+
+---
+
 ## Meal parsing & estimation
 
 You log meals in natural language, e.g. `10 oz sirloin, asparagus, 1 tbsp butter`.

@@ -11,10 +11,12 @@ import {
 import type { AppState, FoodEntry, Meal, UserSettings } from '../lib/types'
 import {
   addCustomFood as addCustomFoodFn,
+  addDayNote as addDayNoteFn,
   defaultState,
   loadState,
   makeMealId,
   removeCustomFood as removeCustomFoodFn,
+  removeDayNote as removeDayNoteFn,
   removeMeal as removeMealFn,
   saveState,
   setMorningWeight as setMorningWeightFn,
@@ -28,8 +30,11 @@ interface StoreApi {
   state: AppState
   addMeal: (date: string, rawText: string, notes?: string) => void
   updateMeal: (date: string, meal: Meal) => void
+  updateMealText: (date: string, mealId: string, rawText: string) => void
   deleteMeal: (date: string, mealId: string) => void
   setWeight: (date: string, weight: number | undefined, note?: string) => void
+  addNote: (date: string, text: string) => void
+  deleteNote: (date: string, noteId: string) => void
   updateSettings: (patch: Partial<UserSettings>) => void
   addCustomFood: (food: FoodEntry) => void
   removeCustomFood: (id: string) => void
@@ -80,6 +85,26 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => upsertMeal(s, date, meal))
   }, [])
 
+  const updateMealText = useCallback((date: string, mealId: string, rawText: string) => {
+    setState((s) => {
+      const log = s.logs[date]
+      const existing = log?.meals.find((m) => m.id === mealId)
+      if (!existing) return s
+      const est = estimateMeal(rawText, s.customFoods)
+      const meal: Meal = {
+        ...existing,
+        rawText,
+        parsedFoods: est.parsedFoods,
+        calories: est.calories,
+        protein: est.protein,
+        carbs: est.carbs,
+        fat: est.fat,
+        confidence: est.confidence,
+      }
+      return upsertMeal(s, date, meal)
+    })
+  }, [])
+
   const deleteMeal = useCallback((date: string, mealId: string) => {
     setState((s) => removeMealFn(s, date, mealId))
   }, [])
@@ -90,6 +115,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     },
     [],
   )
+
+  const addNote = useCallback((date: string, text: string) => {
+    setState((s) => addDayNoteFn(s, date, text))
+  }, [])
+
+  const deleteNote = useCallback((date: string, noteId: string) => {
+    setState((s) => removeDayNoteFn(s, date, noteId))
+  }, [])
 
   const updateSettings = useCallback((patch: Partial<UserSettings>) => {
     setState((s) => updateSettingsFn(s, patch))
@@ -116,8 +149,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       state,
       addMeal,
       updateMeal,
+      updateMealText,
       deleteMeal,
       setWeight,
+      addNote,
+      deleteNote,
       updateSettings,
       addCustomFood,
       removeCustomFood,
@@ -128,8 +164,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       state,
       addMeal,
       updateMeal,
+      updateMealText,
       deleteMeal,
       setWeight,
+      addNote,
+      deleteNote,
       updateSettings,
       addCustomFood,
       removeCustomFood,

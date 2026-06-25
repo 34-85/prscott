@@ -45,12 +45,21 @@ export interface Meal {
   notes?: string
 }
 
+/** A free-form note the user jotted via chat ("slept poorly", "high sodium dinner"). */
+export interface DayNote {
+  id: string
+  timestamp: string // ISO
+  text: string
+}
+
 /** A day's record. Totals are derived but cached for history rendering. */
 export interface DailyLog {
   date: string // YYYY-MM-DD
   morningWeight?: number
   weightNote?: string
   meals: Meal[]
+  /** User notes captured in chat mode. */
+  notes?: DayNote[]
   totalCalories: number
   totalProtein: number
   totalCarbs: number
