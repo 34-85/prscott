@@ -22,7 +22,7 @@ type Mode = 'chat' | 'structured'
 const MODE_KEY = 'psmf-tracker-mode'
 
 export function Dashboard() {
-  const { state, deleteMeal } = useStore()
+  const { state, deleteMeal, resetAll } = useStore()
   const date = todayKey()
   const log = state.logs[date] ?? createEmptyLog(date)
   const [showLogger, setShowLogger] = useState(false)
@@ -41,6 +41,27 @@ export function Dashboard() {
 
   return (
     <div className="space-y-4 pb-28">
+      {/* Sample-data banner — lets the user start fresh in one tap */}
+      {state.seeded && (
+        <div className="mt-1 rounded-2xl border border-warn/40 bg-warn/10 p-3">
+          <p className="text-[13px] font-medium text-warn">You’re viewing sample data</p>
+          <p className="mt-0.5 text-[12px] text-mute">
+            These are example entries so you can explore. Clear them to start tracking for real.
+          </p>
+          <button
+            onClick={() => {
+              if (
+                confirm('Clear all sample data and start fresh? This gives you an empty tracker.')
+              )
+                resetAll()
+            }}
+            className="btn-primary mt-2.5 px-4 py-2 text-sm"
+          >
+            Clear sample data &amp; start fresh
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-baseline justify-between pt-1">
         <div>

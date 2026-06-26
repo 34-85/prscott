@@ -51,8 +51,9 @@ const StoreContext = createContext<StoreApi | null>(null)
 function initialState(): AppState {
   const loaded = loadState()
   if (loaded) return loaded
-  // First run: seed demo data so the dashboard is immediately meaningful.
-  return buildSeedState()
+  // First run starts clean — this is the user's real tracker, not a demo.
+  // Sample data is available on demand from Settings → "Load Demo Data".
+  return defaultState()
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
@@ -165,7 +166,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const resetAll = useCallback(() => {
-    setState({ ...defaultState(), seeded: true })
+    setState(defaultState())
   }, [])
 
   const api = useMemo<StoreApi>(
