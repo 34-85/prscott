@@ -128,7 +128,20 @@ export function setMorningWeight(
     { ...log, morningWeight: weight, weightNote: note },
     state.settings,
   )
-  return { ...state, logs: { ...state.logs, [date]: updated } }
+
+  // On the very first weigh-in (while starting weight is still the default),
+  // calibrate the baseline to it so the forecast doesn't show phantom progress.
+  let settings = state.settings
+  if (weight != null) {
+    const hadWeightElsewhere = Object.entries(state.logs).some(
+      ([d, l]) => d !== date && l.morningWeight != null,
+    )
+    if (!hadWeightElsewhere && settings.startingWeight === DEFAULT_SETTINGS.startingWeight) {
+      settings = { ...settings, startingWeight: weight }
+    }
+  }
+
+  return { ...state, settings, logs: { ...state.logs, [date]: updated } }
 }
 
 export function updateSettings(state: AppState, patch: Partial<UserSettings>): AppState {
