@@ -2,8 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark theme (default) — RGB triplets consumed by Tailwind tokens. */
 :root {
   color-scheme: dark;
+  --ink: 10 12 16;
+  --ink-soft: 18 21 27;
+  --ink-card: 23 27 35;
+  --ink-line: 34 40 52;
+  --mute: 139 148 163;
+  --mute-soft: 93 101 115;
+  --accent: 78 161 255;
+  --accent-dim: 46 107 176;
+  --good: 62 207 142;
+  --warn: 245 185 77;
+  --bad: 240 106 106;
+  --fg: 232 236 242;
+  --onaccent: 10 12 16;
+}
+
+/* Light theme — applied via the `light` class on <html>. */
+:root.light {
+  color-scheme: light;
+  --ink: 244 246 249;
+  --ink-soft: 235 238 243;
+  --ink-card: 255 255 255;
+  --ink-line: 214 221 230;
+  --mute: 82 92 106;
+  --mute-soft: 124 133 146;
+  --accent: 31 111 235;
+  --accent-dim: 64 138 246;
+  --good: 22 150 100;
+  --warn: 176 120 18;
+  --bad: 209 64 64;
+  --fg: 22 27 34;
+  --onaccent: 255 255 255;
 }
 
 html,
@@ -14,8 +46,8 @@ body,
 
 body {
   margin: 0;
-  background-color: #0a0c10;
-  color: #e8ecf2;
+  background-color: rgb(var(--ink));
+  color: rgb(var(--fg));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'tnum' 1, 'cv01' 1;
@@ -58,12 +90,12 @@ input[type='number'] {
     @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors active:scale-[0.99];
   }
   .btn-primary {
-    @apply btn bg-accent text-ink hover:bg-accent/90;
+    @apply btn bg-accent text-onaccent hover:bg-accent/90;
   }
   .btn-ghost {
-    @apply btn bg-ink-soft border border-ink-line text-mute hover:text-white hover:border-mute-soft;
+    @apply btn bg-ink-soft border border-ink-line text-mute hover:text-fg hover:border-mute-soft;
   }
   .field {
-    @apply w-full bg-ink-soft border border-ink-line rounded-xl px-3 py-2.5 text-white placeholder:text-mute-soft focus:outline-none focus:border-accent;
+    @apply w-full bg-ink-soft border border-ink-line rounded-xl px-3 py-2.5 text-fg placeholder:text-mute-soft focus:outline-none focus:border-accent;
   }
 }

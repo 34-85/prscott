@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useStore } from '../app/store'
+import { getTheme, setTheme, type Theme } from '../lib/theme'
 import type { MeatWeightMode, UserSettings } from '../lib/types'
 
 interface NumFieldProps {
@@ -50,12 +51,37 @@ function Group({ title, children }: { title: string; children: React.ReactNode }
 export function Settings() {
   const { state, updateSettings, loadDemoData, resetAll } = useStore()
   const s = state.settings
+  const [theme, setThemeState] = useState<Theme>(getTheme())
 
   const set = (patch: Partial<UserSettings>) => updateSettings(patch)
+
+  function chooseTheme(t: Theme) {
+    setTheme(t)
+    setThemeState(t)
+  }
 
   return (
     <div className="space-y-4 pb-24 pt-1">
       <h1 className="text-xl font-bold tracking-tight">Settings</h1>
+
+      <div className="card p-4">
+        <h2 className="mb-3 text-sm font-semibold text-mute">Appearance</h2>
+        <div className="flex gap-2">
+          {(['light', 'dark'] as Theme[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => chooseTheme(t)}
+              className={`flex-1 rounded-xl border px-3 py-2.5 text-sm font-medium capitalize transition-colors ${
+                theme === t
+                  ? 'border-accent bg-accent/10 text-accent'
+                  : 'border-ink-line bg-ink-soft text-mute hover:text-fg'
+              }`}
+            >
+              {t === 'light' ? '☀ Light' : '☾ Dark'}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <Group title="Goal">
         <NumField label="Starting Weight" value={s.startingWeight} suffix="lb" step={0.1} onChange={(n) => set({ startingWeight: n })} />
@@ -85,7 +111,7 @@ export function Settings() {
               className={`flex-1 rounded-xl border px-3 py-2.5 text-sm font-medium capitalize transition-colors ${
                 s.meatWeightsDefault === mode
                   ? 'border-accent bg-accent/10 text-accent'
-                  : 'border-ink-line bg-ink-soft text-mute hover:text-white'
+                  : 'border-ink-line bg-ink-soft text-mute hover:text-fg'
               }`}
             >
               {mode}
@@ -100,7 +126,7 @@ export function Settings() {
       <div className="card p-4">
         <h2 className="mb-1 text-sm font-semibold text-mute">Personal Foods</h2>
         <p className="text-[12px] text-mute-soft">
-          Manage your personal food library from the <span className="text-white">Foods</span> tab.
+          Manage your personal food library from the <span className="text-fg">Foods</span> tab.
           Personal entries always override generic database matches.
         </p>
       </div>

@@ -110,7 +110,7 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
           <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-ink-line sm:hidden" />
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">{isEdit ? 'Edit Meal' : 'Add Meal'}</h2>
-            <button onClick={onClose} className="text-sm text-mute-soft hover:text-white">
+            <button onClick={onClose} className="text-sm text-mute-soft hover:text-fg">
               Cancel
             </button>
           </div>
@@ -133,7 +133,7 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
               <button
                 key={q}
                 onClick={() => setText((t) => (t.trim() ? `${t}, ${q}` : q))}
-                className="rounded-full border border-ink-line bg-ink-soft px-2.5 py-1 text-[11px] text-mute hover:border-accent hover:text-white"
+                className="rounded-full border border-ink-line bg-ink-soft px-2.5 py-1 text-[11px] text-mute hover:border-accent hover:text-fg"
               >
                 + {q}
               </button>
@@ -203,7 +203,7 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
                 {preview.parsedFoods.map((f, i) => (
                   <div key={i} className="flex items-center justify-between text-[12px]">
                     <span className="truncate text-mute">
-                      <span className="text-white">{f.amount}</span> {f.unit} · {f.foodName}
+                      <span className="text-fg">{f.amount}</span> {f.unit} · {f.foodName}
                       {!f.matched && <span className="ml-1 text-bad">(guess)</span>}
                     </span>
                     <span className="tnum shrink-0 text-mute-soft">
