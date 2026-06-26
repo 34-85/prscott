@@ -67,7 +67,7 @@ export function Dashboard() {
             key={m}
             onClick={() => changeMode(m)}
             className={`flex-1 rounded-lg py-2 text-sm font-medium capitalize transition-colors ${
-              mode === m ? 'bg-accent text-ink' : 'text-mute hover:text-white'
+              mode === m ? 'bg-accent text-onaccent' : 'text-mute hover:text-fg'
             }`}
           >
             {m === 'chat' ? 'Chat' : 'Structured'}
@@ -164,7 +164,7 @@ function MealRow({
         className="flex w-full items-center justify-between gap-3 p-3 text-left"
       >
         <div className="min-w-0">
-          <div className="truncate text-sm font-medium text-white">{meal.rawText}</div>
+          <div className="truncate text-sm font-medium text-fg">{meal.rawText}</div>
           <div className="mt-0.5 flex items-center gap-2 text-[11px] text-mute-soft">
             <span>{formatTime(meal.timestamp)}</span>
             <span>·</span>
@@ -207,7 +207,7 @@ function MealRow({
             </div>
           )}
           <p className="mt-2 text-[11px] text-mute-soft">
-            Estimate confidence: <span className="text-white">{meal.confidence}</span>{' '}
+            Estimate confidence: <span className="text-fg">{meal.confidence}</span>{' '}
             {errorBand(meal.confidence).label} · {errorBand(meal.confidence).source}
           </p>
           {meal.notes && <p className="mt-1 text-[12px] text-mute-soft">Note: {meal.notes}</p>}

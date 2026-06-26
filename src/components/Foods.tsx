@@ -104,7 +104,7 @@ function FoodCard({ food, onRemove }: { food: FoodEntry; onRemove?: (id: string)
 
       <div className="mt-2 flex gap-3 text-[12px] tnum">
         <span>
-          <span className="text-white font-medium">{food.calories}</span>{' '}
+          <span className="text-fg font-medium">{food.calories}</span>{' '}
           <span className="text-mute-soft">kcal</span>
         </span>
         <span className="text-accent">
@@ -181,7 +181,7 @@ function AddFoodModal({
         <div className="rounded-t-3xl border border-ink-line bg-ink-card p-5 pb-8 sm:rounded-3xl">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Add Personal Food</h2>
-            <button onClick={onClose} className="text-sm text-mute-soft hover:text-white">
+            <button onClick={onClose} className="text-sm text-mute-soft hover:text-fg">
               Cancel
             </button>
           </div>

@@ -90,7 +90,7 @@ export function ComplianceScore({ log, settings, compact }: Props) {
 function Component({ label, value, max }: { label: string; value: number; max: number }) {
   return (
     <span className="tnum">
-      {label} <span className="text-white font-medium">{value}</span>
+      {label} <span className="text-fg font-medium">{value}</span>
       <span className="text-mute-soft">/{max}</span>
     </span>
   )

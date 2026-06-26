@@ -45,7 +45,7 @@ export function DayTypeControl({ date }: { date: string }) {
       <p className="mt-2.5 text-[11px] leading-relaxed text-mute-soft">
         {lenient ? (
           <>
-            Graded against your <span className="text-white">{log.plannedType}</span> plan — elevated
+            Graded against your <span className="text-fg">{log.plannedType}</span> plan — elevated
             carbs/calories are intentional and not counted as off-plan. Expect ~{water.min}–
             {water.max} lb temporary water.
           </>
@@ -77,7 +77,7 @@ function Chip({
       className={`rounded-full border px-3 py-1 text-[12px] font-medium transition-colors ${
         active
           ? 'border-accent bg-accent/15 text-accent'
-          : 'border-ink-line bg-ink-soft text-mute hover:text-white'
+          : 'border-ink-line bg-ink-soft text-mute hover:text-fg'
       }`}
     >
       {label}

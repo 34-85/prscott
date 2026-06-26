@@ -4,24 +4,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Calm executive-dashboard palette
+        // Calm executive-dashboard palette, theme-driven via CSS variables
+        // (RGB triplets) so the same tokens render in dark and light mode.
         ink: {
-          DEFAULT: '#0a0c10',
-          soft: '#12151b',
-          card: '#171b23',
-          line: '#222834',
+          DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
+          soft: 'rgb(var(--ink-soft) / <alpha-value>)',
+          card: 'rgb(var(--ink-card) / <alpha-value>)',
+          line: 'rgb(var(--ink-line) / <alpha-value>)',
         },
         mute: {
-          DEFAULT: '#8b94a3',
-          soft: '#5d6573',
+          DEFAULT: 'rgb(var(--mute) / <alpha-value>)',
+          soft: 'rgb(var(--mute-soft) / <alpha-value>)',
         },
         accent: {
-          DEFAULT: '#4ea1ff',
-          dim: '#2e6bb0',
+          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
+          dim: 'rgb(var(--accent-dim) / <alpha-value>)',
         },
-        good: '#3ecf8e',
-        warn: '#f5b94d',
-        bad: '#f06a6a',
+        good: 'rgb(var(--good) / <alpha-value>)',
+        warn: 'rgb(var(--warn) / <alpha-value>)',
+        bad: 'rgb(var(--bad) / <alpha-value>)',
+        // Primary foreground text, and the text color that sits on accent fills.
+        fg: 'rgb(var(--fg) / <alpha-value>)',
+        onaccent: 'rgb(var(--onaccent) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],

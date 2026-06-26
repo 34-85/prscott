@@ -105,9 +105,9 @@ export function ChatLogger({ date }: { date: string }) {
       <div className="flex-1 space-y-3 p-4">
         <div className="flex justify-start">
           <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-ink-soft px-3 py-2 text-[13px] text-mute">
-            Log naturally — e.g. <span className="text-white">“214.6 this morning”</span>,{' '}
-            <span className="text-white">“Slate shake”</span>, or{' '}
-            <span className="text-white">“Correction: that was 10 oz chicken”</span>. I’ll sort it
+            Log naturally — e.g. <span className="text-fg">“214.6 this morning”</span>,{' '}
+            <span className="text-fg">“Slate shake”</span>, or{' '}
+            <span className="text-fg">“Correction: that was 10 oz chicken”</span>. I’ll sort it
             out.
           </div>
         </div>
@@ -192,7 +192,7 @@ export function ChatLogger({ date }: { date: string }) {
 function UserBubble({ tag, children }: { tag?: string; children: React.ReactNode }) {
   return (
     <div className="flex justify-end">
-      <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-accent/15 px-3 py-2 text-right text-white">
+      <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-accent/15 px-3 py-2 text-right text-fg">
         {tag && <div className="text-[10px] font-semibold uppercase tracking-wide text-accent">{tag}</div>}
         <div>{children}</div>
       </div>
@@ -205,7 +205,7 @@ function MealExchange({ meal, onDelete }: { meal: Meal; onDelete: () => void }) 
   return (
     <div className="space-y-1.5">
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-accent/15 px-3 py-2 text-white">
+        <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-accent/15 px-3 py-2 text-fg">
           <div className="text-[10px] font-semibold uppercase tracking-wide text-accent">Meal</div>
           <div className="text-sm">{meal.rawText}</div>
         </div>

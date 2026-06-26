@@ -28,7 +28,7 @@ export function CoachInsights({ insights }: { insights: CoachInsight[] }) {
             >
               <div className="flex items-center gap-2">
                 <span className={`h-2 w-2 rounded-full ${TONE[ins.tone].dot}`} />
-                <h3 className="text-sm font-semibold text-white">{ins.title}</h3>
+                <h3 className="text-sm font-semibold text-fg">{ins.title}</h3>
               </div>
               <p className="mt-1.5 text-[13px] leading-relaxed text-mute">{ins.body}</p>
             </div>
