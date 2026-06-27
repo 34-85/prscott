@@ -144,6 +144,29 @@ BUL([
  "**Curated commerce & walled partners** — books, tools, experiences, and clearly-labeled premium partners (fee-only advisors, longevity, education, travel). Same bright line as the rest of the company: a partner can sponsor a room or a guide — never a sentence of editorial.",
 ])
 
+H("Adjacent, not derivative — Encore and ROAR",1)
+P("The most credible incumbent is **Michael Clinton's ROAR forward** — a Hearst-backed platform built on his book *ROAR* (and the newer *Longevity Nation*). His body of work and Rolodex are exceptional and not worth copying. The good news: ROAR's center of gravity is **B2B 'longevity-economy' intelligence sold to brands** (the ROAR Report, a sponsored-content studio, an invitational Hearst-Tower Summit), wrapped in **inspiration and identity reinvention** with a lifestyle/beauty tilt. That leaves a clean, defensible lane.")
+P("**The one-line distinction: ROAR owns 'reinvent who you are.' Encore owns 'build what's next.'**",color=CLARET,size=11.5)
+TABLE(["Dimension","ROAR forward (Clinton)","Encore"],
+[["Core promise","Reinvent who you are (identity / mindset)","Build what's next — the work of the second act"],
+ ["Founder authority","Famous publisher who reinvented himself","Operator — built, ran, exited; an author who did it"],
+ ["Shape","Broadcast: host → audience, role-model profiles","Peer network: members transact (The Table)"],
+ ["Money","Sells longevity insight to brands; sponsored content","Reader-funded; no ads, no brand deals"],
+ ["Audience","Broad 50+, lifestyle/beauty skew","Accomplished operators 55–75, builder energy"],
+ ["Content","Inspiration & profiles","Operational playbooks (angel checks, buy-a-business, boards)"],
+ ["Events","Hearst-Tower Summit (stage, keynotes)","Small working retreats (deal reviews, pitch & board prep)"]],
+[1.2,2.7,2.8],fontsize=8.4)
+P("**Differentiation moves (adjacent, not derivative):**")
+BUL([
+ "**Lead with playbooks, not profiles** — the promise is 'you'll *do* a thing this quarter,' not 'feel inspired.'",
+ "**Make The Table the product, not a perk** — member-to-member deal flow (asks/offers, angel syndicates, acquisition search, board matching). ROAR's members are an audience to monetize; ours are a network to transact in — a moat it can't copy without breaking its model.",
+ "**Bank the reader-funded vow loudly** — 'no ads, no brand deals, we never sell you to marketers,' positioned directly against ROAR's sell-to-brands engine.",
+ "**Weaponize operator credibility** — the real math and mistakes of building, not 'follow your passion'; a faculty of retired *operators*, not lifestyle experts.",
+ "**Sharpen the cohort** — accomplished people 55–75 who are reinventing, *not* retiring; claim the builder/founder energy and the comparatively open operator lane.",
+ "**Make the network — not the founder — the durable asset early**, so Encore outlasts any one voice (the risk both founder-led brands share).",
+])
+P("**Where not to fight:** don't out-glossy ROAR on inspiration, don't chase its B2B 'sell longevity insight to brands' model (its core, with Hearst behind it), and don't stage a celebrity-expert summit. If Encore drifts into generic midlife/purpose/wellness content, it becomes a thinner ROAR. Stay on doing/building + peer deal flow + reader-funded — the lanes ROAR structurally cannot follow.",color=SLATE,size=10)
+
 H("The name — an honest flag",1)
 P("**'Encore' is a strong idea but a crowded word.** Encore.org (now CoGenerate) literally pioneered the term 'encore careers'; Wynn's Encore casinos and various Encore media/ticketing brands exist too. So — exactly as we did for Scenic City Insider — the name needs a **domain + USPTO/TESS clearance** before any commitment, and the distinctiveness will likely have to live in a lockup (e.g., *The Encore Letter*, *Encore Society*) or an alternative entirely. Worth vetting alongside: **Second Act, Act Two, The Third Act, Next Chapter, Reload, Vantage, Prime.** Use 'Encore' as the working title; don't print it on anything yet.")
 
