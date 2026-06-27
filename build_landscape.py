@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Competitive Landscape one-pager + positioning map for The Scenic City Scout.
+"""Competitive Landscape one-pager + positioning map for The Scenic City Insider.
 Reader-funded, no-ads membership vs. the ad/grant-funded Chattanooga field (verified June 2026)."""
 import os, csv, matplotlib
 matplotlib.use("Agg")
@@ -46,7 +46,7 @@ ROWS=[
 # y: 0=raw feed/community/listings    ->  1=curated editorial / finished product
 PLACED=[
  # name, x, y, color, note
- ("The Scenic City Scout",0.86,0.90,ORANGE,"us"),
+ ("The Scenic City Insider",0.86,0.90,ORANGE,"us"),
  ("Times Free Press",0.74,0.72,SLATE,"legacy/retreating"),
  ("NOOGAtoday",0.30,0.70,NAVY,""),
  ("Chattynooga",0.22,0.78,TEAL,"peer"),
@@ -67,7 +67,7 @@ def positioning_map():
     ax.text(0.985,0.985,"WHITE SPACE\nreader-funded + curated",ha="right",va="top",fontsize=8,
             color="#"+ORANGE,fontweight="bold",style="italic")
     for name,x,y,c,note in PLACED:
-        big = name=="The Scenic City Scout"
+        big = name=="The Scenic City Insider"
         ax.scatter([x],[y],s=240 if big else 90,color="#"+c,zorder=3,
                    edgecolor="white",linewidth=1.6 if big else 1.0,alpha=0.95)
         lbl=name+(f"\n({note})" if note and note not in("us",) else "")
@@ -78,14 +78,14 @@ def positioning_map():
     ax.set_yticks([0.07,0.93]); ax.set_yticklabels(["Raw feed /\ncommunity / listings","Curated editorial /\nfinished product"],fontsize=8,color="#"+SLATE,rotation=90,va="center")
     for s in ("top","right"): ax.spines[s].set_visible(False)
     for s in ("left","bottom"): ax.spines[s].set_color("#b0bec5")
-    ax.set_title("Where the Scout sits — the Chattanooga local-info field (verified June 2026)",
+    ax.set_title("Where the Insider sits — the Chattanooga local-info field (verified June 2026)",
                  fontweight="bold",color="#"+NAVY,fontsize=11)
     fig.tight_layout(); fig.savefig(f"{ASSETS}/fig_landscape.png",bbox_inches="tight"); plt.close(fig)
 positioning_map(); print("map done")
 
 # --- CSV ---
 with open("/home/user/prscott/competitive_landscape.csv","w",newline="") as f:
-    w=csv.writer(f); w.writerow(["Outlet","Type","Revenue model","Focus","Overlap with the Scout","Confidence"])
+    w=csv.writer(f); w.writerow(["Outlet","Type","Revenue model","Focus","Overlap with the Insider","Confidence"])
     for r in ROWS: w.writerow(r)
 print("CSV rows:",len(ROWS))
 
@@ -146,7 +146,7 @@ def BOX(title,body):
     borders.append(lb); tcPr.append(borders)
     doc.add_paragraph().paragraph_format.space_after=Pt(2)
 def LANDTABLE(rows):
-    cols=["Outlet","Type","Revenue model","Focus","Overlap with the Scout (our read)","Conf."]
+    cols=["Outlet","Type","Revenue model","Focus","Overlap with the Insider (our read)","Conf."]
     widths=[1.7,1.5,1.7,2.0,2.55,0.45]
     t=doc.add_table(rows=1,cols=len(cols)); t.alignment=WD_TABLE_ALIGNMENT.CENTER; t.style="Table Grid"
     for i,h in enumerate(cols):
@@ -185,7 +185,7 @@ BUL([
  "**Don't compete on price — compete on the finished product.** Sponsor- and grant-funded rivals are free forever; we can't and shouldn't undercut. We sell curation, voice, trust, and a no-ads promise the ad-funded field structurally can't make.",
  "**Defend the events overlap with a point of view.** A free calendar is a commodity; 'the five things actually worth your Saturday, chosen by a neighbor' is not. Curate, don't list.",
  "**Treat Chattynooga as the peer to know, not the enemy.** Same warm, hyperlocal lane; it also stewards Roundabout NorthChatt. Coopetition, cross-promo, and shared respect beat a turf fight in a small town.",
- "**Use Roundabout as a channel, not a worry.** A trust-first community feed is a clean Scout tip-line and a place to seed content that drives signups — adjacent infrastructure, not a substitute for editorial.",
+ "**Use Roundabout as a channel, not a worry.** A trust-first community feed is a clean Insider tip-line and a place to seed content that drives signups — adjacent infrastructure, not a substitute for editorial.",
  "**Watch two triggers:** (1) anyone standing up a strong *metro* (not suburban) Roundabout, and (2) any free outlet moving into original *reporting* with a paid tier. Either narrows the white space.",
  "**Own the bright line publicly.** In a field where the reader is usually the product sold to advertisers, 'the reader is the customer — never the product' is both true and a differentiator. Say it often.",
 ])
@@ -194,35 +194,35 @@ doc.add_page_break()
 H("Positioning paragraph for the beehiiv About page",1)
 P("Drop-in copy that distinguishes a curated, reader-funded newsletter from a community feed and from ad-funded roundups — without naming competitors or going negative. Matches the existing About voice (a real local neighbor, not private equity).",italic=True,color=GREY,size=9)
 BOX("Primary — for the About page (≈90 words):",[
- "A quick word on what the Scout is, and isn't. It isn't a feed to scroll, a community bulletin board, or a roundup paid for by the places it covers. There are good versions of all of those in town, and I read them. The Scout is something narrower: one carefully made issue a week, written by a neighbor, paid for by you. No ads, ever, and no sponsored sentences — because the day a business can buy its way in is the day you stop being able to trust what's here. My only job is to be worth your inbox.",
+ "A quick word on what the Insider is, and isn't. It isn't a feed to scroll, a community bulletin board, or a roundup paid for by the places it covers. There are good versions of all of those in town, and I read them. The Insider is something narrower: one carefully made issue a week, written by a neighbor, paid for by you. No ads, ever, and no sponsored sentences — because the day a business can buy its way in is the day you stop being able to trust what's here. My only job is to be worth your inbox.",
 ])
 BOX("Short — for a footer, signup form, or 'why pay?' line (≈30 words):",[
- "No ads. No sponsorships. No sponsored sentences. The Scout is one curated issue a week, written by a neighbor and paid for by readers — so the reader is the customer, never the product.",
+ "No ads. No sponsorships. No sponsored sentences. The Insider is one curated issue a week, written by a neighbor and paid for by readers — so the reader is the customer, never the product.",
 ])
 BOX("One-liner — tagline / social bio:",[
  "A curated weekly for Chattanooga — reader-funded, ad-free, written by a neighbor. The reader is the customer, never the product.",
 ])
-P("Plain-text and HTML versions of these are saved alongside this doc (scout_positioning_about.txt / .html) for pasting into beehiiv.",italic=True,color=GREY,size=8.5)
+P("Plain-text and HTML versions of these are saved alongside this doc (insider_positioning_about.txt / .html) for pasting into beehiiv.",italic=True,color=GREY,size=8.5)
 
 out="/home/user/prscott/Competitive_Landscape.docx"
 doc.save(out); print("saved",out)
 
 # --- positioning copy as txt + html for beehiiv ---
-PRIMARY=("A quick word on what the Scout is, and isn't. It isn't a feed to scroll, a community bulletin "
+PRIMARY=("A quick word on what the Insider is, and isn't. It isn't a feed to scroll, a community bulletin "
 "board, or a roundup paid for by the places it covers. There are good versions of all of those in town, "
-"and I read them. The Scout is something narrower: one carefully made issue a week, written by a neighbor, "
+"and I read them. The Insider is something narrower: one carefully made issue a week, written by a neighbor, "
 "paid for by you. No ads, ever, and no sponsored sentences — because the day a business can buy its way "
 "in is the day you stop being able to trust what's here. My only job is to be worth your inbox.")
-SHORT=("No ads. No sponsorships. No sponsored sentences. The Scout is one curated issue a week, written by a "
+SHORT=("No ads. No sponsorships. No sponsored sentences. The Insider is one curated issue a week, written by a "
 "neighbor and paid for by readers — so the reader is the customer, never the product.")
 ONELINE=("A curated weekly for Chattanooga — reader-funded, ad-free, written by a neighbor. "
 "The reader is the customer, never the product.")
-with open("/home/user/prscott/scout_positioning_about.txt","w") as f:
+with open("/home/user/prscott/insider_positioning_about.txt","w") as f:
     f.write("PRIMARY (About page, ~90 words)\n\n"+PRIMARY+"\n\n---\n\nSHORT (footer / why-pay, ~30 words)\n\n"+SHORT+"\n\n---\n\nONE-LINER (tagline / bio)\n\n"+ONELINE+"\n")
-with open("/home/user/prscott/scout_positioning_about.html","w") as f:
+with open("/home/user/prscott/insider_positioning_about.html","w") as f:
     f.write('<!DOCTYPE html><html><head><meta charset="utf-8"></head>'
       '<body style="font-family:Georgia,serif;color:#1B3A4B;max-width:620px;margin:0 auto;padding:18px;">'
-      '<h3 style="color:#E76F51;font-family:Arial,sans-serif;">What the Scout is &mdash; and isn’t</h3>'
+      '<h3 style="color:#E76F51;font-family:Arial,sans-serif;">What the Insider is &mdash; and isn’t</h3>'
       f'<p style="font-size:17px;line-height:1.6;">{PRIMARY}</p>'
       f'<hr style="border:none;border-top:1px solid #ddd;margin:18px 0;">'
       f'<p style="font-size:14px;color:#415A6B;"><strong>Short:</strong> {SHORT}</p>'

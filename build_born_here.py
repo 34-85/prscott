@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Born Here — Iconic Brands from the Scenic City. Compiled & de-duped from 4 Scout reports."""
+"""Born Here — Iconic Brands from the Scenic City. Compiled & de-duped from 4 Insider reports."""
 import os, csv, matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

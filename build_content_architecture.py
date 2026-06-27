@@ -40,8 +40,8 @@ def chart_portfolio():
 
 def chart_tiers():
     fig,ax=plt.subplots(figsize=(8.4,4.0)); ax.axis("off"); ax.set_xlim(0,10); ax.set_ylim(0,10)
-    steps=[("FREE","$0","The weekly Scout +\npublic sections","#"+SLATE,0.3,2.6,3.0),
-           ("MEMBER","$8/mo · $80/yr","Full archive · members-first\n'Just Licensed' intel · The Dig\ninsider · member event pricing\n· Scout Card · community","#"+TEAL,3.5,5.0,3.0),
+    steps=[("FREE","$0","The weekly Insider +\npublic sections","#"+SLATE,0.3,2.6,3.0),
+           ("MEMBER","$8/mo · $80/yr","Full archive · members-first\n'Just Licensed' intel · The Dig\ninsider · member event pricing\n· Insider Card · community","#"+TEAL,3.5,5.0,3.0),
            ("FOUNDING SCOUT","$150/yr","All Member + seasonal print\nGetaway Field Guide (mailed) +\nannual print Almanac + a\nsignature-event ticket","#"+ORANGE,6.7,7.6,3.0)]
     for name,price,body,c,x,h,w in steps:
         ax.add_patch(FancyBboxPatch((x,0.4),w,h,boxstyle="round,pad=0.03,rounding_size=0.1",fc=c,ec="white",lw=2))
@@ -55,7 +55,7 @@ chart_portfolio(); chart_tiers(); print("charts done")
 
 # ---------- data ----------
 CATALOG=[
- ("The Scout's Note","Anchor","Every issue","Founder's voice — the human handshake an aggregator can't fake","Affinity & referrals"),
+ ("The Insider's Note","Anchor","Every issue","Founder's voice — the human handshake an aggregator can't fake","Affinity & referrals"),
  ("What's New Around Town","Anchor · Discovery","Weekly","Openings/closings + members-first 'Just Licensed' intel from the engine","Membership upgrade driver; new-opening crawl"),
  ("You Told Us","Anchor","Weekly","The reader mailbag — community loop made visible","Word-of-mouth growth"),
  ("The Standing Invitation","Anchor · Discovery","Weekly","One evergreen thing to go do, with a POV — the anti-calendar","Member archive; '52 Assignments' deck"),
@@ -70,11 +70,11 @@ CATALOG=[
  ("What's Up, Sis?","Relationship","Monthly–bimonthly","Chattanooga's sister cities via the people here (no politics)","Supper-club events; 'Eat the World' passport; org partnership"),
  ("The Scenic City Almanac","Relationship","Seasonal (+annual print)","The rituals that make a year here — traditions, not events","Annual printed Almanac; seasonal socials"),
  ("The Flagship Profile","Premium","Monthly (long-form)","The prestige 'Artisans of Craft' profile — editorial, never bought","Anchors premium tier; annual 'Builders' book"),
- ("The Getaway Field Guide","Premium","Monthly + quarterly","Where a Chattanoogan goes to leave town — curated, not a brochure","Print perk (premium magnet); Scout-led trips; DMO underwriting"),
+ ("The Getaway Field Guide","Premium","Monthly + quarterly","Where a Chattanoogan goes to leave town — curated, not a brochure","Print perk (premium magnet); Insider-led trips; DMO underwriting"),
 ]
 
 WEEKLY=[
- ("Every issue opens with","The Scout's Note → What's New Around Town"),
+ ("Every issue opens with","The Insider's Note → What's New Around Town"),
  ("Every issue includes","The Standing Invitation (one thing to go do)"),
  ("Every issue closes with","You Told Us (mailbag) → the no-ads promise + membership invite"),
  ("Plus each week","2 rotating signature pillars (see the 12-week rotation)"),
@@ -97,9 +97,9 @@ ROT=[
 ]
 
 TIERS=[
- ("Free","$0","The weekly Scout newsletter and public sections. Top-of-funnel; builds the list and the habit."),
- ("Member","$8/mo or $80/yr","Full members-only archive; members-first 'Just Licensed' intel; The Dig insider notes; the Standing-Invitation assignment archive; member event pricing; the Scout Card; community access."),
- ("Founding Scout","$150/yr","Everything in Member, plus the seasonal print Getaway Field Guide mailed to your door, the annual printed Scenic City Almanac, a free signature-event ticket, the Flagship in print, and name recognition."),
+ ("Free","$0","The weekly Insider newsletter and public sections. Top-of-funnel; builds the list and the habit."),
+ ("Member","$8/mo or $80/yr","Full members-only archive; members-first 'Just Licensed' intel; The Dig insider notes; the Standing-Invitation assignment archive; member event pricing; the Insider Card; community access."),
+ ("Founding Insider","$150/yr","Everything in Member, plus the seasonal print Getaway Field Guide mailed to your door, the annual printed Scenic City Almanac, a free signature-event ticket, the Flagship in print, and name recognition."),
 ]
 
 REV=[
@@ -115,7 +115,7 @@ REV=[
  ("What's Up, Sis?","'Eat the World' passport","Sister-city supper club","Sister Cities org partnership"),
  ("The Scenic City Almanac","Annual printed Almanac (giftable)","Seasonal socials (strawberry, leaf-turn)","—"),
  ("The Flagship Profile","Annual 'Builders' book","—","Anchors the premium tier"),
- ("The Getaway Field Guide","Seasonal print guide (premium perk + sales)","Scout-led group trips","DMO / destination underwriting (walled)"),
+ ("The Getaway Field Guide","Seasonal print guide (premium perk + sales)","Insider-led group trips","DMO / destination underwriting (walled)"),
 ]
 
 # ---------- doc ----------
@@ -178,7 +178,7 @@ r.font.size=Pt(11.5); r.font.italic=True; sca(r,SLATE)
 doc.add_page_break()
 
 H("The principle: no commodity content",1)
-P("The free incumbent owns the commodity lane — the generic event calendar, weather, traffic, national headlines, paid 'best-of' lists. **We run none of it.** Every section in this architecture is a point of view only the Scout has, which is the reason a membership is worth paying for. The portfolio runs on three layers — **Discovery** (acquisition), **Relationship** (retention), and a **Premium** layer — and each section throws off a product, an event, or a membership perk, so the content *is* the reader-funded business model.")
+P("The free incumbent owns the commodity lane — the generic event calendar, weather, traffic, national headlines, paid 'best-of' lists. **We run none of it.** Every section in this architecture is a point of view only the Insider has, which is the reason a membership is worth paying for. The portfolio runs on three layers — **Discovery** (acquisition), **Relationship** (retention), and a **Premium** layer — and each section throws off a product, an event, or a membership perk, so the content *is* the reader-funded business model.")
 FIG(f"{ASSETS}/fig_portfolio.png","Figure 1. The content portfolio in three layers, every one feeding the ad-free model.",8.6)
 
 H("Editorial standards — The Once Rule & the Nerd's veto",1)
@@ -207,7 +207,7 @@ H("The weekly issue template",1)
 TABLE(["Slot","What runs"],WEEKLY,widths=[2.3,7.0],fontsize=10,
       caption="A five-minute read: warm open, what's new, two rotating features, one thing to go do, the mailbag, and the membership invite.")
 H("A 12-week sample rotation",1)
-P("Illustrative placement — monthly and seasonal pillars recur on roughly the cadence in the catalog. Anchors (Scout's Note, What's New, The Standing Invitation, You Told Us) run **every** week and aren't repeated below.")
+P("Illustrative placement — monthly and seasonal pillars recur on roughly the cadence in the catalog. Anchors (Insider's Note, What's New, The Standing Invitation, You Told Us) run **every** week and aren't repeated below.")
 TABLE(["Wk","Rotating feature A (discovery)","Rotating feature B (pillar)","Monthly / premium drop"],
       ROT, widths=[0.6,3.0,3.3,3.0], fontsize=8.8, first_bold=True)
 
@@ -215,14 +215,14 @@ doc.add_page_break()
 H("The membership ladder",1)
 FIG(f"{ASSETS}/fig_tiers.png","Figure 2. Three tiers; each higher tier unlocks value the section catalog already produces.",8.4)
 TABLE(["Tier","Price","What you get"],TIERS,widths=[1.6,1.6,6.1],fontsize=9.2,
-      caption="Free acquires; Member is the core reader-revenue tier; Founding Scout is built around the print perks (Getaway Field Guide + Almanac).")
+      caption="Free acquires; Member is the core reader-revenue tier; Founding Insider is built around the print perks (Getaway Field Guide + Almanac).")
 
 doc.add_page_break()
 H("Content → revenue map",1)
 P("How each monetizable section converts into the three reader-funded lines (products, events, membership/partner) — no advertising anywhere.")
 TABLE(["Section","Product","Event","Membership / walled partner"],
       REV, widths=[2.2,2.6,2.2,2.3], fontsize=8.5, first_bold=True)
-P("Walled partner lines (Open Door listings, Good Dog pet-partners, Getaway/DMO underwriting, the Scout Card) follow the bright line: a business can buy a booth, a listing, a ticket, or sponsor an experience — never a sentence of editorial.",
+P("Walled partner lines (Open Door listings, Good Dog pet-partners, Getaway/DMO underwriting, the Insider Card) follow the bright line: a business can buy a booth, a listing, a ticket, or sponsor an experience — never a sentence of editorial.",
   italic=True,color=GREY,size=9)
 
 out="/home/user/prscott/Content_Architecture.docx"

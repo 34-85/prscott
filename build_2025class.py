@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """2025 Class — New Independents Members Should Know.
-Compiled from the Scout (triage+select) -> Nerd (verify+research) pipeline over 1,892 2025 starts."""
+Compiled from the Insider (triage+select) -> Nerd (verify+research) pipeline over 1,892 2025 starts."""
 import csv
 from docx import Document
 from docx.shared import Pt, Inches, RGBColor
@@ -169,7 +169,7 @@ r=p.add_run(f"{total} verified picks · Press footprint: None (biggest scoop) / 
 r.font.size=Pt(9.5); sca(r,GREY)
 doc.add_page_break()
 
-H("How this was built — the Scout → Nerd pipeline",1)
+H("How this was built — the Insider → Nerd pipeline",1)
 P("From the 1,892 businesses that started in 2025, the **Scouts** (selection agents) threw out the ~85% of trades, services, and chains and picked the consumer-facing independents members would love. The **Nerds** (research agents) then verified each one — is it real and open? who's the person? what's the story? — and flagged anything they couldn't confirm. The result is a vetted shortlist, not a raw dump. Tier 1 = feature now; Tier 2 = solid, worth a slot; can't-confirms are listed separately to chase, not publish.")
 
 H("★ Editor's Picks — lead with these",1,color=GOLD)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """New-Openings Watchlist (Word + CSV) from Hamilton County business-license mining,
-plus the updated Scout Sourcing Doctrine v2."""
+plus the updated Insider Sourcing Doctrine v2."""
 import csv
 from docx import Document
 from docx.shared import Pt, Inches, RGBColor
@@ -206,7 +206,7 @@ for title,body in THREADS:
     P(f"**{title}.** {body}")
 
 doc.add_page_break()
-H("Updated Scout Sourcing Doctrine v2 — Mining the License List",1)
+H("Updated Insider Sourcing Doctrine v2 — Mining the License List",1)
 P("The original doctrine (Addendum: Hidden Gems) said avoid the obvious, prize a low press footprint, find the person and the secret, and verify in person. License-mining extends it with eight rules:")
 BUL(DOCTRINE)
 P("Net effect: the license list becomes a renewable, defensible discovery engine. We meet new independents the week they file — before any competitor knows they exist — verify, and tell their story first. That is the press-footprint-of-None scoop the whole brand is built on.",

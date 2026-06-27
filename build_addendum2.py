@@ -235,9 +235,9 @@ doc.add_page_break()
 
 # ---- 1 thesis ----
 H("1. The Strategic Shift: Go Narrow to Build Community",1)
-P("The original plan framed the Scenic City Scout as a broad \"what matters + what to do\" local "
+P("The original plan framed the Scenic City Insider as a broad \"what matters + what to do\" local "
   "brief. This addendum tests a sharper hypothesis the founder raised: **the narrower the focus, the "
-  "stronger the community** — and specifically, that anchoring the Scout to **championing "
+  "stronger the community** — and specifically, that anchoring the Insider to **championing "
   "Chattanooga's local businesses, restaurants, bars, startups, makers, and builders** is the "
   "fastest route to a defensible, monetizable community. The research is emphatic: it is.",align="just")
 P("Niche beats broad on every metric that matters. Per beehiiv's platform data, clearly-defined "
@@ -374,7 +374,7 @@ P(f"In this illustrative focused build, Year-3 revenue of ~{usd(total)} keeps re
 # ---- 7 deltas ----
 H("7. Recommended Changes to the Core Plan",1)
 BUL([
- "**Reposition the Scout** from broad general-interest to the explicit champion of Chattanooga's local businesses, makers, builders, and founders (narrower identity, stronger community).",
+ "**Reposition the Insider** from broad general-interest to the explicit champion of Chattanooga's local businesses, makers, builders, and founders (narrower identity, stronger community).",
  "**Adopt the “what's new/open/closed” beat** as the editorial spine and add member-sourced spotlights.",
  "**Add a fourth, optional revenue line** — a walled business/partner program — capped so reader revenue stays dominant.",
  "**Re-anchor events** to the maker economy (Chattanooga Market partnership; meet-the-maker nights; booth fees).",
@@ -392,7 +392,7 @@ P("Going narrower is the right call. A newsletter that becomes Chattanooga's tru
   "collaborate on products, and a carefully-walled business-partner program adds B2B revenue — all "
   "without ever selling a sentence. Guard the trust boundary, lean on the maker economy, and expand "
   "into verticals when the base is strong, and the narrow strategy becomes the deepest moat Brief "
-  "Scout Media can build.",align="just")
+  "Insider Media can build.",align="just")
 
 out="/home/user/prscott/Brief_Scout_Media_Addendum_2_Community_Strategy.docx"
 doc.save(out); print("saved",out)

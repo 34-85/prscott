@@ -431,7 +431,7 @@ s = doc.add_paragraph(); s.alignment = WD_ALIGN_PARAGRAPH.CENTER
 r = s.add_run("Building a reader-funded local media & events company in Chattanooga, Tennessee")
 r.font.size = Pt(12.5); r.font.italic = True; set_run_color(r, SLATE)
 s = doc.add_paragraph(); s.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = s.add_run("Flagship product: The Scenic City Scout — a weekly digital newsletter")
+r = s.add_run("Flagship product: The Scenic City Insider — a weekly digital newsletter")
 r.font.size = Pt(12.5); r.font.italic = True; set_run_color(r, SLATE)
 for _ in range(6):
     doc.add_paragraph()
@@ -449,9 +449,9 @@ doc.add_page_break()
 add_heading("1. Executive Summary", 1)
 add_para(
     "**Brief Scout Media** is a new local media and events company forming in Chattanooga, "
-    "Tennessee. Its first product is **The Scenic City Scout**, a weekly digital newsletter that "
+    "Tennessee. Its first product is **The Scenic City Insider**, a weekly digital newsletter that "
     "tells residents what matters and what to do in Chattanooga. The defining strategic choice is "
-    "what the Scout will **not** do: it will not sell advertising or sponsorship inside the "
+    "what the Insider will **not** do: it will not sell advertising or sponsorship inside the "
     "newsletter. Instead, Brief Scout Media monetizes its audience directly through three owned "
     "revenue pillars — **paid membership, product and commerce sales, and live events** (both "
     "proprietary and joint-venture).", align="just")
@@ -481,7 +481,7 @@ add_bullets([
     "fastest-growing bright spot.",
     "**The market is growing and affluent enough.** The Chattanooga metro (~595,000 people) is "
     "growing at more than twice the national rate, fueled by higher-income transplants from "
-    "California and Illinois — a steady stream of newcomers who need exactly what the Scout offers.",
+    "California and Illinois — a steady stream of newcomers who need exactly what the Insider offers.",
 ])
 add_para(
     "**The financial arc.** Modeled conservatively with no advertising, Brief Scout Media reaches "
@@ -505,14 +505,14 @@ add_para(
 add_para(
     "**Vision:** Build Brief Scout Media into a durable, locally-owned media company whose audience "
     "relationship is so strong that readers happily pay for it — and whose events become fixtures on "
-    "the city's calendar. The Scenic City Scout is product one; the company is designed so the same "
+    "the city's calendar. The Scenic City Insider is product one; the company is designed so the same "
     "reader-funded playbook can extend to new verticals (e.g., a dedicated food/dining edition, a "
     "newcomer's guide, a kids/family edition) and, eventually, new Southeastern cities.")
-add_heading("2.2 The flagship product — The Scenic City Scout", 2)
+add_heading("2.2 The flagship product — The Scenic City Insider", 2)
 add_para(
-    "The Scenic City Scout is a **weekly** digital newsletter delivering a tightly curated brief on "
+    "The Scenic City Insider is a **weekly** digital newsletter delivering a tightly curated brief on "
     "Chattanooga: what happened, what's changing, and — critically — **what to do this week**. "
-    "\"Scenic City\" is Chattanooga's well-known civic nickname; the \"Scout\" voice is a trusted "
+    "\"Scenic City\" is Chattanooga's well-known civic nickname; the \"Insider\" voice is a trusted "
     "local insider who does the legwork so readers don't have to. The weekly cadence is a "
     "deliberate, sustainable choice: research shows over-sending accelerates churn and that "
     "daily-publishing burnout is a leading cause of solo-operator failure. A high-quality weekly "
@@ -524,7 +524,7 @@ add_para(
     "requires large scale to matter (6AM City targets ~50,000 subscribers per market just to be "
     "profitable), it sells the reader's attention to third parties, and it creates an unavoidable "
     "tension between what's good for the reader and what's good for the advertiser. Brief Scout Media "
-    "rejects that trade. By taking sponsorship off the table entirely, the Scout makes the reader — "
+    "rejects that trade. By taking sponsorship off the table entirely, the Insider makes the reader — "
     "not an advertiser — the customer. Every incentive points the same direction: make something "
     "people love enough to pay for, sell them products they actually want, and gather them at events "
     "they're glad they attended.", align="just")
@@ -536,7 +536,7 @@ add_para("This is not idealism without precedent — it is the model behind some
 bsm_facts = [
     ["Company", "Brief Scout Media (LLC to be formed)"],
     ["Headquarters", "Chattanooga, Tennessee (Hamilton County)"],
-    ["First product", "The Scenic City Scout — weekly digital newsletter"],
+    ["First product", "The Scenic City Insider — weekly digital newsletter"],
     ["Stage", "Pre-launch concept"],
     ["Revenue model", "Membership + products/commerce + events (no ads/sponsorship)"],
     ["Editorial cadence", "Weekly (free tier) + members-only extras"],
@@ -672,7 +672,7 @@ add_para(
     "High-margin owned products turn brand affection into revenue without touching advertising: "
     "Chattanooga-pride **merchandise** (print-on-demand to test, bulk once proven — ~$17/unit vs "
     "~$42 on-demand), **digital city guides** (newcomer guide, best-of guides — near-100% margin "
-    "after creation), a **\"Scout Card\" local discount program** (recurring, partner-funded value "
+    "after creation), a **\"Insider Card\" local discount program** (recurring, partner-funded value "
     "for members), a **job board / classifieds** line ($200+/listing), and signature specialty "
     "items. Catskill Crew's region-themed board game (sold out in 17 days) is the proof that a "
     "beloved local brand can sell almost anything to its people.")
@@ -681,12 +681,12 @@ add_heading("4.3 Pillar 3 — Events", 2)
 add_para(
     "Events are the highest-leverage pillar and the strongest moat. Two structures:")
 add_bullets([
-    "**Proprietary events** — ticketed gatherings the Scout owns end-to-end: member mixers, a "
+    "**Proprietary events** — ticketed gatherings the Insider owns end-to-end: member mixers, a "
     "\"new to Chattanooga\" newcomer night, themed tasting walks, and eventually an annual signature "
     "festival. Local consumer events cluster at a **$30–$50 ticket** sweet spot, with **$40–$75 of "
     "additional per-attendee on-site spend**.",
     "**Joint-venture events** — co-produced with breweries, restaurants, venues, and festivals on a "
-    "**revenue-share** basis. The Scout brings the audience and promotion; the partner brings the "
+    "**revenue-share** basis. The Insider brings the audience and promotion; the partner brings the "
     "space and operations; risk and cost are shared. This is the capital-light way to run frequent "
     "events without owning infrastructure.",
 ])
@@ -751,12 +751,12 @@ add_bullets([
 ])
 add_para(
     "**A new membership perk.** The engine creates value that didn't exist before and that members "
-    "will pay for: **first word on new openings** — the Scout's 'Just Licensed / Coming Soon' intel, "
+    "will pay for: **first word on new openings** — the Insider's 'Just Licensed / Coming Soon' intel, "
     "delivered to members before the city knows. A concrete, unique reason to upgrade that lifts both "
     "conversion and retention.")
 add_para(
     "**The one rule.** The engine *sources*; humans *own the trust*. AI finds and pre-vets; a real "
-    "person verifies, visits, and writes in the Scout's voice. The moment it reads like an automated "
+    "person verifies, visits, and writes in the Insider's voice. The moment it reads like an automated "
     "directory, the moat collapses — so the engine stays an internal weapon, never the product.")
 add_para(
     "**Engine-adjusted outlook (Years 2–3).** Holding Year 1 as the conservative base case, the "
@@ -780,10 +780,10 @@ add_table(["Line item", "Year 2 — base", "Year 2 — engine", "Year 3 — base
 add_figure(f"{ASSETS}/fig_engine.png",
            "Figure 5b. The engine's two clearest effects — lower content cost and a stronger membership intel perk — lift owner's draw in Years 2–3.")
 
-add_heading("4.6 Scout Insights — a fourth, walled revenue line (at scale)", 2)
+add_heading("4.6 Insider Insights — a fourth, walled revenue line (at scale)", 2)
 add_para(
     "Beyond the three reader-funded pillars, a fourth line emerges once the audience is large and "
-    "well-profiled: **Scout Insights**, a permission-based local research practice. It monetizes the "
+    "well-profiled: **Insider Insights**, a permission-based local research practice. It monetizes the "
     "brand's scarcest asset — a trusted, engaged, demographically-profiled local audience — by selling "
     "**aggregate insight, never identities** (no PII; opt-in; aggregate-only; walled from editorial; "
     "strictly apolitical). It is fully consistent with the no-advertising promise: companies buy "
@@ -792,9 +792,9 @@ add_para(
     "**Depth before monetization.** It begins as contest-based onboarding micro-surveys that collect "
     "consented, first-party profile data (age, neighborhood, life stage, interests) — which sharpen "
     "content, products, and events *immediately*, before a dollar of external revenue. The dataset "
-    "deepens into an opt-in 'Scout Insiders' panel; house research ('The Scenic City Index') then "
+    "deepens into an opt-in 'Insiders' panel; house research ('The Scenic City Index') then "
     "establishes authority and B2B thought leadership; and only afterward do custom and sponsored "
-    "panels open. (Full detail in the Scout Insights spec.)")
+    "panels open. (Full detail in the Insider Insights spec.)")
 add_para(
     "**Contribution (illustrative, deliberately back-loaded):** roughly **$0 external in Year 1** — "
     "the early payoff is internal, in better-targeted content, products, and events that lift "
@@ -804,7 +804,7 @@ add_para(
 
 # ============================ PRODUCT STRATEGY ============================
 add_heading("5. Product & Editorial Strategy", 1)
-add_heading("5.1 The weekly Scout", 2)
+add_heading("5.1 The weekly Insider", 2)
 add_para(
     "Each issue is skimmable in five minutes and genuinely useful: a short read on the week's most "
     "important local development, a curated **\"what to do this week\"** events rundown, a local "
@@ -813,10 +813,10 @@ add_para(
     "free issue is the funnel for everything else.")
 add_heading("5.2 Membership tiers", 2)
 tiers = [
-    ["Free", "$0", "Weekly Scout newsletter; public event listings",
+    ["Free", "$0", "Weekly Insider newsletter; public event listings",
      "Top-of-funnel; builds the list and the habit"],
     ["Member", "$8/mo or $80/yr", "Members-only deep dives & archives; first word on new openings "
-     "(the Scout's 'Just Licensed' intel); member event pricing; Scout Card discounts; community access",
+     "(the Insider's 'Just Licensed' intel); member event pricing; Insider Card discounts; community access",
      "Core reader-revenue tier"],
     ["Founding Member", "$150/yr", "All Member benefits + signature merch, name recognition, "
      "free annual signature-event ticket", "Higher ARPU; superfans who fund the mission"],
@@ -827,7 +827,7 @@ add_table(["Tier", "Price", "What's included", "Role"], tiers,
 add_heading("5.3 The product ladder", 2)
 add_para(
     "The business is designed as an ascending ladder of commitment: a reader discovers the free "
-    "Scout → becomes a habitual reader → attends a free or low-cost event → buys a guide or merch → "
+    "Insider → becomes a habitual reader → attends a free or low-cost event → buys a guide or merch → "
     "converts to membership → upgrades to founding member and attends signature events. Each rung "
     "deepens the relationship and raises lifetime value, and every rung is reader-aligned.")
 
@@ -864,13 +864,13 @@ ev = [
     ["Newcomer night (quarterly)", "100", "$25", "$10", "$1,800–2,500", "Onboards transplants"],
     ["Signature festival (annual)", "1,500", "$35", "$50+", "$30,000–40,000", "Brand + sponsorship-free gate/commerce"],
 ]
-add_table(["Event type", "Typical attend.", "Ticket", "On-site spend", "Est. net to Scout", "Strategic role"],
+add_table(["Event type", "Typical attend.", "Ticket", "On-site spend", "Est. net to Insider", "Strategic role"],
           ev, widths=[1.5, 1.0, 0.9, 1.0, 1.2, 1.4], fontsize=8.5, first_col_bold=True,
           caption="Table 7. Illustrative event unit economics. Ticket and on-site figures benchmarked to local consumer-event data (Eventbrite, Ticket Fairy, regional festivals).")
 add_para(
     "Joint-venture structures keep events capital-light: the partner supplies the venue, alcohol "
-    "license, and operations; the Scout supplies the audience and promotion; the two share gate "
-    "and/or food-and-beverage revenue. Note that because the Scout takes no in-newsletter "
+    "license, and operations; the Insider supplies the audience and promotion; the two share gate "
+    "and/or food-and-beverage revenue. Note that because the Insider takes no in-newsletter "
     "sponsorship, **event sponsorship is treated separately** — it is permissible to have a brewery "
     "co-host an event, since that is a partnership around an experience, not a sale of the reader's "
     "inbox attention. (If the founder prefers absolute purity, events can run on tickets and "
@@ -880,8 +880,8 @@ add_heading("6.3 Products & commerce", 2)
 add_para(
     "Merchandise begins print-on-demand (zero inventory risk) and shifts proven designs to bulk "
     "screen-print (~$17/unit vs ~$42 on-demand) once demand is validated. Digital guides carry "
-    "near-100% margins after creation. The Scout Card discount program is a recurring, "
-    "partner-funded member perk that costs the Scout little and deepens member value. A job "
+    "near-100% margins after creation. The Insider Card discount program is a recurring, "
+    "partner-funded member perk that costs the Insider little and deepens member value. A job "
     "board/classifieds line adds modest, passive revenue ($200+/30-day listing).")
 
 # ============================ GTM / GROWTH ================================
@@ -901,7 +901,7 @@ add_bullets([
     "relocation services — especially powerful given heavy in-migration.",
     "**Events as acquisition.** Every event is a list-building machine; attendees join on the spot.",
     "**Organic social & content.** Short-form local video and Instagram/Facebook (where ~60% of "
-    "younger residents discover events) drive inbound signups; the Scout's POV makes it shareable.",
+    "younger residents discover events) drive inbound signups; the Insider's POV makes it shareable.",
     "**Newcomer funnel.** A free \"New to Chattanooga\" guide as a signup magnet targets the "
     "fast-growing transplant population precisely when they're hungry for local guidance.",
 ])
@@ -960,7 +960,7 @@ add_bullets([
     "Paying members: 350 / 850 / 1,700 (EoY) — a conservative 3–6% of the free list.",
     "Blended membership ARPU ~$90/yr net of payment fees; ~3–4% monthly churn.",
     "Events scale 3 → 7 → 12 per year, adding a signature festival in Year 3.",
-    "Products scale with brand: merch, guides, Scout Card, specialty items.",
+    "Products scale with brand: merch, guides, Insider Card, specialty items.",
     "All event and product figures shown **net** of direct costs (COGS, venue/JV share).",
 ])
 add_heading("9.2 Three-year revenue build", 2)
@@ -1037,10 +1037,10 @@ add_heading("11. Roadmap & Milestones", 1)
 road = [
     ["Pre-launch (Mo. 0–2)", "Form LLC; build brand & site; choose beehiiv; line up 5–10 launch "
      "partners; open founding-member presale to validate demand."],
-    ["Launch (Mo. 3)", "Publish first weekly Scout; activate referral program; host launch event."],
+    ["Launch (Mo. 3)", "Publish first weekly Insider; activate referral program; host launch event."],
     ["Mo. 3–12", "Grow to ~7,000 free / ~350 members; run 3 events; ship first guide + merch drop."],
     ["Year 2", "Scale to ~16,000 free / ~850 members; 7 events incl. quarterly ticketed; add "
-     "part-time editor; launch Scout Card."],
+     "part-time editor; launch Insider Card."],
     ["Year 3", "~28,000 free / ~1,700 members; 12 events incl. signature festival; full-time "
      "founder + contractor team; evaluate a second edition/vertical."],
 ]

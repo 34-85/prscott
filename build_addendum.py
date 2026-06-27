@@ -112,7 +112,7 @@ def chart_expansion():
     fig,ax=plt.subplots(figsize=(8.6,4.0))
     # (label, start_quarter, duration_quarters, color)
     items=[
-        ("Flagship: Scenic City Scout", 0, 16, "#"+NAVY),
+        ("Flagship: Scenic City Insider", 0, 16, "#"+NAVY),
         ("Vertical 1: 'What to do' / events edition", 5, 11, "#"+TEAL),
         ("Vertical 2: Newcomer & food/dining", 8, 8, "#"+TEAL),
         ("Membership & events at scale", 6, 10, "#"+SAND),
@@ -143,7 +143,7 @@ def chart_moat():
         ax.text(0.15,yi,lab,va="center",ha="left",color="white",fontsize=9,fontweight="bold")
     ax.set_xlim(0,10); ax.set_yticks([])
     ax.set_xlabel("Relative defensibility / hardness to replicate")
-    ax.set_title("The Brief Scout Moat Stack")
+    ax.set_title("The Brief Scout Media Moat Stack")
     fig.tight_layout(); fig.savefig(f"{ASSETS}/fig_moat.png",bbox_inches="tight"); plt.close(fig)
 
 for fn in (chart_cashflow,chart_ai_time,chart_expansion,chart_moat): fn()
@@ -318,7 +318,7 @@ H("2. Scaling with Human-in-the-Loop + AI",1)
 P("AI is now cheap and good enough that anyone can spin up an 'AI local newsletter' — in fact, "
   "6AM City acquired Good Daily's network of **350+ AI-generated local newsletters** in 2025, then "
   "immediately began stripping out crime/politics and refocusing on lifestyle, a tell that "
-  "pure-automated local content is **commoditizing**. That is the strategic insight for Brief Scout "
+  "pure-automated local content is **commoditizing**. That is the strategic insight for Brief Scout Media "
   "Media: **use AI to win on speed and cost in the back office, and use humans to win on trust, "
   "voice, and relationships in the front of house.** AI handles volume; humans own the things a "
   "competitor (or a bot) cannot copy.",align="just")
@@ -327,7 +327,7 @@ H("2.1 The division of labor",2)
 TABLE(["Workflow","What AI does (drafts/assists)","What the human owns (decides/signs off)","Payoff"],
 [
  ["Event aggregation","Scrape & de-dupe venue/city calendars; structure listings","Curate the 'what to do' picks with taste","Hours saved; better picks"],
- ["First drafts","Summarize sources; draft sections & blurbs","Rewrite in the Scout voice; verify facts","Faster production, same quality"],
+ ["First drafts","Summarize sources; draft sections & blurbs","Rewrite in the Insider voice; verify facts","Faster production, same quality"],
  ["Subject lines & headlines","Generate A/B variants","Pick & refine for voice","Higher open rates"],
  ["Research","Brief the founder; pull data & context","Judgment, sourcing, original reporting","Depth without the grind"],
  ["Social repurposing","Cut newsletter into posts/clips/captions","Approve & add personality","Multi-channel reach, one effort"],
@@ -339,12 +339,12 @@ caption="Table A3. The human-in-the-loop model: AI accelerates production; a hum
 H("2.2 Why this is a better product, not just a cheaper one",2)
 BUL([
  "**Quality compounds.** Cutting production time ~30–50% lets a solo founder hold a high editorial bar at the weekly cadence — and reinvest the saved hours into events, partnerships, and original reporting, the work that actually builds the moat.",
- "**Differentiation through contrast.** As inboxes fill with AI sludge, a visibly human, opinionated, fact-checked Scout stands out. 'Written by a real Chattanoogan who actually went there' becomes a selling point.",
+ "**Differentiation through contrast.** As inboxes fill with AI sludge, a visibly human, opinionated, fact-checked Insider stands out. 'Written by a real Chattanoogan who actually went there' becomes a selling point.",
  "**Scale without dilution.** AI makes new verticals (Section 4) feasible for a tiny team, because the repeatable, mechanical 80% is automated and humans focus on the 20% that carries the brand.",
 ])
 P("**Guardrails (non-negotiable):** never auto-publish; every issue is human-edited and "
   "fact-checked; AI is a drafting and ops tool, not the byline; be transparent with readers about "
-  "how the Scout is made; protect the voice above all. The promise is human judgment, "
+  "how the Insider is made; protect the voice above all. The promise is human judgment, "
   "advertiser-free — AI just removes the drudgery that gets in its way.")
 FIG(f"{ASSETS}/fig_ai_time.png",
     "Figure A2. AI leverage shifts founder time away from mechanical production toward events, partnerships, and community — the defensible, revenue-driving work.")
@@ -446,7 +446,7 @@ caption="Table A6. Topic strategy. Each pillar is chosen because it is hard to c
 P("**The moat is cumulative.** No single feature is defensible alone, but stacked together — an "
   "owned email list, advertiser-free trust, a voice AI can't replicate, an events-and-community "
   "network, and years of local relationships — they become very hard to dislodge. A new entrant "
-  "would have to rebuild all five from zero, in a city where Brief Scout is already the trusted name.")
+  "would have to rebuild all five from zero, in a city where Brief Scout Media is already the trusted name.")
 FIG(f"{ASSETS}/fig_moat.png",
     "Figure A4. The moat stack — five reinforcing layers of defensibility, anchored by reader trust and local incumbency.")
 
@@ -458,7 +458,7 @@ P("Year 1 is a bootstrapped validation year that ends with cash in the bank and 
   "playbook, the founder can then choose growth on their own terms: verticals first (Year 2), a "
   "second market only once the model is proven (Year 3+), and outside capital only to accelerate a "
   "network — raised from strength, not need. Throughout, the brand wins on the one thing competitors "
-  "can't buy: the trust of readers who know the Scout works for them.",align="just")
+  "can't buy: the trust of readers who know the Insider works for them.",align="just")
 
 out="/home/user/prscott/Brief_Scout_Media_Strategic_Addendum.docx"
 doc.save(out); print("saved",out)

@@ -83,9 +83,9 @@ DATA = {
 
 FAMOUS = [
  ("Calliope","Khaled Albanna — chef/co-owner","Downtown",
-  "Drop the 'NYT Top 50' line everyone uses. The Scout angle: the civil-engineering student who fell for cooking and now bridges Amman and Appalachia on one plate — built around his family's recipes, the local farms he sources from, and the line cooks he's training."),
+  "Drop the 'NYT Top 50' line everyone uses. The Insider angle: the civil-engineering student who fell for cooking and now bridges Amman and Appalachia on one plate — built around his family's recipes, the local farms he sources from, and the line cooks he's training."),
  ("Little Coyote","Erik & Amanda Niel — owners","St. Elmo",
-  "Skip the Michelin Bib. The Scout angle: spotlight Amanda Niel (the business partner usually in the chef's shadow) and the masa — the daily nixtamal-and-tortilla ritual and the person at the comal — as a Texas 'love letter' to St. Elmo, not an award."),
+  "Skip the Michelin Bib. The Insider angle: spotlight Amanda Niel (the business partner usually in the chef's shadow) and the masa — the daily nixtamal-and-tortilla ritual and the person at the comal — as a Texas 'love letter' to St. Elmo, not an award."),
 ]
 
 RESERVE = [
@@ -101,19 +101,19 @@ FLAGS = [
  "No names were invented; every 'unverified' is labeled. Thin web presence is expected (and good) — verify in person.",
 ]
 DOCTRINE = [
- "**Avoid the obvious.** If it has national press or everyone already covers it, it isn't a Scout story — unless we find a genuinely new angle.",
+ "**Avoid the obvious.** If it has national press or everyone already covers it, it isn't a Insider story — unless we find a genuinely new angle.",
  "**Press footprint is a feature, not a bug.** Prize None/Low. Use a 'Some' pick only when the *secret* is still untold.",
  "**Go where others won't.** The satellite towns and the overlooked neighborhoods — not just Southside/NorthShore/St. Elmo.",
  "**Lead with the person and the secret.** A surprising, specific, human detail — never 'award-winning.'",
  "**Earn the reader a discovery.** They should feel let in on something and want to forward it.",
  "**Verify in person.** Hidden gems have thin web footprints; confirm names by phone or visit. Never invent a name.",
- "**Even the famous get the Scout treatment.** Keep a known name only with an untold angle (see Calliope & Little Coyote).",
+ "**Even the famous get the Insider treatment.** Keep a known name only with an untold angle (see Calliope & Little Coyote).",
 ]
 
 # ---------- CSV ----------
 with open("/home/user/prscott/hidden_gems_source_list.csv","w",newline="") as f:
     w=csv.writer(f)
-    w.writerow(["Territory","Business","Person","Category","Town","Hidden-gem secret","Source","Press footprint","Confidence","Scout pick"])
+    w.writerow(["Territory","Business","Person","Category","Town","Hidden-gem secret","Source","Press footprint","Confidence","Insider pick"])
     for terr,rows in DATA.items():
         for (biz,person,cat,town,secret,src,press,conf,pick) in rows:
             w.writerow([terr.split(" — ")[0],biz,person,cat,town,secret,src,press,conf,"Yes" if pick else ""])
@@ -190,23 +190,23 @@ r=p.add_run("Hidden Gems & Wider Territory"); r.font.size=Pt(18); sc(r,TEAL)
 p=doc.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
 r=p.add_run(f"{total} under-the-radar businesses and the people behind them — from the ridges to Cleveland, Dalton, LaFayette & the valley"); r.font.size=Pt(11.5); r.font.italic=True; sc(r,SLATE)
 p=doc.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
-r=p.add_run("Scouted June 2026  ·  ★ = Scout's Pick  ·  Press footprint: None (biggest scoop) / Low / Some  ·  Full sources in the CSV"); r.font.size=Pt(9.5); sc(r,GREY)
+r=p.add_run("Scouted June 2026  ·  ★ = Insider's Pick  ·  Press footprint: None (biggest scoop) / Low / Some  ·  Full sources in the CSV"); r.font.size=Pt(9.5); sc(r,GREY)
 doc.add_page_break()
 
 # Doctrine
-H("The Scout's Sourcing Doctrine",1)
-P("A Scout's job is **discovery**, not coverage. Anyone can profile the award-winners; our moat is finding the diner in LaFayette, the cobbler in Cleveland, the potter on Signal Mountain that nobody else has written up. The rules:")
+H("The Insider's Sourcing Doctrine",1)
+P("A Insider's job is **discovery**, not coverage. Anyone can profile the award-winners; our moat is finding the diner in LaFayette, the cobbler in Cleveland, the potter on Signal Mountain that nobody else has written up. The rules:")
 BUL(DOCTRINE)
 P("**Press footprint** is rated for every find — None means a true scoop, Some means it's been lightly covered and we'd need a fresh angle. Lower is better.", color=SLATE)
 
-# Scout's Picks shortlist (no duplicate rows)
+# Insider's Picks shortlist (no duplicate rows)
 picks=[(b,p2,terr.split(' — ')[0]) for terr,rows in DATA.items() for (b,p2,c,tw,se,sr,pr,cf,pk) in rows if pk]
-H("★ Scout's Picks — start with these",1,color=GOLD)
+H("★ Insider's Picks — start with these",1,color=GOLD)
 P("The richest, most verifiable human hooks across the territory — ideal for the first features. Each is marked ★ in its territory table below.")
 BUL([f"{b} — {p2}  ·  {terr}" for (b,p2,terr) in picks])
 
 # Famous, re-angled
-H("Giving the famous the Scout treatment",1)
+H("Giving the famous the Insider treatment",1)
 P("Two nationally-recognized names worth keeping — but only with an untold angle, never the press-release accolade:")
 t=doc.add_table(rows=1,cols=3); t.alignment=WD_TABLE_ALIGNMENT.CENTER; t.style="Table Grid"
 for i,h in enumerate(["Business","Where","The fresh, non-award angle"]):
@@ -227,7 +227,7 @@ for terr,rows in DATA.items():
 # Reserve / flags
 H("Reserve bench & out-of-territory backups",1)
 BUL(RESERVE)
-H("Verify before print (the Scout's discipline)",1,color=ORANGE)
+H("Verify before print (the Insider's discipline)",1,color=ORANGE)
 BUL(FLAGS)
 P("Full source for every entry is in hidden_gems_source_list.csv. Hidden gems shift — confirm hours, ownership, and the human hook in person before you publish.",
   italic=True,color=GREY,size=9)

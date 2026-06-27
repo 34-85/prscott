@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scout Insights — the permission-based local research practice (spec / one-pager+)."""
+"""Insider Insights — the permission-based local research practice (spec / one-pager+)."""
 import os, matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ def chart_roadmap():
     fig,ax=plt.subplots(figsize=(7.6,3.9)); ax.set_xlim(0,36); ax.set_ylim(-0.5,5)
     phases=[("Phase 0 · Light reader polls (habit + content + response-rate proof)",0,36,"#"+SLATE,4),
             ("Phase 1 · Contest-based onboarding + first-party appends → early insights",3,12,"#"+NAVY,3),
-            ("Phase 2 · Build DEPTH — 'Scout Insiders' panel + methodology",9,24,"#"+TEAL,2),
+            ("Phase 2 · Build DEPTH — 'Insiders' panel + methodology",9,24,"#"+TEAL,2),
             ("Phase 3 · 'The Scenic City Index' — house research / authority",18,30,"#"+SAND,1),
             ("Phase 4 · Monetize — custom & sponsored panels (LAST)",24,37,"#"+ORANGE,0)]
     for lab,s,e,c,y in phases:
@@ -30,17 +30,17 @@ def chart_roadmap():
     ax.text(24,4.7,"depth & credibility BEFORE sponsored revenue",ha="center",fontsize=8,color="#"+ORANGE,fontweight="bold")
     ax.set_yticks([]); ax.set_xticks([0,6,12,18,24,30,36])
     ax.set_xticklabels(["Launch","6mo","12mo","18mo","24mo","30mo","36mo"],fontsize=8)
-    ax.set_title("Scout Insights — build depth first, monetize last",fontweight="bold",color="#"+NAVY)
+    ax.set_title("Insider Insights — build depth first, monetize last",fontweight="bold",color="#"+NAVY)
     for s in ("top","right","left"): ax.spines[s].set_visible(False)
     fig.tight_layout(); fig.savefig(f"{ASSETS}/fig_insights.png",bbox_inches="tight"); plt.close(fig)
 chart_roadmap(); print("chart done")
 
 PHASES=[
- ("Phase 0 — Listen","Now (pre-10K)","Light in-newsletter 'Scout asks…' polls. Builds the response habit, makes great content, and proves people answer.","Internal only"),
+ ("Phase 0 — Listen","Now (pre-10K)","Light in-newsletter 'Insider asks…' polls. Builds the response habit, makes great content, and proves people answer.","Internal only"),
  ("Phase 1 — Onboard","~3–12 mo","Contest-based 3–5-question micro-surveys at signup (and periodically). Collect consented, first-party profile data — age band, gender, part of town, interests, life stage. Insights form early.","Internal only"),
- ("Phase 2 — Deepen","~9–24 mo","Progressive profiling (one question an issue) grows the opt-in 'Scout Insiders' panel and a real longitudinal dataset. Add methodology rigor (sampling, weighting).","Internal only"),
- ("Phase 3 — Authority","~18–30 mo","Publish 'The Scenic City Index' — house research that makes Brief Scout the cited local authority. Feeds editorial; builds the B2B brand.","Brand / PR (low/none)"),
- ("Phase 4 — Monetize","~24 mo+","Only now: custom 'Scout Insights' studies and sponsored/omnibus panels for local orgs — apolitical, aggregate-only, walled from editorial.","B2B research revenue"),
+ ("Phase 2 — Deepen","~9–24 mo","Progressive profiling (one question an issue) grows the opt-in 'Insiders' panel and a real longitudinal dataset. Add methodology rigor (sampling, weighting).","Internal only"),
+ ("Phase 3 — Authority","~18–30 mo","Publish 'The Scenic City Index' — house research that makes Brief Scout Media the cited local authority. Feeds editorial; builds the B2B brand.","Brand / PR (low/none)"),
+ ("Phase 4 — Monetize","~24 mo+","Only now: custom 'Insider Insights' studies and sponsored/omnibus panels for local orgs — apolitical, aggregate-only, walled from editorial.","B2B research revenue"),
 ]
 QMAP=[
  ("Age band","Tone & reading level; product sizing/merch; event design (nightlife vs. daytime)","Demographic cross-tabs for every study"),
@@ -53,7 +53,7 @@ QMAP=[
 GUARD=[
  "**No PII — ever.** Clients receive aggregate findings and cross-tabs, never names, emails, or individual records.",
  "**First-party & consented.** Self-reported at opt-in, built up by progressive profiling. We do NOT silently buy third-party demographic appends and attach them — that's a trust and legal liability that contradicts the brand.",
- "**Opt-in panel.** 'Scout Insiders' is something readers choose to join, incentivized by a contest (prizes are gift cards to the local businesses we cover — the reward itself supports a maker).",
+ "**Opt-in panel.** 'Insiders' is something readers choose to join, incentivized by a contest (prizes are gift cards to the local businesses we cover — the reward itself supports a maker).",
  "**Frequency-capped.** At most one profiling question per issue and one deeper survey a month. Belonging, not extraction — over-surveying churns the list.",
  "**Walled from editorial.** Research never dictates coverage; we decline political, religious, or advocacy work. Same bright line as the partner program.",
  "**Transparent & secure.** Clear privacy policy, easy opt-out honored immediately, sensible data security.",
@@ -133,7 +133,7 @@ p=doc.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
 r=p.add_run("No PII. Opt-in. Aggregate-only. The reader stays the customer — never the product."); r.font.size=Pt(10.5); r.font.italic=True; sca(r,SLATE)
 
 H("The idea in one line",1)
-P("Turn a trusted, engaged, *local* audience into the region's best source of consumer and civic insight — sold as **aggregate findings, never identities** — building a high-margin, apolitical B2B revenue line that *deepens* trust instead of spending it, and makes Brief Scout the cited local authority.")
+P("Turn a trusted, engaged, *local* audience into the region's best source of consumer and civic insight — sold as **aggregate findings, never identities** — building a high-margin, apolitical B2B revenue line that *deepens* trust instead of spending it, and makes Brief Scout Media the cited local authority.")
 P("**Sequencing is the whole strategy: build depth before we monetize.** We start with contest-based onboarding questions that form insights early (and immediately sharpen our own content, products, and events), deepen the dataset over time, establish credibility with house research, and only *then* open sponsored/custom panels.")
 FIG(f"{ASSETS}/fig_insights.png","Figure. The five phases — depth and credibility come before any sponsored dollar.")
 
@@ -152,16 +152,16 @@ H("The immediate payoff — before a single external dollar",1)
 P("Even at $0 of research revenue, this pays for itself. Knowing your readers' age, neighborhood, life stage, and interests lets you **segment sends, tailor sections, size merch, and design events people actually show up to** — lifting free→paid conversion and retention across the core business. The data is a *product-development engine* first and a revenue line second.")
 
 H("The external products (Phase 3–4)",1)
-P("**The Scenic City Index** (house research) establishes authority and feeds editorial — the brand-builder. **Scout Insights** (custom + omnibus) is the demand-driven revenue, sold only after depth and credibility exist.")
+P("**The Scenic City Index** (house research) establishes authority and feeds editorial — the brand-builder. **Insider Insights** (custom + omnibus) is the demand-driven revenue, sold only after depth and credibility exist.")
 TABLE(["Product","What it is","Illustrative price"],RATE,widths=[1.6,3.4,1.8],fontsize=9,
       caption="Illustrative; high margin because the audience already exists. Apolitical, aggregate-only, walled from editorial.")
 
 H("Fit in the model & a light 3-year contribution",1)
-P("Scout Insights is a **fourth revenue line** alongside membership, products, and events — and a walled B2B practice, like the partner program. It's deliberately back-loaded: the early value is internal (better content/products/events), the later value is revenue *and* the unbookable payoff of authority and brand.")
+P("Insider Insights is a **fourth revenue line** alongside membership, products, and events — and a walled B2B practice, like the partner program. It's deliberately back-loaded: the early value is internal (better content/products/events), the later value is revenue *and* the unbookable payoff of authority and brand.")
 TABLE(["Year","External revenue (illustrative)","The bigger payoff"],CONTRIB,widths=[0.9,1.9,4.0],fontsize=9)
 
 H("Bottom line",1)
-P("A permission-based, no-PII insights practice is the most on-brand non-advertising revenue Brief Scout can build: it monetizes trust without selling the reader, sharpens the core product from week one, and — through 'The Scenic City Index' — makes Brief Scout the authority on what Chattanooga thinks. Build the depth first; the panels will be worth far more for the wait.")
+P("A permission-based, no-PII insights practice is the most on-brand non-advertising revenue Brief Scout Media can build: it monetizes trust without selling the reader, sharpens the core product from week one, and — through 'The Scenic City Index' — makes Brief Scout Media the authority on what Chattanooga thinks. Build the depth first; the panels will be worth far more for the wait.")
 
 out="/home/user/prscott/Scout_Insights_Spec.docx"
 doc.save(out); print("saved",out)

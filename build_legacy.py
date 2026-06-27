@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Still Standing — the Legacy Businesses Source Book.
-Compiled from the verified Legacy markdown + Scout (new finds) & Nerd (status) agent passes.
-Editorial layer: longevity tiers, live status, a 'commodity vs. true-Scout' filter, and the angle for each."""
+Compiled from the verified Legacy markdown + Insider (new finds) & Nerd (status) agent passes.
+Editorial layer: longevity tiers, live status, a 'commodity vs. true-Insider' filter, and the angle for each."""
 import os, csv, matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -103,7 +103,7 @@ EDGE=[
   "Regional chain (1960), 285+ locations; the Fort Payne store anchors the DeKalb corridor. Too chain-y for a feature; map context only.","High"),
 ]
 
-# --- NEW Scout finds (hidden, satellite-town legacy) — folded from Scout agent ---
+# --- NEW Insider finds (hidden, satellite-town legacy) — folded from Insider agent ---
 # (name, founded, town, category, status, scout_angle, conf)
 SCOUT_FINDS=[
  ("Morgan Furniture",1909,"Dayton, TN","Retail — furniture","OPEN",
@@ -125,7 +125,7 @@ SCOUT_FINDS=[
  ("Access Family Pharmacy",1955,"Hixson, TN","Independent / compounding pharmacy","OPEN",
   "Locally owned compounding & medical-supply pharmacy on Hixson Pike (sources disagree: 1955 vs 1959; changed hands 1990). VERIFY founding year before featuring. Angle: a neighborhood compounding druggist.","Low"),
 ]
-# Scout's suspected-but-unverified (do NOT publish without a phone call):
+# Insider's suspected-but-unverified (do NOT publish without a phone call):
 SCOUT_LEADS=[
  "**The Folk Music Store** — Red Bank, TN (3411 Dayton Blvd): acoustic-instrument shop; a 'sndsr1948' handle hints at 1948 but that may be a birth year, not a founding. Worth a call — would be a perfect gem if it's real.",
  "**Tipton Funeral Home** — Cleveland, TN: death records back to 1899 suggest a late-1800s founding; current continuity unverified. Check the Bradley County historical society.",
@@ -164,9 +164,9 @@ MYTHS=[
 def yrs(f): return NOW - f
 GROUPS=[("100+ years — Centenarians",CENT),("75+ years — Near-Centenarians",NEAR),
         ("50+ years — Established Veterans",VET),("Closed — history only",GONE),
-        ("Regional / edge",EDGE),("Scout finds — hidden & satellite-town",SCOUT_FINDS)]
+        ("Regional / edge",EDGE),("Insider finds — hidden & satellite-town",SCOUT_FINDS)]
 with open("/home/user/prscott/legacy_source_list.csv","w",newline="") as f:
-    w=csv.writer(f); w.writerow(["Tier/group","Business","Founded","Years open","Town","Category","Status","Scout angle","Confidence"])
+    w=csv.writer(f); w.writerow(["Tier/group","Business","Founded","Years open","Town","Category","Status","Insider angle","Confidence"])
     for grp,rows in GROUPS:
         for (n,fo,tn,cat,st,ang,cf) in rows:
             w.writerow([grp,n,fo,yrs(fo),tn,cat,st,ang,cf])
@@ -242,7 +242,7 @@ def FIG(path,cap,width=9.4):
     P(cap,italic=True,color=GREY,size=8.5); doc.paragraphs[-1].alignment=WD_ALIGN_PARAGRAPH.CENTER
 STATUS_COLOR={"OPEN":GREEN,"SOLD":GOLD,"RENOVATING":GOLD,"CLOSED":RUST,"RELOCATED":SLATE}
 def LTABLE(rows,caption=None):
-    cols=["Business","Founded","Yrs","Town","Category","Status","The Scout angle (POV that earns membership)","Conf."]
+    cols=["Business","Founded","Yrs","Town","Category","Status","The Insider angle (POV that earns membership)","Conf."]
     widths=[1.45,0.55,0.4,1.25,1.15,0.75,3.6,0.45]
     t=doc.add_table(rows=1,cols=len(cols)); t.alignment=WD_TABLE_ALIGNMENT.CENTER; t.style="Table Grid"
     for i,h in enumerate(cols):
@@ -276,7 +276,7 @@ r.font.size=Pt(10.5); r.font.italic=True; sca(r,SLATE)
 doc.add_page_break()
 
 H("Why a 'Still Standing' source book",1)
-P("Longevity is a story competitors can't fake and chains can't buy. A business that has fed, dressed, insured, or sheltered this town for 50, 75, or 100 years is exactly the kind of deep-roots subject the Scout exists to honor — it pairs naturally with **Building's Biography**, **The Regular**, **Last Call**, and **The Dig**. This is the working source list: verified, tiered by years open, and — critically — marked with a **live status** and a **Scout angle** so we never run a tired history dump or, worse, invite readers to a place that just closed.")
+P("Longevity is a story competitors can't fake and chains can't buy. A business that has fed, dressed, insured, or sheltered this town for 50, 75, or 100 years is exactly the kind of deep-roots subject the Insider exists to honor — it pairs naturally with **Building's Biography**, **The Regular**, **Last Call**, and **The Dig**. This is the working source list: verified, tiered by years open, and — critically — marked with a **live status** and a **Insider angle** so we never run a tired history dump or, worse, invite readers to a place that just closed.")
 P("**The discipline that makes it ours:** the obvious centenarians (Rock City, Ruby Falls, the Choo-Choo, the MoonPie origin myth) are *commodities* — every outlet has done them. We flag those and refuse the lazy version. Our value is the fresh POV: the person, the booth, the building, the closing, the descendant — never the press kit. And the once-rule still governs: a place appears once an issue, rarely twice a month.")
 FIG(f"{ASSETS}/fig_legacy.png","Founding years across the three longevity tiers — the deep-roots map for an occasional 'Still Standing' series.")
 
@@ -297,13 +297,13 @@ LTABLE(GONE)
 H("Regional / edge — Getaway & reader-service, not Chattanooga-proper",1)
 LTABLE(EDGE)
 
-# --- Scout finds (folded from agent) ---
+# --- Insider finds (folded from agent) ---
 if SCOUT_FINDS:
     doc.add_page_break()
-    H("Scout finds — the hidden & satellite-town legacy others miss",1)
-    P("Sourced by a Scout pass for durable, unglamorous, non-tourist businesses in the satellite towns — the hardware stores, diners, barbershops, and independents nobody profiles. Verify each before featuring; confidence noted.",italic=True,color=GREY,size=9)
+    H("Insider finds — the hidden & satellite-town legacy others miss",1)
+    P("Sourced by a Insider pass for durable, unglamorous, non-tourist businesses in the satellite towns — the hardware stores, diners, barbershops, and independents nobody profiles. Verify each before featuring; confidence noted.",italic=True,color=GREY,size=9)
     LTABLE(SCOUT_FINDS)
-    H("Scout leads — promising but unverified (call before publishing)",2)
+    H("Insider leads — promising but unverified (call before publishing)",2)
     BUL(SCOUT_LEADS)
     H("Recently lost — tribute / The Dig only",2)
     BUL(SCOUT_LOST)
