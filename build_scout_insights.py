@@ -163,5 +163,5 @@ TABLE(["Year","External revenue (illustrative)","The bigger payoff"],CONTRIB,wid
 H("Bottom line",1)
 P("A permission-based, no-PII insights practice is the most on-brand non-advertising revenue Brief Scout Media can build: it monetizes trust without selling the reader, sharpens the core product from week one, and — through 'The Scenic City Index' — makes Brief Scout Media the authority on what Chattanooga thinks. Build the depth first; the panels will be worth far more for the wait.")
 
-out="/home/user/prscott/Scout_Insights_Spec.docx"
+out="/home/user/prscott/Insider_Insights_Spec.docx"
 doc.save(out); print("saved",out)
