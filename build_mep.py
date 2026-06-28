@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Mise en Place (MeP) — positioning one-pager. The sponsored wine/beer/bourbon & table companion
-to Scenic City Insider. Captures the pressure-test verdict, money model, sponsor map & guardrails."""
+"""Mise en Place (MeP) — positioning one-pager (v2: food + drink, equally).
+Chattanooga's celebration of the table — the openly-sponsored companion to Scenic City Insider."""
 import os
 from docx import Document
 from docx.shared import Pt, Inches, RGBColor
@@ -63,58 +63,69 @@ doc.add_paragraph()
 p=doc.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
 r=p.add_run("Mise en Place"); r.font.size=Pt(34); r.font.bold=True; sca(r,WINE)
 p=doc.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
-r=p.add_run("Chattanooga's wine, beer, bourbon & the table"); r.font.size=Pt(14); r.font.italic=True; sca(r,INK)
+r=p.add_run("Eat well, drink well, Chattanooga — and meet the people who make it."); r.font.size=Pt(13.5); r.font.italic=True; sca(r,INK)
 p=doc.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
-r=p.add_run("Positioning one-pager  ·  the openly-sponsored companion to Scenic City Insider  ·  project name “MeP” (pending name vetting)")
+r=p.add_run("Positioning one-pager (v2: food + drink, equally)  ·  the openly-sponsored companion to Scenic City Insider  ·  project name “MeP” (pending name vetting)")
 r.font.size=Pt(9); r.font.italic=True; sca(r,GREY)
 doc.add_paragraph()
 
-H("The verdict, and the pivot",1)
-P("A pressure-test of the Chattanooga market says: **a general food newsletter is a weak bet** — that lane is already taken (Food as a Verb, the Times Free Press's paid 'What to Eat Next,' and NOOGAtoday's daily food coverage). But **drinks are wide open**: there is no dedicated local wine, beer, or bourbon publication, despite a city that genuinely loves all three. So MeP leads with **the glass and the table** — wine, beer, bourbon, and the food and hosting around them — not restaurant reviews. The market gap and the founder's real passion point at the same place.")
-P("**The promise, true to the name:** everything in its place. The weekly that gets you ready to drink well, pair well, and host well — calm readiness for the good life at the table.",italic=True,color=SLATE)
+H("What MeP is",1)
+P("**Chattanooga's celebration of the table — food and drink, equally — and the people who make it worth it.** Joyful, useful, free, and unapologetically apolitical. It celebrates the *craft* of cooking, pouring, and serving — the chef, the bartender, the baker, the shop owner — and pairs that with a credentialed drinks beat (wine, beer, bourbon, and the no/low-ABV side) that no one else in town has. The drink is one door into the room; the plate is the other.")
+P("**Why food *and* drink, not drink alone:** the audience is bigger and the publication is sturdier. Gen Z drinks less; breakfast and lunch aren't drinking occasions; and many of the best stories are simply a great plate. Going food-equal opens the whole clock — biscuit to nightcap — widens the audience (including the sober-curious), and broadens the sponsor base (roasters, bakeries, daytime spots) well beyond bottle shops.",italic=True,color=SLATE,size=10)
+
+H("The line — MeP's editorial DNA",1)
+BUL([
+ "**Celebrate the craft.** Cover people for what they make and the joy they create — never as a cause.",
+ "**Delight over didactics.** We're here for the pleasure of the table, not the lecture.",
+ "**Politics off the plate.** Everyone's welcome at this table. No agenda but a good one — never an activist rant, even a right one.",
+ "**Always useful.** Where to eat and drink, what to order, what's new, who to know.",
+ "**The plate and the glass are both the door** — and we walk through to meet the people behind the bar and the stove.",
+ "**Celebratory ≠ paid.** We celebrate because it earned it, not because someone bought a slot (same bright line as everything we do).",
+])
+
+H("Why the lane is open — the competitive wedge",1)
+P("A general food newsletter would be a weak bet — that's crowded. But the *celebratory, craft-and-people, genuinely useful, free, apolitical, drinks-expert* lane is open, because each incumbent leaves it empty:")
+TABLE(["Incumbent","What they are","MeP's wedge"],
+[["Food as a Verb","Food-as-society / agrarian, literary, activist","We celebrate the craft & the joy — the everyday beloved spot, the cook, the bartender — plus a drinks beat & service. Never a lecture. (They'll never spotlight a Choo Choo BBQ; we will.)"],
+ ["Times Free Press 'What to Eat Next'","Curated food, but paywalled / limited access","Free — reaches the whole city, not just subscribers."],
+ ["NOOGAtoday","Broad daily news; food is one section + ad roundups","Dedicated, celebratory, craft-deep — with a credential-backed drinks beat none of them have."]],
+[1.5,2.2,3.3],fontsize=8.4)
 
 H("The bright line with Scenic City Insider",1)
-P("MeP sits **next to** SCI, never inside it. **SCI is the reader-funded soul** of the company — no ads, the reader is the customer. **MeP is the openly-sponsored, joyful passion title** — clearly labeled sponsors and ticketed events. Two mastheads, two honest models. SCI may mention a restaurant as part of knowing the city; MeP is the dedicated drinks-and-table obsession with events. Keep them distinct or both blur.")
-
-H("Why it works here — three real advantages",1)
-BUL([
- "**A structural sponsor moat: Tennessee bans liquor-store chains.** No Total Wine, no Costco wine — so the ~20–30 metro bottle shops are *all locally owned*, competing on curation, and need exactly this curated audience. Several already run tastings (Riverside, Imbibe, Kanku's). That anchor sponsor base wouldn't exist in a chain market.",
- "**A deep beer & bourbon scene** — 12–16 craft breweries plus Chattanooga Whiskey and Gate 11 distillery — widens the sponsor and event-partner base well beyond wine.",
- "**A vibrant, credentialed food scene** (4 Michelin nods; James Beard 2026 semifinalists Niedlov's & Calliope; a packed festival calendar) supplies endless 'where to drink well' content and event partners.",
-])
-P("And the multiplier: MeP is one of three surfaces of a single personal brand — **the book (authority), the podcast (reach + relationships), the newsletter (the hub that owns the list and monetizes it).** Every winemaker, brewer, and shop owner is a guest, a sponsor, and a story.")
+P("MeP sits **next to** SCI, never inside it. **SCI is the reader-funded soul** — no ads, the reader is the customer. **MeP is the openly-sponsored, joyful passion title** — labeled sponsors and ticketed events. SCI may mention a place as part of knowing the city; MeP is the dedicated eat-and-drink-well celebration with events. Two mastheads, two honest models.")
 
 H("The money model — three legs, in priority order",1)
 TABLE(["Leg","What it is","Why / how it pays"],
-[["1 · Events (the engine)","Ticketed tasting dinners, wine/whiskey classes, brewery & maker collaborations","Highest margin, most on-brand; partner with a bottle shop + chef who supply at cost or rev-share. Illustrative: a 24-seat dinner at ~$125 ≈ $3K gross."],
- ["2 · Sponsorship (recurring 2nd)","Presenting sponsor + category slots, anchored by bottle shops","~15–30 realistic local buyers at modest regional rates; bottle shops are the spine, with cookware, cheese, coffee, a distillery in support."],
+[["1 · Events (the engine)","Intimate wine/whiskey dinners (the Bill Reed / Pedestrian model — 20–40 seats, a shop or somm + a kitchen), tastings, and classes","Highest margin, most on-brand; you host with credentials; scarcity & access are the product. A 24-seat dinner at ~$125 ≈ $3K gross. The night is also the week's best content."],
+ ["2 · Sponsorship (recurring 2nd)","Presenting + category slots; bottle shops anchor, now joined by restaurants, roasters, bakeries, cookware","Going food-equal widens the pool well past wine/spirits; ~20–40 realistic local buyers at modest regional rates."],
  ["3 · The flywheel","Book + podcast feeding the newsletter","Authority, reach, and the relationships that become sponsors and event partners. The list is the owned asset."]],
 [1.3,2.6,2.8],fontsize=8.5)
-P("**Honest scale:** a lifestyle-scale business — a devoted few-thousand list, 15–30 modest sponsors, and **events as the real income.** Pure sponsorship alone rates Moderate; the blend (esp. events) rates Moderate-to-Strong.",italic=True,color=SLATE,size=9.8)
+P("**Honest scale:** a lifestyle-scale business — a devoted few-thousand list and **events as the real income.** The blend (esp. events) is what makes it work; the certifications (WSET/bourbon) let *you* lead the rooms.",italic=True,color=SLATE,size=9.8)
+
+H("The weekly — content architecture (twin signatures)",1)
+TABLE(["Section","The point of view"],
+[["The Plate","A dish, a cook, a room worth celebrating — the everyday craft (the BBQ, the biscuit, the taco, the meat-and-three), all dayparts"],
+ ["The Pour","The wine, beer, bourbon — or great NA — worth seeking, with a credentialed reason why"],
+ ["The Maker / The Counter","The people behind it — chef, baker, roaster, bartender, monger, shop owner — craft & personality, never cause"],
+ ["What's New","Openings & what to order now — the freely-accessible service the paywall keeps from people"],
+ ["Host This","A pairing or hosting tip — 'mise en place' made practical for friends coming over"],
+ ["The Calendar","Tastings, dinners, releases, classes & festivals — the events that also monetize"]],
+[1.5,5.2],fontsize=8.6)
 
 H("The sponsor & event-partner map",1)
 TABLE(["Tier","Role","Who (real local examples)"],
-[["Tier 1","Recurring cash sponsors","Bottle shops (Riverside, Imbibe, Kanku's, Northshore, East Brainerd) · distilleries (Chattanooga Whiskey, Gate 11) · cookware (Good Kinsmen, The Kitchen Collection) · Bleu Fox cheese · coffee roasters (Velo, Goodman) · Niedlov's"],
- ["Tier 2","Paid-event co-hosts","Breweries (Chattanooga Brewing, Hutton & Smith, Naked River…) · wineries (Lookout, Georgia Winery, Beans Creek) · cooking schools (PastaNooga, Sweet & Savory) · caterers/private chefs · festivals (SIPTN Wine Fest, Bacon & Barrel)"],
- ["Tier 3","Content / relationship partners","Farms & CSAs, Chattanooga Market & Main Street Farmers Market, Crabtree Farms, micro-makers — credibility & stories, not reliable cash"]],
+[["Tier 1","Recurring cash sponsors","Bottle shops (Riverside, Imbibe, Kanku's) · distilleries (Chattanooga Whiskey, Gate 11) · cookware (Good Kinsmen, The Kitchen Collection) · Bleu Fox cheese · coffee roasters (Velo, Goodman) · Niedlov's · restaurants & cafés (now in scope)"],
+ ["Tier 2","Paid-event co-hosts","Restaurants for wine dinners (the Pedestrian / Bill Reed model) · breweries · wineries (Lookout, Georgia Winery) · cooking schools (PastaNooga, Sweet & Savory) · chefs/caterers · festivals (SIPTN, Bacon & Barrel)"],
+ ["Tier 3","Content / relationship partners","Farms & CSAs, Chattanooga Market & Main Street Farmers Market, micro-makers — stories & credibility, not reliable cash"]],
 [0.7,1.7,4.3],fontsize=8.3)
-
-H("The weekly — content architecture",1)
-TABLE(["Section","The point of view"],
-[["The Pour","The wine, beer, or bourbon worth seeking this week — a pick or a theme, with a real reason"],
- ["The Shop / The Maker","The people behind the counter and the bottle — a featured bottle shop, brewer, distiller, or monger (the founder's 'got out of the house' joy)"],
- ["What's Pouring","Seasonal — what to drink now, and what's new on local shelves & taps"],
- ["The Table","The food halo — a pairing, a dish, or where to drink well (Michelin/Beard rooms)"],
- ["Host This","A hosting/pairing tip for entertaining — 'mise en place' made practical"],
- ["The Calendar","Upcoming tastings, dinners, releases & festivals — the events that also monetize"]],
-[1.4,5.3],fontsize=8.6)
 
 H("Guardrails",1)
 BUL([
- "**Alcohol advertising is regulated (TABC).** Good news: the rules **explicitly permit email-list promotion** by wine/spirits retailers — favorable for the bottle-shop model. Cautions: keep **manufacturer (brewery/distillery) money separate from retailer (bottle-shop) slots** (tied-house rules); host tastings **through the licensed partner** so the license sits with them. A short TN-attorney check before launch.",
- "**Don't drift back to general food.** The moment MeP becomes 'another Chattanooga food newsletter,' it's the weakest of four. Drinks-and-table, with food as the halo.",
+ "**Stay celebratory, not a listings sheet.** The value is craft, people, and a point of view — not a directory NOOGAtoday already runs.",
+ "**Apolitical by design** — the inverse of the activist lane; it's also the more sponsorable and more shareable choice.",
+ "**Alcohol advertising (TABC)** still applies to the drinks side & events: email-list promotion by retailers is permitted; keep manufacturer vs. retailer slots separate; host tastings through the licensed partner. A short TN-attorney check before launch.",
+ "**Name vetting** — 'Mise en Place' is a common culinary term; run the domain + USPTO/TESS pass we used for SCI. Also avoid 'The Table' as any MeP feature name — it's Food as a Verb's membership brand.",
  "**Small-market ceiling** — lean on the events margin, not premium ad rates.",
- "**Name vetting** — 'Mise en Place' is a common culinary term (catering/meal-prep businesses use it). Run the same domain + USPTO/TESS pass we used for SCI before committing; 'MeP' is a working name only.",
 ])
 
 out="/home/user/prscott/Mise_en_Place_One_Pager.docx"
