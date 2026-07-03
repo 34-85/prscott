@@ -1,0 +1,3 @@
+# Runtime dependency for the sync script.
+# The package intentionally has no other third-party dependencies.
+requests>=2.31,<3

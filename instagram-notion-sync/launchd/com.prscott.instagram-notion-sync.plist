@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  macOS launchd agent for the Instagram → Notion sync.
+
+  Runs twice a day (08:00 and 20:00 local time). Placeholders wrapped in
+  __DOUBLE_UNDERSCORES__ are substituted by launchd/install.sh, or edit them by
+  hand before copying this file to ~/Library/LaunchAgents/.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.prscott.instagram-notion-sync</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>__PYTHON__</string>
+        <string>__PROJECT_DIR__/run_sync.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__PROJECT_DIR__</string>
+
+    <!-- Fire at 08:00 and 20:00 every day. -->
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict>
+            <key>Hour</key>
+            <integer>8</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>20</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+    </array>
+
+    <!-- If the Mac was asleep at the scheduled time, run as soon as it wakes. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>__PROJECT_DIR__/logs/sync.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__PROJECT_DIR__/logs/sync.err.log</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>

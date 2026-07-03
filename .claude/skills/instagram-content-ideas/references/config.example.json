@@ -1,0 +1,5 @@
+{
+  "_comment": "Copy to config.json and fill in the Notion database IDs to skip discovery. Both are 32-char hex IDs from the database URL. If config.json is absent, the skill finds the databases by name instead.",
+  "saves_database_id": "",
+  "content_ideas_database_id": ""
+}
