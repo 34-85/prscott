@@ -1,0 +1,22 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- App icon: calm dark field with a descending weight-trend line. -->
+  <rect width="1024" height="1024" fill="#0a0c10"/>
+  <rect width="1024" height="1024" fill="url(#g)" opacity="0.35"/>
+  <!-- subtle grid baseline -->
+  <line x1="176" y1="760" x2="848" y2="760" stroke="#222834" stroke-width="6" stroke-linecap="round"/>
+  <!-- descending trend line (weight loss) -->
+  <polyline points="192,360 340,470 470,430 610,560 720,540 832,650"
+            fill="none" stroke="#4ea1ff" stroke-width="34"
+            stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- nodes -->
+  <circle cx="192" cy="360" r="26" fill="#4ea1ff"/>
+  <circle cx="470" cy="430" r="22" fill="#4ea1ff"/>
+  <circle cx="720" cy="540" r="22" fill="#4ea1ff"/>
+  <circle cx="832" cy="650" r="30" fill="#3ecf8e"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2e6bb0"/>
+      <stop offset="1" stop-color="#0a0c10"/>
+    </linearGradient>
+  </defs>
+</svg>
