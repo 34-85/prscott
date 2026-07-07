@@ -17,8 +17,23 @@ export type ComplianceStatus =
 
 export type ForecastStatus = 'Ahead of schedule' | 'On schedule' | 'Behind schedule'
 
-/** How a day is run. Refeed/Maintenance are legitimate when intentional. */
-export type DayType = 'PSMF Day' | 'Moderate Cut Day' | 'Maintenance Day' | 'Refeed Day'
+/** How a day is run. Each type carries its own calorie/macro targets. */
+export type DayType =
+  | 'PSMF Day'
+  | 'Moderate Cut Day'
+  | 'Maintenance Day'
+  | 'Refeed Day'
+  | 'Travel Day'
+
+/** Calorie + macro targets for a single day type. */
+export interface DayProfile {
+  proteinMin: number
+  proteinMax: number
+  carbMax: number
+  fatMax: number
+  calorieMin: number
+  calorieMax: number
+}
 
 /** A single resolved food line within a meal. */
 export interface FoodEstimate {
@@ -92,18 +107,14 @@ export interface DailyLog {
   coachNotes: string[]
 }
 
-/** User-configurable plan + targets. */
+/** User-configurable plan + per-day-type targets. */
 export interface UserSettings {
   startingWeight: number
   goalLoss: number
   targetWeeks: number
-  proteinMin: number
-  proteinMax: number
-  carbMax: number
-  fatMax: number
-  calorieMin: number
-  calorieMax: number
   meatWeightsDefault: MeatWeightMode
+  /** Calorie/macro targets per day type. */
+  profiles: Record<DayType, DayProfile>
 }
 
 /** Canonical / personal-library food definition. */

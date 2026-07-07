@@ -2,7 +2,7 @@ import type { DailyLog, UserSettings } from './types'
 import { computeCompliance } from './compliance'
 import { computeForecast, weighIns, rollingTrend, type Forecast } from './forecast'
 import { estimateWaterWeight } from './waterWeight'
-import { classifyDay } from './dayType'
+import { classifyDay, profileFor } from './dayType'
 import { daysBetween, todayKey } from './dates'
 
 export type InsightTone = 'positive' | 'info' | 'caution' | 'alert'
@@ -156,19 +156,27 @@ export function computeCoachInsights(
     .filter((l) => l.meals.length > 0)
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 3)
-  if (recentLogged.length >= 3 && recentLogged.every((l) => l.totalProtein < settings.proteinMin)) {
+  const floorFor = (l: DailyLog) => profileFor(settings, l.plannedType ?? 'PSMF Day').proteinMin
+  if (recentLogged.length >= 3 && recentLogged.every((l) => l.totalProtein < floorFor(l))) {
     const avgP = recentLogged.reduce((a, l) => a + l.totalProtein, 0) / recentLogged.length
     insights.push({
       id: 'protein-low',
       tone: 'caution',
       title: 'Protein below floor for 3 days',
-      body: `Last 3 logged days averaged ${avgP.toFixed(0)}g protein, under the ${settings.proteinMin}g minimum. Protein preserves lean mass in a deep deficit — add a shake or a lean protein serving to close the gap.`,
+      body: `Last 3 logged days averaged ${avgP.toFixed(0)}g protein, under target. Protein preserves lean mass in a deep deficit — add a shake or a lean protein serving to close the gap.`,
     })
   }
 
   // --- 6. Today: protein remaining ---------------------------------------
-  if (todayLog && todayLog.meals.length > 0 && classifyDay(todayLog, settings).effective !== 'Refeed Day') {
-    const remainingP = settings.proteinMin - todayLog.totalProtein
+  const todayProfile = todayLog ? profileFor(settings, todayLog.plannedType ?? 'PSMF Day') : null
+  if (
+    todayLog &&
+    todayProfile &&
+    todayLog.meals.length > 0 &&
+    classifyDay(todayLog, settings).effective !== 'Refeed Day' &&
+    classifyDay(todayLog, settings).effective !== 'Travel Day'
+  ) {
+    const remainingP = todayProfile.proteinMin - todayLog.totalProtein
     if (remainingP > 20) {
       insights.push({
         id: 'today-protein',

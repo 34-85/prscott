@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useStore } from '../app/store'
 import { getTheme, setTheme, type Theme } from '../lib/theme'
-import type { MeatWeightMode, UserSettings } from '../lib/types'
+import { DAY_TYPES } from '../lib/dayType'
+import type { DayProfile, DayType, MeatWeightMode, UserSettings } from '../lib/types'
 
 interface NumFieldProps {
   label: string
@@ -48,6 +49,48 @@ function Group({ title, children }: { title: string; children: React.ReactNode }
   )
 }
 
+/** Edit the calorie/macro targets for each day type. */
+function DayTargetsEditor() {
+  const { state, updateDayProfile } = useStore()
+  const [type, setType] = useState<DayType>('PSMF Day')
+  const p = state.settings.profiles[type]
+  const upd = (patch: Partial<DayProfile>) => updateDayProfile(type, patch)
+
+  return (
+    <div className="card p-4">
+      <h2 className="text-sm font-semibold text-mute">Day Targets</h2>
+      <p className="mb-3 mt-0.5 text-[11px] text-mute-soft">
+        Calorie &amp; macro targets applied when you plan each day type on the Today tab.
+      </p>
+
+      <div className="mb-3 flex flex-wrap gap-1.5">
+        {DAY_TYPES.map((t) => (
+          <button
+            key={t}
+            onClick={() => setType(t)}
+            className={`rounded-full border px-2.5 py-1 text-[12px] font-medium transition-colors ${
+              type === t
+                ? 'border-accent bg-accent/15 text-accent'
+                : 'border-ink-line bg-ink-soft text-mute hover:text-fg'
+            }`}
+          >
+            {t.replace(' Day', '')}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <NumField key={`${type}-pmin`} label="Protein Min" value={p.proteinMin} suffix="g" onChange={(n) => upd({ proteinMin: n })} />
+        <NumField key={`${type}-pmax`} label="Protein Max" value={p.proteinMax} suffix="g" onChange={(n) => upd({ proteinMax: n })} />
+        <NumField key={`${type}-carb`} label="Carb Max" value={p.carbMax} suffix="g" onChange={(n) => upd({ carbMax: n })} />
+        <NumField key={`${type}-fat`} label="Fat Max" value={p.fatMax} suffix="g" onChange={(n) => upd({ fatMax: n })} />
+        <NumField key={`${type}-cmin`} label="Calorie Min" value={p.calorieMin} suffix="kcal" step={10} onChange={(n) => upd({ calorieMin: n })} />
+        <NumField key={`${type}-cmax`} label="Calorie Max" value={p.calorieMax} suffix="kcal" step={10} onChange={(n) => upd({ calorieMax: n })} />
+      </div>
+    </div>
+  )
+}
+
 export function Settings() {
   const { state, updateSettings, loadDemoData, resetAll } = useStore()
   const s = state.settings
@@ -89,17 +132,7 @@ export function Settings() {
         <NumField label="Target Weeks" value={s.targetWeeks} suffix="wk" step={1} onChange={(n) => set({ targetWeeks: n })} />
       </Group>
 
-      <Group title="Protein">
-        <NumField label="Protein Min" value={s.proteinMin} suffix="g" onChange={(n) => set({ proteinMin: n })} />
-        <NumField label="Protein Max" value={s.proteinMax} suffix="g" onChange={(n) => set({ proteinMax: n })} />
-      </Group>
-
-      <Group title="Limits">
-        <NumField label="Carb Max" value={s.carbMax} suffix="g" onChange={(n) => set({ carbMax: n })} />
-        <NumField label="Fat Max" value={s.fatMax} suffix="g" onChange={(n) => set({ fatMax: n })} />
-        <NumField label="Calorie Min" value={s.calorieMin} suffix="kcal" step={10} onChange={(n) => set({ calorieMin: n })} />
-        <NumField label="Calorie Max" value={s.calorieMax} suffix="kcal" step={10} onChange={(n) => set({ calorieMax: n })} />
-      </Group>
+      <DayTargetsEditor />
 
       <div className="card p-4">
         <h2 className="mb-3 text-sm font-semibold text-mute">Default Meat Weight</h2>

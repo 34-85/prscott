@@ -1,15 +1,16 @@
 import { useStore } from '../app/store'
 import { createEmptyLog } from '../lib/storage'
-import { classifyDay, dayTypeStyle, DAY_TYPES } from '../lib/dayType'
+import { activeProfile, classifyDay, dayTypeStyle, DAY_TYPES } from '../lib/dayType'
 import { estimateWaterWeight } from '../lib/waterWeight'
 import type { DayType } from '../lib/types'
 
-/** Declare the day's intent (PSMF / Moderate Cut / Maintenance / Refeed) or leave it auto. */
+/** Declare the day's intent (PSMF / Moderate Cut / Maintenance / Refeed / Travel) or leave it auto. */
 export function DayTypeControl({ date }: { date: string }) {
   const { state, setDayType } = useStore()
   const log = state.logs[date] ?? createEmptyLog(date)
   const cls = classifyDay(log, state.settings)
   const water = estimateWaterWeight(date, state.logs, state.settings)
+  const p = activeProfile(state.settings, log)
 
   const selected: DayType | 'auto' = log.plannedType ?? 'auto'
   const lenient = log.plannedType === 'Refeed Day' || log.plannedType === 'Maintenance Day'
@@ -24,6 +25,19 @@ export function DayTypeControl({ date }: { date: string }) {
           {cls.effective}
           <span className="ml-1 font-normal opacity-70">{cls.intentional ? 'planned' : 'auto'}</span>
         </span>
+      </div>
+
+      {/* Active targets for the day */}
+      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-mute tnum">
+        <span>
+          <span className="text-fg font-medium">
+            {p.calorieMin}–{p.calorieMax}
+          </span>{' '}
+          kcal
+        </span>
+        <span>≥{p.proteinMin}g P</span>
+        <span>≤{p.carbMax}g C</span>
+        <span>≤{p.fatMax}g F</span>
       </div>
 
       <div className="mt-3 flex flex-wrap gap-1.5">

@@ -1,5 +1,5 @@
-import type { ComplianceStatus, DailyLog, DayType, UserSettings } from './types'
-import { dayTargets, estimateMaintenance, type DayTargets } from './dayType'
+import type { ComplianceStatus, DailyLog, DayProfile, DayType, UserSettings } from './types'
+import { activeProfile } from './dayType'
 
 export interface ComplianceBreakdown {
   protein: number // 0-3
@@ -18,30 +18,30 @@ export interface ComplianceResult {
   gradedAs: DayType
 }
 
-function scoreProtein(p: number, s: UserSettings): number {
-  if (p >= s.proteinMin) return 3 // at/above target (over-max protein is fine on PSMF)
-  if (p >= s.proteinMin * 0.75) return 2
-  if (p >= s.proteinMin * 0.5) return 1
+function scoreProtein(p: number, t: DayProfile): number {
+  if (p >= t.proteinMin) return 3 // at/above target (over-max protein is fine)
+  if (p >= t.proteinMin * 0.75) return 2
+  if (p >= t.proteinMin * 0.5) return 1
   return 0
 }
 
-function scoreCarbs(c: number, t: DayTargets): number {
+function scoreCarbs(c: number, t: DayProfile): number {
   if (c <= t.carbMax) return 2
   if (c <= t.carbMax * 1.5) return 1
   return 0
 }
 
-function scoreFat(f: number, t: DayTargets): number {
+function scoreFat(f: number, t: DayProfile): number {
   if (f <= t.fatMax) return 2
   if (f <= t.fatMax * 1.5) return 1
   return 0
 }
 
-function scoreCalories(cal: number, t: DayTargets): number {
-  if (cal >= t.calMin && cal <= t.calMax) return 2
+function scoreCalories(cal: number, t: DayProfile): number {
+  if (cal >= t.calorieMin && cal <= t.calorieMax) return 2
   // Mild miss (within ~15% of a bound) keeps a point.
-  if (cal < t.calMin && cal >= t.calMin * 0.7) return 1
-  if (cal > t.calMax && cal <= t.calMax * 1.15) return 1
+  if (cal < t.calorieMin && cal >= t.calorieMin * 0.7) return 1
+  if (cal > t.calorieMax && cal <= t.calorieMax * 1.15) return 1
   return 0
 }
 
@@ -70,11 +70,10 @@ export function statusFromScore(score: number): ComplianceStatus {
 export function computeCompliance(log: DailyLog, settings: UserSettings): ComplianceResult {
   const hasData = log.meals.length > 0
   const gradedAs: DayType = log.plannedType ?? 'PSMF Day'
-  const maint = estimateMaintenance(log.morningWeight ?? settings.startingWeight)
-  const t = dayTargets(gradedAs, settings, maint)
+  const t = activeProfile(settings, log)
 
   const breakdown: ComplianceBreakdown = {
-    protein: hasData ? scoreProtein(log.totalProtein, settings) : 0,
+    protein: hasData ? scoreProtein(log.totalProtein, t) : 0,
     carbs: hasData ? scoreCarbs(log.totalCarbs, t) : 0,
     fat: hasData ? scoreFat(log.totalFat, t) : 0,
     calories: hasData ? scoreCalories(log.totalCalories, t) : 0,
