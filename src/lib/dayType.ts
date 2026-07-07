@@ -1,13 +1,57 @@
-// Day classification — labels each day by how it was actually run, and provides
-// the macro targets that day type should be graded against.
+// Day classification + per-day-type calorie/macro targets.
 
-import type { DailyLog, DayType, UserSettings } from './types'
+import type { DailyLog, DayProfile, DayType, UserSettings } from './types'
 
-export interface DayTargets {
-  calMin: number
-  calMax: number
-  carbMax: number
-  fatMax: number
+/**
+ * Default targets for each day type. These drive BOTH the displayed targets
+ * (running totals / remaining) and compliance grading. Editable in Settings.
+ */
+export const DAY_PROFILES: Record<DayType, DayProfile> = {
+  // Strict PSMF: deep deficit, minimal carbs/fat, high protein.
+  'PSMF Day': {
+    proteinMin: 180,
+    proteinMax: 220,
+    carbMax: 25,
+    fatMax: 25,
+    calorieMin: 700,
+    calorieMax: 1000, // ~850 target
+  },
+  // A gentler deficit day.
+  'Moderate Cut Day': {
+    proteinMin: 170,
+    proteinMax: 220,
+    carbMax: 75,
+    fatMax: 55,
+    calorieMin: 1200,
+    calorieMax: 1600, // ~1400 target
+  },
+  // Eat at roughly maintenance.
+  'Maintenance Day': {
+    proteinMin: 150,
+    proteinMax: 220,
+    carbMax: 200,
+    fatMax: 85,
+    calorieMin: 2000,
+    calorieMax: 2500, // ~2250 target
+  },
+  // Carb-focused refeed to restore glycogen/hormones.
+  'Refeed Day': {
+    proteinMin: 160,
+    proteinMax: 220,
+    carbMax: 300,
+    fatMax: 60,
+    calorieMin: 1800,
+    calorieMax: 2400, // ~2100 target
+  },
+  // Travel: hard to eat clean — high across the board, lower protein.
+  'Travel Day': {
+    proteinMin: 100,
+    proteinMax: 180,
+    carbMax: 350,
+    fatMax: 130,
+    calorieMin: 2400,
+    calorieMax: 3200, // ~3000 target
+  },
 }
 
 /** Rough total daily energy expenditure for a 50+ moderately active professional. */
@@ -15,63 +59,38 @@ export function estimateMaintenance(weightLb: number): number {
   return Math.round(weightLb * 11)
 }
 
-/** Grading window for each day type (protein floor is graded separately, always). */
-export function dayTargets(type: DayType, settings: UserSettings, maintenance: number): DayTargets {
-  switch (type) {
-    case 'PSMF Day':
-      return {
-        calMin: settings.calorieMin,
-        calMax: settings.calorieMax,
-        carbMax: settings.carbMax,
-        fatMax: settings.fatMax,
-      }
-    case 'Moderate Cut Day':
-      return {
-        calMin: settings.calorieMin,
-        calMax: Math.round(maintenance * 0.85),
-        carbMax: Math.round(settings.carbMax * 1.75),
-        fatMax: Math.round(settings.fatMax * 1.4),
-      }
-    case 'Maintenance Day':
-      return {
-        calMin: Math.round(maintenance * 0.8),
-        calMax: Math.round(maintenance * 1.12),
-        carbMax: Math.round(settings.carbMax * 3),
-        fatMax: Math.round(settings.fatMax * 1.8),
-      }
-    case 'Refeed Day':
-      return {
-        calMin: settings.calorieMax,
-        calMax: Math.round(maintenance * 1.12),
-        carbMax: Math.round(settings.carbMax * 3.5),
-        fatMax: Math.round(settings.fatMax * 1.5),
-      }
-  }
+/** The target profile for a given day type (user override, else default). */
+export function profileFor(settings: UserSettings, type: DayType): DayProfile {
+  return settings.profiles?.[type] ?? DAY_PROFILES[type]
+}
+
+/**
+ * The active profile for a day: the planned type if declared, otherwise the
+ * PSMF baseline. This is what the day's targets and grading use.
+ */
+export function activeProfile(settings: UserSettings, log: DailyLog): DayProfile {
+  return profileFor(settings, log.plannedType ?? 'PSMF Day')
 }
 
 export interface DayClassification {
-  /** What the day looked like from the macros (data-driven). */
   auto: DayType
-  /** User-declared intention, if any. */
   planned?: DayType
-  /** planned ?? auto — the label to show. */
   effective: DayType
-  /** True when the effective type is the user's declared intention. */
   intentional: boolean
   hasData: boolean
 }
 
-/** Auto-classify a day from its macros relative to PSMF targets and maintenance. */
+/** Auto-classify a day from its macros relative to the PSMF baseline and maintenance. */
 export function classifyDayAuto(log: DailyLog, settings: UserSettings): DayType {
   const weight = log.morningWeight ?? settings.startingWeight
   const maint = estimateMaintenance(weight)
+  const psmf = profileFor(settings, 'PSMF Day')
   const cal = log.totalCalories
   const carbs = log.totalCarbs
 
-  // Big intentional-looking carb surge with elevated calories reads as a refeed.
-  if (carbs > settings.carbMax * 1.75 && cal >= settings.calorieMax * 0.95) return 'Refeed Day'
+  if (carbs > psmf.carbMax * 3 && cal >= psmf.calorieMax * 0.95) return 'Refeed Day'
   if (cal >= maint * 0.85) return 'Maintenance Day'
-  if (cal > settings.calorieMax) return 'Moderate Cut Day'
+  if (cal > psmf.calorieMax) return 'Moderate Cut Day'
   return 'PSMF Day'
 }
 
@@ -88,6 +107,7 @@ const STYLES: Record<DayType, string> = {
   'Moderate Cut Day': 'text-accent border-accent/30 bg-accent/10',
   'Maintenance Day': 'text-mute border-ink-line bg-ink-soft',
   'Refeed Day': 'text-warn border-warn/30 bg-warn/10',
+  'Travel Day': 'text-bad border-bad/30 bg-bad/10',
 }
 
 export function dayTypeStyle(type: DayType): string {
@@ -99,4 +119,5 @@ export const DAY_TYPES: DayType[] = [
   'Moderate Cut Day',
   'Maintenance Day',
   'Refeed Day',
+  'Travel Day',
 ]

@@ -1,4 +1,5 @@
 import type { DailyLog, UserSettings } from '../lib/types'
+import { activeProfile } from '../lib/dayType'
 
 interface MacroRowProps {
   label: string
@@ -55,28 +56,29 @@ function MacroBar({ label, value, unit, min, max, mode }: MacroRowProps) {
   )
 }
 
-/** Today's logged totals + remaining allowances against targets. */
+/** Today's logged totals + remaining allowances against the active day-type targets. */
 export function RunningTotals({ log, settings }: { log: DailyLog; settings: UserSettings }) {
+  const p = activeProfile(settings, log)
   return (
     <div className="grid grid-cols-2 gap-x-5 gap-y-4">
       <MacroBar
         label="Protein"
         value={log.totalProtein}
         unit="g"
-        min={settings.proteinMin}
-        max={settings.proteinMax}
+        min={p.proteinMin}
+        max={p.proteinMax}
         mode="floor"
       />
       <MacroBar
         label="Calories"
         value={log.totalCalories}
         unit="kcal"
-        min={settings.calorieMin}
-        max={settings.calorieMax}
+        min={p.calorieMin}
+        max={p.calorieMax}
         mode="ceiling"
       />
-      <MacroBar label="Carbs" value={log.totalCarbs} unit="g" max={settings.carbMax} mode="ceiling" />
-      <MacroBar label="Fat" value={log.totalFat} unit="g" max={settings.fatMax} mode="ceiling" />
+      <MacroBar label="Carbs" value={log.totalCarbs} unit="g" max={p.carbMax} mode="ceiling" />
+      <MacroBar label="Fat" value={log.totalFat} unit="g" max={p.fatMax} mode="ceiling" />
     </div>
   )
 }

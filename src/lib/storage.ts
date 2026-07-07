@@ -1,20 +1,25 @@
-import type { AppState, DailyLog, DayNote, DayType, FoodEntry, Meal, UserSettings } from './types'
+import type {
+  AppState,
+  DailyLog,
+  DayNote,
+  DayProfile,
+  DayType,
+  FoodEntry,
+  Meal,
+  UserSettings,
+} from './types'
 import { computeCompliance } from './compliance'
+import { DAY_PROFILES } from './dayType'
 
 const STORAGE_KEY = 'psmf-tracker-state'
-const STATE_VERSION = 1
+const STATE_VERSION = 2
 
 export const DEFAULT_SETTINGS: UserSettings = {
   startingWeight: 212,
   goalLoss: 20,
   targetWeeks: 11,
-  proteinMin: 180,
-  proteinMax: 220,
-  carbMax: 60,
-  fatMax: 45,
-  calorieMin: 1000,
-  calorieMax: 1600,
   meatWeightsDefault: 'cooked',
+  profiles: DAY_PROFILES,
 }
 
 export function createEmptyLog(date: string): DailyLog {
@@ -75,6 +80,16 @@ export function loadState(): AppState | null {
     const parsed = JSON.parse(raw) as AppState
     // Merge settings so new fields get defaults on upgrade.
     parsed.settings = { ...DEFAULT_SETTINGS, ...parsed.settings }
+    // Merge day-type profiles: keep user overrides, fill in any missing types
+    // (e.g. Travel added later) and any missing fields.
+    const savedProfiles = (parsed.settings.profiles ?? {}) as Partial<
+      Record<DayType, Partial<DayProfile>>
+    >
+    const merged = {} as Record<DayType, DayProfile>
+    for (const type of Object.keys(DAY_PROFILES) as DayType[]) {
+      merged[type] = { ...DAY_PROFILES[type], ...savedProfiles[type] }
+    }
+    parsed.settings.profiles = merged
     parsed.customFoods ??= []
     parsed.logs ??= {}
     return parsed
@@ -152,6 +167,19 @@ export function updateSettings(state: AppState, patch: Partial<UserSettings>): A
     logs[date] = recomputeLog(log, settings)
   }
   return { ...state, settings, logs }
+}
+
+/** Edit the calorie/macro targets for one day type, then re-score all days. */
+export function updateDayProfile(
+  state: AppState,
+  type: DayType,
+  patch: Partial<DayProfile>,
+): AppState {
+  const profiles = {
+    ...state.settings.profiles,
+    [type]: { ...state.settings.profiles[type], ...patch },
+  }
+  return updateSettings(state, { profiles })
 }
 
 export function addDayNote(state: AppState, date: string, text: string): AppState {
