@@ -10,6 +10,7 @@ import type {
 } from './types'
 import { computeCompliance } from './compliance'
 import { DAY_PROFILES } from './dayType'
+import { backupStateToNative } from './native'
 
 const STORAGE_KEY = 'psmf-tracker-state'
 const STATE_VERSION = 2
@@ -101,7 +102,10 @@ export function loadState(): AppState | null {
 
 export function saveState(state: AppState): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    const raw = JSON.stringify(state)
+    localStorage.setItem(STORAGE_KEY, raw)
+    // Mirror to durable native storage (no-op on web).
+    void backupStateToNative(raw)
   } catch (e) {
     console.error('Failed to save state', e)
   }

@@ -18,6 +18,8 @@ export function applyTheme(theme: Theme): void {
   root.classList.toggle('light', theme === 'light')
   const meta = document.querySelector('meta[name="theme-color"]')
   if (meta) meta.setAttribute('content', theme === 'light' ? '#f4f6f9' : '#0a0c10')
+  // Keep the native iOS status bar in sync (no-op on web).
+  void import('./native').then((n) => n.syncNativeChrome(theme))
 }
 
 export function setTheme(theme: Theme): void {

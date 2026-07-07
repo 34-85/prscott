@@ -51,6 +51,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'tnum' 1, 'cv01' 1;
+  /* Native-app feel inside the iOS WebView (harmless on the web). */
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Respect the notch / status bar when running as an installed iOS app. */
+#root {
+  padding-top: env(safe-area-inset-top);
 }
 
 /* Tabular numerals for dashboard figures */
