@@ -6,8 +6,9 @@ const config: CapacitorConfig = {
   // Vite build output. Build with `npm run ios:build` (base '/') before syncing.
   webDir: 'dist',
   ios: {
-    // Respect the notch / home indicator; content handles its own safe areas.
-    contentInset: 'always',
+    // Edge-to-edge; the app handles notch/home-indicator insets in CSS
+    // (env(safe-area-inset-*)) for a consistent, predictable layout.
+    contentInset: 'never',
     backgroundColor: '#f4f6f9',
   },
   plugins: {

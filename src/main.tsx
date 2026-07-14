@@ -5,20 +5,26 @@ import './index.css'
 import { applyTheme, getTheme } from './lib/theme'
 import { initNative, restoreFromNativeBackup } from './lib/native'
 
-async function boot() {
+function boot() {
   const theme = getTheme()
   applyTheme(theme)
-  // On iOS, recover state from durable native storage if the WebView cleared
-  // localStorage. Resolves immediately on web.
-  await restoreFromNativeBackup()
-  // No-op on web; on iOS this hides the splash and matches the status bar.
-  void initNative(theme)
 
+  // Render immediately so the app paints without waiting on any native call.
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <App />
     </React.StrictMode>,
   )
+
+  // No-op on web; on iOS this hides the splash and matches the status bar.
+  void initNative(theme)
+
+  // Durability recovery (native only, rare): if the WebView had cleared
+  // localStorage but a native backup exists, restore it and reload once so
+  // the store picks it up. Normal launches do nothing here.
+  void restoreFromNativeBackup().then((restored) => {
+    if (restored) location.reload()
+  })
 }
 
-void boot()
+boot()
