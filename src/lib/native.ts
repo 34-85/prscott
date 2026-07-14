@@ -106,16 +106,20 @@ export async function backupStateToNative(raw: string): Promise<void> {
  * On native launch, if localStorage lost the state but a native backup exists,
  * restore it before the app reads state. Awaited during boot; no-op on web.
  */
-export async function restoreFromNativeBackup(): Promise<void> {
-  if (!isNative()) return
+export async function restoreFromNativeBackup(): Promise<boolean> {
+  if (!isNative()) return false
   try {
-    if (localStorage.getItem(STATE_KEY)) return // localStorage intact
+    if (localStorage.getItem(STATE_KEY)) return false // localStorage intact
     const { Preferences } = await import('@capacitor/preferences')
     const { value } = await Preferences.get({ key: BACKUP_KEY })
-    if (value) localStorage.setItem(STATE_KEY, value)
+    if (value) {
+      localStorage.setItem(STATE_KEY, value)
+      return true
+    }
   } catch {
     /* ignore */
   }
+  return false
 }
 
 // ---- Apple Health (scaffold) ---------------------------------------------

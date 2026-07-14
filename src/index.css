@@ -61,6 +61,20 @@ body {
   padding-top: env(safe-area-inset-top);
 }
 
+/* Opaque strip behind the status bar / Dynamic Island so scrolled content
+   doesn't bleed through the notch area. Matches the app background. */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top);
+  background-color: rgb(var(--ink));
+  z-index: 45;
+  pointer-events: none;
+}
+
 /* Tabular numerals for dashboard figures */
 .tnum {
   font-variant-numeric: tabular-nums;
