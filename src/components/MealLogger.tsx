@@ -8,6 +8,7 @@ import {
 } from '../lib/restaurant'
 import { BadgePill } from './Badge'
 import { RestaurantDetail } from './RestaurantCard'
+import { QuickAddPicker } from './QuickAddFood'
 import { errorBand } from '../lib/confidence'
 import type { Confidence, Meal } from '../lib/types'
 
@@ -33,6 +34,8 @@ const CONF_STYLE: Record<Confidence, string> = {
   low: 'text-bad',
 }
 
+type EntryMode = 'describe' | 'pick'
+
 /** Natural-language meal entry with live macro preview. Bottom-sheet modal. */
 export function MealLogger({ date, onClose, editMeal }: Props) {
   const { state, addMeal, addRestaurantMeal, updateMeal } = useStore()
@@ -40,6 +43,9 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
   const [text, setText] = useState(editMeal?.rawText ?? '')
   const [notes, setNotes] = useState(editMeal?.notes ?? '')
   const [restaurant, setRestaurant] = useState(editMeal?.restaurant != null)
+  // Structured "pick a food + qty + unit" flow is unavailable when editing an
+  // existing meal (which we replay through Describe to preserve its raw text).
+  const [mode, setMode] = useState<EntryMode>('describe')
 
   const preview = useMemo(
     () => (text.trim() ? estimateMeal(text, state.customFoods) : null),
@@ -115,6 +121,39 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
             </button>
           </div>
 
+          {/* Mode toggle — describe in words vs pick a food + qty + unit.
+              Hidden when editing (edit re-uses the meal's raw text). */}
+          {!isEdit && (
+            <div className="mt-4 flex rounded-xl border border-ink-line bg-ink-soft p-1">
+              {(['describe', 'pick'] as EntryMode[]).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setMode(m)}
+                  className={`flex-1 rounded-lg py-1.5 text-[13px] font-medium capitalize transition-colors ${
+                    mode === m ? 'bg-accent text-onaccent' : 'text-mute hover:text-fg'
+                  }`}
+                >
+                  {m === 'describe' ? 'Describe' : 'Pick a food'}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {mode === 'pick' && !isEdit && (
+            <div className="mt-4">
+              <QuickAddPicker
+                customFoods={state.customFoods}
+                submitLabel="Log Meal"
+                onLog={(rawText) => {
+                  addMeal(date, rawText)
+                  onClose()
+                }}
+              />
+            </div>
+          )}
+
+          {(mode === 'describe' || isEdit) && (
+          <>
           <textarea
             autoFocus
             value={text}
@@ -230,6 +269,8 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
           >
             {isEdit ? 'Save Changes' : 'Log Meal'}
           </button>
+          </>
+          )}
         </div>
       </div>
     </div>

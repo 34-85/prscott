@@ -130,6 +130,7 @@ export function Settings() {
         <NumField label="Starting Weight" value={s.startingWeight} suffix="lb" step={0.1} onChange={(n) => set({ startingWeight: n })} />
         <NumField label="Goal Loss" value={s.goalLoss} suffix="lb" step={0.5} onChange={(n) => set({ goalLoss: n })} />
         <NumField label="Target Weeks" value={s.targetWeeks} suffix="wk" step={1} onChange={(n) => set({ targetWeeks: n })} />
+        <NumField label="Water Goal" value={s.waterGoalOz} suffix="oz" step={4} onChange={(n) => set({ waterGoalOz: Math.max(0, n) })} />
       </Group>
 
       <DayTargetsEditor />

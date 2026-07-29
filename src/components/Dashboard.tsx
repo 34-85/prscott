@@ -10,11 +10,15 @@ import { RunningTotals } from './RunningTotals'
 import { ComplianceScore } from './ComplianceScore'
 import { ForecastCard } from './ForecastCard'
 import { CoachInsights } from './CoachInsights'
+import { CoachQnA } from './CoachQnA'
 import { MealLogger } from './MealLogger'
 import { ChatLogger } from './ChatLogger'
 import { DayTypeControl } from './DayTypeControl'
 import { BadgePill } from './Badge'
 import { RestaurantTag, RestaurantDetail } from './RestaurantCard'
+import { MorningBrief } from './MorningBrief'
+import { StreakBadge } from './StreakBadge'
+import { WaterCard } from './WaterCard'
 import { errorBand } from '../lib/confidence'
 import type { Meal } from '../lib/types'
 
@@ -68,8 +72,14 @@ export function Dashboard() {
           <h1 className="text-xl font-bold tracking-tight">Today</h1>
           <p className="text-[12px] text-mute-soft">{formatLong(date)}</p>
         </div>
-        <ComplianceScore log={log} settings={state.settings} compact />
+        <div className="flex items-center gap-2">
+          <StreakBadge />
+          <ComplianceScore log={log} settings={state.settings} compact />
+        </div>
       </div>
+
+      {/* Morning brief — dismissible per day */}
+      <MorningBrief />
 
       {/* Weight + macro snapshot */}
       <div className="card p-4">
@@ -77,6 +87,9 @@ export function Dashboard() {
         <div className="my-4 h-px bg-ink-line" />
         <RunningTotals log={log} settings={state.settings} />
       </div>
+
+      {/* Water tracking */}
+      <WaterCard date={date} />
 
       {/* Day type */}
       <DayTypeControl date={date} />
@@ -138,6 +151,9 @@ export function Dashboard() {
 
       {/* Coach */}
       <CoachInsights insights={insights} />
+
+      {/* Ask the coach */}
+      <CoachQnA />
 
       {/* Forecast */}
       <ForecastCard forecast={forecast} />

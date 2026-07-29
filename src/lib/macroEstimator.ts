@@ -28,8 +28,10 @@ function matchFood(foodText: string, db: FoodEntry[]): { entry: FoodEntry; alias
 
       if (!hit) continue
 
-      // Score: longer alias = more specific; lower priority value = preferred source.
-      const score = a.length * 100 - entry.priority - (text === a ? 1000 : 0)
+      // Score: longer alias = more specific; lower priority value = preferred
+      // source; exact match wins over any containment (per the "exact match is
+      // strongest" rule above).
+      const score = a.length * 100 - entry.priority + (text === a ? 1000 : 0)
       if (!best || score > best.score) {
         best = { entry, alias: a, score }
       }
