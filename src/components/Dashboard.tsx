@@ -12,7 +12,6 @@ import { ForecastCard } from './ForecastCard'
 import { CoachInsights } from './CoachInsights'
 import { CoachQnA } from './CoachQnA'
 import { MealLogger } from './MealLogger'
-import { QuickAddFood } from './QuickAddFood'
 import { ChatLogger } from './ChatLogger'
 import { DayTypeControl } from './DayTypeControl'
 import { BadgePill } from './Badge'
@@ -31,7 +30,6 @@ export function Dashboard() {
   const date = todayKey()
   const log = state.logs[date] ?? createEmptyLog(date)
   const [showLogger, setShowLogger] = useState(false)
-  const [showQuickAdd, setShowQuickAdd] = useState(false)
   const [editingMeal, setEditingMeal] = useState<Meal | null>(null)
   const [mode, setMode] = useState<Mode>(
     () => (localStorage.getItem(MODE_KEY) as Mode) || 'chat',
@@ -120,17 +118,9 @@ export function Dashboard() {
             <h2 className="text-sm font-semibold text-mute">
               Meals <span className="text-mute-soft">({log.meals.length})</span>
             </h2>
-            <div className="flex items-center gap-2">
-              {log.meals.length > 0 && (
-                <span className="tnum text-[11px] text-mute-soft">{log.totalCalories} kcal logged</span>
-              )}
-              <button
-                onClick={() => setShowQuickAdd(true)}
-                className="rounded-full border border-ink-line bg-ink-soft px-2.5 py-0.5 text-[11px] font-medium text-accent hover:border-accent/40"
-              >
-                Quick add
-              </button>
-            </div>
+            {log.meals.length > 0 && (
+              <span className="tnum text-[11px] text-mute-soft">{log.totalCalories} kcal logged</span>
+            )}
           </div>
 
           {log.meals.length === 0 ? (
@@ -189,10 +179,6 @@ export function Dashboard() {
             setEditingMeal(null)
           }}
         />
-      )}
-
-      {showQuickAdd && (
-        <QuickAddFood date={date} onClose={() => setShowQuickAdd(false)} />
       )}
     </div>
   )
