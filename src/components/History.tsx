@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 import { useStore } from '../app/store'
 import { computeForecast } from '../lib/forecast'
 import { formatShort, daysBetween } from '../lib/dates'
+import { weeklyPsmfSeries, streakSummary } from '../lib/streaks'
+import { WeightHistory } from './WeightHistory'
 import type { DailyLog } from '../lib/types'
 
 interface Series {
@@ -183,6 +185,8 @@ export function History() {
     () => computeForecast(state.logs, state.settings),
     [state.logs, state.settings],
   )
+  const streak = useMemo(() => streakSummary(state.logs), [state.logs])
+  const weekly = useMemo(() => weeklyPsmfSeries(state.logs, 8), [state.logs])
 
   const baseDate = logs[0]?.date
 
@@ -243,6 +247,39 @@ export function History() {
     <div className="space-y-4 pb-24 pt-1">
       <h1 className="text-xl font-bold tracking-tight">History</h1>
 
+      {/* Streaks + weekly PSMF-day bars */}
+      <div className="card p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-mute">Streaks</h2>
+          <span className="text-[11px] text-mute-soft tnum">
+            Current {streak.current} · Best {streak.longest}
+          </span>
+        </div>
+        <div className="mt-3 flex items-end justify-between gap-1">
+          {weekly.map((w) => {
+            const heightPct = (w.psmfDays / 7) * 100
+            const label = formatShort(w.weekStart)
+            const isCurrent = w === weekly[weekly.length - 1]
+            return (
+              <div key={w.weekStart} className="flex flex-1 flex-col items-center gap-1">
+                <div className="tnum text-[10px] text-mute-soft">{w.psmfDays}/7</div>
+                <div className="flex h-16 w-full items-end">
+                  <div
+                    className={`w-full rounded-t ${isCurrent ? 'bg-accent' : 'bg-accent/40'}`}
+                    style={{ height: `${Math.max(2, heightPct)}%` }}
+                    title={`${label} — ${w.psmfDays} PSMF · ${w.loggedDays} logged`}
+                  />
+                </div>
+                <div className="text-[9px] text-mute-soft">{label}</div>
+              </div>
+            )
+          })}
+        </div>
+        <p className="mt-2 text-[11px] text-mute-soft">
+          This week {streak.thisWeek}/7 · last week {streak.lastWeek}/7 · PSMF day = score ≥ 7 on a PSMF-planned day.
+        </p>
+      </div>
+
       <ChartCard
         title="Weight"
         legend={[
@@ -252,6 +289,9 @@ export function History() {
       >
         <LineChart series={weightSeries} format={(n) => n.toFixed(0)} />
       </ChartCard>
+
+      {/* Full weight log with per-row edit / delete + backfill */}
+      <WeightHistory />
 
       <ChartCard title="PSMF Score">
         <LineChart series={scoreSeries} yMin={0} yMax={10} format={(n) => n.toFixed(0)} />

@@ -20,6 +20,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
   goalLoss: 20,
   targetWeeks: 11,
   meatWeightsDefault: 'cooked',
+  waterGoalOz: 128, // 1 US gallon
   profiles: DAY_PROFILES,
 }
 
@@ -212,6 +213,23 @@ export function setPlannedType(
   // plannedType changes how compliance grades the day, so recompute.
   const updated = recomputeLog({ ...log, plannedType }, state.settings)
   return { ...state, logs: { ...state.logs, [date]: updated } }
+}
+
+/** Overwrite the day's water total (undefined clears it). */
+export function setWater(state: AppState, date: string, waterOz: number | undefined): AppState {
+  const log = state.logs[date] ?? createEmptyLog(date)
+  const clean =
+    waterOz == null || Number.isNaN(waterOz)
+      ? undefined
+      : Math.max(0, Math.round(waterOz * 10) / 10)
+  return { ...state, logs: { ...state.logs, [date]: { ...log, waterOz: clean } } }
+}
+
+/** Add (or subtract) ounces to the day's water total, clamped at 0. */
+export function adjustWater(state: AppState, date: string, deltaOz: number): AppState {
+  const log = state.logs[date] ?? createEmptyLog(date)
+  const next = Math.max(0, Math.round(((log.waterOz ?? 0) + deltaOz) * 10) / 10)
+  return { ...state, logs: { ...state.logs, [date]: { ...log, waterOz: next } } }
 }
 
 export function addCustomFood(state: AppState, food: FoodEntry): AppState {

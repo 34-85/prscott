@@ -12,6 +12,7 @@ import type { AppState, DayProfile, DayType, FoodEntry, Meal, UserSettings } fro
 import {
   addCustomFood as addCustomFoodFn,
   addDayNote as addDayNoteFn,
+  adjustWater as adjustWaterFn,
   defaultState,
   loadState,
   makeMealId,
@@ -21,6 +22,7 @@ import {
   saveState,
   setMorningWeight as setMorningWeightFn,
   setPlannedType as setPlannedTypeFn,
+  setWater as setWaterFn,
   updateDayProfile as updateDayProfileFn,
   updateSettings as updateSettingsFn,
   upsertMeal,
@@ -40,6 +42,8 @@ interface StoreApi {
   setDayType: (date: string, plannedType: DayType | undefined) => void
   addNote: (date: string, text: string) => void
   deleteNote: (date: string, noteId: string) => void
+  setWater: (date: string, waterOz: number | undefined) => void
+  adjustWater: (date: string, deltaOz: number) => void
   updateSettings: (patch: Partial<UserSettings>) => void
   updateDayProfile: (type: DayType, patch: Partial<DayProfile>) => void
   addCustomFood: (food: FoodEntry) => void
@@ -151,6 +155,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => removeDayNoteFn(s, date, noteId))
   }, [])
 
+  const setWater = useCallback((date: string, waterOz: number | undefined) => {
+    setState((s) => setWaterFn(s, date, waterOz))
+  }, [])
+
+  const adjustWater = useCallback((date: string, deltaOz: number) => {
+    setState((s) => adjustWaterFn(s, date, deltaOz))
+  }, [])
+
   const updateSettings = useCallback((patch: Partial<UserSettings>) => {
     setState((s) => updateSettingsFn(s, patch))
   }, [])
@@ -187,6 +199,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setDayType,
       addNote,
       deleteNote,
+      setWater,
+      adjustWater,
       updateSettings,
       updateDayProfile,
       addCustomFood,
@@ -205,6 +219,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setDayType,
       addNote,
       deleteNote,
+      setWater,
+      adjustWater,
       updateSettings,
       updateDayProfile,
       addCustomFood,

@@ -103,6 +103,8 @@ export interface DailyLog {
   totalProtein: number
   totalCarbs: number
   totalFat: number
+  /** Total ounces of water consumed on this day. */
+  waterOz?: number
   complianceScore: number
   coachNotes: string[]
 }
@@ -113,6 +115,8 @@ export interface UserSettings {
   goalLoss: number
   targetWeeks: number
   meatWeightsDefault: MeatWeightMode
+  /** Daily water goal in fluid ounces. Default 128 (1 US gallon). */
+  waterGoalOz: number
   /** Calorie/macro targets per day type. */
   profiles: Record<DayType, DayProfile>
 }
