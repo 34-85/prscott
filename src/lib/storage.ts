@@ -22,6 +22,9 @@ export const DEFAULT_SETTINGS: UserSettings = {
   meatWeightsDefault: 'cooked',
   waterGoalOz: 128, // 1 US gallon
   profiles: DAY_PROFILES,
+  aiCoachEnabled: false,
+  aiApiKey: undefined,
+  aiModel: 'claude-haiku-4-5-20251001',
 }
 
 export function createEmptyLog(date: string): DailyLog {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useStore } from '../app/store'
 import { getTheme, setTheme, type Theme } from '../lib/theme'
 import { DAY_TYPES } from '../lib/dayType'
+import { COACH_MODELS, DEFAULT_COACH_MODEL } from '../lib/aiCoach'
 import type { DayProfile, DayType, MeatWeightMode, UserSettings } from '../lib/types'
 
 interface NumFieldProps {
@@ -91,6 +92,126 @@ function DayTargetsEditor() {
   )
 }
 
+function AICoachSection() {
+  const { state, updateSettings } = useStore()
+  const s = state.settings
+  const [key, setKey] = useState(s.aiApiKey ?? '')
+  const [reveal, setReveal] = useState(false)
+
+  useEffect(() => setKey(s.aiApiKey ?? ''), [s.aiApiKey])
+
+  const enabled = !!s.aiCoachEnabled
+  const hasKey = !!s.aiApiKey && s.aiApiKey.length > 20
+
+  function saveKey() {
+    updateSettings({ aiApiKey: key.trim() || undefined })
+  }
+  function clearKey() {
+    if (!confirm('Remove the stored API key from this browser?')) return
+    setKey('')
+    updateSettings({ aiApiKey: undefined, aiCoachEnabled: false })
+  }
+
+  return (
+    <div className="card p-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-mute">AI Coach (BYOK)</h2>
+        <label className="flex cursor-pointer items-center gap-2 text-[11px] text-mute-soft">
+          <span>Enable</span>
+          <input
+            type="checkbox"
+            checked={enabled}
+            disabled={!hasKey}
+            onChange={(e) => updateSettings({ aiCoachEnabled: e.target.checked })}
+            className="h-5 w-9 cursor-pointer appearance-none rounded-full bg-ink-line transition-colors checked:bg-accent relative
+              before:absolute before:top-0.5 before:left-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-transform checked:before:translate-x-4
+              disabled:cursor-not-allowed disabled:opacity-40"
+          />
+        </label>
+      </div>
+      <p className="mt-1 text-[11px] leading-relaxed text-mute-soft">
+        Chat with a real LLM about your data. Your key stays in this browser's localStorage and is
+        sent only to api.anthropic.com from your device.{' '}
+        <a
+          href="https://console.anthropic.com/settings/keys"
+          target="_blank"
+          rel="noreferrer"
+          className="text-accent underline"
+        >
+          Get a key →
+        </a>
+      </p>
+
+      <div className="mt-3">
+        <label className="stat-label">Anthropic API Key</label>
+        <div className="mt-1 flex gap-2">
+          <input
+            type={reveal ? 'text' : 'password'}
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            placeholder="sk-ant-…"
+            className="field flex-1 tnum text-sm"
+            autoComplete="off"
+            spellCheck={false}
+          />
+          <button
+            type="button"
+            onClick={() => setReveal((r) => !r)}
+            className="btn-ghost px-3 text-[12px] text-mute-soft hover:text-fg"
+          >
+            {reveal ? 'Hide' : 'Show'}
+          </button>
+          <button
+            type="button"
+            onClick={saveKey}
+            disabled={key === (s.aiApiKey ?? '')}
+            className="btn-primary px-4 text-sm disabled:opacity-40"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-3">
+        <label className="stat-label">Model</label>
+        <div className="mt-1 flex flex-wrap gap-1.5">
+          {COACH_MODELS.map((m) => {
+            const active = (s.aiModel ?? DEFAULT_COACH_MODEL) === m.id
+            return (
+              <button
+                key={m.id}
+                onClick={() => updateSettings({ aiModel: m.id })}
+                className={`rounded-full border px-2.5 py-1 text-[12px] font-medium transition-colors ${
+                  active
+                    ? 'border-accent bg-accent/15 text-accent'
+                    : 'border-ink-line bg-ink-soft text-mute hover:text-fg'
+                }`}
+                title={m.hint}
+              >
+                {m.label}
+              </button>
+            )
+          })}
+        </div>
+        <p className="mt-1 text-[11px] text-mute-soft">
+          {COACH_MODELS.find((m) => m.id === (s.aiModel ?? DEFAULT_COACH_MODEL))?.hint}
+        </p>
+      </div>
+
+      {hasKey && (
+        <div className="mt-3">
+          <button
+            onClick={clearKey}
+            className="text-[12px] font-medium text-bad hover:underline"
+          >
+            Remove stored key
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function Settings() {
   const { state, updateSettings, loadDemoData, resetAll } = useStore()
   const s = state.settings
@@ -164,6 +285,8 @@ export function Settings() {
           Personal entries always override generic database matches.
         </p>
       </div>
+
+      <AICoachSection />
 
       <div className="card p-4">
         <h2 className="mb-3 text-sm font-semibold text-mute">Data</h2>
