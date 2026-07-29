@@ -119,6 +119,12 @@ export interface UserSettings {
   waterGoalOz: number
   /** Calorie/macro targets per day type. */
   profiles: Record<DayType, DayProfile>
+  /** When true, the AI Coach chat panel appears on Today. Requires aiApiKey. */
+  aiCoachEnabled?: boolean
+  /** Anthropic API key. Stored in this browser's localStorage only — never sent to any server other than api.anthropic.com. */
+  aiApiKey?: string
+  /** Anthropic model to use. Default 'claude-haiku-4-5-20251001'. */
+  aiModel?: string
 }
 
 /** Canonical / personal-library food definition. */

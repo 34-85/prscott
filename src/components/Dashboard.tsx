@@ -11,6 +11,7 @@ import { ComplianceScore } from './ComplianceScore'
 import { ForecastCard } from './ForecastCard'
 import { CoachInsights } from './CoachInsights'
 import { CoachQnA } from './CoachQnA'
+import { AICoach } from './AICoach'
 import { MealLogger } from './MealLogger'
 import { ChatLogger } from './ChatLogger'
 import { DayTypeControl } from './DayTypeControl'
@@ -154,6 +155,9 @@ export function Dashboard() {
 
       {/* Ask the coach */}
       <CoachQnA />
+
+      {/* AI Coach chat — renders a setup nudge until a key is saved in Settings */}
+      <AICoach />
 
       {/* Forecast */}
       <ForecastCard forecast={forecast} />
