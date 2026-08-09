@@ -143,6 +143,59 @@ valid PDF generation for all three document types. Type-check the client with
 
 ---
 
+## Deployment (Docker)
+
+PetGuardian ships as a **single production container**: a multi-stage
+`Dockerfile` builds the client and server, then a lean runtime image serves the
+compiled API *and* the built React app from the same origin. Migrations are
+applied automatically on boot.
+
+```bash
+cd petguardian
+cp .env.production.example .env      # set JWT_SECRET + POSTGRES_PASSWORD
+docker compose up --build            # starts Postgres + the app
+# open http://localhost:4000
+```
+
+`docker-compose.yml` runs Postgres 16 (with a persistent volume and health
+check) alongside the app, wiring `DATABASE_URL` to the `db` service. Because the
+app is same-origin, no CORS or separate static host is needed.
+
+**Deploy anywhere.** The image is a standard OCI container, so it runs on any
+host that takes a Dockerfile — a VPS, Fly.io, Render, Railway, ECS, Cloud Run,
+etc. Point `DATABASE_URL` at your managed Postgres and set a strong `JWT_SECRET`
+(the server refuses to start in production with the default secret). Build and
+run directly, without compose, like so:
+
+```bash
+docker build -t petguardian ./petguardian
+docker run -p 4000:4000 \
+  -e DATABASE_URL=postgresql://user:pass@host:5432/pettrust \
+  -e JWT_SECRET="$(openssl rand -hex 32)" \
+  petguardian
+```
+
+### Production runtime env
+
+| Variable        | Required | Notes                                              |
+|-----------------|----------|----------------------------------------------------|
+| `DATABASE_URL`  | yes      | Postgres connection string.                        |
+| `JWT_SECRET`    | yes      | Long random string; server refuses the default.    |
+| `PORT`          | no       | Defaults to `4000`.                                |
+| `CLIENT_DIST`   | no       | Set by the image to serve the built SPA.           |
+| `JWT_EXPIRES_IN`| no       | Token lifetime, default `7d`.                      |
+
+## Continuous integration
+
+`.github/workflows/petguardian-ci.yml` runs on any change under `petguardian/**`
+(independent of the root project's Pages workflow). It:
+
+1. spins up a Postgres 16 service, installs the workspaces, runs the API test
+   suite, and builds the client; then
+2. builds the production Docker image to confirm it assembles.
+
+---
+
 ## API overview
 
 | Method | Path                                          | Purpose                              |
@@ -164,7 +217,8 @@ valid PDF generation for all three document types. Type-check the client with
 
 ## Roadmap (post-MVP)
 
-- Deployment (managed Postgres + container host) and CI.
+- ~~Deployment (managed Postgres + container host) and CI.~~ ✅ Docker image,
+  compose stack, and GitHub Actions CI are in place.
 - Attorney workspace: multiple clients, shared drafts, review notes.
 - E-signature / notarization guidance per state.
 - Life-insurance funding calculator and reminders to confirm caregivers.

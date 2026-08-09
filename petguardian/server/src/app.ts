@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { config } from './config.js';
 import { authRouter } from './modules/auth/auth.routes.js';
 import { plansRouter } from './modules/plans/plans.routes.js';
@@ -18,6 +20,15 @@ export function createApp() {
   app.use('/api/states', statesRouter);
   app.use('/api/plans', plansRouter);
   app.use('/api/plans', documentsRouter); // /api/plans/:id/documents/*
+
+  // In production, serve the built client and let the SPA handle routing.
+  if (config.clientDist && existsSync(config.clientDist)) {
+    app.use(express.static(config.clientDist));
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api')) return next();
+      res.sendFile(join(config.clientDist, 'index.html'));
+    });
+  }
 
   app.use(notFound);
   app.use(errorHandler);

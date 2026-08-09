@@ -2,6 +2,13 @@ node_modules/
 dist/
 build/
 *.log
-.env
 .DS_Store
 coverage/
+
+# Real env files (with secrets) stay out; example templates are tracked.
+.env
+.env.local
+.env.*.local
+.env.production
+!.env.example
+!.env.production.example

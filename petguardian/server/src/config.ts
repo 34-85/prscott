@@ -22,4 +22,11 @@ export const config = {
   jwtSecret: required('JWT_SECRET', 'dev-secret-change-me'),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? '7d',
   clientOrigin: process.env.CLIENT_ORIGIN ?? 'http://localhost:5173',
+  // Absolute path to the built client (dist). When set, the API also serves
+  // the SPA, making a single-container production deployment possible.
+  clientDist: process.env.CLIENT_DIST ?? '',
 };
+
+if (config.env === 'production' && config.jwtSecret === 'dev-secret-change-me') {
+  throw new Error('JWT_SECRET must be set to a strong secret in production');
+}
