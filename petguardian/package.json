@@ -1,0 +1,20 @@
+{
+  "name": "petguardian",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PetGuardian — a nationwide pet estate-planning platform: build a funded, enforceable pet trust, a care memorandum, and an emergency caregiver card.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace server & npm run dev --workspace client",
+    "build": "npm run build --workspace server && npm run build --workspace client",
+    "test": "npm run test --workspace server",
+    "migrate": "npm run migrate --workspace server",
+    "seed": "npm run seed --workspace server"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
