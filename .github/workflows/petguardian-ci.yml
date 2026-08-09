@@ -63,4 +63,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build -t petguardian:ci petguardian
+        # working-directory is already petguardian (job default), so the
+        # build context is the current directory.
+        run: docker build -t petguardian:ci .
