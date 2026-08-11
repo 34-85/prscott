@@ -39,6 +39,8 @@ export interface Plan {
   state: string;
   settlor_full_name: string | null;
   settlor_address: string | null;
+  settlor_phone: string | null;
+  settlor_email: string | null;
   funding_target: string | null;
   funding_notes: string | null;
   remainder_beneficiary: string | null;
@@ -53,6 +55,8 @@ export interface Pet {
   birthdate?: string; microchip?: string; vet_name?: string; vet_phone?: string;
   insurance?: string; medications?: string; diet?: string; routine?: string;
   behavior?: string; placement_preference?: string; medical_directives?: string;
+  allergies?: string; emergency_vet_name?: string; emergency_vet_phone?: string;
+  grooming_exercise?: string;
 }
 
 export interface Caregiver {

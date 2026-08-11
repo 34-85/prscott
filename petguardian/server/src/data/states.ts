@@ -464,8 +464,13 @@ export function getStateLaw(code: string): StateLaw | undefined {
 }
 
 export const LEGAL_DISCLAIMER =
-  'PetGuardian provides general educational information and self-help document ' +
-  'preparation. It is not a law firm and does not provide legal advice. Statutory ' +
-  'citations may be amended or renumbered and are not guaranteed current. The ' +
-  'documents generated are drafts intended for review with a licensed attorney in ' +
-  'your state before signing, funding, or relying on them.';
+  'This document is NOT legal advice and should not be construed as such. ' +
+  'PetGuardian is not a law firm. This is a working guide intended to help you ' +
+  'and a licensed attorney in your state draft and execute official documents — ' +
+  'it is not itself a final legal instrument. Please review it with legal counsel ' +
+  'before signing, funding, or relying on it. Statutory citations may be amended ' +
+  'or renumbered and are not guaranteed current.';
+
+/** Short version for page footers. */
+export const LEGAL_DISCLAIMER_SHORT =
+  'Not legal advice — a guide for your attorney to draft official documents. Review with counsel before signing.';

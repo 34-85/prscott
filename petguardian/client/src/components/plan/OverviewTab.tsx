@@ -8,6 +8,8 @@ export function OverviewTab({ data, onChange }: { data: FullPlanResponse; onChan
   const [form, setForm] = useState({
     settlorFullName: p.settlor_full_name ?? '',
     settlorAddress: p.settlor_address ?? '',
+    settlorPhone: p.settlor_phone ?? '',
+    settlorEmail: p.settlor_email ?? '',
     fundingTarget: p.funding_target ?? '',
     remainderBeneficiary: p.remainder_beneficiary ?? '',
     dispositionInstructions: p.disposition_instructions ?? '',
@@ -28,6 +30,8 @@ export function OverviewTab({ data, onChange }: { data: FullPlanResponse; onChan
       await api.put(`/plans/${p.id}`, {
         settlorFullName: form.settlorFullName,
         settlorAddress: form.settlorAddress,
+        settlorPhone: form.settlorPhone,
+        settlorEmail: form.settlorEmail,
         fundingTarget: form.fundingTarget ? Number(form.fundingTarget) : undefined,
         remainderBeneficiary: form.remainderBeneficiary,
         dispositionInstructions: form.dispositionInstructions,
@@ -47,6 +51,10 @@ export function OverviewTab({ data, onChange }: { data: FullPlanResponse; onChan
         <section className="card space-y-4">
           <h2 className="font-bold text-brand-900">You (the settlor)</h2>
           <Field label="Full legal name" value={form.settlorFullName} onChange={(v) => set('settlorFullName', v)} />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Phone (used on the emergency card)" value={form.settlorPhone} onChange={(v) => set('settlorPhone', v)} />
+            <Field label="Email" type="email" value={form.settlorEmail} onChange={(v) => set('settlorEmail', v)} />
+          </div>
           <Field label="Address" value={form.settlorAddress} onChange={(v) => set('settlorAddress', v)} textarea />
         </section>
 

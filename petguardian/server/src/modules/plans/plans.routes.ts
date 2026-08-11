@@ -17,6 +17,8 @@ const planCreateSchema = z.object({
   state: z.string().length(2),
   settlorFullName: z.string().optional(),
   settlorAddress: z.string().optional(),
+  settlorPhone: z.string().optional(),
+  settlorEmail: z.string().optional(),
   fundingTarget: z.number().nonnegative().optional(),
   fundingNotes: z.string().optional(),
   remainderBeneficiary: z.string().optional(),
@@ -31,6 +33,8 @@ const PLAN_COLS: Record<string, string> = {
   state: 'state',
   settlorFullName: 'settlor_full_name',
   settlorAddress: 'settlor_address',
+  settlorPhone: 'settlor_phone',
+  settlorEmail: 'settlor_email',
   fundingTarget: 'funding_target',
   fundingNotes: 'funding_notes',
   remainderBeneficiary: 'remainder_beneficiary',
@@ -167,6 +171,10 @@ const petSchema = z.object({
   behavior: z.string().optional(),
   placementPreference: z.string().optional(),
   medicalDirectives: z.string().optional(),
+  allergies: z.string().optional(),
+  emergencyVetName: z.string().optional(),
+  emergencyVetPhone: z.string().optional(),
+  groomingExercise: z.string().optional(),
 });
 
 const caregiverSchema = z.object({
@@ -207,6 +215,8 @@ const CHILDREN: Record<string, ChildConfig> = {
       birthdate: 'birthdate', microchip: 'microchip', vetName: 'vet_name', vetPhone: 'vet_phone',
       insurance: 'insurance', medications: 'medications', diet: 'diet', routine: 'routine',
       behavior: 'behavior', placementPreference: 'placement_preference', medicalDirectives: 'medical_directives',
+      allergies: 'allergies', emergencyVetName: 'emergency_vet_name', emergencyVetPhone: 'emergency_vet_phone',
+      groomingExercise: 'grooming_exercise',
     },
   },
   caregivers: {

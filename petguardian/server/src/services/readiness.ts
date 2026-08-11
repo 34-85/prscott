@@ -7,6 +7,8 @@ export interface FullPlan {
     state: string;
     settlor_full_name: string | null;
     settlor_address: string | null;
+    settlor_phone: string | null;
+    settlor_email: string | null;
     funding_target: string | null;
     funding_notes: string | null;
     remainder_beneficiary: string | null;

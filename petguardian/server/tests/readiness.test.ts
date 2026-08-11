@@ -5,7 +5,8 @@ function base(): FullPlan {
   return {
     plan: {
       id: 'p1', name: 'x', state: 'GA',
-      settlor_full_name: null, settlor_address: null, funding_target: null, funding_notes: null,
+      settlor_full_name: null, settlor_address: null, settlor_phone: null, settlor_email: null,
+      funding_target: null, funding_notes: null,
       remainder_beneficiary: null, disposition_instructions: null, incapacity_instructions: null,
     },
     pets: [],

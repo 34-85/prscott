@@ -5,7 +5,8 @@ import { Field, SelectField } from '../ui';
 
 const EMPTY = {
   name: '', species: 'Dog', breed: '', color: '', sex: '', birthdate: '', microchip: '',
-  vetName: '', vetPhone: '', insurance: '', medications: '', diet: '', routine: '',
+  vetName: '', vetPhone: '', emergencyVetName: '', emergencyVetPhone: '', insurance: '',
+  allergies: '', medications: '', diet: '', routine: '', groomingExercise: '',
   behavior: '', placementPreference: '', medicalDirectives: '',
 };
 
@@ -84,10 +85,14 @@ export function PetsTab({ planId, pets, onChange }: { planId: string; pets: Pet[
             <Field label="Insurance" value={form.insurance} onChange={(v) => set('insurance', v)} />
             <Field label="Veterinarian" value={form.vetName} onChange={(v) => set('vetName', v)} />
             <Field label="Vet phone" value={form.vetPhone} onChange={(v) => set('vetPhone', v)} />
+            <Field label="Emergency vet" value={form.emergencyVetName} onChange={(v) => set('emergencyVetName', v)} />
+            <Field label="Emergency vet phone" value={form.emergencyVetPhone} onChange={(v) => set('emergencyVetPhone', v)} />
           </div>
-          <Field label="Medications & dosing" value={form.medications} onChange={(v) => set('medications', v)} textarea />
-          <Field label="Diet" value={form.diet} onChange={(v) => set('diet', v)} textarea />
+          <Field label="Allergies" value={form.allergies} onChange={(v) => set('allergies', v)} textarea />
+          <Field label="Medications & schedule" value={form.medications} onChange={(v) => set('medications', v)} textarea />
+          <Field label="Diet & feeding schedule" value={form.diet} onChange={(v) => set('diet', v)} textarea />
           <Field label="Daily routine" value={form.routine} onChange={(v) => set('routine', v)} textarea />
+          <Field label="Grooming & exercise" value={form.groomingExercise} onChange={(v) => set('groomingExercise', v)} textarea />
           <Field label="Behavior & temperament" value={form.behavior} onChange={(v) => set('behavior', v)} textarea />
           <Field label="Placement preference" value={form.placementPreference} onChange={(v) => set('placementPreference', v)} textarea />
           <Field label="Medical & end-of-life directives" value={form.medicalDirectives} onChange={(v) => set('medicalDirectives', v)} textarea />

@@ -1,20 +1,28 @@
 import PDFDocument from 'pdfkit';
 import type { StateLaw } from '../data/states.js';
-import { LEGAL_DISCLAIMER } from '../data/states.js';
+import { LEGAL_DISCLAIMER, LEGAL_DISCLAIMER_SHORT } from '../data/states.js';
 import type { FullPlan } from './readiness.js';
 
 export type DocumentType = 'trust-directive' | 'care-memorandum' | 'emergency-card';
 
-/** Render a pdfkit document into a single Buffer. */
+const NAVY = '#1e2a44';
+const BRAND = '#2f49b8';
+const SLATE = '#475467';
+const MUTED = '#98a2b3';
+const INK = '#101828';
+const RULE = '#c9d2e3';
+
+/** Render a pdfkit document into a single Buffer, stamping page-number footers. */
 export function renderToBuffer(build: (doc: PDFKit.PDFDocument) => void): Promise<Buffer> {
   return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({ size: 'LETTER', margin: 64 });
+    const doc = new PDFDocument({ size: 'LETTER', margin: 64, bufferPages: true });
     const chunks: Buffer[] = [];
     doc.on('data', (c: Buffer) => chunks.push(c));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
     try {
       build(doc);
+      addFooters(doc);
     } catch (err) {
       reject(err);
       return;
@@ -23,48 +31,92 @@ export function renderToBuffer(build: (doc: PDFKit.PDFDocument) => void): Promis
   });
 }
 
-const NAVY = '#1e2a44';
-const SLATE = '#475467';
-const RULE = '#c9d2e3';
+function today(): string {
+  return new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function addFooters(doc: PDFKit.PDFDocument): void {
+  const range = doc.bufferedPageRange();
+  for (let i = 0; i < range.count; i++) {
+    doc.switchToPage(range.start + i);
+    const left = doc.page.margins.left;
+    const right = doc.page.width - doc.page.margins.right;
+    const y = doc.page.height - 48;
+    doc.save();
+    doc.moveTo(left, y).lineTo(right, y).strokeColor(RULE).lineWidth(0.5).stroke();
+    doc.font('Helvetica').fontSize(7).fillColor(MUTED);
+    doc.text('PetGuardian — not legal advice; a guide for your attorney to draft official documents.', left, y + 5, {
+      width: right - left - 80,
+      lineBreak: false,
+      ellipsis: true,
+    });
+    doc.text(`Page ${i + 1} of ${range.count}`, right - 80, y + 5, { width: 80, align: 'right', lineBreak: false });
+    doc.restore();
+  }
+}
+
+/* --------------------------- primitives ------------------------------- */
 
 function heading(doc: PDFKit.PDFDocument, text: string) {
+  if (doc.y > doc.page.height - 140) doc.addPage();
   doc.moveDown(0.6);
-  doc.fillColor(NAVY).font('Helvetica-Bold').fontSize(13).text(text.toUpperCase());
+  doc.fillColor(NAVY).font('Helvetica-Bold').fontSize(12.5).text(text.toUpperCase());
   const y = doc.y + 2;
   doc.moveTo(doc.page.margins.left, y).lineTo(doc.page.width - doc.page.margins.right, y)
     .strokeColor(RULE).lineWidth(1).stroke();
   doc.moveDown(0.5);
-  doc.fillColor('#101828').font('Helvetica').fontSize(10.5);
+  doc.fillColor(INK).font('Helvetica').fontSize(10.5);
 }
 
-function field(doc: PDFKit.PDFDocument, label: string, value?: string | null) {
-  const v = value && String(value).trim() ? String(value).trim() : '—';
-  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9.5).text(label.toUpperCase(), { continued: false });
-  doc.font('Helvetica').fillColor('#101828').fontSize(11).text(v);
-  doc.moveDown(0.35);
+function field(doc: PDFKit.PDFDocument, label: string, value?: string | null, blankLen = 46) {
+  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text(label.toUpperCase());
+  const v = value !== undefined && value !== null && String(value).trim();
+  if (v) {
+    doc.font('Helvetica').fillColor(INK).fontSize(11).text(String(value).trim());
+  } else {
+    doc.font('Helvetica').fillColor(MUTED).fontSize(11).text('_'.repeat(blankLen));
+  }
+  doc.moveDown(0.3);
 }
 
-function paragraph(doc: PDFKit.PDFDocument, text: string) {
-  doc.font('Helvetica').fillColor('#101828').fontSize(10.5).text(text, { align: 'left', lineGap: 2 });
+function paragraph(doc: PDFKit.PDFDocument, text: string, opts: { size?: number; color?: string } = {}) {
+  doc.font('Helvetica').fillColor(opts.color ?? INK).fontSize(opts.size ?? 10.5).text(text, { align: 'left', lineGap: 2 });
   doc.moveDown(0.4);
 }
 
+function clause(doc: PDFKit.PDFDocument, title: string, body: string) {
+  doc.font('Helvetica-Bold').fillColor(NAVY).fontSize(10.5).text(title);
+  doc.font('Helvetica').fillColor(INK).fontSize(10.5).text(body, { align: 'left', lineGap: 2 });
+  doc.moveDown(0.5);
+}
+
 function docHeader(doc: PDFKit.PDFDocument, title: string, subtitle: string) {
-  doc.fillColor(NAVY).font('Helvetica-Bold').fontSize(20).text('PetGuardian', { continued: false });
+  doc.fillColor(NAVY).font('Helvetica-Bold').fontSize(20).text('PetGuardian');
   doc.fillColor(SLATE).font('Helvetica').fontSize(9).text('Nationwide pet estate-planning workbook');
   doc.moveDown(0.8);
-  doc.fillColor('#101828').font('Helvetica-Bold').fontSize(16).text(title);
+  doc.fillColor(INK).font('Helvetica-Bold').fontSize(16).text(title);
   doc.fillColor(SLATE).font('Helvetica').fontSize(10).text(subtitle);
   doc.moveDown(0.3);
 }
 
-function disclaimerFooter(doc: PDFKit.PDFDocument) {
-  doc.moveDown(1);
-  const y = doc.y;
-  doc.moveTo(doc.page.margins.left, y).lineTo(doc.page.width - doc.page.margins.right, y)
-    .strokeColor(RULE).lineWidth(1).stroke();
+function disclaimerBox(doc: PDFKit.PDFDocument) {
+  doc.moveDown(0.6);
+  const left = doc.page.margins.left;
+  const width = doc.page.width - left - doc.page.margins.right;
+  const top = doc.y;
+  const padding = 10;
+  doc.font('Helvetica-Bold').fillColor(NAVY).fontSize(9);
+  const titleH = doc.heightOfString('IMPORTANT — NOT LEGAL ADVICE', { width: width - padding * 2 });
+  doc.font('Helvetica-Oblique').fillColor(SLATE).fontSize(8.5);
+  const bodyH = doc.heightOfString(LEGAL_DISCLAIMER, { width: width - padding * 2, lineGap: 1 });
+  const boxH = titleH + bodyH + padding * 2 + 4;
+  doc.save();
+  doc.roundedRect(left, top, width, boxH, 6).fill('#f2f5fc');
+  doc.restore();
+  doc.font('Helvetica-Bold').fillColor(NAVY).fontSize(9).text('IMPORTANT — NOT LEGAL ADVICE', left + padding, top + padding, { width: width - padding * 2 });
+  doc.font('Helvetica-Oblique').fillColor(SLATE).fontSize(8.5).text(LEGAL_DISCLAIMER, left + padding, top + padding + titleH + 4, { width: width - padding * 2, lineGap: 1 });
+  doc.y = top + boxH;
   doc.moveDown(0.5);
-  doc.font('Helvetica-Oblique').fillColor(SLATE).fontSize(8).text(LEGAL_DISCLAIMER, { lineGap: 1 });
 }
 
 function money(v: string | number | null | undefined): string {
@@ -74,14 +126,47 @@ function money(v: string | number | null | undefined): string {
   return n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
-function person(p: Record<string, unknown>): string {
-  const parts = [p.full_name as string];
-  if (p.relationship) parts.push(`(${p.relationship})`);
-  const contact = [p.phone, p.email].filter(Boolean).join(' · ');
-  let line = parts.filter(Boolean).join(' ');
+function str(v: unknown): string {
+  return v === null || v === undefined ? '' : String(v).trim();
+}
+
+function personLine(p: Record<string, unknown>): string {
+  const name = str(p.full_name) || '____________________';
+  const rel = str(p.relationship);
+  const contact = [str(p.phone), str(p.email)].filter(Boolean).join(' · ');
+  let line = name + (rel ? ` (${rel})` : '');
   if (contact) line += ` — ${contact}`;
-  if (p.address) line += `\n${p.address}`;
+  if (str(p.address)) line += `\n   ${str(p.address)}`;
   return line;
+}
+
+/** List the sections a user still needs to complete for a strong document. */
+function computeMissing(data: FullPlan): string[] {
+  const { plan, pets, caregivers, trustees, fundingSources } = data;
+  const missing: string[] = [];
+  if (pets.length === 0) missing.push('Add at least one animal (Pets tab)');
+  if (!str(plan.settlor_full_name)) missing.push('Add your full legal name (Overview tab)');
+  if (!str(plan.settlor_phone)) missing.push('Add your phone number (Overview tab)');
+  if (!caregivers.some((c) => c.role === 'PRIMARY')) missing.push('Name a primary caregiver (People tab)');
+  if (!caregivers.some((c) => c.role === 'ALTERNATE')) missing.push('Name an alternate caregiver (People tab)');
+  if (trustees.length === 0) missing.push('Name a trustee/enforcer (People tab)');
+  if (fundingSources.reduce((s, f) => s + Number(f.amount ?? 0), 0) <= 0) missing.push('Add a funding source with an amount (Funding tab)');
+  if (!str(plan.remainder_beneficiary)) missing.push('Name a remainder beneficiary (Overview tab)');
+  return missing;
+}
+
+function missingChecklist(doc: PDFKit.PDFDocument, data: FullPlan) {
+  const missing = computeMissing(data);
+  if (missing.length === 0) return;
+  heading(doc, 'To finish this document');
+  paragraph(
+    doc,
+    'This draft is usable now — items below are shown as blanks you can complete by hand. ' +
+      'To auto-fill them, add the following in the PetGuardian app, then regenerate:',
+    { color: SLATE, size: 9.5 },
+  );
+  missing.forEach((m) => doc.font('Helvetica').fillColor(INK).fontSize(10).text(`•  ${m}`));
+  doc.moveDown(0.3);
 }
 
 /* ----------------------- Trust directive ------------------------------ */
@@ -89,195 +174,306 @@ function person(p: Record<string, unknown>): string {
 export function buildTrustDirective(doc: PDFKit.PDFDocument, data: FullPlan, law?: StateLaw) {
   const { plan, pets, caregivers, trustees, fundingSources } = data;
   const stateName = law?.name ?? plan.state;
-  docHeader(
-    doc,
-    'Animal Care Trust Directive',
-    `A ${stateName} pet trust directive prepared for review with an attorney`,
-  );
+  const settlor = str(plan.settlor_full_name) || '[Settlor’s full legal name]';
 
-  heading(doc, 'Settlor');
-  field(doc, 'Full legal name', plan.settlor_full_name);
+  // ---- Cover page ----
+  doc.fillColor(NAVY).font('Helvetica-Bold').fontSize(26).text('PetGuardian', { align: 'center' });
+  doc.fillColor(SLATE).font('Helvetica').fontSize(10).text('Nationwide pet estate-planning workbook', { align: 'center' });
+  doc.moveDown(3);
+  doc.fillColor(INK).font('Helvetica-Bold').fontSize(24).text('Animal Care Trust Directive', { align: 'center' });
+  doc.moveDown(0.5);
+  doc.fillColor(SLATE).font('Helvetica').fontSize(12).text(`Prepared for ${settlor}`, { align: 'center' });
+  doc.fillColor(SLATE).font('Helvetica').fontSize(12).text(`Governing state: ${stateName}`, { align: 'center' });
+  doc.moveDown(0.3);
+  doc.fillColor(SLATE).font('Helvetica').fontSize(10).text(`Generated ${today()}`, { align: 'center' });
+  doc.moveDown(3);
+  doc.font('Helvetica-Bold').fillColor(BRAND).fontSize(11)
+    .text('This is a guide for your attorney — not a final legal instrument.', { align: 'center' });
+  disclaimerBox(doc);
+
+  // ---- Body ----
+  doc.addPage();
+  docHeader(doc, 'Animal Care Trust Directive', `A ${stateName} pet trust directive prepared for review with an attorney`);
+
+  heading(doc, 'Article I — Settlor & Creation');
+  field(doc, 'Settlor (full legal name)', plan.settlor_full_name);
   field(doc, 'Address', plan.settlor_address);
-  field(doc, 'Governing state', stateName);
-
-  heading(doc, 'Statement of intent');
+  field(doc, 'Phone', plan.settlor_phone, 24);
+  field(doc, 'Email', plan.settlor_email, 30);
   paragraph(
     doc,
-    `I, ${plan.settlor_full_name || '[settlor]'}, establish this trust for the care of the ` +
-      `animal(s) identified below that are alive during my lifetime. It is my intent that this ` +
-      `trust be recognized and enforced under the law of ${stateName}. The trust shall continue ` +
-      `until the death of the last surviving animal covered by it, at which point any remaining ` +
-      `property shall be distributed as directed under "Remainder" below.`,
+    `I, ${settlor}, create this trust for the care of the animal(s) identified in Schedule A that ` +
+      `are alive during my lifetime. I intend that it be recognized and enforced under the law of ${stateName}. ` +
+      `The trust continues until the death of the last surviving covered animal, at which time any remaining ` +
+      `property is distributed under Article X.`,
   );
 
-  heading(doc, `Governing law — ${stateName}`);
+  heading(doc, `Article II — Governing Law (${stateName})`);
   if (law) {
     field(doc, 'Statute', law.statuteCitation);
     field(doc, 'Duration', law.durationRule);
     field(doc, 'Enforcement', law.enforcement);
     field(doc, 'Remainder default (if none named)', law.remainderDefault);
-    if (law.notes) paragraph(doc, `Note: ${law.notes}`);
+    if (law.courtMayReduceExcessFunds) {
+      paragraph(doc, 'Note: under this state’s statute a court may reduce funds it finds substantially in excess of the amount required for the animal’s care.', { color: SLATE, size: 9.5 });
+    }
+    if (law.notes) paragraph(doc, `Note: ${law.notes}`, { color: SLATE, size: 9.5 });
   } else {
-    paragraph(doc, 'State statute reference unavailable; confirm the governing provision with counsel.');
+    paragraph(doc, 'Confirm the governing animal-trust statute with counsel in your state.');
   }
 
-  heading(doc, 'Covered animals');
-  if (pets.length === 0) paragraph(doc, 'No animals recorded.');
-  pets.forEach((p, idx) => {
-    const desc = [
-      p.species, p.breed, p.color, p.sex,
-      p.microchip ? `microchip ${p.microchip}` : null,
-    ].filter(Boolean).join(', ');
-    field(doc, `Animal ${idx + 1}`, `${p.name}${desc ? ` — ${desc}` : ''}`);
-  });
+  heading(doc, 'Article III — Definitions');
+  clause(doc, '“Trust”', 'means the animal-care trust created by this instrument.');
+  clause(doc, '“Covered Animal”', 'means each animal listed in Schedule A that was alive during the Settlor’s lifetime.');
+  clause(doc, '“Caregiver”', 'means the person with physical custody and day-to-day responsibility for a Covered Animal.');
+  clause(doc, '“Trustee”', 'means the person who holds and administers trust property and pays for the animal’s care.');
 
-  heading(doc, 'Caregivers');
+  heading(doc, 'Article IV — Caregivers');
+  paragraph(doc, 'The Trustee shall deliver each Covered Animal to the Primary Caregiver. If the Primary Caregiver is unable or unwilling to serve, custody passes to the Alternate Caregivers in the order listed.');
   const primary = caregivers.filter((c) => c.role === 'PRIMARY');
   const alternate = caregivers.filter((c) => c.role === 'ALTERNATE');
-  paragraph(doc, 'Primary caregiver(s):');
-  primary.length ? primary.forEach((c) => paragraph(doc, `• ${person(c)}`)) : paragraph(doc, '• [none named]');
-  paragraph(doc, 'Alternate caregiver(s), in order:');
-  alternate.length ? alternate.forEach((c) => paragraph(doc, `• ${person(c)}`)) : paragraph(doc, '• [none named]');
+  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('PRIMARY CAREGIVER');
+  primary.length ? primary.forEach((c) => paragraph(doc, `• ${personLine(c)}`)) : field(doc, '', null);
+  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('ALTERNATE CAREGIVER(S), IN ORDER');
+  alternate.length ? alternate.forEach((c) => paragraph(doc, `• ${personLine(c)}`)) : field(doc, '', null);
 
-  heading(doc, 'Trustee & enforcement');
-  paragraph(
-    doc,
-    'The trustee holds and administers trust property and may pay for ordinary care, veterinary ' +
-      'treatment, emergency care, boarding, transport, insurance, and reasonable administrative costs. ' +
-      'The trustee is intentionally a different party from the caregiver so that control of funds and ' +
-      'custody of the animal are separated.',
-  );
+  heading(doc, 'Article V — Trustee & Enforcement');
+  paragraph(doc, 'The Trustee is intentionally a different person from the Caregiver, so that control of the funds is separate from custody of the animal. The Trustee may retain professionals, open accounts, and take all actions reasonably necessary to administer the trust.');
   trustees.length
-    ? trustees.forEach((t) => paragraph(doc, `• ${t.role.replace('_', ' ')}: ${person(t)}`))
-    : paragraph(doc, '• [no trustee/enforcer named]');
+    ? trustees.forEach((t) => paragraph(doc, `• ${String(t.role).replace('_', ' ')}: ${personLine(t)}`))
+    : field(doc, 'Trustee / enforcer', null);
+  clause(doc, 'Compensation', 'The Trustee is entitled to reasonable compensation and reimbursement of administrative costs from the trust.');
+  clause(doc, 'Bond', 'No bond or surety shall be required of any Trustee, unless a court orders otherwise.');
+  clause(doc, 'Successor Trustee', 'If a Trustee ceases to serve, the Successor Trustee named above (or, if none, a person appointed by the court) shall serve.');
 
-  heading(doc, 'Funding');
+  heading(doc, 'Article VI — Standard of Care & Distributions');
+  paragraph(doc, 'The Trustee shall distribute trust funds to maintain each Covered Animal in at least the standard of living it enjoyed during the Settlor’s lifetime, including food, housing, routine and emergency veterinary care, medication, boarding, transport, grooming, insurance, and humane end-of-life care.');
+
+  heading(doc, 'Article VII — Spendthrift');
+  paragraph(doc, 'To the extent permitted by law, no beneficiary’s interest is subject to voluntary or involuntary transfer, and trust assets are not reachable by a beneficiary’s creditors before distribution.');
+
+  heading(doc, 'Article VIII — Accounting & Enforcement');
+  paragraph(doc, 'The person named to enforce this trust (or, if none is named, a person appointed by the court) may request a reasonable accounting and may enforce the terms of this trust. The Trustee shall keep records of receipts and disbursements.');
+
+  heading(doc, 'Article IX — Funding (see Schedule B)');
   const total = fundingSources.reduce((s, f) => s + Number(f.amount ?? 0), 0);
-  if (plan.funding_target) field(doc, 'Target funding amount', money(plan.funding_target));
-  field(doc, 'Total identified funding', money(total));
-  fundingSources.forEach((f) => {
-    const desc = [f.type, f.description, f.beneficiary_designation].filter(Boolean).join(' — ');
-    paragraph(doc, `• ${desc || 'Funding source'}: ${money(f.amount as string)}`);
-  });
-  if (plan.funding_notes) paragraph(doc, `Notes: ${plan.funding_notes}`);
+  field(doc, 'Target funding amount', plan.funding_target ? money(plan.funding_target) : null, 20);
+  field(doc, 'Total identified funding', total > 0 ? money(total) : null, 20);
+  if (str(plan.funding_notes)) paragraph(doc, `Notes: ${str(plan.funding_notes)}`);
 
-  heading(doc, 'Remainder');
+  heading(doc, 'Article X — Termination & Remainder');
+  paragraph(doc, 'On the death of the last surviving Covered Animal, the trust terminates and the Trustee shall distribute any remaining property to the Remainder Beneficiary named below.');
   field(doc, 'Remainder beneficiary for unused funds', plan.remainder_beneficiary);
 
-  heading(doc, 'Disposition, medical & end-of-life standard');
-  paragraph(doc, plan.disposition_instructions || 'No disposition standard recorded.');
+  heading(doc, 'Article XI — Disposition, Medical & End-of-Life Standard');
+  plan.disposition_instructions ? paragraph(doc, str(plan.disposition_instructions)) : field(doc, 'Standard', null, 60);
 
-  heading(doc, 'Incapacity');
-  paragraph(doc, plan.incapacity_instructions || 'No incapacity instructions recorded.');
+  heading(doc, 'Article XII — Incapacity of Settlor');
+  paragraph(doc, 'These provisions apply if the Settlor becomes unable to care for a Covered Animal during life, before any estate is administered:');
+  plan.incapacity_instructions ? paragraph(doc, str(plan.incapacity_instructions)) : field(doc, 'Instructions', null, 60);
 
-  heading(doc, 'Signatures');
-  doc.moveDown(1.5);
-  doc.font('Helvetica').fontSize(10).fillColor('#101828');
-  doc.text('_______________________________________     Date: ____________________');
-  doc.moveDown(0.3);
-  doc.text(`${plan.settlor_full_name || 'Settlor'}, Settlor`);
-  doc.moveDown(1.2);
-  doc.text('_______________________________________     Date: ____________________');
-  doc.moveDown(0.3);
-  doc.text('Trustee');
-  doc.moveDown(1.2);
-  doc.text('Witnessed / notarized as required by your state:');
+  // Schedules
+  heading(doc, 'Schedule A — Covered Animals');
+  if (pets.length === 0) {
+    field(doc, 'Animal 1', null);
+    field(doc, 'Animal 2', null);
+  } else {
+    pets.forEach((p, i) => {
+      const desc = [str(p.species), str(p.breed), str(p.color), str(p.sex), str(p.microchip) ? `microchip ${str(p.microchip)}` : '']
+        .filter(Boolean).join(', ');
+      field(doc, `Animal ${i + 1}`, `${str(p.name)}${desc ? ` — ${desc}` : ''}`);
+    });
+  }
+
+  heading(doc, 'Schedule B — Funding Sources');
+  if (fundingSources.length === 0) {
+    field(doc, 'Source 1 (type, description, beneficiary, amount)', null);
+  } else {
+    fundingSources.forEach((f) => {
+      const desc = [str(f.type), str(f.description), str(f.beneficiary_designation)].filter(Boolean).join(' — ');
+      paragraph(doc, `• ${desc || 'Funding source'}: ${money(f.amount as string)}`);
+    });
+  }
+
+  heading(doc, 'Execution');
+  paragraph(doc, 'This instrument is a draft to be reviewed, adapted, and formally executed with your attorney under your state’s signing, witnessing, and notarization requirements.');
   doc.moveDown(1);
+  doc.font('Helvetica').fontSize(10).fillColor(INK);
+  doc.text('_______________________________________     Date: ____________________');
+  doc.moveDown(0.2);
+  doc.text(`${settlor}, Settlor`);
+  doc.moveDown(1.1);
+  doc.text('_______________________________________     Date: ____________________');
+  doc.moveDown(0.2);
+  doc.text('Trustee');
+  doc.moveDown(1.1);
+  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('WITNESSES');
+  doc.font('Helvetica').fillColor(INK).fontSize(10);
   doc.text('_______________________________________     _______________________________________');
+  doc.moveDown(0.2);
+  doc.text('Witness 1 (signature / printed name)              Witness 2 (signature / printed name)');
+  doc.moveDown(1.1);
+  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('NOTARY ACKNOWLEDGMENT (SELF-PROVING)');
+  doc.font('Helvetica').fillColor(INK).fontSize(10);
+  doc.text('State of ____________________   County of ____________________');
+  doc.moveDown(0.2);
+  doc.text('Subscribed, sworn to, and acknowledged before me on ____________________ (date)');
+  doc.text(`by ${settlor} (Settlor) and by the witnesses named above.`);
+  doc.moveDown(0.6);
+  doc.text('_______________________________________     (Seal)');
+  doc.text('Notary Public   —   My commission expires: ____________________');
 
-  disclaimerFooter(doc);
+  missingChecklist(doc, data);
 }
 
 /* ----------------------- Care memorandum ------------------------------ */
 
 export function buildCareMemorandum(doc: PDFKit.PDFDocument, data: FullPlan, law?: StateLaw) {
   const { plan, pets, caregivers, trustees } = data;
-  docHeader(
-    doc,
-    'Pet Care Memorandum',
-    'Detailed care instructions to travel with the animal and guide any caregiver',
-  );
+  docHeader(doc, 'Pet Care Memorandum', 'Detailed care instructions to travel with the animal and guide any caregiver');
+  doc.fillColor(SLATE).font('Helvetica').fontSize(9).text(`Generated ${today()}`);
+  doc.moveDown(0.2);
 
   heading(doc, 'Household & authority');
   field(doc, 'Owner (settlor)', plan.settlor_full_name);
+  field(doc, 'Owner phone', plan.settlor_phone, 24);
+  field(doc, 'Owner email', plan.settlor_email, 30);
   field(doc, 'Governing state', law?.name ?? plan.state);
   const primary = caregivers.find((c) => c.role === 'PRIMARY');
-  field(doc, 'Primary caregiver', primary ? person(primary) : undefined);
-  const trustee = trustees[0];
-  field(doc, 'Trustee / person controlling funds', trustee ? person(trustee) : undefined);
+  const alternate = caregivers.find((c) => c.role === 'ALTERNATE');
+  field(doc, 'Primary caregiver', primary ? personLine(primary) : null);
+  field(doc, 'Alternate caregiver', alternate ? personLine(alternate) : null);
+  field(doc, 'Trustee / person controlling funds', trustees[0] ? personLine(trustees[0]) : null);
+
+  heading(doc, 'First 72 hours — what a caregiver should do now');
+  [
+    'Take physical custody of the animal(s) and keep them together if they are bonded.',
+    'Call the veterinarian and the emergency vet listed below; confirm current medications.',
+    'Continue the normal feeding schedule and medication doses without interruption.',
+    'Notify the Trustee so funds can be released for immediate expenses.',
+    'Keep this memorandum, ID/microchip records, and insurance details with the animal.',
+  ].forEach((s, i) => doc.font('Helvetica').fillColor(INK).fontSize(10.5).text(`${i + 1}.  ${s}`, { lineGap: 1 }));
+  doc.moveDown(0.4);
+
+  if (pets.length === 0) {
+    heading(doc, 'Animal 1');
+    ['Name', 'Species / breed', 'Microchip #', 'Veterinarian', 'Emergency vet', 'Medications & schedule', 'Allergies', 'Diet & feeding schedule', 'Daily routine']
+      .forEach((l) => field(doc, l, null));
+  }
 
   pets.forEach((p, idx) => {
-    heading(doc, `Animal ${idx + 1}: ${p.name}`);
-    field(doc, 'Species / breed', [p.species, p.breed].filter(Boolean).join(' / '));
-    field(doc, 'Color / sex', [p.color, p.sex].filter(Boolean).join(' / '));
-    field(doc, 'Birthdate', p.birthdate ? String(p.birthdate).slice(0, 10) : undefined);
-    field(doc, 'Microchip #', p.microchip as string);
-    field(doc, 'Veterinarian', [p.vet_name, p.vet_phone].filter(Boolean).join(' · '));
+    heading(doc, `Animal ${idx + 1}: ${str(p.name) || '____________'}`);
+    field(doc, 'Species / breed', [str(p.species), str(p.breed)].filter(Boolean).join(' / '));
+    field(doc, 'Color / sex', [str(p.color), str(p.sex)].filter(Boolean).join(' / '));
+    field(doc, 'Birthdate', str(p.birthdate) ? String(p.birthdate).slice(0, 10) : null, 20);
+    field(doc, 'Microchip #', p.microchip as string, 24);
+    field(doc, 'Veterinarian', [str(p.vet_name), str(p.vet_phone)].filter(Boolean).join(' · '));
+    field(doc, 'Emergency vet', [str(p.emergency_vet_name), str(p.emergency_vet_phone)].filter(Boolean).join(' · '));
     field(doc, 'Insurance', p.insurance as string);
-    field(doc, 'Medications', p.medications as string);
-    field(doc, 'Diet', p.diet as string);
+    field(doc, 'Allergies', p.allergies as string);
+    field(doc, 'Medications & schedule', p.medications as string);
+    field(doc, 'Diet & feeding schedule', p.diet as string);
     field(doc, 'Daily routine', p.routine as string);
+    field(doc, 'Grooming & exercise', p.grooming_exercise as string);
     field(doc, 'Behavior & temperament', p.behavior as string);
     field(doc, 'Placement preference', p.placement_preference as string);
     field(doc, 'Medical & end-of-life directives', p.medical_directives as string);
   });
 
-  if (pets.length === 0) paragraph(doc, 'No animals recorded yet.');
-
   heading(doc, 'General disposition standard');
-  paragraph(doc, plan.disposition_instructions || 'Not specified.');
+  plan.disposition_instructions ? paragraph(doc, str(plan.disposition_instructions)) : field(doc, 'Standard', null, 60);
 
   heading(doc, 'If the owner is incapacitated (not yet deceased)');
-  paragraph(doc, plan.incapacity_instructions || 'Not specified.');
+  plan.incapacity_instructions ? paragraph(doc, str(plan.incapacity_instructions)) : field(doc, 'Instructions', null, 60);
 
-  disclaimerFooter(doc);
+  missingChecklist(doc, data);
 }
 
 /* ----------------------- Emergency card ------------------------------- */
 
 export function buildEmergencyCard(doc: PDFKit.PDFDocument, data: FullPlan) {
   const { plan, pets, caregivers, trustees } = data;
-  docHeader(doc, 'Emergency Pet Alert & Wallet Card', 'Cut out and carry; post a copy at home');
+  docHeader(doc, 'Emergency Pet Alert & Wallet Card', 'Cut out and carry; post a copy at home. Blank lines can be filled in by hand.');
 
   const primary = caregivers.find((c) => c.role === 'PRIMARY');
   const alternate = caregivers.find((c) => c.role === 'ALTERNATE');
   const trustee = trustees[0];
+  const petCount = pets.length;
+  const petNames = pets.map((p) => str(p.name)).filter(Boolean).join(', ');
+  const nameAndPhone = (p?: Record<string, unknown>) =>
+    p ? [str(p.full_name), str(p.phone)].filter(Boolean).join('  ') || '________________________' : '________________________';
 
-  // Draw a bordered "card"
   const drawCard = (title: string) => {
+    if (doc.y > doc.page.height - 220) doc.addPage();
     const left = doc.page.margins.left;
-    const width = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+    const width = doc.page.width - left - doc.page.margins.right;
     const top = doc.y;
-    doc.roundedRect(left, top, width, 150, 8).strokeColor(NAVY).lineWidth(1.2).stroke();
+    const H = 172;
+    doc.roundedRect(left, top, width, H, 8).strokeColor(NAVY).lineWidth(1.2).stroke();
     doc.save();
-    doc.rect(left, top, width, 150).clip();
+    doc.roundedRect(left, top, width, H, 8).clip();
     doc.fillColor(NAVY).font('Helvetica-Bold').fontSize(12).text(title, left + 12, top + 10);
-    doc.font('Helvetica').fillColor('#101828').fontSize(9.5);
     let y = top + 30;
     const line = (label: string, value: string) => {
-      doc.font('Helvetica-Bold').fillColor(SLATE).text(label, left + 12, y, { continued: true });
-      doc.font('Helvetica').fillColor('#101828').text(`  ${value}`);
-      y = doc.y + 2;
+      doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9.5).text(label, left + 12, y, { continued: true, lineBreak: false });
+      doc.font('Helvetica').fillColor(INK).text(`  ${value}`, { lineBreak: false });
+      y += 18;
     };
-    line('ALERT:', `In an emergency, I have ${pets.length || 'a'} pet(s) at home who need care.`);
-    line('Pets:', pets.map((p) => p.name).join(', ') || '—');
-    line('Primary caregiver:', primary ? `${primary.full_name} ${primary.phone ?? ''}` : '—');
-    line('Alternate:', alternate ? `${alternate.full_name} ${alternate.phone ?? ''}` : '—');
-    line('Trustee (funds):', trustee ? `${trustee.full_name} ${trustee.phone ?? ''}` : '—');
-    line('Owner:', plan.settlor_full_name || '—');
+    line('ALERT:', `I have ${petCount || '____'} pet(s) at home who need immediate care.`);
+    line('Pets:', petNames || '________________________');
+    line('Primary caregiver:', nameAndPhone(primary));
+    line('Alternate:', nameAndPhone(alternate));
+    line('Trustee (funds):', nameAndPhone(trustee));
+    line('Owner:', [str(plan.settlor_full_name), str(plan.settlor_phone)].filter(Boolean).join('  ') || '________________________');
     doc.restore();
-    doc.y = top + 160;
+    doc.y = top + H + 12;
   };
 
-  doc.moveDown(0.5);
+  doc.moveDown(0.3);
   drawCard('IN CASE OF EMERGENCY — PET CARE');
-  drawCard('IN CASE OF EMERGENCY — PET CARE (copy)');
+  drawCard('IN CASE OF EMERGENCY — PET CARE (home copy)');
+
+  heading(doc, 'For first responders');
+  paragraph(
+    doc,
+    `There ${petCount === 1 ? 'is 1 pet' : `are ${petCount || 'one or more'} pet(s)`} at this residence who depend on ` +
+      'daily care. If the owner is hospitalized or deceased, please contact the caregivers below so the animals are not left alone.',
+    { size: 10 },
+  );
+
+  heading(doc, 'Owner');
+  field(doc, 'Name', plan.settlor_full_name);
+  field(doc, 'Phone', plan.settlor_phone, 24);
+  field(doc, 'Email', plan.settlor_email, 30);
+  field(doc, 'Home address', plan.settlor_address);
+
+  heading(doc, 'Animals & critical care');
+  if (pets.length === 0) {
+    field(doc, 'Pet name', null);
+    field(doc, 'Microchip #', null, 24);
+    field(doc, 'Critical medications', null);
+    field(doc, 'Vet / emergency vet phone', null);
+  }
+  pets.forEach((p, i) => {
+    doc.font('Helvetica-Bold').fillColor(NAVY).fontSize(10.5).text(`${i + 1}. ${str(p.name) || '____________'}  ${[str(p.species), str(p.breed)].filter(Boolean).join(' / ')}`);
+    field(doc, 'Microchip #', p.microchip as string, 24);
+    field(doc, 'Critical medications', p.medications as string);
+    field(doc, 'Allergies', p.allergies as string);
+    field(doc, 'Vet phone', p.vet_phone as string, 24);
+    field(doc, 'Emergency vet phone', p.emergency_vet_phone as string, 24);
+  });
 
   heading(doc, 'Full contact list');
-  caregivers.forEach((c) => paragraph(doc, `• ${c.role}: ${person(c)}`));
-  trustees.forEach((t) => paragraph(doc, `• ${t.role.replace('_', ' ')}: ${person(t)}`));
+  const contacts = [...caregivers, ...trustees];
+  if (contacts.length === 0) {
+    field(doc, 'Caregiver / trustee', null);
+    field(doc, 'Caregiver / trustee', null);
+  } else {
+    caregivers.forEach((c) => paragraph(doc, `• ${String(c.role)}: ${personLine(c)}`));
+    trustees.forEach((t) => paragraph(doc, `• ${String(t.role).replace('_', ' ')}: ${personLine(t)}`));
+  }
 
-  disclaimerFooter(doc);
+  missingChecklist(doc, data);
 }
 
 export function documentBuilder(type: DocumentType) {

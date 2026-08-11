@@ -112,9 +112,41 @@ export default function PlanPage() {
       {tab === 'Documents' && (
         <div className="space-y-4">
           <Banner>
-            Documents are generated from what you’ve entered. Complete more of your plan for stronger
-            documents, then review them with a licensed attorney in {stateName} before signing.
+            Documents are generated from what you’ve entered. Anything you haven’t filled in shows up as a
+            fillable blank line. These are a guide for your attorney to draft official documents — not legal
+            advice. Review them with a licensed attorney in {stateName} before signing.
           </Banner>
+
+          {(() => {
+            const hints: Array<{ label: string; tab: Tab }> = [];
+            if (data.pets.length === 0) hints.push({ label: 'No animals added', tab: 'Pets' });
+            if (!data.plan.settlor_full_name) hints.push({ label: 'Your legal name is missing', tab: 'Overview' });
+            if (!data.plan.settlor_phone) hints.push({ label: 'Your phone (for the emergency card) is missing', tab: 'Overview' });
+            if (!data.caregivers.some((c) => c.role === 'PRIMARY')) hints.push({ label: 'No primary caregiver', tab: 'People' });
+            if (!data.caregivers.some((c) => c.role === 'ALTERNATE')) hints.push({ label: 'No alternate caregiver', tab: 'People' });
+            if (data.trustees.length === 0) hints.push({ label: 'No trustee / enforcer', tab: 'People' });
+            if (data.fundingSources.reduce((s, f) => s + Number(f.amount ?? 0), 0) <= 0) hints.push({ label: 'No funding source with an amount', tab: 'Funding' });
+            if (!data.plan.remainder_beneficiary) hints.push({ label: 'No remainder beneficiary', tab: 'Overview' });
+            if (hints.length === 0) return null;
+            return (
+              <div className="rounded-lg bg-amber-50 ring-1 ring-amber-200 p-4">
+                <p className="text-sm font-semibold text-amber-900">
+                  Complete these for fuller documents ({hints.length} missing):
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {hints.map((h, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setTab(h.tab)}
+                      className="rounded-full bg-white px-3 py-1 text-xs font-medium text-amber-900 ring-1 ring-amber-300 hover:bg-amber-100"
+                    >
+                      {h.label} → {h.tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
           <div className="grid gap-4 sm:grid-cols-3">
             {DOCS.map((d) => (
               <div key={d.type} className="card flex flex-col">
