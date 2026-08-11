@@ -175,6 +175,22 @@ docker run -p 4000:4000 \
   petguardian
 ```
 
+### One-click deploy: Render
+
+The repo root contains a **`render.yaml` Blueprint** that provisions a managed
+Postgres database plus a Docker web service (this app), wires `DATABASE_URL`
+between them, and generates a strong `JWT_SECRET` automatically.
+
+1. On [render.com](https://render.com), sign in with GitHub.
+2. **New +** → **Blueprint** → pick the `34-85/prscott` repo.
+3. Render reads `render.yaml` → **Apply**. It creates `petguardian-db` and the
+   `petguardian` web service (both on the free plan) and deploys the branch.
+4. Open the `https://petguardian-*.onrender.com` URL when the build finishes.
+
+Migrations run automatically on boot; `/api/health` is the health check. Note
+the free web service sleeps after inactivity, so the first request after idle
+takes a few seconds to wake.
+
 ### Production runtime env
 
 | Variable        | Required | Notes                                              |

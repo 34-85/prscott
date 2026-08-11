@@ -1,0 +1,39 @@
+# Render Blueprint for PetGuardian.
+# Provisions a managed Postgres database + a Docker web service that serves the
+# API and the built React client from one origin.
+#
+# Deploy: on render.com -> New + -> Blueprint -> pick this repo -> Apply.
+# Render reads this file, creates both resources, wires DATABASE_URL, and
+# generates a strong JWT_SECRET automatically.
+
+databases:
+  - name: petguardian-db
+    plan: free
+    region: oregon
+    databaseName: pettrust
+    user: pettrust
+
+services:
+  - type: web
+    name: petguardian
+    runtime: docker
+    plan: free
+    region: oregon
+    # Deploy the feature branch so you can preview before merging to main.
+    branch: claude/georgia-pet-trust-app-dfmfyo
+    # Paths are relative to the repository root.
+    dockerfilePath: ./petguardian/Dockerfile
+    dockerContext: ./petguardian
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: petguardian-db
+          property: connectionString
