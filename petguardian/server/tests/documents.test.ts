@@ -154,6 +154,62 @@ describe('documents', () => {
     expect(has(text, 'To finish this document')).toBe(true); // completion checklist
   });
 
+  /** Decode each page's own content-stream text by mapping Page objects to their /Contents. */
+  function pageTextLengths(buf: Buffer): number[] {
+    const s = buf.toString('latin1');
+    const objText: Record<string, string> = {};
+    const objRe = /(\d+)\s+0\s+obj([\s\S]*?)endobj/g;
+    let m: RegExpExecArray | null;
+    while ((m = objRe.exec(s))) {
+      const body = m[2];
+      const sm = body.indexOf('stream');
+      if (sm < 0) continue;
+      let p = sm + 6;
+      if (body[p] === '\r') p++;
+      if (body[p] === '\n') p++;
+      const e = body.indexOf('endstream', p);
+      try {
+        const inf = zlib.inflateSync(Buffer.from(body.slice(p, e), 'latin1')).toString('latin1');
+        let txt = '';
+        inf.replace(/<([0-9A-Fa-f\s]+)>/g, (_mm, h: string) => {
+          const hex = h.replace(/\s/g, '');
+          for (let j = 0; j + 1 < hex.length; j += 2) {
+            const c = parseInt(hex.substr(j, 2), 16);
+            if (c >= 32 && c < 127) txt += String.fromCharCode(c);
+          }
+          return _mm;
+        });
+        objText[m[1]] = txt;
+      } catch {
+        /* binary stream (font) */
+      }
+    }
+    const lengths: number[] = [];
+    const pageRe = /\/Type\s*\/Page(?![s])([\s\S]*?)>>/g;
+    let pm: RegExpExecArray | null;
+    while ((pm = pageRe.exec(s))) {
+      const cm = pm[1].match(/\/Contents\s+(\d+)\s+0\s+R/);
+      lengths.push(cm ? (objText[cm[1]] ?? '').length : 0);
+    }
+    return lengths;
+  }
+
+  it.each(['trust-directive', 'care-memorandum', 'emergency-card'])(
+    'has no blank pages for %s (every page carries real content)',
+    async (type) => {
+      const { token } = await registerUser();
+      const plan = await seededPlan(token);
+      const buf = (await fetchPdf(plan.id, type, token)).body as Buffer;
+      const lengths = pageTextLengths(buf);
+      expect(lengths.length).toBeGreaterThan(0);
+      // A blank page would be near-empty (bug produced ~0-char pages); a real
+      // page has hundreds of characters, well above any footer-only content.
+      for (const len of lengths) {
+        expect(len).toBeGreaterThan(150);
+      }
+    },
+  );
+
   it('rejects an unknown document type', async () => {
     const { token } = await registerUser();
     const plan = await seededPlan(token);

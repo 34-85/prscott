@@ -42,6 +42,11 @@ function addFooters(doc: PDFKit.PDFDocument): void {
     const left = doc.page.margins.left;
     const right = doc.page.width - doc.page.margins.right;
     const y = doc.page.height - 48;
+    // The footer sits inside the bottom margin. pdfkit treats text past the
+    // bottom margin as overflow and appends a blank continuation page, so
+    // neutralize the bottom margin while stamping, then restore it.
+    const savedBottom = doc.page.margins.bottom;
+    doc.page.margins.bottom = 0;
     doc.save();
     doc.moveTo(left, y).lineTo(right, y).strokeColor(RULE).lineWidth(0.5).stroke();
     doc.font('Helvetica').fontSize(7).fillColor(MUTED);
@@ -52,6 +57,7 @@ function addFooters(doc: PDFKit.PDFDocument): void {
     });
     doc.text(`Page ${i + 1} of ${range.count}`, right - 80, y + 5, { width: 80, align: 'right', lineBreak: false });
     doc.restore();
+    doc.page.margins.bottom = savedBottom;
   }
 }
 
