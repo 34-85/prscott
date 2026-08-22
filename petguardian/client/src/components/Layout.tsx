@@ -18,6 +18,7 @@ export function Layout({ children }: { children: ReactNode }) {
               <>
                 <NavItem to="/dashboard">My Plans</NavItem>
                 <NavItem to="/learn">State Law</NavItem>
+                <NavItem to="/emergency">Emergency</NavItem>
                 <NavItem to="/account">Account</NavItem>
                 <span className="mx-2 text-brand-100/70 hidden sm:inline">{user.fullName}</span>
                 <button
@@ -34,6 +35,7 @@ export function Layout({ children }: { children: ReactNode }) {
             {!user && (
               <>
                 <NavItem to="/learn">State Law</NavItem>
+                <NavItem to="/emergency">Emergency</NavItem>
                 <NavItem to="/login">Sign in</NavItem>
                 <Link to="/register" className="rounded-lg px-3 py-1.5 bg-white text-brand-900 font-semibold">
                   Get started

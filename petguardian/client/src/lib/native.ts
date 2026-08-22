@@ -87,3 +87,21 @@ export async function shareText(title: string, text: string, url?: string): Prom
     return false;
   }
 }
+
+/**
+ * Write a base64 PDF to the cache and hand it to the iOS share sheet (save to
+ * Files, Mail, AirDrop, print). Native only; returns false on web so the caller
+ * falls back to a browser download.
+ */
+export async function sharePdf(filename: string, base64: string, title: string): Promise<boolean> {
+  if (!isNative()) return false;
+  try {
+    const { Filesystem, Directory } = await import('@capacitor/filesystem');
+    const { Share } = await import('@capacitor/share');
+    const written = await Filesystem.writeFile({ path: filename, data: base64, directory: Directory.Cache });
+    await Share.share({ title, url: written.uri });
+    return true;
+  } catch {
+    return false;
+  }
+}

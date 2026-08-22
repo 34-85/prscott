@@ -81,8 +81,9 @@ npm run ios:open     # archive from Xcode: Product → Archive → Distribute Ap
    account (in-app, password-confirmed, permanent, cascades all data).
 2. **Minimum functionality — Guideline 4.2.** A bare webview gets rejected. This
    build adds native value: local-notification review reminders, native status
-   bar, and the share sheet. Consider adding offline access to the emergency card
-   before submitting for a stronger case.
+   bar, the native share sheet for generated PDFs (Save to Files / print / Mail /
+   AirDrop), and an **offline emergency card** (cached on-device, reachable with
+   no network and no sign-in at `/emergency`).
 3. **In-app purchase — Guideline 3.1.1.** If you sell the **premium digital tier**
    inside the app, Apple requires its In-App Purchase (15% small-business or 30%).
    **Affiliate/insurance/attorney referrals are real-world services** and are
@@ -96,9 +97,12 @@ npm run ios:open     # archive from Xcode: Product → Archive → Distribute Ap
 
 ## Known follow-ups (nice-to-have before or shortly after launch)
 
-- Native PDF handling: on iOS, route document downloads through the share sheet
-  (`native.ts` has `shareText`; extend to share the generated PDF file) instead
-  of a browser download.
 - App icon and splash source assets (add under `client/resources/`).
 - Replace the placeholder contact address in the Privacy Policy with a monitored
   inbox.
+- Decide the premium-tier payment mechanism (IAP vs. real-world-service link-out)
+  before enabling paid features in the app.
+
+Done: native PDF share sheet (`sharePdf` in `native.ts`, used by
+`downloadDocument`) and the offline emergency card (`/emergency`, cached via
+`lib/offline.ts`).

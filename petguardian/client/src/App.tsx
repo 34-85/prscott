@@ -10,6 +10,7 @@ import PlanPage from './pages/PlanPage';
 import LearnPage from './pages/LearnPage';
 import AccountPage from './pages/AccountPage';
 import PrivacyPage from './pages/PrivacyPage';
+import EmergencyPage from './pages/EmergencyPage';
 
 function Protected({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/learn" element={<LearnPage />} />
         <Route path="/learn/:code" element={<LearnPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/emergency" element={<EmergencyPage />} />
         <Route
           path="/account"
           element={

@@ -9,6 +9,7 @@ import { PetsTab } from '../components/plan/PetsTab';
 import { PeopleTab } from '../components/plan/PeopleTab';
 import { FundingTab } from '../components/plan/FundingTab';
 import { isNative, scheduleAnnualReview } from '../lib/native';
+import { buildSnapshot, saveSnapshot } from '../lib/offline';
 
 const TABS = ['Overview', 'Pets', 'People', 'Funding', 'Documents'] as const;
 type Tab = (typeof TABS)[number];
@@ -32,6 +33,7 @@ export default function PlanPage() {
     try {
       const r = await api.get<FullPlanResponse>(`/plans/${id}`);
       setData(r);
+      saveSnapshot(buildSnapshot(r)); // cache emergency data for offline access
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not load plan');
     }
