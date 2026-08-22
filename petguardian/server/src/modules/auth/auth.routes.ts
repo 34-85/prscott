@@ -89,3 +89,27 @@ authRouter.get(
     res.json({ user: publicUser(rows[0]) });
   }),
 );
+
+// Permanently delete the signed-in user's account and all their data.
+// Required by App Store Guideline 5.1.1(v): account deletion must be initiated
+// and completed in-app. Plans, pets, caregivers, trustees, and funding rows are
+// removed by ON DELETE CASCADE on the users foreign keys.
+const deleteAccountSchema = z.object({ password: z.string().min(1) });
+
+authRouter.delete(
+  '/me',
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const body = deleteAccountSchema.parse(req.body);
+    const { rows } = await query<UserRow>(
+      'SELECT id, password_hash FROM users WHERE id = $1',
+      [req.user!.sub],
+    );
+    if (!rows[0]) throw new HttpError(404, 'User not found');
+    if (!(await verifyPassword(body.password, rows[0].password_hash))) {
+      throw new HttpError(401, 'Password is incorrect');
+    }
+    await query('DELETE FROM users WHERE id = $1', [req.user!.sub]);
+    res.status(204).end();
+  }),
+);

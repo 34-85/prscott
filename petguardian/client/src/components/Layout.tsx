@@ -18,6 +18,7 @@ export function Layout({ children }: { children: ReactNode }) {
               <>
                 <NavItem to="/dashboard">My Plans</NavItem>
                 <NavItem to="/learn">State Law</NavItem>
+                <NavItem to="/account">Account</NavItem>
                 <span className="mx-2 text-brand-100/70 hidden sm:inline">{user.fullName}</span>
                 <button
                   className="rounded-lg px-3 py-1.5 bg-white/10 hover:bg-white/20"
@@ -44,10 +45,15 @@ export function Layout({ children }: { children: ReactNode }) {
       </header>
       <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-6">{children}</main>
       <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-4 text-xs text-slate-500">
-          PetGuardian provides general educational information and self-help document preparation.
-          It is not a law firm and does not provide legal advice. Review all documents with a
-          licensed attorney in your state before signing or funding.
+        <div className="mx-auto max-w-6xl px-4 py-4 text-xs text-slate-500 space-y-2">
+          <p>
+            PetGuardian provides general educational information and self-help document preparation.
+            It is not a law firm and does not provide legal advice. Review all documents with a
+            licensed attorney in your state before signing or funding.
+          </p>
+          <Link to="/privacy" className="text-brand-600 font-medium hover:underline">
+            Privacy Policy
+          </Link>
         </div>
       </footer>
     </div>

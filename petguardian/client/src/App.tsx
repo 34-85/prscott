@@ -8,6 +8,8 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import PlanPage from './pages/PlanPage';
 import LearnPage from './pages/LearnPage';
+import AccountPage from './pages/AccountPage';
+import PrivacyPage from './pages/PrivacyPage';
 
 function Protected({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -26,6 +28,15 @@ export default function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/learn" element={<LearnPage />} />
         <Route path="/learn/:code" element={<LearnPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route
+          path="/account"
+          element={
+            <Protected>
+              <AccountPage />
+            </Protected>
+          }
+        />
         <Route
           path="/dashboard"
           element={

@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthContext';
 import App from './App';
 import './index.css';
+import { initNative } from './lib/native';
+
+void initNative();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

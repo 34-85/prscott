@@ -1,5 +1,10 @@
 const TOKEN_KEY = 'petguardian_token';
 
+// Empty on web (same-origin, Vite proxy / Express serves both). On the native
+// iOS build, set VITE_API_BASE_URL to the hosted API, e.g.
+// https://petguardian-XXXX.onrender.com, so the bundled app reaches the server.
+export const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
+
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
@@ -26,7 +31,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   if (token) headers.Authorization = `Bearer ${token}`;
   if (body !== undefined) headers['Content-Type'] = 'application/json';
 
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`${API_BASE}/api${path}`, {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
@@ -46,11 +51,11 @@ export const api = {
   get: <T>(path: string) => request<T>('GET', path),
   post: <T>(path: string, body?: unknown) => request<T>('POST', path, body),
   put: <T>(path: string, body?: unknown) => request<T>('PUT', path, body),
-  del: <T>(path: string) => request<T>('DELETE', path),
+  del: <T>(path: string, body?: unknown) => request<T>('DELETE', path, body),
 };
 
 export function documentUrl(planId: string, type: string): string {
-  return `/api/plans/${planId}/documents/${type}`;
+  return `${API_BASE}/api/plans/${planId}/documents/${type}`;
 }
 
 /** Fetch a protected PDF as a blob and trigger a download (auth header required). */

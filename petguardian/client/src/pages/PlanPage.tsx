@@ -8,6 +8,7 @@ import { OverviewTab } from '../components/plan/OverviewTab';
 import { PetsTab } from '../components/plan/PetsTab';
 import { PeopleTab } from '../components/plan/PeopleTab';
 import { FundingTab } from '../components/plan/FundingTab';
+import { isNative, scheduleAnnualReview } from '../lib/native';
 
 const TABS = ['Overview', 'Pets', 'People', 'Funding', 'Documents'] as const;
 type Tab = (typeof TABS)[number];
@@ -25,6 +26,7 @@ export default function PlanPage() {
   const [tab, setTab] = useState<Tab>('Overview');
   const [error, setError] = useState('');
   const [busyDoc, setBusyDoc] = useState('');
+  const [reminder, setReminder] = useState('');
 
   const load = useCallback(async () => {
     try {
@@ -54,6 +56,13 @@ export default function PlanPage() {
     } finally {
       setBusyDoc('');
     }
+  }
+
+  async function setYearlyReminder() {
+    const r = await scheduleAnnualReview(id!, data!.plan.name);
+    if (r.ok) setReminder('Reminder set — we’ll notify you in one year to review this plan.');
+    else if (r.reason === 'denied') setReminder('Notifications are off. Enable them in Settings to get review reminders.');
+    else setReminder('Annual review reminders are available in the PetGuardian iOS app.');
   }
 
   if (error) return <Banner tone="error">{error}</Banner>;
@@ -161,6 +170,20 @@ export default function PlanPage() {
                 </button>
               </div>
             ))}
+          </div>
+
+          <div className="card flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+            <div>
+              <h3 className="font-semibold text-slate-900">Annual review reminder</h3>
+              <p className="text-sm text-slate-600">
+                Caregivers, funding, and vet details change. Get a reminder in a year to revisit this plan.
+                {!isNative() && ' (Available in the PetGuardian iOS app.)'}
+              </p>
+              {reminder && <p className="text-sm text-green-700 mt-1">{reminder}</p>}
+            </div>
+            <button className="btn-ghost whitespace-nowrap" onClick={setYearlyReminder}>
+              Remind me yearly
+            </button>
           </div>
         </div>
       )}

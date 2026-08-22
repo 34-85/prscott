@@ -56,4 +56,28 @@ describe('auth', () => {
     const anon = await request(app).get('/api/auth/me');
     expect(anon.status).toBe(401);
   });
+
+  it('deletes the account (with password) and cascades the user’s plans', async () => {
+    const { token, password } = await registerUser();
+    // Give the user a plan so we can confirm the cascade.
+    const plan = await request(app).post('/api/plans').set(auth(token)).send({ name: 'P', state: 'GA' });
+    expect(plan.status).toBe(201);
+
+    // Wrong password is rejected.
+    const bad = await request(app).delete('/api/auth/me').set(auth(token)).send({ password: 'not-it' });
+    expect(bad.status).toBe(401);
+
+    // Correct password deletes.
+    const ok = await request(app).delete('/api/auth/me').set(auth(token)).send({ password });
+    expect(ok.status).toBe(204);
+
+    // The user (and thus their plans) is gone.
+    const me = await request(app).get('/api/auth/me').set(auth(token));
+    expect(me.status).toBe(404);
+  });
+
+  it('requires authentication to delete an account', async () => {
+    const res = await request(app).delete('/api/auth/me').send({ password: 'whatever' });
+    expect(res.status).toBe(401);
+  });
 });
