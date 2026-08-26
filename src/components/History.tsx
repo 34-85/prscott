@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useStore } from '../app/store'
 import { computeForecast } from '../lib/forecast'
-import { formatShort, daysBetween } from '../lib/dates'
+import { formatShort, daysBetween, todayKey } from '../lib/dates'
 import { weeklyPsmfSeries, streakSummary } from '../lib/streaks'
 import { WeightHistory } from './WeightHistory'
 import type { DailyLog } from '../lib/types'
@@ -175,7 +175,35 @@ function buildWeeklySummaries(logs: DailyLog[]): WeekSummary[] {
   return summaries.reverse() // newest first
 }
 
-export function History() {
+/** Card that opens any chosen day (including missed days) in the editor. */
+function OpenDayCard({ onOpenDay }: { onOpenDay: (date: string) => void }) {
+  const [date, setDate] = useState(todayKey())
+  return (
+    <div className="card p-4">
+      <h2 className="text-sm font-semibold text-mute">Edit a day</h2>
+      <p className="mt-0.5 text-[11px] text-mute-soft">
+        Open any past day — even one you missed — to add or fix weight, water, and meals.
+      </p>
+      <div className="mt-3 flex items-end gap-2">
+        <div className="min-w-0 flex-1">
+          <label className="stat-label">Day</label>
+          <input
+            type="date"
+            value={date}
+            max={todayKey()}
+            onChange={(e) => e.target.value && setDate(e.target.value)}
+            className="field tnum mt-1 w-full text-sm"
+          />
+        </div>
+        <button onClick={() => onOpenDay(date)} className="btn-primary px-4 py-2 text-sm">
+          Open
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export function History({ onOpenDay }: { onOpenDay: (date: string) => void }) {
   const { state } = useStore()
   const logs = useMemo(
     () => Object.values(state.logs).sort((a, b) => a.date.localeCompare(b.date)),
@@ -234,11 +262,13 @@ export function History() {
 
   if (logs.length === 0) {
     return (
-      <div className="pt-1">
+      <div className="space-y-4 pb-24 pt-1">
         <h1 className="text-xl font-bold tracking-tight">History</h1>
-        <p className="mt-6 text-sm text-mute-soft">
-          No history yet. Log weight and meals to build your trend charts.
+        <p className="text-sm text-mute-soft">
+          No history yet. Log weight and meals to build your trend charts — or open a specific day
+          below to backfill it.
         </p>
+        <OpenDayCard onOpenDay={onOpenDay} />
       </div>
     )
   }
@@ -246,6 +276,9 @@ export function History() {
   return (
     <div className="space-y-4 pb-24 pt-1">
       <h1 className="text-xl font-bold tracking-tight">History</h1>
+
+      {/* Open any day (incl. missed days) to edit weight, water, and meals */}
+      <OpenDayCard onOpenDay={onOpenDay} />
 
       {/* Streaks + weekly PSMF-day bars */}
       <div className="card p-4">

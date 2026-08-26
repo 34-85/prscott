@@ -4,6 +4,7 @@ import { Dashboard } from '../components/Dashboard'
 import { History } from '../components/History'
 import { Foods } from '../components/Foods'
 import { Settings } from '../components/Settings'
+import { todayKey } from '../lib/dates'
 
 type Tab = 'today' | 'history' | 'foods' | 'settings'
 
@@ -33,12 +34,20 @@ function TabIcon({ d, active }: { d: string; active: boolean }) {
 
 function Shell() {
   const [tab, setTab] = useState<Tab>('today')
+  // The day currently being viewed/edited. Defaults to today; the day navigator
+  // and History's "open a day" control move it to any past date (incl. missed ones).
+  const [date, setDate] = useState<string>(todayKey())
+
+  function openDay(d: string) {
+    setDate(d)
+    setTab('today')
+  }
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col px-4">
       <main className="flex-1">
-        {tab === 'today' && <Dashboard />}
-        {tab === 'history' && <History />}
+        {tab === 'today' && <Dashboard date={date} onDateChange={setDate} />}
+        {tab === 'history' && <History onOpenDay={openDay} />}
         {tab === 'foods' && <Foods />}
         {tab === 'settings' && <Settings />}
       </main>

@@ -4,7 +4,7 @@ import { createEmptyLog } from '../lib/storage'
 import { computeForecast } from '../lib/forecast'
 import { computeCoachInsights } from '../lib/coach'
 import { proteinBadge } from '../lib/macroEstimator'
-import { todayKey, formatLong, formatTime } from '../lib/dates'
+import { todayKey, formatLong, formatTime, addDays, parseKey } from '../lib/dates'
 import { WeightEntry } from './WeightEntry'
 import { RunningTotals } from './RunningTotals'
 import { ComplianceScore } from './ComplianceScore'
@@ -26,9 +26,15 @@ import type { Meal } from '../lib/types'
 type Mode = 'chat' | 'structured'
 const MODE_KEY = 'psmf-tracker-mode'
 
-export function Dashboard() {
+interface DashboardProps {
+  date: string
+  onDateChange: (date: string) => void
+}
+
+export function Dashboard({ date, onDateChange }: DashboardProps) {
   const { state, deleteMeal, resetAll } = useStore()
-  const date = todayKey()
+  const today = todayKey()
+  const isToday = date === today
   const log = state.logs[date] ?? createEmptyLog(date)
   const [showLogger, setShowLogger] = useState(false)
   const [editingMeal, setEditingMeal] = useState<Meal | null>(null)
@@ -69,9 +75,15 @@ export function Dashboard() {
 
       {/* Header */}
       <div className="flex items-baseline justify-between pt-1">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight">Today</h1>
-          <p className="text-[12px] text-mute-soft">{formatLong(date)}</p>
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tight">
+            {isToday ? 'Today' : parseKey(date).toLocaleDateString(undefined, { weekday: 'long' })}
+          </h1>
+          {!isToday && (
+            <span className="rounded-full border border-warn/40 bg-warn/10 px-2 py-0.5 text-[10px] font-semibold text-warn">
+              Past day
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <StreakBadge />
@@ -79,8 +91,18 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Morning brief — dismissible per day */}
-      <MorningBrief />
+      {/* Day navigator — step or jump to any past day (incl. missed days) to edit it */}
+      <DayNav date={date} today={today} isToday={isToday} onDateChange={onDateChange} />
+
+      {!isToday && (
+        <p className="-mt-1 px-1 text-[11px] leading-relaxed text-mute-soft">
+          Editing a past day. Add or fix the weight, water, meals, and day type below — it all saves
+          to {formatLong(date)}.
+        </p>
+      )}
+
+      {/* Morning brief — dismissible per day (today only) */}
+      {isToday && <MorningBrief />}
 
       {/* Weight + macro snapshot */}
       <div className="card p-4">
@@ -153,14 +175,19 @@ export function Dashboard() {
       {/* Coach */}
       <CoachInsights insights={insights} />
 
-      {/* Ask the coach */}
-      <CoachQnA />
+      {/* Live coach tools + forecast are anchored to the present — today only */}
+      {isToday && (
+        <>
+          {/* Ask the coach */}
+          <CoachQnA />
 
-      {/* AI Coach chat — renders a setup nudge until a key is saved in Settings */}
-      <AICoach />
+          {/* AI Coach chat — renders a setup nudge until a key is saved in Settings */}
+          <AICoach />
 
-      {/* Forecast */}
-      <ForecastCard forecast={forecast} />
+          {/* Forecast */}
+          <ForecastCard forecast={forecast} />
+        </>
+      )}
 
       {/* Floating add button — structured mode only (chat has its own composer) */}
       {mode === 'structured' && (
@@ -183,6 +210,57 @@ export function Dashboard() {
             setEditingMeal(null)
           }}
         />
+      )}
+    </div>
+  )
+}
+
+function DayNav({
+  date,
+  today,
+  isToday,
+  onDateChange,
+}: {
+  date: string
+  today: string
+  isToday: boolean
+  onDateChange: (date: string) => void
+}) {
+  const arrowCls =
+    'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-ink-line bg-ink-soft text-xl text-mute transition-colors hover:text-fg disabled:opacity-30'
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => onDateChange(addDays(date, -1))}
+        className={arrowCls}
+        aria-label="Previous day"
+      >
+        ‹
+      </button>
+      <input
+        type="date"
+        value={date}
+        max={today}
+        onChange={(e) => e.target.value && onDateChange(e.target.value)}
+        className="field tnum min-w-0 flex-1 text-center text-sm"
+        aria-label="Pick a day to view or edit"
+      />
+      <button
+        onClick={() => onDateChange(addDays(date, 1))}
+        disabled={isToday}
+        className={arrowCls}
+        aria-label="Next day"
+      >
+        ›
+      </button>
+      {!isToday && (
+        <button
+          onClick={() => onDateChange(today)}
+          className="shrink-0 rounded-xl border border-accent/40 bg-accent/10 px-3 text-[12px] font-semibold text-accent"
+          style={{ height: '2.5rem' }}
+        >
+          Today
+        </button>
       )}
     </div>
   )
