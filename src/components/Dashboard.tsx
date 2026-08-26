@@ -21,6 +21,7 @@ import { MorningBrief } from './MorningBrief'
 import { StreakBadge } from './StreakBadge'
 import { WaterCard } from './WaterCard'
 import { errorBand } from '../lib/confidence'
+import { DISCLAIMER_SUMMARY } from '../lib/disclaimer'
 import type { Meal } from '../lib/types'
 
 type Mode = 'chat' | 'structured'
@@ -29,9 +30,10 @@ const MODE_KEY = 'psmf-tracker-mode'
 interface DashboardProps {
   date: string
   onDateChange: (date: string) => void
+  onOpenDisclaimer: () => void
 }
 
-export function Dashboard({ date, onDateChange }: DashboardProps) {
+export function Dashboard({ date, onDateChange, onOpenDisclaimer }: DashboardProps) {
   const { state, deleteMeal, resetAll } = useStore()
   const today = todayKey()
   const isToday = date === today
@@ -188,6 +190,14 @@ export function Dashboard({ date, onDateChange }: DashboardProps) {
           <ForecastCard forecast={forecast} />
         </>
       )}
+
+      {/* Persistent safety footer — always one tap from the full disclaimer */}
+      <button
+        onClick={onOpenDisclaimer}
+        className="w-full px-1 pt-1 text-center text-[11px] leading-relaxed text-mute-soft"
+      >
+        {DISCLAIMER_SUMMARY} <span className="text-accent underline">Read disclaimer</span>
+      </button>
 
       {/* Floating add button — structured mode only (chat has its own composer) */}
       {mode === 'structured' && (
