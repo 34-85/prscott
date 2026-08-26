@@ -3,6 +3,7 @@ import { useStore } from '../app/store'
 import { getTheme, setTheme, type Theme } from '../lib/theme'
 import { DAY_TYPES } from '../lib/dayType'
 import { COACH_MODELS, DEFAULT_COACH_MODEL } from '../lib/aiCoach'
+import { DISCLAIMER_SUMMARY, resetDisclaimer } from '../lib/disclaimer'
 import type { DayProfile, DayType, MeatWeightMode, UserSettings } from '../lib/types'
 
 interface NumFieldProps {
@@ -212,7 +213,7 @@ function AICoachSection() {
   )
 }
 
-export function Settings() {
+export function Settings({ onOpenDisclaimer }: { onOpenDisclaimer: () => void }) {
   const { state, updateSettings, loadDemoData, resetAll } = useStore()
   const s = state.settings
   const [theme, setThemeState] = useState<Theme>(getTheme())
@@ -301,7 +302,11 @@ export function Settings() {
           </button>
           <button
             onClick={() => {
-              if (confirm('Erase ALL data and start fresh? This cannot be undone.')) resetAll()
+              if (confirm('Erase ALL data and start fresh? This cannot be undone.')) {
+                resetAll()
+                // A full reset re-shows the first-run health acknowledgment.
+                resetDisclaimer()
+              }
             }}
             className="btn py-2.5 border border-bad/40 text-bad hover:bg-bad/10"
           >
@@ -310,10 +315,19 @@ export function Settings() {
         </div>
       </div>
 
-      <p className="px-1 text-[11px] leading-relaxed text-mute-soft">
-        This app estimates nutrition and weight trends. It is not medical advice. Very-low-calorie or
-        PSMF-style diets should be used carefully, especially with medical conditions or medications.
-      </p>
+      {/* Health disclaimer — full text lives on the Safety tab */}
+      <button
+        onClick={onOpenDisclaimer}
+        className="card w-full p-4 text-left transition-colors hover:border-accent/40"
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-mute">Health &amp; Safety</h2>
+          <span className="text-[11px] font-medium text-accent">View full disclaimer</span>
+        </div>
+        <p className="mt-2 text-[12px] leading-relaxed text-mute-soft">
+          {DISCLAIMER_SUMMARY} Use it only in conjunction with a medical professional.
+        </p>
+      </button>
     </div>
   )
 }
