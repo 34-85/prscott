@@ -1,0 +1,39 @@
+<svg width="440" height="440" viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PSMF Tracker">
+  <!-- Standalone brand mark (fixed navy ink, white field) for icon / launch-image
+       generation via @capacitor/assets. The app's in-app splash uses a
+       theme-aware inline copy of this same artwork. -->
+  <rect width="440" height="440" fill="#ffffff"/>
+
+  <!-- Broken outer ring: green over the top, blue along the lower sides -->
+  <path d="M29.3 179.4 A195 195 0 0 1 410.7 179.4" stroke="#6cbe32" stroke-width="9" stroke-linecap="round"/>
+  <path d="M414.3 237 A195 195 0 0 1 270.5 408.4" stroke="#2f80c9" stroke-width="9" stroke-linecap="round"/>
+  <path d="M169.5 408.4 A195 195 0 0 1 25.7 237" stroke="#2f80c9" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- Wordmark -->
+  <text x="220" y="200" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-weight="800" font-size="104" letter-spacing="0">
+    <tspan fill="#6cbe32">P</tspan><tspan fill="#14243d">S</tspan><tspan fill="#2f80c9">M</tspan><tspan fill="#14243d">F</tspan>
+  </text>
+
+  <!-- TRACKER with flanking dashes -->
+  <line x1="96" y1="240" x2="120" y2="240" stroke="#14243d" stroke-width="3" stroke-linecap="round"/>
+  <line x1="320" y1="240" x2="344" y2="240" stroke="#14243d" stroke-width="3" stroke-linecap="round"/>
+  <text x="220" y="250" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-weight="600" font-size="30" letter-spacing="8" fill="#14243d">TRACKER</text>
+
+  <!-- Macro rings row -->
+  <circle cx="127.5" cy="290" r="7" fill="none" stroke="#6cbe32" stroke-width="3.5"/>
+  <circle cx="213.5" cy="290" r="7" fill="none" stroke="#2f80c9" stroke-width="3.5"/>
+  <circle cx="287.5" cy="290" r="7" fill="none" stroke="#9aa1a9" stroke-width="3.5"/>
+  <line x1="196" y1="281" x2="196" y2="301" stroke="#c3ccd6" stroke-width="1.5"/>
+  <line x1="270" y1="281" x2="270" y2="301" stroke="#c3ccd6" stroke-width="1.5"/>
+  <text x="140" y="295" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="12" letter-spacing="0.5" fill="#6cbe32">PROTEIN</text>
+  <text x="226" y="295" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="12" letter-spacing="0.5" fill="#2f80c9">CARBS</text>
+  <text x="300" y="295" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="12" letter-spacing="0.5" fill="#9aa1a9">FAT</text>
+
+  <!-- Curved tagline -->
+  <defs>
+    <path id="psmfTagline" d="M77.5 309 A168 168 0 0 0 362.5 309" fill="none"/>
+  </defs>
+  <text font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="13.5" letter-spacing="1" fill="#14243d">
+    <textPath href="#psmfTagline" startOffset="50%" text-anchor="middle">FOCUS &#8226; PROTECT &#8226; TRANSFORM</textPath>
+  </text>
+</svg>
