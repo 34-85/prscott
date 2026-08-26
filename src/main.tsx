@@ -5,6 +5,20 @@ import './index.css'
 import { applyTheme, getTheme } from './lib/theme'
 import { initNative, restoreFromNativeBackup } from './lib/native'
 
+/** Fade out and remove the instant-paint splash once the app is on screen. */
+function dismissSplash() {
+  const el = document.getElementById('psmf-splash')
+  if (!el) return
+  const start = (window as unknown as { __psmfSplashStart?: number }).__psmfSplashStart ?? 0
+  const MIN_VISIBLE = 650 // let the brand mark register, but stay brief
+  const wait = Math.max(0, MIN_VISIBLE - (Date.now() - start))
+  window.setTimeout(() => {
+    el.classList.add('psmf-hide')
+    // Remove after the CSS fade so it never intercepts taps.
+    window.setTimeout(() => el.remove(), 450)
+  }, wait)
+}
+
 function boot() {
   const theme = getTheme()
   applyTheme(theme)
@@ -15,6 +29,9 @@ function boot() {
       <App />
     </React.StrictMode>,
   )
+
+  // Hand off from the branded splash to the live app.
+  dismissSplash()
 
   // No-op on web; on iOS this hides the splash and matches the status bar.
   void initNative(theme)
