@@ -10,7 +10,7 @@ function dismissSplash() {
   const el = document.getElementById('psmf-splash')
   if (!el) return
   const start = (window as unknown as { __psmfSplashStart?: number }).__psmfSplashStart ?? 0
-  const MIN_VISIBLE = 650 // let the brand mark register, but stay brief
+  const MIN_VISIBLE = 2000 // hold the brand mark on screen for ~2s before fading
   const wait = Math.max(0, MIN_VISIBLE - (Date.now() - start))
   window.setTimeout(() => {
     el.classList.add('psmf-hide')
