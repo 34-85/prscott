@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { StoreProvider } from './store'
+import { AuthProvider } from './auth'
 import { Dashboard } from '../components/Dashboard'
 import { History } from '../components/History'
 import { Foods } from '../components/Foods'
@@ -88,8 +89,10 @@ function Shell() {
 
 export default function App() {
   return (
-    <StoreProvider>
-      <Shell />
-    </StoreProvider>
+    <AuthProvider>
+      <StoreProvider>
+        <Shell />
+      </StoreProvider>
+    </AuthProvider>
   )
 }
