@@ -53,7 +53,13 @@ export function Dashboard({ date, onDateChange, onOpenDisclaimer }: DashboardPro
   const insights = computeCoachInsights(state.logs, state.settings, date, forecast)
 
   return (
-    <div className="space-y-4 pb-28">
+    <div
+      className={`space-y-4 ${
+        mode === 'structured'
+          ? 'pb-[calc(10rem+env(safe-area-inset-bottom))]'
+          : 'pb-[calc(6rem+env(safe-area-inset-bottom))]'
+      }`}
+    >
       {/* Sample-data banner — lets the user start fresh in one tap */}
       {state.seeded && (
         <div className="mt-1 rounded-2xl border border-warn/40 bg-warn/10 p-3">
@@ -201,7 +207,7 @@ export function Dashboard({ date, onDateChange, onOpenDisclaimer }: DashboardPro
 
       {/* Floating add button — structured mode only (chat has its own composer) */}
       {mode === 'structured' && (
-        <div className="fixed inset-x-0 bottom-[68px] z-30 mx-auto max-w-lg px-4">
+        <div className="fixed inset-x-0 bottom-[calc(68px+env(safe-area-inset-bottom))] z-30 mx-auto max-w-lg px-4">
           <button
             onClick={() => setShowLogger(true)}
             className="btn-primary w-full py-3.5 text-base shadow-lg shadow-accent/20"

@@ -35,7 +35,7 @@ function ShieldIcon({ className = '' }: { className?: string }) {
 /** Full-screen "Safety" tab content. */
 export function DisclaimerScreen() {
   return (
-    <div className="space-y-4 pb-24 pt-1">
+    <div className="space-y-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-1">
       <div className="flex items-center gap-2">
         <ShieldIcon className="h-6 w-6 text-accent" />
         <h1 className="text-xl font-bold tracking-tight">Health &amp; Safety</h1>

@@ -262,7 +262,7 @@ export function History({ onOpenDay }: { onOpenDay: (date: string) => void }) {
 
   if (logs.length === 0) {
     return (
-      <div className="space-y-4 pb-24 pt-1">
+      <div className="space-y-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-1">
         <h1 className="text-xl font-bold tracking-tight">History</h1>
         <p className="text-sm text-mute-soft">
           No history yet. Log weight and meals to build your trend charts — or open a specific day
@@ -274,7 +274,7 @@ export function History({ onOpenDay }: { onOpenDay: (date: string) => void }) {
   }
 
   return (
-    <div className="space-y-4 pb-24 pt-1">
+    <div className="space-y-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-1">
       <h1 className="text-xl font-bold tracking-tight">History</h1>
 
       {/* Open any day (incl. missed days) to edit weight, water, and meals */}

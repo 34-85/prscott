@@ -226,7 +226,7 @@ export function Settings({ onOpenDisclaimer }: { onOpenDisclaimer: () => void })
   }
 
   return (
-    <div className="space-y-4 pb-24 pt-1">
+    <div className="space-y-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-1">
       <h1 className="text-xl font-bold tracking-tight">Settings</h1>
 
       <div className="card p-4">
