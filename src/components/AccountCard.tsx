@@ -71,7 +71,7 @@ export function AccountCard() {
       return
     }
     setSent(true)
-    setMsg(`We emailed a 6-digit code to ${e}.`)
+    setMsg(`We emailed a sign-in code to ${e}.`)
   }
 
   async function onVerify() {
@@ -137,16 +137,16 @@ export function AccountCard() {
             onVerify()
           }}
         >
-          <label className="stat-label">6-digit code</label>
+          <label className="stat-label">Code from email</label>
           <div className="mt-1 flex gap-2">
             <input
               type="text"
               value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="123456"
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+              placeholder="Enter code"
               autoComplete="one-time-code"
               inputMode="numeric"
-              maxLength={6}
+              maxLength={12}
               className="field flex-1 tnum text-sm"
             />
             <button
