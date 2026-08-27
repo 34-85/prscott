@@ -124,11 +124,13 @@ export async function restoreFromNativeBackup(): Promise<boolean> {
 
 // ---- Apple Health (scaffold) ---------------------------------------------
 //
-// HealthKit needs a native plugin + entitlement that can only be built/tested
-// on a Mac, so it is intentionally left as a typed stub here. See
-// IOS_APP_PLAN.md → "Apple Health" for the exact plugin, Info.plist keys, and
-// wiring. When ready, this function reads the latest body-mass sample so the
-// morning weigh-in can be pre-filled automatically.
+// HealthKit needs a native plugin + an Xcode entitlement that can only be
+// built/tested on a Mac, so this is a typed stub that returns null on every
+// platform until wired. The full recipe — plugin choice (given the Capacitor 6
+// situation), the drop-in implementation for this function, the Xcode HealthKit
+// capability, and the Info.plist usage strings — is in docs/IOS_HEALTHKIT.md.
+// Once wired, it reads the latest body-mass sample so the morning weigh-in can
+// pre-fill automatically.
 export async function readLatestHealthWeightLb(): Promise<number | null> {
   if (!isNative()) return null
   return null
