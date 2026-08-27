@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy Policy — PSMF Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f4f6f9; --surface: #ffffff; --ink: #16273f; --soft: #55617a;
+    --faint: #8791a3; --line: #e2e7ee; --green: #4f9f28; --blue: #2f7fc9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, sans-serif; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+  header { border-bottom: 1px solid var(--line); background: var(--surface); }
+  .head { padding: 30px 22px 26px; max-width: 720px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 11px; margin-bottom: 18px; }
+  .mark { width: 30px; height: 30px; border-radius: 8px; background: #0a0d12; display: grid; place-items: center; flex: none; }
+  .mark svg { width: 21px; height: 21px; display: block; }
+  .brandname { font-weight: 800; font-size: 14px; letter-spacing: -.01em; }
+  .brandname b:first-child { color: var(--green); } .brandname b:last-child { color: var(--blue); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; margin: 0; }
+  .updated { color: var(--faint); font-size: 13px; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  main { padding: 34px 0 70px; }
+  h2 { font-size: 19px; font-weight: 700; letter-spacing: -.01em; margin: 34px 0 8px; }
+  h2:first-child { margin-top: 0; }
+  p, li { font-size: 15.5px; color: var(--soft); }
+  p { margin: 0 0 12px; }
+  strong { color: var(--ink); font-weight: 600; }
+  ul { margin: 0 0 14px; padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--blue); }
+  .lead {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px 20px; margin: 0 0 8px;
+  }
+  .lead p { margin: 0 0 8px; } .lead p:last-child { margin: 0; }
+  .note { font-size: 13px; color: var(--faint); border-top: 1px solid var(--line); margin-top: 40px; padding-top: 18px; }
+  footer { border-top: 1px solid var(--line); background: var(--surface); }
+  footer .wrap { padding: 20px 22px; color: var(--faint); font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="head">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <polyline points="3,8 9,13 13,10 21,17" stroke="#6cbe32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="21" cy="17" r="2" fill="#4ea1ff"/>
+        </svg>
+      </span>
+      <span class="brandname"><b>P</b>SM<b>F</b> Tracker</span>
+    </div>
+    <h1>Privacy Policy</h1>
+    <div class="updated">Last updated: August 27, 2026</div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p>PSMF Tracker (&ldquo;the app&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) helps you track weight,
+    meals, and water and see PSMF-style diet trends. This policy explains what data the app handles, where it
+    lives, and the choices you have. It describes how the app works today and how the optional account, Apple
+    Health, and AI features work when you turn them on. The app is a tracking tool, <strong>not medical
+    advice</strong> &mdash; see the in-app Health &amp; Safety disclaimer.</p>
+
+    <h2>The short version</h2>
+    <div class="lead">
+      <p>Your tracking data is <strong>stored on your device by default.</strong> We don&rsquo;t run servers that
+      hold it unless you create an account and turn on sync.</p>
+      <p>We <strong>do not sell your data</strong>, and we <strong>do not use it for advertising.</strong></p>
+      <p>Optional features (an account, Apple Health, the AI Coach) share data only when <strong>you</strong>
+      enable them, and only as described below.</p>
+      <p>You can <strong>export or delete</strong> your data at any time.</p>
+    </div>
+
+    <h2>What the app handles</h2>
+    <p><strong>Data you enter.</strong> Morning weight, meals and their estimated macros, water, notes, day types,
+    plan settings (goal, target weeks, targets), and any personal foods you add.</p>
+    <p><strong>Account data (only if you create one).</strong> Your email address, used to sign you in and sync
+    your data across your devices and the web.</p>
+    <p><strong>Apple Health (only if you connect it).</strong> With your permission, the app can read your latest
+    body weight to fill in your morning weigh-in. Health data is used only inside the app to show your trends; it
+    is <strong>never</strong> used for advertising and is <strong>never</strong> sold or shared for anyone
+    else&rsquo;s use.</p>
+    <p><strong>AI Coach (only if you enable it).</strong> The AI Coach is optional and uses a key <em>you</em>
+    provide (&ldquo;bring your own key&rdquo;). When you send a message, the app sends your message, your API key,
+    and a short summary of your recent tracking data directly from your device to Anthropic
+    (api.anthropic.com) to generate a reply. Your key is stored only on your device &mdash; never on our servers.
+    This feature is governed by Anthropic&rsquo;s terms and privacy policy.</p>
+    <p><strong>Technical data.</strong> If we add crash reporting or basic, privacy-respecting analytics to
+    improve reliability, we will update this policy and describe what is collected before it is turned on.</p>
+
+    <h2>Where your data is stored</h2>
+    <ul>
+      <li><strong>Today:</strong> on your device, in local app storage (with a local backup inside the app on iOS
+      so you don&rsquo;t lose data). It doesn&rsquo;t leave your device except through the optional features
+      above.</li>
+      <li><strong>With an account (when available):</strong> your data syncs to your own private space in our
+      hosting provider&rsquo;s database (Supabase), isolated per account by row-level security so no other user
+      can read it, and encrypted in transit.</li>
+    </ul>
+
+    <h2>How we use your data</h2>
+    <p>Only to provide the app&rsquo;s features: recording your entries, computing macros and compliance, showing
+    trends and coaching, and &mdash; if you enable them &mdash; syncing across your devices and answering AI Coach
+    questions. We do not sell your data and do not use it for advertising or profiling.</p>
+
+    <h2>Who your data is shared with</h2>
+    <p>We don&rsquo;t share your data with third parties for their own purposes. The only processors involved, and
+    only when you use the relevant feature, are:</p>
+    <ul>
+      <li><strong>Anthropic</strong> &mdash; if you enable the AI Coach.</li>
+      <li><strong>Supabase</strong> &mdash; if you create an account (hosts your synced data).</li>
+      <li><strong>Apple</strong> &mdash; the App Store, and Apple Health if you connect it, under Apple&rsquo;s terms.</li>
+    </ul>
+    <p>We may disclose data if required by law, or to protect the app and its users.</p>
+
+    <h2>Your choices and rights</h2>
+    <ul>
+      <li><strong>Use it without an account</strong> &mdash; everything works on-device.</li>
+      <li><strong>Export your data</strong> &mdash; download your entries at any time.</li>
+      <li><strong>Delete your data</strong> &mdash; clear it on-device, and (with an account) delete your account
+      and all associated data from within the app.</li>
+      <li><strong>Disconnect Apple Health</strong> or <strong>remove your AI key</strong> anytime in Settings.</li>
+    </ul>
+    <p>Depending on where you live, you may have additional rights (for example, under GDPR or CCPA) to access,
+    correct, or delete your personal data and to object to certain processing. Contact us and we&rsquo;ll help.</p>
+
+    <h2>Data retention</h2>
+    <p>On-device data stays until you delete it or remove the app. Account data (when available) is kept until you
+    delete your account, after which it is removed from our systems.</p>
+
+    <h2>Security</h2>
+    <p>Your data is encrypted in transit. With an account, per-user row-level security isolates your data in the
+    database. Your AI key stays on your device. No system is perfectly secure, but we work to protect your
+    information and minimize what we hold.</p>
+
+    <h2>Children</h2>
+    <p>PSMF Tracker is intended for adults and is not directed to children. Please do not use it, or provide any
+    information, if you are under 17.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>We may update this policy as the app evolves. We&rsquo;ll change the &ldquo;Last updated&rdquo; date above
+    and, for material changes, note them in the app.</p>
+
+    <h2>Contact</h2>
+    <p>Questions or requests about your privacy: <a href="mailto:prscott@prscott.com">prscott@prscott.com</a></p>
+
+    <p class="note">This policy reflects how PSMF Tracker handles data. Some features described here (accounts and
+    sync, Apple Health, hosted AI) roll out over time; each shares data only once you enable it.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">PSMF Tracker &middot; Privacy Policy</div>
+</footer>
+</body>
+</html>
