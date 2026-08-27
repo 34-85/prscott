@@ -4,6 +4,7 @@ import { getTheme, setTheme, type Theme } from '../lib/theme'
 import { DAY_TYPES } from '../lib/dayType'
 import { COACH_MODELS, DEFAULT_COACH_MODEL } from '../lib/aiCoach'
 import { DISCLAIMER_SUMMARY, resetDisclaimer } from '../lib/disclaimer'
+import { AccountCard } from './AccountCard'
 import type { DayProfile, DayType, MeatWeightMode, UserSettings } from '../lib/types'
 
 interface NumFieldProps {
@@ -228,6 +229,8 @@ export function Settings({ onOpenDisclaimer }: { onOpenDisclaimer: () => void })
   return (
     <div className="space-y-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-1">
       <h1 className="text-xl font-bold tracking-tight">Settings</h1>
+
+      <AccountCard />
 
       <div className="card p-4">
         <h2 className="mb-3 text-sm font-semibold text-mute">Appearance</h2>
