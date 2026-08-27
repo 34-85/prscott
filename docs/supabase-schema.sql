@@ -22,12 +22,17 @@ begin
 end $$;
 
 -- ── profiles: 1:1 with auth.users ──────────────────────────────────────────
+-- `state` holds the full AppState snapshot (sync strategy below). The normalized
+-- tables that follow stay for future server-side features (analytics, sharing).
 create table if not exists public.profiles (
   id          uuid primary key references auth.users (id) on delete cascade,
   email       text,
+  state       jsonb,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
+-- If profiles already existed without it (earlier apply), add the column:
+alter table public.profiles add column if not exists state jsonb;
 
 -- ── settings: plan + per-day-type targets (1:1 with a user) ────────────────
 -- Day-type profiles are a small config map, stored as JSONB rather than a

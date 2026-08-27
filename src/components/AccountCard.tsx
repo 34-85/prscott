@@ -1,5 +1,13 @@
 import { useState } from 'react'
 import { useAuth } from '../app/auth'
+import { useSyncStatus } from '../app/cloudSync'
+
+const SYNC_LABEL: Record<string, string> = {
+  syncing: 'Syncing…',
+  synced: 'All changes synced',
+  error: 'Sync error — will retry',
+  off: '',
+}
 
 /**
  * Account card for Settings. Lets the user sign in with an email one-time code
@@ -8,6 +16,7 @@ import { useAuth } from '../app/auth'
  */
 export function AccountCard() {
   const { status, email, sendCode, verifyCode, signOut } = useAuth()
+  const sync = useSyncStatus()
   const [addr, setAddr] = useState('')
   const [code, setCode] = useState('')
   const [sent, setSent] = useState(false)
@@ -25,6 +34,20 @@ export function AccountCard() {
           Signed in as <span className="text-fg">{email}</span>. Your logs sync to
           the cloud and stay available on every device.
         </p>
+        {SYNC_LABEL[sync] && (
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-mute-soft">
+            <span
+              className={`inline-block h-1.5 w-1.5 rounded-full ${
+                sync === 'error'
+                  ? 'bg-bad'
+                  : sync === 'syncing'
+                    ? 'bg-accent'
+                    : 'bg-good'
+              }`}
+            />
+            {SYNC_LABEL[sync]}
+          </p>
+        )}
         <button
           type="button"
           onClick={() => signOut()}
