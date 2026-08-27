@@ -60,12 +60,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const verifyCode = useCallback(
     async (email: string, code: string): Promise<string | null> => {
       if (!supabase) return 'Cloud sync is not configured.'
-      const { error } = await supabase.auth.verifyOtp({
-        email: email.trim(),
-        token: code.trim(),
-        type: 'email',
-      })
-      return error ? error.message : null
+      const addr = email.trim()
+      const token = code.trim()
+      // Supabase tags an existing user's code as an 'email' OTP but a brand-new
+      // account's first code as a 'signup' OTP. Try the common case, then fall
+      // back so first-time sign-ups verify too.
+      const first = await supabase.auth.verifyOtp({ email: addr, token, type: 'email' })
+      if (!first.error) return null
+      const second = await supabase.auth.verifyOtp({ email: addr, token, type: 'signup' })
+      if (!second.error) return null
+      return first.error.message
     },
     [],
   )
