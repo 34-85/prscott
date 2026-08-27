@@ -20,6 +20,9 @@ npm-debug.log*
 .env
 .env.*
 !.env.example
+# .env.production holds only the Supabase URL + publishable key, which are
+# public by design (they ship in the client bundle; RLS protects the data).
+!.env.production
 
 # TS build info
 *.tsbuildinfo
