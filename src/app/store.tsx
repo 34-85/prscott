@@ -30,6 +30,7 @@ import {
 import { estimateMeal } from '../lib/macroEstimator'
 import { buildRestaurantMealData, estimateRestaurantMeal } from '../lib/restaurant'
 import { buildSeedState } from '../lib/seed'
+import { useCloudSync, SyncStatusProvider } from './cloudSync'
 
 interface StoreApi {
   state: AppState
@@ -72,6 +73,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }
     saveState(state)
   }, [state])
+
+  // Cloud sync: backs up + mirrors state across devices when signed in.
+  // No-op when cloud isn't configured or nobody's signed in.
+  const syncStatus = useCloudSync(state, setState)
 
   const addMeal = useCallback((date: string, rawText: string, notes?: string) => {
     setState((s) => {
@@ -230,7 +235,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     ],
   )
 
-  return <StoreContext.Provider value={api}>{children}</StoreContext.Provider>
+  return (
+    <StoreContext.Provider value={api}>
+      <SyncStatusProvider value={syncStatus}>{children}</SyncStatusProvider>
+    </StoreContext.Provider>
+  )
 }
 
 export function useStore(): StoreApi {
