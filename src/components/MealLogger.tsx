@@ -111,8 +111,11 @@ export function MealLogger({ date, onClose, editMeal }: Props) {
         onClick={onClose}
         aria-hidden
       />
-      <div className="relative w-full sm:max-w-lg">
-        <div className="rounded-t-3xl border border-ink-line bg-ink-card p-5 pb-8 sm:rounded-3xl">
+      <div className="relative max-h-[90vh] w-full overflow-y-auto overscroll-contain sm:max-w-lg">
+        <div
+          className="rounded-t-3xl border border-ink-line bg-ink-card p-5 sm:rounded-3xl"
+          style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
+        >
           <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-ink-line sm:hidden" />
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">{isEdit ? 'Edit Meal' : 'Add Meal'}</h2>
