@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useStore } from '../app/store'
 import { useAuth } from '../app/auth'
 import { DisclaimerBody } from './Disclaimer'
+import { GuideTour } from './Guide'
 import { acceptDisclaimer } from '../lib/disclaimer'
 import { setOnboarded } from '../lib/onboarding'
-import { isPristine } from '../lib/sync'
 
 type Step = 'name' | 'disclaimer' | 'signin' | 'checking' | 'setup' | 'tips'
 
@@ -22,8 +22,7 @@ function ShieldIcon({ className = '' }: { className?: string }) {
 
 /**
  * First-run onboarding: welcome + name → health disclaimer → required sign-in
- * → quick setup (new users) → "how it works". Returning users whose data syncs
- * down skip the setup step. Shown once; calls onDone when finished.
+ * → goal setup → "how it works" tour. Shown once; calls onDone when finished.
  */
 export function Onboarding({ onDone }: { onDone: () => void }) {
   const { state, updateSettings } = useStore()
@@ -46,9 +45,6 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
   const [goal, setGoal] = useState(String(state.settings.goalLoss))
   const [weeks, setWeeks] = useState(String(state.settings.targetWeeks))
 
-  const stateRef = useRef(state)
-  stateRef.current = state
-
   // Keep setup inputs current if settings arrive from the cloud mid-flow.
   useEffect(() => {
     setStartW(String(state.settings.startingWeight))
@@ -61,12 +57,10 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
     if (step === 'signin' && auth.status === 'signedIn') setStep('checking')
   }, [step, auth.status])
 
-  // After sign-in, give sync a beat, then route: new user → setup, returning → tips.
+  // After sign-in, give sync a beat (so any synced goals prefill), then continue.
   useEffect(() => {
     if (step !== 'checking') return
-    const t = setTimeout(() => {
-      setStep(isPristine(stateRef.current) ? 'setup' : 'tips')
-    }, 1500)
+    const t = setTimeout(() => setStep('setup'), 1500)
     return () => clearTimeout(t)
   }, [step])
 
@@ -74,7 +68,8 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
     // The acknowledgment is persisted at finish() so a mid-flow refresh restarts
     // cleanly rather than being treated as an already-onboarded user.
     if (cloud && auth.status !== 'signedIn') setStep('signin')
-    else setStep(isPristine(state) ? 'setup' : 'tips')
+    else if (cloud) setStep('checking')
+    else setStep('setup')
   }
 
   async function onSend() {
@@ -129,17 +124,19 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
         >
           <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-ink-line sm:hidden" />
 
-          {/* progress dots */}
-          <div className="mb-5 flex justify-center gap-1.5">
-            {ORDER.map((s, i) => (
-              <span
-                key={s}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === dotIndex ? 'w-5 bg-accent' : i < dotIndex ? 'w-1.5 bg-accent/50' : 'w-1.5 bg-ink-line'
-                }`}
-              />
-            ))}
-          </div>
+          {/* progress dots — hidden during the tour, which has its own */}
+          {step !== 'tips' && (
+            <div className="mb-5 flex justify-center gap-1.5">
+              {ORDER.map((s, i) => (
+                <span
+                  key={s}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === dotIndex ? 'w-5 bg-accent' : i < dotIndex ? 'w-1.5 bg-accent/50' : 'w-1.5 bg-ink-line'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
 
           {step === 'name' && (
             <div>
@@ -347,30 +344,10 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
 
           {step === 'tips' && (
             <div>
-              <h2 className="text-xl font-bold tracking-tight">
-                {name.trim() ? `You're all set, ${name.trim()}` : "You're all set"}
-              </h2>
-              <p className="mt-1 text-[13px] leading-relaxed text-mute">Here's the quick tour:</p>
-              <ul className="mt-4 space-y-3">
-                {[
-                  ['Today', 'Log meals in plain English — "6 oz chicken, 1 cup rice" — and see calories, protein, and compliance update live.'],
-                  ['Weigh in', 'Tap your weight each morning to track the trend and your forecast to goal.'],
-                  ['History', 'Revisit any past day to review or edit meals, weight, and water.'],
-                  ['Settings', 'Adjust your targets, day types, and account anytime.'],
-                ].map(([title, body]) => (
-                  <li key={title} className="flex gap-3">
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[12px] font-bold text-accent">
-                      ✓
-                    </span>
-                    <p className="text-[13px] leading-snug text-mute">
-                      <span className="font-semibold text-fg">{title}.</span> {body}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <button onClick={finish} className="btn-primary mt-5 w-full py-3 text-base">
-                Start tracking
-              </button>
+              <p className="mb-4 text-[13px] font-medium text-accent">
+                {name.trim() ? `You're all set, ${name.trim()} — here's how it works` : "You're all set — here's how it works"}
+              </p>
+              <GuideTour onDone={finish} />
             </div>
           )}
         </div>
