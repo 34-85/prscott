@@ -111,6 +111,8 @@ export interface DailyLog {
 
 /** User-configurable plan + per-day-type targets. */
 export interface UserSettings {
+  /** The user's first name, captured at onboarding. Used for greetings. */
+  userName?: string
   startingWeight: number
   goalLoss: number
   targetWeeks: number

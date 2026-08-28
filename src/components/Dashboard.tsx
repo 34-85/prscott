@@ -81,6 +81,11 @@ export function Dashboard({ date, onDateChange, onOpenDisclaimer }: DashboardPro
         </div>
       )}
 
+      {/* Greeting */}
+      {isToday && state.settings.userName && (
+        <p className="pt-1 text-[13px] text-mute-soft">Hi {state.settings.userName} 👋</p>
+      )}
+
       {/* Header */}
       <div className="flex items-baseline justify-between pt-1">
         <div className="flex items-center gap-2">
