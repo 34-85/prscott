@@ -6,7 +6,6 @@ import { COACH_MODELS, DEFAULT_COACH_MODEL } from '../lib/aiCoach'
 import { DISCLAIMER_SUMMARY, resetDisclaimer } from '../lib/disclaimer'
 import { resetOnboarding } from '../lib/onboarding'
 import { AccountCard } from './AccountCard'
-import { GuideOverlay } from './Guide'
 import type { DayProfile, DayType, MeatWeightMode, UserSettings } from '../lib/types'
 
 interface NumFieldProps {
@@ -220,7 +219,9 @@ export function Settings({ onOpenDisclaimer }: { onOpenDisclaimer: () => void })
   const { state, updateSettings, loadDemoData, resetAll } = useStore()
   const s = state.settings
   const [theme, setThemeState] = useState<Theme>(getTheme())
-  const [showGuide, setShowGuide] = useState(false)
+  const [nameInput, setNameInput] = useState(s.userName ?? '')
+
+  useEffect(() => setNameInput(s.userName ?? ''), [s.userName])
 
   const set = (patch: Partial<UserSettings>) => updateSettings(patch)
 
@@ -235,20 +236,21 @@ export function Settings({ onOpenDisclaimer }: { onOpenDisclaimer: () => void })
 
       <AccountCard />
 
-      {/* Always-available how-to guide */}
-      <button
-        onClick={() => setShowGuide(true)}
-        className="card w-full p-4 text-left transition-colors hover:border-accent/40"
-      >
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-mute">How to use PSMF Tracker</h2>
-          <span className="text-[11px] font-medium text-accent">Open guide</span>
-        </div>
-        <p className="mt-1 text-[12px] leading-relaxed text-mute-soft">
-          Logging meals, goals &amp; timelines, day types, editing history, and syncing.
-        </p>
-      </button>
-      {showGuide && <GuideOverlay onClose={() => setShowGuide(false)} />}
+      {/* Your name — powers the greeting on Today */}
+      <div className="card p-4">
+        <h2 className="mb-1 text-sm font-semibold text-mute">Your name</h2>
+        <p className="mb-2 text-[12px] text-mute-soft">Used to greet you on the Today screen.</p>
+        <input
+          type="text"
+          value={nameInput}
+          onChange={(e) => setNameInput(e.target.value)}
+          onBlur={() => set({ userName: nameInput.trim() || undefined })}
+          placeholder="e.g. Pete"
+          autoComplete="given-name"
+          autoCapitalize="words"
+          className="field w-full text-base"
+        />
+      </div>
 
       <div className="card p-4">
         <h2 className="mb-3 text-sm font-semibold text-mute">Appearance</h2>
