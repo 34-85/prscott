@@ -5,8 +5,9 @@ import { Dashboard } from '../components/Dashboard'
 import { History } from '../components/History'
 import { Foods } from '../components/Foods'
 import { Settings } from '../components/Settings'
-import { DisclaimerScreen, DisclaimerGate } from '../components/Disclaimer'
-import { hasAcceptedDisclaimer } from '../lib/disclaimer'
+import { DisclaimerScreen } from '../components/Disclaimer'
+import { Onboarding } from '../components/Onboarding'
+import { hasOnboarded } from '../lib/onboarding'
 import { todayKey } from '../lib/dates'
 
 type Tab = 'today' | 'history' | 'foods' | 'safety' | 'settings'
@@ -41,8 +42,8 @@ function Shell() {
   // The day currently being viewed/edited. Defaults to today; the day navigator
   // and History's "open a day" control move it to any past date (incl. missed ones).
   const [date, setDate] = useState<string>(todayKey())
-  // First-run health disclaimer gate — shown until acknowledged.
-  const [accepted, setAccepted] = useState<boolean>(hasAcceptedDisclaimer)
+  // First-run onboarding (welcome → disclaimer → sign-in → setup → tips).
+  const [onboarded, setOnboarded] = useState<boolean>(hasOnboarded)
 
   function openDay(d: string) {
     setDate(d)
@@ -61,7 +62,7 @@ function Shell() {
         {tab === 'settings' && <Settings onOpenDisclaimer={openDisclaimer} />}
       </main>
 
-      {!accepted && <DisclaimerGate onAccept={() => setAccepted(true)} />}
+      {!onboarded && <Onboarding onDone={() => setOnboarded(true)} />}
 
       {/* Bottom tab bar */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-line bg-ink/95 backdrop-blur">

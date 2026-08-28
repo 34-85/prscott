@@ -4,6 +4,7 @@ import { getTheme, setTheme, type Theme } from '../lib/theme'
 import { DAY_TYPES } from '../lib/dayType'
 import { COACH_MODELS, DEFAULT_COACH_MODEL } from '../lib/aiCoach'
 import { DISCLAIMER_SUMMARY, resetDisclaimer } from '../lib/disclaimer'
+import { resetOnboarding } from '../lib/onboarding'
 import { AccountCard } from './AccountCard'
 import type { DayProfile, DayType, MeatWeightMode, UserSettings } from '../lib/types'
 
@@ -307,8 +308,9 @@ export function Settings({ onOpenDisclaimer }: { onOpenDisclaimer: () => void })
             onClick={() => {
               if (confirm('Erase ALL data and start fresh? This cannot be undone.')) {
                 resetAll()
-                // A full reset re-shows the first-run health acknowledgment.
+                // A full reset re-shows first-run onboarding + disclaimer.
                 resetDisclaimer()
+                resetOnboarding()
               }
             }}
             className="btn py-2.5 border border-bad/40 text-bad hover:bg-bad/10"
