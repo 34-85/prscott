@@ -83,7 +83,7 @@ export function Dashboard({ date, onDateChange, onOpenDisclaimer }: DashboardPro
 
       {/* Greeting */}
       {isToday && state.settings.userName && (
-        <p className="pt-1 text-[13px] text-mute-soft">Hi {state.settings.userName} 👋</p>
+        <p className="pt-1 text-sm font-medium text-mute">Hello, {state.settings.userName} 👋</p>
       )}
 
       {/* Header */}

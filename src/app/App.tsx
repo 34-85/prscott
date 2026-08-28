@@ -6,16 +6,18 @@ import { History } from '../components/History'
 import { Foods } from '../components/Foods'
 import { Settings } from '../components/Settings'
 import { DisclaimerScreen } from '../components/Disclaimer'
+import { GuideScreen } from '../components/Guide'
 import { Onboarding } from '../components/Onboarding'
 import { hasOnboarded } from '../lib/onboarding'
 import { todayKey } from '../lib/dates'
 
-type Tab = 'today' | 'history' | 'foods' | 'safety' | 'settings'
+type Tab = 'today' | 'history' | 'foods' | 'guide' | 'safety' | 'settings'
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'today', label: 'Today', icon: 'M12 3l9 7v11H3V10z' },
   { id: 'history', label: 'History', icon: 'M3 12h4l3 8 4-16 3 8h4' },
   { id: 'foods', label: 'Foods', icon: 'M5 3v18M5 8h6M11 3v18M16 3c-1.5 3-1.5 6 0 9v9' },
+  { id: 'guide', label: 'Guide', icon: 'M12 21a9 9 0 100-18 9 9 0 000 18z M9.5 9a2.5 2.5 0 015 0c0 1.6-2 2-2 3.5 M12 17.5h0' },
   { id: 'safety', label: 'Safety', icon: 'M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z M9 12l2 2 4-4' },
   { id: 'settings', label: 'Settings', icon: 'M12 8a4 4 0 100 8 4 4 0 000-8z M19 12l2-1-2-4-2 1' },
 ]
@@ -58,6 +60,7 @@ function Shell() {
         {tab === 'today' && <Dashboard date={date} onDateChange={setDate} onOpenDisclaimer={openDisclaimer} />}
         {tab === 'history' && <History onOpenDay={openDay} />}
         {tab === 'foods' && <Foods />}
+        {tab === 'guide' && <GuideScreen />}
         {tab === 'safety' && <DisclaimerScreen />}
         {tab === 'settings' && <Settings onOpenDisclaimer={openDisclaimer} />}
       </main>
