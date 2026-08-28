@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
 import type { AppState } from '../lib/types'
 import { useAuth } from './auth'
 import {
@@ -19,12 +27,16 @@ export function useSyncStatus(): SyncState {
 }
 
 /**
- * Drives cloud sync for the store. On sign-in it reconciles the local snapshot
- * with the cloud one (last-write-wins); thereafter it debounce-pushes local
- * edits up. A no-op when cloud isn't configured or nobody's signed in.
+ * Drives cloud sync for the store.
  *
- * `applyRemote` must be the store's setState so an adopted cloud copy replaces
- * local state. Returns the current SyncState for display.
+ * - On sign-in it reconciles the local snapshot with the cloud one (LWW).
+ * - Local edits are pushed up (debounced).
+ * - When a tab regains focus it re-pulls, so switching between devices/tabs
+ *   shows the latest without a manual reload; when a tab is backgrounded any
+ *   pending push is flushed immediately so the other side sees it right away.
+ *
+ * A no-op when cloud isn't configured or nobody's signed in. `applyRemote` must
+ * be the store's setState so an adopted cloud copy replaces local state.
  */
 export function useCloudSync(
   state: AppState,
@@ -33,18 +45,68 @@ export function useCloudSync(
   const { status, user } = useAuth()
   const [syncState, setSyncState] = useState<SyncState>('off')
 
-  // Latest state without retriggering the reconcile effect.
+  // Latest state, read inside callbacks without adding it as a dependency.
   const stateRef = useRef(state)
   stateRef.current = state
 
   const syncedFor = useRef<string | null>(null) // user id we've reconciled for
-  const ready = useRef(false) // true once initial reconcile finished
+  const ready = useRef(false) // true once the initial reconcile finished
+  const reconciling = useRef(false) // guard against overlapping pulls
   const suppressPush = useRef(false) // skip the push for a just-adopted remote copy
   const pushTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pushPending = useRef(false)
+
+  const signedIn = status === 'signedIn' && !!user
+
+  // Push the current local snapshot up now.
+  const pushNow = useCallback(async () => {
+    pushPending.current = false
+    if (pushTimer.current) {
+      clearTimeout(pushTimer.current)
+      pushTimer.current = null
+    }
+    try {
+      await pushRemote(stateRef.current)
+      setSyncState('synced')
+    } catch (e) {
+      console.error('Cloud push failed', e)
+      setSyncState('error')
+    }
+  }, [])
+
+  // Pull the cloud snapshot and reconcile it with local (LWW). Idempotent;
+  // safe to call on sign-in and whenever a tab regains focus.
+  const reconcileNow = useCallback(async () => {
+    if (!signedIn || reconciling.current) return
+    reconciling.current = true
+    setSyncState('syncing')
+    try {
+      const remote = await fetchRemote()
+      const r = reconcile({
+        remote,
+        local: stateRef.current,
+        localMtime: readLocalMtime(),
+      })
+      writeLocalMtime(r.mtime)
+      if (r.changed) {
+        suppressPush.current = true
+        applyRemote(r.next)
+      }
+      if (r.push) await pushRemote(r.next)
+      ready.current = true
+      setSyncState('synced')
+    } catch (e) {
+      console.error('Cloud sync failed', e)
+      setSyncState('error')
+      syncedFor.current = null // allow a retry on the next change/focus/sign-in
+    } finally {
+      reconciling.current = false
+    }
+  }, [signedIn, applyRemote])
 
   // ── reconcile once per sign-in ────────────────────────────────────────────
   useEffect(() => {
-    if (status !== 'signedIn' || !user) {
+    if (!signedIn || !user) {
       syncedFor.current = null
       ready.current = false
       setSyncState('off')
@@ -53,66 +115,47 @@ export function useCloudSync(
     if (syncedFor.current === user.id) return
     syncedFor.current = user.id
     ready.current = false
-    let cancelled = false
+    reconcileNow()
+  }, [signedIn, user, reconcileNow])
 
-    ;(async () => {
-      setSyncState('syncing')
-      try {
-        const remote = await fetchRemote()
-        if (cancelled) return
-        const r = reconcile({
-          remote,
-          local: stateRef.current,
-          localMtime: readLocalMtime(),
-        })
-        writeLocalMtime(r.mtime)
-        if (r.changed) {
-          suppressPush.current = true
-          applyRemote(r.next)
-        }
-        if (r.push) await pushRemote(r.next)
-        if (!cancelled) {
-          ready.current = true
-          setSyncState('synced')
-        }
-      } catch (e) {
-        console.error('Cloud sync failed', e)
-        if (!cancelled) {
-          setSyncState('error')
-          syncedFor.current = null // allow a retry on the next change/sign-in
-        }
+  // ── re-pull on focus; flush a pending push on background ───────────────────
+  useEffect(() => {
+    if (!signedIn) return
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') {
+        if (pushPending.current) pushNow()
+      } else if (ready.current) {
+        reconcileNow()
       }
-    })()
-
-    return () => {
-      cancelled = true
     }
-  }, [status, user, applyRemote])
+    const onFocus = () => {
+      if (ready.current) reconcileNow()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('focus', onFocus)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('focus', onFocus)
+    }
+  }, [signedIn, reconcileNow, pushNow])
 
   // ── push local edits (debounced) while signed in ──────────────────────────
   useEffect(() => {
-    if (status !== 'signedIn' || !user || syncedFor.current !== user.id) return
+    if (!signedIn || !user || syncedFor.current !== user.id) return
     if (!ready.current) return // initial reconcile still in flight
     if (suppressPush.current) {
       suppressPush.current = false // this change was an adopted remote copy
       return
     }
     writeLocalMtime(Date.now())
+    pushPending.current = true
     setSyncState('syncing')
     if (pushTimer.current) clearTimeout(pushTimer.current)
-    pushTimer.current = setTimeout(async () => {
-      try {
-        await pushRemote(stateRef.current)
-        setSyncState('synced')
-      } catch (e) {
-        console.error('Cloud push failed', e)
-        setSyncState('error')
-      }
-    }, 1200)
+    pushTimer.current = setTimeout(pushNow, 1200)
     return () => {
       if (pushTimer.current) clearTimeout(pushTimer.current)
     }
-  }, [state, status, user])
+  }, [state, signedIn, user, pushNow])
 
   return syncState
 }
