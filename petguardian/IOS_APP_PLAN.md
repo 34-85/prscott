@@ -28,14 +28,14 @@ HTTPS. No rewrite.
 - A Mac with Xcode. Required to archive and upload. (A cloud-Mac or Ionic
   Appflow / EAS Build can substitute for the build step.)
 - App icon (1024×1024 PNG), screenshots (6.7" and 6.1" iPhone at minimum).
-- The live API URL, e.g. `https://petguardian-XXXX.onrender.com`.
+- The live API URL, e.g. `https://petguardian-6sfc.onrender.com`.
 
 ## First-time setup (on the Mac)
 
 ```bash
 cd petguardian/client
 # Point the app at the hosted API for the native build:
-export VITE_API_BASE_URL=https://petguardian-XXXX.onrender.com
+export VITE_API_BASE_URL=https://petguardian-6sfc.onrender.com
 npm install
 npm run ios:add      # builds web + creates the native ios/ project (runs pod install)
 npm run ios:open     # opens ios/App/App.xcworkspace in Xcode
@@ -53,7 +53,7 @@ In Xcode:
 
 ```bash
 cd petguardian/client
-export VITE_API_BASE_URL=https://petguardian-XXXX.onrender.com
+export VITE_API_BASE_URL=https://petguardian-6sfc.onrender.com
 npm run ios:sync     # rebuild web + copy into the iOS project
 npm run ios:open     # archive from Xcode: Product → Archive → Distribute App
 ```
@@ -66,7 +66,7 @@ npm run ios:open     # archive from Xcode: Product → Archive → Distribute Ap
 ## App Store Connect checklist
 
 - Create the app record (bundle id `com.petguardian.app`).
-- **Privacy Policy URL:** `https://<your-app-domain>/privacy`.
+- **Privacy Policy URL:** `https://petguardian-6sfc.onrender.com/privacy`.
 - **App Privacy "nutrition labels":** declare Contact Info (name, email),
   User Content (the plan details users enter), and Identifiers as used for app
   functionality. Not used for tracking. Not sold.

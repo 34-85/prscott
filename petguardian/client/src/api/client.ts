@@ -4,7 +4,7 @@ const TOKEN_KEY = 'petguardian_token';
 
 // Empty on web (same-origin, Vite proxy / Express serves both). On the native
 // iOS build, set VITE_API_BASE_URL to the hosted API, e.g.
-// https://petguardian-XXXX.onrender.com, so the bundled app reaches the server.
+// https://petguardian-6sfc.onrender.com, so the bundled app reaches the server.
 export const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 
 export function getToken(): string | null {

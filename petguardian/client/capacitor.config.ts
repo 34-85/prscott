@@ -6,7 +6,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
  * The React client is bundled on-device (webDir: dist) and talks to the hosted
  * API over HTTPS. Set the API base at build time with VITE_API_BASE_URL, e.g.:
  *
- *   VITE_API_BASE_URL=https://petguardian-XXXX.onrender.com npm run ios:sync
+ *   VITE_API_BASE_URL=https://petguardian-6sfc.onrender.com npm run ios:sync
  *
  * First-time native project setup (run on a Mac with Xcode):
  *   npm run ios:add     # build web + create ios/ project

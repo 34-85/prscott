@@ -67,9 +67,9 @@ documents, and carry an offline emergency card for your pet.
 - Primary category: Lifestyle. Secondary: Productivity.
 - Age rating: 4+ (no objectionable content).
 - Price: Free (with optional paid features if/when enabled).
-- Privacy Policy URL: `https://<your-app-domain>/privacy`
-- Support URL: `https://<your-app-domain>/` (or a support page/email)
-- Marketing URL (optional): `https://<your-app-domain>/`
+- Privacy Policy URL: `https://petguardian-6sfc.onrender.com/privacy`
+- Support URL: `https://petguardian-6sfc.onrender.com/` (or a support page/email)
+- Marketing URL (optional): `https://petguardian-6sfc.onrender.com/`
 
 ## App privacy (nutrition labels)
 - Contact Info: name, email — used for App Functionality. Not used for tracking.
