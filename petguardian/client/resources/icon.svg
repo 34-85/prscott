@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#1e2a44"/><stop offset="1" stop-color="#131c30"/>
+      </linearGradient>
+  <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3b5bdb"/>
+    <stop offset="1" stop-color="#2f49b8"/>
+  </linearGradient>
+    </defs>
+    <rect width="1024" height="1024" fill="url(#bg)"/>
+    
+  <path d="M512 250
+    C 620 250 700 262 764 286 C 780 292 788 300 788 320
+    L 788 470 C 788 620 700 740 512 806
+    C 324 740 236 620 236 470 L 236 320
+    C 236 300 244 292 260 286 C 324 262 404 250 512 250 Z"
+    fill="url(#shield)" stroke="#ffffff" stroke-opacity="0.9" stroke-width="10"/>
+  <g fill="#ffffff">
+    <ellipse cx="470" cy="446" rx="35" ry="46"/>
+    <ellipse cx="554" cy="446" rx="35" ry="46"/>
+    <ellipse cx="398" cy="492" rx="33" ry="43"/>
+    <ellipse cx="626" cy="492" rx="33" ry="43"/>
+    <path d="M512 512
+      C 566 512 610 548 610 596 C 610 648 566 690 512 690
+      C 458 690 414 648 414 596 C 414 548 458 512 512 512 Z"/>
+  </g>
+  </svg>
