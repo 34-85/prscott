@@ -1,17 +1,12 @@
 # Render Blueprint for PetGuardian.
-# Provisions a managed Postgres database + a Docker web service that serves the
-# API and the built React client from one origin.
 #
-# Deploy: on render.com -> New + -> Blueprint -> pick this repo -> Apply.
-# Render reads this file, creates both resources, wires DATABASE_URL, and
-# generates a strong JWT_SECRET automatically.
-
-databases:
-  - name: petguardian-db
-    plan: free
-    region: oregon
-    databaseName: pettrust
-    user: pettrust
+# Web service (Docker) that serves the API and the built React client from one
+# origin. The database is now an EXTERNAL Supabase Postgres (free tier, no
+# 90-day expiry). DATABASE_URL is set in the Render dashboard, not here, so the
+# connection secret never lands in git.
+#
+# Deploy: New + -> Blueprint -> pick this repo -> Apply, then set DATABASE_URL
+# to the Supabase session-pooler connection string and add DATABASE_SSL=true.
 
 services:
   - type: web
@@ -33,7 +28,9 @@ services:
         value: 4000
       - key: JWT_SECRET
         generateValue: true
+      - key: DATABASE_SSL
+        value: "true"
+      # Supabase session-pooler connection string. Set this in the Render
+      # dashboard (Environment tab); it is intentionally not stored in git.
       - key: DATABASE_URL
-        fromDatabase:
-          name: petguardian-db
-          property: connectionString
+        sync: false
