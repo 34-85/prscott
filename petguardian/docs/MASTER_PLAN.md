@@ -66,6 +66,8 @@ Both loops fill the same panel. The panel is the research instrument. The conten
 
 The headline this is built to produce, within a year, is a line no one else can publish: a rolling, always-current read on pet-owner intent (intent to acquire another pet, intent to buy a category, switching intent) against a self-serve panel. The National Pet Owners Survey is deep and periodic. This is shallow and continuous. That contrast is the product, not a weakness to hide.
 
+The venture's structural edge under all of this is deep pet-industry knowledge: knowing the channels, the economics, and the buyer behavior that a consumer startup from outside the industry cannot see. Section 9 develops this against the competitive field.
+
 ---
 
 ## 3. The architecture walls
@@ -195,7 +197,43 @@ Do not start Track 2 until Track 1's clean-room wall is built and audited. The c
 
 ---
 
-## 9. Open decisions (named gaps, not filled with invented numbers)
+## 9. Competitive landscape and our edge
+
+A scan of the field (October 2026) across five representative players.
+
+| Player | What it is | Model | Price |
+|---|---|---|---|
+| Pet Legacia | A startup building nearly our exact consumer concept | Consumer subscription, smart tag, vet and shelter channel | Free "Pet ID" hook, 25 dollars/year monitoring; trust creation marked "coming soon" |
+| Rocket Lawyer | Incumbent legal-subscription platform; a pet trust is a loss-leader document | Document free in trial inside a broad legal membership, plus attorney connect | Free in trial, then membership |
+| Standard Legal | DIY legal-forms software since 2002 | One-time download, a separate professional edition, attorney-find | 49.95 dollars one-time |
+| Montana State Extension | A free authority guide co-authored by a leading pet-trust law professor | Free public education | Free |
+| Best Friends Animal Society | An animal-welfare nonprofit using estate-planning content as a planned-giving funnel | Free content into legacy-gift fundraising | Free |
+
+What the field proves:
+
+1. The document layer is a commodity. It is free from Rocket Lawyer in trial and from every animal-welfare nonprofit, and fifty dollars one-time from Standard Legal. The emergency card and caregiver forms are given away by the Humane Society, the ASPCA, 2ndChance4Pets, and Best Friends. No business can stand on generating the trust or the care documents.
+2. The educational content space is saturated. A law professor, two national nonprofits, a university extension service, and two legal incumbents already own the "what is a pet trust" explainer. The content engine must lead with proprietary panel data, not an education rehash.
+3. Our differentiation holds, and it is narrow: the clean-room research instrument, the estate-planning-attorney channel, and the nonprofit trust structure. None of the five does a data or research model. Only one has a professional channel, and it is pointed the wrong way.
+
+Pet Legacia is the one to watch. It independently reached the same framing (the probate gap, a will is not enough, fifty-state coverage, an emergency card, a protection score, a cost calculator), which validates the problem. But it bets on consumer subscription plus a hardware tag, the same shape as the player that recently abandoned pet-care planning and left the category for housing, and its paid trust product and placement network are still marked "coming soon." It has no research or data model.
+
+### Channel analysis: why vets and shelters fail, and where the real customer is
+
+Pet Legacia's choice of veterinary practices and shelters as its distribution channel is a strategic error and a tell.
+
+- Veterinary practices are increasingly private-equity managed and are measured on procedure and wellness-plan revenue. A mortality conversation competes against everything the practice is incentivized to sell first, and it will not get airtime.
+- Shelters are understaffed and overwhelmed by intake. They have no capacity to counsel owners on estate planning, and the lost-pet tag problem their patrons have is already solved by existing products.
+- A team that picks this channel is reasoning from where pets are, not from who has the time, the incentive, and the right moment for the conversation. That is an industry-blind call, and it suggests the competitor is not from pet care.
+
+The cleaner architecture, which this plan already favors: attorneys are the acquisition channel, because they own the moment and the client relationship where this conversation belongs. Independent pet retailers and brands are not a distribution channel at all; they are the research customers on the data side (intent to buy, offers, samples). We never ask an overworked vet or shelter to sell anything.
+
+### Our structural edge, named as an asset
+
+Deep pet-industry knowledge. Knowing the channel dynamics, the private-equity economics, the buyer behavior, and where the real conversations happen is the one advantage a funded consumer startup cannot clone. It is why we can route around the mistakes a category outsider will keep making, and it should inform every channel and partnership decision in this plan.
+
+---
+
+## 10. Open decisions (named gaps, not filled with invented numbers)
 
 These need real answers before the bars and pitches that depend on them are binding. They are not filled here with guesses.
 
@@ -205,12 +243,12 @@ These need real answers before the bars and pitches that depend on them are bind
 4. The known pet-owner frame to weight the panel against.
 5. The first-wave intent question set (the three to five questions that matter most to the first buyers).
 6. Track 2 weekly draft target and the editor-acceptance floor.
-7. The sourced "interest vs. action" gap statistic, with citation, for the CLE and marketing pitch.
+7. The sourced "interest vs. action" gap statistic, with citation, for the CLE and marketing pitch. Source trail from the landscape scan: the ASPCA Pet Trust Primer and pet-planning pages, the Humane Society "Providing for Your Pet's Future" fact sheet, and the Montana State Extension guide (co-authored by Prof. Gerry Beyer) are the places to nail a real, dated figure.
 8. Whether a light participation reward (a relevant first-party offer or sample, never cash, never tied to a specific answer) is in v1 or deferred.
 
 ---
 
-## 10. Professional advice checklist
+## 11. Professional advice checklist
 
 - Nonprofit attorney and tax advisor: entity formation, earned-revenue structuring, UBIT handling, governance (board, bylaws, conflict-of-interest policy, no private inurement).
 - IP assignment into the entity, in writing, from the founder and from APPA as applicable.
@@ -220,17 +258,19 @@ These need real answers before the bars and pitches that depend on them are bind
 
 ---
 
-## 11. Slop Audit
+## 12. Slop Audit
 
 | The line | The tell | The fix |
 |---|---|---|
 | "a line no one else can publish" | Edges toward asserting authority. | Kept: immediately backed by the concrete, demonstrable contrast with the periodic survey. On bar. |
 | Product Scores (50, 45) and "proposed Major" for Track 3 | False-precision scoring that could decide for you. | Labeled as ranking not deciding; the low representativeness lens is called a standing condition the total does not override; Track 3 explicitly not yet gated in detail. On bar. |
-| 90-day bars referencing target numbers | Empty placeholders or invented precision. | Left as named open decisions, not invented. Flagged in Section 9. On bar. |
+| 90-day bars referencing target numbers | Empty placeholders or invented precision. | Left as named open decisions, not invented. Flagged in Section 10. On bar. |
 | Launch tiers split across Standard, marquee, Quiet, and own-launch | Launching everything at one tier. | Differentiated by track. On bar. |
 | Kill criteria and 90-day bars present on the gated tracks | A happy-path plan. | Present and specific where tracks are gated; Tracks 3 and 4 explicitly deferred to their own gates. On bar. |
 | Access ladder: headline free, cut and dataset paid | Paywalling the headline or giving away the depth. | Correct direction. On bar. |
 | Revenue section naming three earned lines | Dressing up a cost saver as revenue, or burying the data-wall promise. | Each line stated plainly; the no-sale and first-party-offer promises stated in the same place. On bar. |
 | Watch-words (strategic, leverage, robust, holistic, streamline) | Filler. | Scanned; none load-bearing in the final text. On bar. |
+| Competitive table and "the one to watch" | Competitor-bashing or vanity framing. | Claims sourced to five scraped pages; Pet Legacia's "coming soon" status reported as stated, not editorialized. On bar. |
+| "Industry knowledge" named as our edge | Asserting an unearned moat. | Tied to a specific, checkable behavior (the vet and shelter channel error) rather than claimed in the abstract. On bar. |
 
-Total: 0 clean breaches; 7 lines checked and justified. Band: on bar. This plan can move to build planning once the open decisions in Section 9 are answered.
+Total: 0 clean breaches; 9 lines checked and justified. Band: on bar. This plan can move to build planning once the open decisions in Section 10 are answered.
