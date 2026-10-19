@@ -8,16 +8,18 @@ This is the single converged plan for the venture: the entity it should become, 
 
 Detailed clean-room and build wiring for the polling and content features lives alongside this in `POLLING_AND_CONTENT_ENGINE_SPEC.md`. This plan sits above that at the strategy and sequencing altitude.
 
-Status: the consumer MVP exists, is deployed, and runs against a clean production database. Everything past the MVP in this plan is approved in principle and awaiting the open decisions named at the end. The venture name is itself an open decision; PetGuardian is used throughout as a working name.
+Status: the consumer MVP exists, is deployed, and runs against a clean production database. Everything past the MVP in this plan is approved in principle and awaiting the open decisions named at the end. The venture name is itself an open decision; PetGuardian is used throughout as a working name. A product stance now folded into this plan: the venture prepares an attorney-ready planning guide, not an executed legal document (see the walls and Section 10). This lowers the standalone legal value of the consumer app by design; the practical care documents, the care memorandum and the emergency card, are not legal instruments and keep their full value.
 
 ### The binding constraints (walls, not goals)
 
-Four constraints govern every decision below. They are not trade-offs to balance. They are walls.
+Six constraints govern every decision below. They are not trade-offs to balance. They are walls.
 
 1. No APPA branding on the venture. APPA appears only as a cited data source and, by the founder's standing commitment, as a recipient of the anonymized and aggregated research in perpetuity at no cost. APPA's name, logo, and voice never appear on venture surfaces or in its content.
 2. The clean-room wall holds absolutely. Plan and estate data (the Vault) is never joined to research answers (the Insights plane), never sold, and never leaves first-party control. Research answers carry no PII and are pseudonymized at write time.
 3. We never sell user information. The venture is a research instrument first. If a retailer or brand has an offer, the venture delivers it first-party; no third party ever receives user data, and never any PII.
 4. Human in the loop throughout. No auto-posting, no unattended data release, no poll logic that fires without a hard cap.
+5. Plan the funding, never touch the funding. The venture documents and plans how a trust will be funded; it never holds, moves, routes, or takes custody of any money, never acts as trustee or custodian, and never facilitates a transfer. We do not handle funds, ever.
+6. We prepare, we do not practice. The venture is upfront that its output is a guide to a real need and something the user should act on, not legal advice and not a legal document. It produces an attorney-ready planning guideline for a licensed attorney to draft from. We are deliberately not in the unauthorized-practice-of-law business.
 
 ---
 
@@ -162,7 +164,7 @@ Free for pet owners, forever. Earned revenue comes from three lines, none of whi
 2. Attorney seats: the professional workspace as a paid tool.
 3. Grants: foundation and research funding for the public-good mission.
 
-Offers from retailers or brands, where they exist, are delivered first-party. No third party receives user data, and never any PII. UBIT, if owed on any earned line, is paid.
+Offers from retailers or brands, where they exist, are delivered first-party. No third party receives user data, and never any PII. UBIT, if owed on any earned line, is paid. The venture never holds or moves money on behalf of users or their trusts; its only inflows are research licensing, attorney workspace subscriptions, and grants. Pet owners pay nothing, ever.
 
 Standing and outside the ladder: the anonymized and aggregated research to APPA, in perpetuity, free.
 
@@ -233,7 +235,22 @@ Deep pet-industry knowledge. Knowing the channel dynamics, the private-equity ec
 
 ---
 
-## 10. Open decisions (named gaps, not filled with invented numbers)
+## 10. Legal and regulatory risks
+
+The field scan surfaced a live warning: a direct competitor paused its product pending legal review. The most probable triggers are the same landmines this venture must avoid. This is the risk register for counsel to validate; it is analysis, not legal advice.
+
+- Unauthorized practice of law (UPL). Generating individualized legal documents, or telling a user which instrument they need, is the line a non-lawyer crosses. Disclaimers help but do not fully shield; this was litigated for years against the largest document-generation companies. Our posture: we are upfront that the output is a guide to a real need and something the user should act on, not legal advice and not a legal document, and it takes the form of an attorney-ready planning guideline (the sixth wall). The attorney channel then puts a licensed lawyer in the loop for the drafting. The practical care documents, the care memorandum and the emergency card, are not legal instruments and carry no UPL exposure; they keep their full standalone value.
+- Handling money. Holding, routing, or taking custody of funds, or acting as trustee or custodian, triggers money-transmission, fiduciary, and escrow regulation at once. The venture documents and plans funding and never touches it (the fifth wall). A care fund is estimated and described, never held.
+- Referral and fee-splitting on the attorney channel. Taking payment to send clients to attorneys is a regulated lawyer-referral service in many states, and a non-lawyer sharing in legal fees is prohibited almost everywhere. Attorneys pay for a software workspace, never for referrals. Keep that distinction bright.
+- Enforceability and advertising claims. Pet trusts vary by state (term limits, a court's power to reduce excessive funding, execution and notarization formalities). The venture never claims its output is a valid, executed, or immediately effective instrument. All content holds the guide-for-your-attorney framing.
+- Insurance. Documenting that a user intends to fund through life insurance is fine; advising on or selling it is producer-licensed. The venture documents, it does not advise or sell.
+- Nonprofit status is not an exemption. A 501(c)(3) gets no automatic UPL or money-regulation pass. The structure is right for other reasons; it is not a legal-risk mitigant here.
+
+The honest tradeoff. Reframing the legal output from a finished document to an attorney-ready guide lowers the standalone value of the consumer app. That is an accepted cost, and it is consistent with the thesis: the consumer app was never the business, it is panel fuel and the attorney feeder, and a well-organized client who arrives at an attorney with a complete plan is a better handoff than a shaky do-it-yourself document. The practical utility that drives return visits, the care memorandum and the emergency card, is untouched.
+
+---
+
+## 11. Open decisions (named gaps, not filled with invented numbers)
 
 These need real answers before the bars and pitches that depend on them are binding. They are not filled here with guesses.
 
@@ -248,23 +265,26 @@ These need real answers before the bars and pitches that depend on them are bind
 
 ---
 
-## 11. Professional advice checklist
+## 12. Professional advice checklist
 
 - Nonprofit attorney and tax advisor: entity formation, earned-revenue structuring, UBIT handling, governance (board, bylaws, conflict-of-interest policy, no private inurement).
 - IP assignment into the entity, in writing, from the founder and from APPA as applicable.
 - Data and privacy counsel: the consent model, the clean-room wall, and the first-party offer mechanism.
 - Security review before the professional tier ships, given privilege and confidentiality.
 - CLE accreditation partner in the target jurisdictions.
+- UPL and legal-document counsel: confirm the guide-not-document framing and the consumer output clear UPL in the target states.
+- Money-transmission and fiduciary counsel: confirm the no-custody-of-funds posture across states.
+- Trust-enforceability review: test the fifty-state coverage and the guideline content against current statutes.
 
 ---
 
-## 12. Slop Audit
+## 13. Slop Audit
 
 | The line | The tell | The fix |
 |---|---|---|
 | "a line no one else can publish" | Edges toward asserting authority. | Kept: immediately backed by the concrete, demonstrable contrast with the periodic survey. On bar. |
 | Product Scores (50, 45) and "proposed Major" for Track 3 | False-precision scoring that could decide for you. | Labeled as ranking not deciding; the low representativeness lens is called a standing condition the total does not override; Track 3 explicitly not yet gated in detail. On bar. |
-| 90-day bars referencing target numbers | Empty placeholders or invented precision. | Left as named open decisions, not invented. Flagged in Section 10. On bar. |
+| 90-day bars referencing target numbers | Empty placeholders or invented precision. | Left as named open decisions, not invented. Flagged in Section 11. On bar. |
 | Launch tiers split across Standard, marquee, Quiet, and own-launch | Launching everything at one tier. | Differentiated by track. On bar. |
 | Kill criteria and 90-day bars present on the gated tracks | A happy-path plan. | Present and specific where tracks are gated; Tracks 3 and 4 explicitly deferred to their own gates. On bar. |
 | Access ladder: headline free, cut and dataset paid | Paywalling the headline or giving away the depth. | Correct direction. On bar. |
@@ -272,5 +292,7 @@ These need real answers before the bars and pitches that depend on them are bind
 | Watch-words (strategic, leverage, robust, holistic, streamline) | Filler. | Scanned; none load-bearing in the final text. On bar. |
 | Competitive table and "the one to watch" | Competitor-bashing or vanity framing. | Claims sourced to five scraped pages; Pet Legacia's "coming soon" status reported as stated, not editorialized. On bar. |
 | "Industry knowledge" named as our edge | Asserting an unearned moat. | Tied to a specific, checkable behavior (the vet and shelter channel error) rather than claimed in the abstract. On bar. |
+| The two new walls (never touch funding; prepare, do not practice) | Rules stated without teeth. | Each is a bright line with a stated consequence, carried into Section 10's risk register and the advice checklist. On bar. |
+| The "honest tradeoff" paragraph (consumer value declines) | Happy-path spin hiding a downside. | The value loss is stated plainly as an accepted cost, not minimized. On bar. |
 
-Total: 0 clean breaches; 9 lines checked and justified. Band: on bar. This plan can move to build planning once the open decisions in Section 10 are answered.
+Total: 0 clean breaches; 11 lines checked and justified. Band: on bar. This plan can move to build planning once the open decisions in Section 11 are answered.
