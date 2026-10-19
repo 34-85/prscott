@@ -37,7 +37,7 @@ WHAT YOU CAN DO
 - Record everything a caregiver needs: vet and emergency vet, microchip,
   medications, allergies, diet, routine, and behavior.
 - See a live readiness score that shows exactly what's still missing.
-- Generate attorney-ready documents: an Animal Care Trust Directive, a Pet Care
+- Generate attorney-ready documents: a Pet Trust Planning Guide, a Pet Care
   Memorandum, and an Emergency Wallet Card.
 - Keep an offline Emergency Card on your phone, ready with no signal and no login.
 - Get a yearly reminder to review your plan as life changes.
@@ -81,7 +81,7 @@ documents, and carry an offline emergency card for your pet.
 1. A funded care plan for your pet, in every state.
 2. Name caregivers and a trustee who oversees the money.
 3. Record vets, meds, microchip, and routines.
-4. Generate an attorney-ready trust directive and care memo.
+4. Generate an attorney-ready pet trust planning guide and care memo.
 5. An emergency wallet card, offline and ready.
 6. Not legal advice. A guide for your attorney.
 

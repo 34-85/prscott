@@ -11,7 +11,7 @@ documentsRouter.use(requireAuth);
 const VALID: DocumentType[] = ['trust-directive', 'care-memorandum', 'emergency-card'];
 
 const FILENAMES: Record<DocumentType, string> = {
-  'trust-directive': 'PetGuardian-Trust-Directive.pdf',
+  'trust-directive': 'PetGuardian-Pet-Trust-Planning-Guide.pdf',
   'care-memorandum': 'PetGuardian-Care-Memorandum.pdf',
   'emergency-card': 'PetGuardian-Emergency-Card.pdf',
 };

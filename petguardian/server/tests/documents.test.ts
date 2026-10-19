@@ -108,16 +108,21 @@ describe('documents', () => {
   // Section headings are rendered uppercase in the PDF, so match case-insensitively.
   const has = (text: string, needle: string) => text.toLowerCase().includes(needle.toLowerCase());
 
-  it('trust directive contains the legal scaffold and state statute', async () => {
+  it('trust-directive output is an attorney-ready guide, not an executed instrument', async () => {
     const { token } = await registerUser();
     const plan = await seededPlan(token);
     const text = pdfText((await fetchPdf(plan.id, 'trust-directive', token)).body as Buffer);
-    expect(has(text, 'Animal Care Trust Directive')).toBe(true);
+    expect(has(text, 'Pet Trust Planning Guide')).toBe(true);
     expect(has(text, 'Jane Doe')).toBe(true);
-    expect(has(text, '53-12-28')).toBe(true); // Georgia statute
-    expect(has(text, 'Schedule A')).toBe(true); // covered animals schedule
-    expect(has(text, 'notary')).toBe(true); // execution block
+    expect(has(text, '53-12-28')).toBe(true); // Georgia statute, as reference for the attorney
+    expect(has(text, 'Schedule A')).toBe(true); // draft covered-animals schedule
+    expect(has(text, 'not a legal document')).toBe(true); // guide framing stated upfront
+    expect(has(text, 'your attorney')).toBe(true); // the legal work is routed to counsel
+    expect(has(text, 'notarization')).toBe(true); // execution is described as the attorney's job
     expect(has(text, 'not legal advice')).toBe(true);
+    // The old executed-instrument signature/notary block must be gone.
+    expect(has(text, 'NOTARY ACKNOWLEDGMENT')).toBe(false);
+    expect(has(text, 'Witness 1')).toBe(false);
   });
 
   it('care memorandum includes the First 72 hours guidance and pet detail', async () => {

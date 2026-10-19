@@ -15,7 +15,7 @@ const TABS = ['Overview', 'Pets', 'People', 'Funding', 'Documents'] as const;
 type Tab = (typeof TABS)[number];
 
 const DOCS = [
-  { type: 'trust-directive', name: 'Animal Care Trust Directive', desc: 'The state-specific trust instrument for your attorney to finalize.', file: 'PetGuardian-Trust-Directive.pdf' },
+  { type: 'trust-directive', name: 'Pet Trust Planning Guide', desc: 'A state-specific plan to take to your attorney, who drafts the trust. Not a legal document.', file: 'PetGuardian-Pet-Trust-Planning-Guide.pdf' },
   { type: 'care-memorandum', name: 'Pet Care Memorandum', desc: 'Detailed care instructions to travel with the animal.', file: 'PetGuardian-Care-Memorandum.pdf' },
   { type: 'emergency-card', name: 'Emergency Wallet Card', desc: 'Cut-out card and home posting so a caregiver can act immediately.', file: 'PetGuardian-Emergency-Card.pdf' },
 ];

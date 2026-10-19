@@ -35,7 +35,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section title="How we use your information">
-        <p>We use your information solely to provide the service: to save your plan, generate your documents (the trust directive, care memorandum, and emergency card), and let you return to and update your plan. We do not use your plan content for advertising.</p>
+        <p>We use your information solely to provide the service: to save your plan, generate your documents (the pet trust planning guide, care memorandum, and emergency card), and let you return to and update your plan. We do not use your plan content for advertising.</p>
       </Section>
 
       <Section title="How your information is stored and protected">

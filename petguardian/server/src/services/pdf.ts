@@ -180,106 +180,68 @@ function missingChecklist(doc: PDFKit.PDFDocument, data: FullPlan) {
 export function buildTrustDirective(doc: PDFKit.PDFDocument, data: FullPlan, law?: StateLaw) {
   const { plan, pets, caregivers, trustees, fundingSources } = data;
   const stateName = law?.name ?? plan.state;
-  const settlor = str(plan.settlor_full_name) || '[Settlor’s full legal name]';
+  const settlor = str(plan.settlor_full_name) || '[your full legal name]';
 
   // ---- Cover page ----
   doc.fillColor(NAVY).font('Helvetica-Bold').fontSize(26).text('PetGuardian', { align: 'center' });
   doc.fillColor(SLATE).font('Helvetica').fontSize(10).text('Nationwide pet estate-planning workbook', { align: 'center' });
   doc.moveDown(3);
-  doc.fillColor(INK).font('Helvetica-Bold').fontSize(24).text('Animal Care Trust Directive', { align: 'center' });
+  doc.fillColor(INK).font('Helvetica-Bold').fontSize(24).text('Pet Trust Planning Guide', { align: 'center' });
   doc.moveDown(0.5);
   doc.fillColor(SLATE).font('Helvetica').fontSize(12).text(`Prepared for ${settlor}`, { align: 'center' });
   doc.fillColor(SLATE).font('Helvetica').fontSize(12).text(`Governing state: ${stateName}`, { align: 'center' });
   doc.moveDown(0.3);
   doc.fillColor(SLATE).font('Helvetica').fontSize(10).text(`Generated ${today()}`, { align: 'center' });
   doc.moveDown(3);
-  doc.font('Helvetica-Bold').fillColor(BRAND).fontSize(11)
-    .text('This is a guide for your attorney — not a final legal instrument.', { align: 'center' });
+  doc.font('Helvetica-Bold').fillColor(BRAND).fontSize(12)
+    .text('A guide to take to your attorney.', { align: 'center' });
+  doc.font('Helvetica').fillColor(SLATE).fontSize(10.5)
+    .text('This is not a legal document and not legal advice. It organizes your wishes so a licensed attorney can draft your pet trust.', { align: 'center' });
   disclaimerBox(doc);
 
   // ---- Body ----
   doc.addPage();
-  docHeader(doc, 'Animal Care Trust Directive', `A ${stateName} pet trust directive prepared for review with an attorney`);
+  docHeader(doc, 'Pet Trust Planning Guide', `A plan to review with a licensed attorney in ${stateName}`);
 
-  heading(doc, 'Article I — Settlor & Creation');
-  field(doc, 'Settlor (full legal name)', plan.settlor_full_name);
+  paragraph(
+    doc,
+    'How to use this guide: it records what you want for your animals so a licensed attorney can draft a valid pet trust under ' +
+      `${stateName} law quickly and accurately. Bring it to your attorney. You record your wishes here; your attorney prepares ` +
+      'the legal instrument and handles the signing, witnessing, and notarization your state requires. Do not treat this guide ' +
+      'as something to sign. It has no legal effect by itself.',
+    { color: SLATE, size: 10 },
+  );
+
+  heading(doc, 'About you (the person planning)');
+  field(doc, 'Full legal name', plan.settlor_full_name);
   field(doc, 'Address', plan.settlor_address);
   field(doc, 'Phone', plan.settlor_phone, 24);
   field(doc, 'Email', plan.settlor_email, 30);
   paragraph(
     doc,
-    `I, ${settlor}, create this trust for the care of the animal(s) identified in Schedule A that ` +
-      `are alive during my lifetime. I intend that it be recognized and enforced under the law of ${stateName}. ` +
-      `The trust continues until the death of the last surviving covered animal, at which time any remaining ` +
-      `property is distributed under Article X.`,
+    'What to tell your attorney: you want a trust for the animals listed under "Your animals" that are alive during your ' +
+      `lifetime, enforceable under ${stateName} law, continuing until the last covered animal dies, with any remaining funds ` +
+      'going to the remainder beneficiary you name below.',
+    { color: SLATE, size: 9.5 },
   );
 
-  heading(doc, `Article II — Governing Law (${stateName})`);
+  heading(doc, `Your state pet-trust law (${stateName})`);
+  paragraph(doc, 'Reference for your attorney:', { color: SLATE, size: 9.5 });
   if (law) {
     field(doc, 'Statute', law.statuteCitation);
     field(doc, 'Duration', law.durationRule);
     field(doc, 'Enforcement', law.enforcement);
     field(doc, 'Remainder default (if none named)', law.remainderDefault);
     if (law.courtMayReduceExcessFunds) {
-      paragraph(doc, 'Note: under this state’s statute a court may reduce funds it finds substantially in excess of the amount required for the animal’s care.', { color: SLATE, size: 9.5 });
+      paragraph(doc, 'Note: in this state a court may reduce funds it finds substantially in excess of what the animal needs. Discuss a realistic amount with your attorney.', { color: SLATE, size: 9.5 });
     }
     if (law.notes) paragraph(doc, `Note: ${law.notes}`, { color: SLATE, size: 9.5 });
   } else {
     paragraph(doc, 'Confirm the governing animal-trust statute with counsel in your state.');
   }
 
-  heading(doc, 'Article III — Definitions');
-  clause(doc, '“Trust”', 'means the animal-care trust created by this instrument.');
-  clause(doc, '“Covered Animal”', 'means each animal listed in Schedule A that was alive during the Settlor’s lifetime.');
-  clause(doc, '“Caregiver”', 'means the person with physical custody and day-to-day responsibility for a Covered Animal.');
-  clause(doc, '“Trustee”', 'means the person who holds and administers trust property and pays for the animal’s care.');
-
-  heading(doc, 'Article IV — Caregivers');
-  paragraph(doc, 'The Trustee shall deliver each Covered Animal to the Primary Caregiver. If the Primary Caregiver is unable or unwilling to serve, custody passes to the Alternate Caregivers in the order listed.');
-  const primary = caregivers.filter((c) => c.role === 'PRIMARY');
-  const alternate = caregivers.filter((c) => c.role === 'ALTERNATE');
-  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('PRIMARY CAREGIVER');
-  primary.length ? primary.forEach((c) => paragraph(doc, `• ${personLine(c)}`)) : field(doc, '', null);
-  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('ALTERNATE CAREGIVER(S), IN ORDER');
-  alternate.length ? alternate.forEach((c) => paragraph(doc, `• ${personLine(c)}`)) : field(doc, '', null);
-
-  heading(doc, 'Article V — Trustee & Enforcement');
-  paragraph(doc, 'The Trustee is intentionally a different person from the Caregiver, so that control of the funds is separate from custody of the animal. The Trustee may retain professionals, open accounts, and take all actions reasonably necessary to administer the trust.');
-  trustees.length
-    ? trustees.forEach((t) => paragraph(doc, `• ${String(t.role).replace('_', ' ')}: ${personLine(t)}`))
-    : field(doc, 'Trustee / enforcer', null);
-  clause(doc, 'Compensation', 'The Trustee is entitled to reasonable compensation and reimbursement of administrative costs from the trust.');
-  clause(doc, 'Bond', 'No bond or surety shall be required of any Trustee, unless a court orders otherwise.');
-  clause(doc, 'Successor Trustee', 'If a Trustee ceases to serve, the Successor Trustee named above (or, if none, a person appointed by the court) shall serve.');
-
-  heading(doc, 'Article VI — Standard of Care & Distributions');
-  paragraph(doc, 'The Trustee shall distribute trust funds to maintain each Covered Animal in at least the standard of living it enjoyed during the Settlor’s lifetime, including food, housing, routine and emergency veterinary care, medication, boarding, transport, grooming, insurance, and humane end-of-life care.');
-
-  heading(doc, 'Article VII — Spendthrift');
-  paragraph(doc, 'To the extent permitted by law, no beneficiary’s interest is subject to voluntary or involuntary transfer, and trust assets are not reachable by a beneficiary’s creditors before distribution.');
-
-  heading(doc, 'Article VIII — Accounting & Enforcement');
-  paragraph(doc, 'The person named to enforce this trust (or, if none is named, a person appointed by the court) may request a reasonable accounting and may enforce the terms of this trust. The Trustee shall keep records of receipts and disbursements.');
-
-  heading(doc, 'Article IX — Funding (see Schedule B)');
-  const total = fundingSources.reduce((s, f) => s + Number(f.amount ?? 0), 0);
-  field(doc, 'Target funding amount', plan.funding_target ? money(plan.funding_target) : null, 20);
-  field(doc, 'Total identified funding', total > 0 ? money(total) : null, 20);
-  if (str(plan.funding_notes)) paragraph(doc, `Notes: ${str(plan.funding_notes)}`);
-
-  heading(doc, 'Article X — Termination & Remainder');
-  paragraph(doc, 'On the death of the last surviving Covered Animal, the trust terminates and the Trustee shall distribute any remaining property to the Remainder Beneficiary named below.');
-  field(doc, 'Remainder beneficiary for unused funds', plan.remainder_beneficiary);
-
-  heading(doc, 'Article XI — Disposition, Medical & End-of-Life Standard');
-  plan.disposition_instructions ? paragraph(doc, str(plan.disposition_instructions)) : field(doc, 'Standard', null, 60);
-
-  heading(doc, 'Article XII — Incapacity of Settlor');
-  paragraph(doc, 'These provisions apply if the Settlor becomes unable to care for a Covered Animal during life, before any estate is administered:');
-  plan.incapacity_instructions ? paragraph(doc, str(plan.incapacity_instructions)) : field(doc, 'Instructions', null, 60);
-
-  // Schedules
-  heading(doc, 'Schedule A — Covered Animals');
+  heading(doc, 'Your animals (draft Schedule A)');
+  paragraph(doc, 'Your attorney attaches the final animal list as Schedule A of the trust.', { color: SLATE, size: 9.5 });
   if (pets.length === 0) {
     field(doc, 'Animal 1', null);
     field(doc, 'Animal 2', null);
@@ -287,47 +249,68 @@ export function buildTrustDirective(doc: PDFKit.PDFDocument, data: FullPlan, law
     pets.forEach((p, i) => {
       const desc = [str(p.species), str(p.breed), str(p.color), str(p.sex), str(p.microchip) ? `microchip ${str(p.microchip)}` : '']
         .filter(Boolean).join(', ');
-      field(doc, `Animal ${i + 1}`, `${str(p.name)}${desc ? ` — ${desc}` : ''}`);
+      field(doc, `Animal ${i + 1}`, `${str(p.name)}${desc ? ` (${desc})` : ''}`);
     });
   }
 
-  heading(doc, 'Schedule B — Funding Sources');
+  heading(doc, 'Who will care for your animals');
+  paragraph(doc, 'Your intent: the animals go to your primary caregiver; if that person cannot serve, to the alternates in the order listed. Point for your attorney: this becomes the caregiver succession clause.', { color: SLATE, size: 9.5 });
+  const primary = caregivers.filter((c) => c.role === 'PRIMARY');
+  const alternate = caregivers.filter((c) => c.role === 'ALTERNATE');
+  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('PRIMARY CAREGIVER');
+  primary.length ? primary.forEach((c) => paragraph(doc, `- ${personLine(c)}`)) : field(doc, '', null);
+  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('ALTERNATE CAREGIVER(S), IN ORDER');
+  alternate.length ? alternate.forEach((c) => paragraph(doc, `- ${personLine(c)}`)) : field(doc, '', null);
+
+  heading(doc, 'Who controls the money (trustee / enforcer)');
+  paragraph(doc, 'Your intent: the person who controls the money (the trustee) should be different from the person who keeps the animal (the caregiver), so oversight of the funds is separate from custody of the animal. Point for your attorney: name the trustee, a successor trustee, and the person who may enforce the trust.', { color: SLATE, size: 9.5 });
+  trustees.length
+    ? trustees.forEach((t) => paragraph(doc, `- ${String(t.role).replace('_', ' ')}: ${personLine(t)}`))
+    : field(doc, 'Trustee / enforcer', null);
+
+  heading(doc, 'The standard of care you want');
+  paragraph(doc, 'You want the trust to keep each animal in at least the standard of living it has now: food, housing, routine and emergency veterinary care, medication, boarding, transport, grooming, insurance, and humane end-of-life care. Point for your attorney: this is the standard-of-care and distribution clause.');
+
+  heading(doc, 'Funding you plan to set aside (draft Schedule B)');
+  paragraph(doc, 'PetGuardian never holds, transfers, or manages any money. You and your attorney, with your financial institutions, decide how the trust is funded and set it up. The figures below are your planning estimate for your attorney.', { color: SLATE, size: 9.5 });
+  const total = fundingSources.reduce((s, f) => s + Number(f.amount ?? 0), 0);
+  field(doc, 'Target funding amount', plan.funding_target ? money(plan.funding_target) : null, 20);
+  field(doc, 'Total identified funding', total > 0 ? money(total) : null, 20);
+  if (str(plan.funding_notes)) paragraph(doc, `Notes: ${str(plan.funding_notes)}`);
   if (fundingSources.length === 0) {
     field(doc, 'Source 1 (type, description, beneficiary, amount)', null);
   } else {
     fundingSources.forEach((f) => {
-      const desc = [str(f.type), str(f.description), str(f.beneficiary_designation)].filter(Boolean).join(' — ');
-      paragraph(doc, `• ${desc || 'Funding source'}: ${money(f.amount as string)}`);
+      const desc = [str(f.type), str(f.description), str(f.beneficiary_designation)].filter(Boolean).join(' / ');
+      paragraph(doc, `- ${desc || 'Funding source'}: ${money(f.amount as string)}`);
     });
   }
 
-  heading(doc, 'Execution');
-  paragraph(doc, 'This instrument is a draft to be reviewed, adapted, and formally executed with your attorney under your state’s signing, witnessing, and notarization requirements.');
-  doc.moveDown(1);
-  doc.font('Helvetica').fontSize(10).fillColor(INK);
-  doc.text('_______________________________________     Date: ____________________');
-  doc.moveDown(0.2);
-  doc.text(`${settlor}, Settlor`);
-  doc.moveDown(1.1);
-  doc.text('_______________________________________     Date: ____________________');
-  doc.moveDown(0.2);
-  doc.text('Trustee');
-  doc.moveDown(1.1);
-  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('WITNESSES');
-  doc.font('Helvetica').fillColor(INK).fontSize(10);
-  doc.text('_______________________________________     _______________________________________');
-  doc.moveDown(0.2);
-  doc.text('Witness 1 (signature / printed name)              Witness 2 (signature / printed name)');
-  doc.moveDown(1.1);
-  doc.font('Helvetica-Bold').fillColor(SLATE).fontSize(9).text('NOTARY ACKNOWLEDGMENT (SELF-PROVING)');
-  doc.font('Helvetica').fillColor(INK).fontSize(10);
-  doc.text('State of ____________________   County of ____________________');
-  doc.moveDown(0.2);
-  doc.text('Subscribed, sworn to, and acknowledged before me on ____________________ (date)');
-  doc.text(`by ${settlor} (Settlor) and by the witnesses named above.`);
-  doc.moveDown(0.6);
-  doc.text('_______________________________________     (Seal)');
-  doc.text('Notary Public   —   My commission expires: ____________________');
+  heading(doc, 'What happens to unused funds');
+  paragraph(doc, 'When the last covered animal dies, the trust ends and any remaining funds go to the remainder beneficiary you name here. Point for your attorney: this is the remainder and termination clause.', { color: SLATE, size: 9.5 });
+  field(doc, 'Remainder beneficiary for unused funds', plan.remainder_beneficiary);
+
+  heading(doc, 'End-of-life and disposition wishes');
+  plan.disposition_instructions ? paragraph(doc, str(plan.disposition_instructions)) : field(doc, 'Your wishes', null, 60);
+
+  heading(doc, 'If you become unable to care for your animals');
+  paragraph(doc, 'These are your wishes if you are alive but cannot care for an animal, for example during illness or incapacity, before any estate is administered. Point for your attorney: coordinate this with your financial power of attorney.', { color: SLATE, size: 9.5 });
+  plan.incapacity_instructions ? paragraph(doc, str(plan.incapacity_instructions)) : field(doc, 'Your wishes', null, 60);
+
+  heading(doc, 'Points for your attorney to address');
+  [
+    'Trustee compensation and reimbursement of administrative costs.',
+    'Whether to waive bond for the trustee.',
+    'Naming a successor trustee if the first cannot serve.',
+    'Spendthrift protection for the trust funds, to the extent your state allows.',
+    'Who may request an accounting and enforce the trust, and how often.',
+    `Execution for ${stateName}: the signing, witnessing, and notarization, which your attorney will handle.`,
+  ].forEach((s) => doc.font('Helvetica').fillColor(INK).fontSize(10).text(`-  ${s}`, { lineGap: 1 }));
+  doc.moveDown(0.4);
+
+  heading(doc, 'Next steps: taking this to your attorney');
+  paragraph(doc, 'Bring this guide to a licensed estate-planning attorney in your state. Your attorney turns it into a valid pet trust, advises you on funding, and handles the signing, witnessing, and notarization your state requires.');
+  paragraph(doc, 'Do not sign this guide. It is preparatory only and has no legal effect by itself. The care memorandum and emergency card from PetGuardian are practical documents you can use right away; this plan becomes legally effective only once your attorney drafts the trust and you properly execute it.', { color: SLATE, size: 9.5 });
 
   missingChecklist(doc, data);
 }

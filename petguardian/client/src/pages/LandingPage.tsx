@@ -32,7 +32,7 @@ const STEPS = [
   ['Add a trustee', 'A separate person controls the money and can enforce the care terms.'],
   ['Fund it', 'Earmark life insurance, an account, or a bequest — a real, timely pool of money.'],
   ['Write the care memo', 'Vet, microchip, meds, diet, routine, behavior, and placement preferences.'],
-  ['Generate documents', 'A state-specific trust directive, care memorandum, and emergency card, ready for your attorney.'],
+  ['Generate documents', 'A state-specific pet trust planning guide, care memorandum, and emergency card, ready for your attorney.'],
 ];
 
 export default function LandingPage() {
