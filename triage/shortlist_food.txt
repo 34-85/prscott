@@ -1,0 +1,31 @@
+MOTHER :: Indie cafe in downtown Chattanooga with an intriguing one-word name :: 1 :: Chattanooga
+THE WOODSHOP :: Bar, restaurant and live music venue rolled into one local spot :: 1 :: Chattanooga
+HENDO'S CREOLE CUISINE :: Chef-owned Creole cooking, a rare cuisine for the area :: 1 :: Chattanooga
+NEW WAVE COFFEE :: Small-batch coffee roaster, a true maker story for coffee lovers :: 1 :: Chattanooga
+RED WIGGLER, LLC :: Coffee, kava and botanical teas - a quirky alternative drink bar :: 1 :: Chattanooga
+THE READING ROOM :: Bookstore-meets-bar, a distinctive hybrid hangout :: 1 :: Chattanooga
+PEDESTRIAN WINE AND CHEESE :: Independent retail wine and cheese shop, very newsletter-friendly :: 1 :: Chattanooga
+VINO & VERDE, LLC :: Alcohol and coffee bar with snacks, a cozy dual-concept :: 1 :: Chattanooga
+ROASTED ROOT COFFEE COMPANY LLC :: Local coffee shop with a farm-to-cup ethos :: 1 :: Chattanooga
+HANGRY PINOY :: Filipino food truck bringing rare Pinoy flavors to town :: 1 :: Chattanooga
+MAMA O'S SARAP STOP :: Filipino food trailer, distinctive immigrant cuisine :: 1 :: Cleveland
+CONGA KITCHEN :: Latin/Caribbean restaurant, story-worthy owner-run kitchen :: 1 :: Chattanooga
+STONE AGE KOREAN BBQ, HOT POT & SUSHI :: Korean BBQ, hot pot and sushi under one roof :: 1 :: Chattanooga
+MARQUENSE BAKERY :: Guatemalan-style bakery, authentic immigrant baking :: 1 :: Chattanooga
+M.R.S. PASTELERIA :: Pop-up Latin bakery with a maker-to-market story :: 1 :: Chattanooga
+NIGHTCAP COCKTAILS AND SWEETS :: Cocktails and desserts pairing, an elevated date-night concept :: 1 :: Chattanooga
+RIVERSIDE BEVERAGE :: New beer brewery, always a draw for the craft crowd :: 1 :: Chattanooga
+TN WHISKEY BAR CO. LLC :: Tennessee whiskey bar concept in a satellite town :: 1 :: Soddy Daisy
+TIENDA Y CARNICERIA ROJAS LLC :: Latin meat market and butcher, authentic and local :: 2 :: Chattanooga
+OFFBEAT EATS :: Microbakery with a charmingly offbeat name :: 2 :: Hixson
+SO-DOUGH :: Cottage sourdough baker under the Food Freedom Act :: 2 :: Chattanooga
+MIGHTY MOMS BAKERY :: Sourdough cookies, breads and pastries from a home baker :: 2 :: Chattanooga
+WIRED COFFEE BAR :: Local coffee bar serving Ooltewah :: 2 :: Ooltewah
+OH WOW DONUTS P&S LLC :: Independent donut bakery on Signal Mountain :: 2 :: Signal Mountain
+BEIGNETS AND BREW :: Coffee and New Orleans-style beignets shop :: 2 :: Cleveland
+ARCHIE'S RIG BARBECUE :: Owner-built BBQ food truck, classic local maker story :: 2 :: Hixson
+SOCCI SAUCE :: Family-recipe pasta and pizza sauce, a packaged-goods story :: 2 :: Chattanooga
+KIM HOT FISH :: Specialty fish sandwich joint with a singular focus :: 2 :: Chattanooga
+SHREDDERS LAIR :: Music shop serving coffee, tea and beer - offbeat hangout :: 2 :: Chattanooga
+WANDERLINGER BREWING :: Brewery and restaurant, a craft beer destination :: 2 :: Chattanooga
+JONNY POPPERS :: Quirky-named food truck worth a watch :: 2 :: Hixson
